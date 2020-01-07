@@ -47,9 +47,13 @@ ExpNode *ExpNode::AddNode(ValueNode *node) {
 	return node;
 }
 
+void ExpNode::SetParent(OperNode* node) {
+	parent_ = node;
+}
+
 void ExpNode::InsertParent(OperNode *node) {
 	node->AddChild(this);
-	parent_ = node;	
+	SetParent(node);
 }
 
 OperNode *ExpNode::GetParent() {

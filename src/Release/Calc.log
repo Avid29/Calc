@@ -1,17 +1,7 @@
-﻿  Main.cpp
-  BOperNode.cpp
-  ExpNode.cpp
-  ExpTree.cpp
-  FValueNode.cpp
-  IValueNode.cpp
-  NOperNode.cpp
-C:\Users\avid2\source\repos\Calc\src\src\NOperNode.cpp(35,20): warning C4018: '<': signed/unsigned mismatch
-  OperNode.cpp
-  Parse.cpp
-  UOperNode.cpp
-  ValueNode.cpp
+﻿  Parse.cpp
   Generating code
-  Previous IPDB not found, fall back to full compilation.
-  All 231 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  14 of 231 functions ( 6.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    3 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Calc.vcxproj -> C:\Users\avid2\source\repos\Calc\Release\Calc.exe

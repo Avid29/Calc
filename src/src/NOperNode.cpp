@@ -19,6 +19,7 @@ NOperNode::NOperNode(char c) {
 }
 
 void NOperNode::AddChild(::ExpNode *node) {
+	node->SetParent(this);
 	children_.push_back(node);
 }
 

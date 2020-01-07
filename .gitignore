@@ -4,3 +4,6 @@
 
 /.vs/Calc/v16
 /.vs
+/src/Debug
+/Debug
+/Release

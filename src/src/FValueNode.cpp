@@ -18,3 +18,7 @@ void FValueNode::SetValue(double value) {
 string FValueNode::Print() {
 	return to_string(f_value);
 }
+
+Priority FValueNode::GetPriority() {
+	return VALUE;
+}

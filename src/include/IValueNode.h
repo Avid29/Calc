@@ -12,6 +12,9 @@ class IValueNode : public ValueNode {
 		void SetValue(int value);
 
 		string Print();
+
+		Priority GetPriority();
+
 	private:
 		int i_value;
 };

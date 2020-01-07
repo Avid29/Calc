@@ -20,3 +20,7 @@ void IValueNode::SetValue(int value) {
 string IValueNode::Print() {
 	return to_string(i_value); 
 }
+
+Priority IValueNode::GetPriority() {
+	return VALUE;
+}

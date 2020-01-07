@@ -33,7 +33,7 @@ class ExpNode {
 		virtual string Print() = 0;
 
 		// Higher values go above
-		virtual Priority GetPriority();
+		virtual Priority GetPriority() = 0;
 
 		bool IsRoot();
 	protected:

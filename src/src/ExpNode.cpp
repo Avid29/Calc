@@ -34,7 +34,6 @@ ExpNode *ExpNode::AddNode(OperNode *node) {
 
 ExpNode *ExpNode::AddNode(ValueNode *node) {
 	if (node->GetPriority() < this->GetPriority()) {
-
 		// this is an operator
 		((OperNode*)this)->AddChild(node);
 	} else if (GetPriority() == VALUE) {
@@ -63,5 +62,3 @@ OperNode *ExpNode::GetParent() {
 bool ExpNode::IsRoot() {
 	return parent_ == nullptr;
 }
-
-Priority ExpNode::GetPriority() { return VALUE; }

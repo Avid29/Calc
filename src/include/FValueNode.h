@@ -10,6 +10,8 @@ class FValueNode : ValueNode {
 
 		string Print();
 
+		Priority GetPriority();
+
 	private:
 		double f_value;
 };

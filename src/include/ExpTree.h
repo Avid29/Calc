@@ -27,6 +27,12 @@ class ExpTree {
 		/// <param name="node">ValueNode to add to tree</pararm>
 		void AddNode(ValueNode *node);
 
+		/// <summary>
+		/// Find the closest OVERRIDE and change it to OVERRIDEN. 
+		/// Then, set OVERRIDE as active_node
+		/// </summary>
+		void FinishOverride();
+
 		string Print(); 
 
 	private:

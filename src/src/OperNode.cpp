@@ -6,6 +6,11 @@
 
 using namespace std;
 
+// Get Operator
+Operator OperNode::GetOperator() {
+	return oper_;
+}
+
 // Get Priority 
 Priority OperNode::GetPriority() {
 	switch (oper_) {

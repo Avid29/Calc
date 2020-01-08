@@ -7,6 +7,14 @@
 
 using namespace std;
 
+enum Operator {
+	ADDITION,
+	MULTIPLICATION,
+	POWER,
+	POS,
+	NEG
+};
+
 class OperNode : public ExpNode {
 	public:
 		/// <summary>
@@ -37,14 +45,6 @@ class OperNode : public ExpNode {
 
 	protected:
 		Operator oper_;	
-};
-
-enum Operator {
-	ADDITION,
-	MULTIPLICATION,
-	POWER,
-	POS,
-	NEG
 };
 
 /// <summary>

@@ -6,7 +6,10 @@
 
 using namespace std;
 
-// Add node as a child and set node's parent to this
+/// <summary>
+/// Add node as a child and set node's parent to this
+/// </summary>
+/// <param name="node">New child node</param>
 void BOperNode::AddChild(::ExpNode *node) {
 	if (left_child == nullptr) {
 		// Add 1st child
@@ -21,7 +24,10 @@ void BOperNode::AddChild(::ExpNode *node) {
 	node->SetParent(this);
 }
 
-// return expression as a string below this node
+/// <summary>
+/// Get the expression tree printed from this down
+/// </summary>
+/// <returns>The expression tree as a string</returns>
 string BOperNode::Print() {
 	string cache_ = "";
 	cache_ += left_child->Print();

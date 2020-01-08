@@ -7,24 +7,40 @@
 
 using namespace std;
 
+/// <summary>
+/// Create a ValueNode with f_value value
+/// </summary>
+/// <param name="value">initial value for node</param>
 IValueNode::IValueNode(int value) : i_value (value) {}
 
-// returns the value of the node
+/// <summary>
+/// Get the int value
+/// </summary>
+/// <returns>i_value</returns>
 int IValueNode::GetValue() {
 	return i_value;
 }
 
-// Set the value of the node
+/// <summary>
+/// Set the int value
+/// </summary>
+/// <param name="value">New value for IValueNode</param>
 void IValueNode::SetValue(int value) {
 	i_value = value;
 }
 
-// return value of node as a string
+/// <summary>
+/// Get the value as a string
+/// </summary>
+/// <returns>The node as a string</returns>
 string IValueNode::Print() {
 	return to_string(i_value); 
 }
 
-// IValueNode Priority is VALUE
+/// <summary>
+/// The Priority of an int value is always VALUE
+/// </summary>
+/// <returns>VALUE</returns>
 Priority IValueNode::GetPriority() {
 	return VALUE;
 }

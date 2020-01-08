@@ -19,9 +19,14 @@ using namespace std;
 
 ParseState::ParseState() : state_ (BEGIN), tree_ (new ExpTree()) { }
 
-// Parse an expression into a tree
-int ParseState::ParseString(string equation)
+/// <summary>
+/// Parse a string into a tree
+/// </summary>
+/// <param name="equation">string to parse</param>
+/// <returns>-1 on success, or the invalid character's position</returns>
+int ParseState::ParseString(const string& equation)
 {
+	// Parse each character, but count position
 	int i = 0;
 	for (char c : equation) {
 		if (!ParseNextChar(c))
@@ -30,10 +35,16 @@ int ParseState::ParseString(string equation)
 		}
 		i++;
 	}
+
+	// Success
 	return -1;
 }
 
-// Parse the next character for tree building (returns false if invalid input)
+/// <summary>
+/// Parse the next character into the tree
+/// </summary>
+/// <param name="c">Character to parse</param>
+/// <returns>false if the character can't work in that position</returns>
 bool ParseState::ParseNextChar(char c) {
 	// Split the parse operations into different functions based on current state
 	switch (state_) {
@@ -52,7 +63,9 @@ bool ParseState::ParseNextChar(char c) {
 	}
 }
 
-// Add the final ValueNode to the tree
+/// <summary>
+/// Add the final ValueNode to the tree
+/// </summary>
 void ParseState::Finalize() {
 
 	#ifdef DEBUG
@@ -61,11 +74,11 @@ void ParseState::Finalize() {
 
 	switch (state_) {
 		case INT:
-			DepositIntCache();
+			CompleteInt();
 			state_ = DONE;
 			break;
 		case FLOAT:
-			DepositFloatCache();
+			CompleteFloat();
 			state_ = DONE;
 			break;
 		default:
@@ -73,7 +86,10 @@ void ParseState::Finalize() {
 	}
 }
 
-// returns null if unfinished and tree_ if finished
+/// <summary>
+/// Get ExpTree from parser
+/// </summary>
+/// <returns>The ExpTree or nullptr if incomplete</returns>
 ExpTree *ParseState::GetTree() {
 	if (state_ != DONE) {
 		return nullptr;
@@ -81,13 +97,20 @@ ExpTree *ParseState::GetTree() {
 	return tree_;
 }
 
-// Add final ValueNode and return tree_
+/// <summary>
+/// Add final ValueNode and return ExpTree
+/// </summary>
+/// <returns>The parsed expression tree, or nullptr if invalid</returns>
 ExpTree *ParseState::FinalizeAndReturn() {
 	Finalize();
 	return GetTree();
 }
 
-// Parse from begin state
+/// <summary>
+/// Parse the next character from the BEGIN state
+/// </summary>
+/// <param name="c">Character to parse</param>
+/// <returns>false if the character can't work after BEGIN</returns>
 bool ParseState::ParseBegin(char c) {
 
 	#ifdef DEBUG
@@ -95,17 +118,18 @@ bool ParseState::ParseBegin(char c) {
 	#endif
 
 	if (isdigit(c)) {
-
-		cache_ = c;
+		// Save int progress and declare INT state
+		numProgress_ = c;
 		state_ = INT;
 
 		#ifdef DEBUG
-			printf("\"%s\" is cache\n", cache_.c_str());
+			printf("\"%s\" is cache\n", numProgress_.c_str());
 		#endif
 
 		return true;
 	} else {
 		switch(c) {
+			// Unary +
 			case '+':
 				#ifdef DEBUG
 					printf("'%c' is '+', unary plus", c);
@@ -115,6 +139,7 @@ bool ParseState::ParseBegin(char c) {
 
 				state_ = UOPER;
 				return true;
+			// Unary -
 			case '-':
 
 				#ifdef DEBUG
@@ -139,7 +164,11 @@ bool ParseState::ParseBegin(char c) {
 	return false;
 }
 
-// Parse from NOper state 
+/// <summary>
+/// Parse the next character from the NOPER state
+/// </summary>
+/// <param name="c">Character to parse</param>
+/// <returns>false if the character can't work after NOPER</returns>
 bool ParseState::ParseNOper(char c) {
 
 	#ifdef DEBUG
@@ -147,11 +176,12 @@ bool ParseState::ParseNOper(char c) {
 	#endif
 
 	if (isdigit(c)) {
-		cache_ = c;
+		// Save int progress and declare INT state
+		numProgress_ = c;
 		state_ = INT;
 
 		#ifdef DEBUG
-			printf("\"%s\" is cache\n", cache_.c_str());
+			printf("\"%s\" is cache\n", numProgress_.c_str());
 		#endif
 		return true;
 	} else {
@@ -159,14 +189,18 @@ bool ParseState::ParseNOper(char c) {
 			case '+':
 			case '*':
 			case '^':
-				// TODO: Handle Nary operators
+				// TODO: Handle Unary operators
 				return false;	
 		}
 	}
 	return false;
 }
 
-// Parse from UOper state
+/// <summary>
+/// Parse the next character from the UOPER state
+/// </summary>
+/// <param name="c">Character to parse</param>
+/// <returns>false if the character can't work after UOPER</returns>
 bool ParseState::ParseUOper(char c) {
 	
 	#ifdef DEBUG
@@ -174,18 +208,22 @@ bool ParseState::ParseUOper(char c) {
 	#endif		
 	
 	if (isdigit(c)) {
-		
-		cache_ = c;
+		// Save int progress and declare INT state
+		numProgress_ = c;
 		state_ = INT;
 
 		#ifdef DEBUG
-			printf("\"%s\" is cache\n", cache_.c_str());
+			printf("\"%s\" is cache\n", numProgress_.c_str());
 		#endif
 	}
 	return false;
 }
 
-// Parse from int state
+/// <summary>
+/// Parse the next character from the INT state
+/// </summary>
+/// <param name="c">Character to parse</param>
+/// <returns>false if the character can't work after INT</returns>
 bool ParseState::ParseInt(char c) {
 	
 	#ifdef DEBUG
@@ -193,10 +231,11 @@ bool ParseState::ParseInt(char c) {
 	#endif
 	
 	if (isdigit(c)) {
-		cache_.push_back(c);
+		// Add to int progress
+		numProgress_.push_back(c);
 
 		#ifdef DEBUG
-			printf("\"%s\" is cache\n", cache_.c_str());
+			printf("\"%s\" is cache\n", numProgress_.c_str());
 		#endif
 
 		return true;	
@@ -204,7 +243,7 @@ bool ParseState::ParseInt(char c) {
 		NOperNode *node = new NOperNode(c);
 		switch (c) {
 			case '+':
-				DepositIntCache();
+				CompleteInt();
 			
 				#ifdef DEBUG
 					printf("Add OperNode '%c'\n", c);
@@ -215,7 +254,7 @@ bool ParseState::ParseInt(char c) {
 				state_ = NOPER;
 				return true;
 			case '*':
-				DepositIntCache();
+				CompleteInt();
 
 				#ifdef DEBUG
 					printf("Add OperNode '%c'\n", c);
@@ -231,14 +270,21 @@ bool ParseState::ParseInt(char c) {
 	return false;
 }
 
+/// <summary>
+/// Parse the next character from the FLOAT state
+/// </summary>
+/// <param name="c">Character to parse</param>
+/// <returns>false if the character can't work after FLOAT</returns>
 bool ParseState::ParseFloat(char c) {
 	// TODO: Float state
 	return false;
 }
 
-// Add IValueNode from cache
-void ParseState::DepositIntCache() {
-	int value = stoi(cache_);
+/// <summary>
+/// Finish building an int and add to the tree
+/// </summary>
+void ParseState::CompleteInt() {
+	int value = stoi(numProgress_);
 
 	#ifdef DEBUG
 		printf("Add ValueNode %d\n", value);
@@ -248,12 +294,14 @@ void ParseState::DepositIntCache() {
 	
 	tree_->AddNode(value_node);
 	
-	cache_ = "";	
+	numProgress_ = "";	
 }
 
-// Add FValueNode from cache
-void ParseState::DepositFloatCache() {
-	float value = stof(cache_);
+/// <summary>
+/// Finished building a float and add to the tree
+/// </summary>
+void ParseState::CompleteFloat() {
+	float value = stof(numProgress_);
 
 	#ifdef DEBUG
 		printf("Add ValueNode %f\n", value);
@@ -261,11 +309,15 @@ void ParseState::DepositFloatCache() {
 
 	// TODO: Add Node
 
-	cache_ = "";
+	numProgress_ = "";
 }
 
-// Get a tree from a string
-ExpTree *Parse(string equation)
+/// <summary>
+/// Get an ExpTree from an equation string
+/// </summary>
+/// <param name="c">Character to parse</param>
+/// <returns>false if the character can't work in BEGIN</returns>
+ExpTree *Parse(const string& equation)
 {
 	ParseState *state = new ParseState();
 	state->ParseString(equation);

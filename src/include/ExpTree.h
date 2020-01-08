@@ -14,7 +14,17 @@ using namespace std;
 class ExpTree {
 	public:
 		ExpTree();
+
+		/// <summary>
+		/// Add an OperNode to the tree
+		/// </summary>
+		/// <param name="node">OperNode to add to tree</pararm>
 		void AddNode(OperNode *node);
+
+		/// <summary>
+		/// Add an ValueNode to the tree
+		/// </summary>
+		/// <param name="node">ValueNode to add to tree</pararm>
 		void AddNode(ValueNode *node);
 
 		string Print(); 

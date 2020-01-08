@@ -8,14 +8,14 @@ using namespace std;
 
 ExpNode::ExpNode() : parent_ (nullptr) { }
 
+// Add an OperNode by priority
 ExpNode *ExpNode::AddNode(OperNode *node) {
 	if (node->GetPriority() < this->GetPriority()) {
-		
 		// this is an operator
 		((OperNode*)this)->AddChild(node);
 	} else if (node->GetPriority() == this->GetPriority()) {
 		if (parent_ == nullptr) {
-			InsertParent(node);
+			InsertAbove(node);
 		}
 	    else {
 			parent_->InsertChild(node);
@@ -24,7 +24,7 @@ ExpNode *ExpNode::AddNode(OperNode *node) {
 
 	} else {
 		if (parent_ == nullptr) {
-			InsertParent(node);
+			InsertAbove(node);
 		} else {
 			parent_->AddNode(node);
 		}
@@ -32,12 +32,14 @@ ExpNode *ExpNode::AddNode(OperNode *node) {
 	return node;
 }
 
+// Try add a ValueNode by priority
 ExpNode *ExpNode::AddNode(ValueNode *node) {
 	if (node->GetPriority() < this->GetPriority()) {
-		// this is an operator
+		// this must be an operator
 		((OperNode*)this)->AddChild(node);
 	} else if (GetPriority() == VALUE) {
 		if (parent_ == nullptr) {
+			// Can't add a value node
 			throw;	
 		}
 		parent_->AddChild(node);
@@ -46,19 +48,27 @@ ExpNode *ExpNode::AddNode(ValueNode *node) {
 	return node;
 }
 
+
+// Set the parent of the node in the tree
 void ExpNode::SetParent(OperNode* node) {
 	parent_ = node;
 }
 
-void ExpNode::InsertParent(OperNode *node) {
+// Inserts a node above the this node
+void ExpNode::InsertAbove(OperNode *node) {
+	if (parent_ != nullptr)
+		throw; // Only for use if parent is null. Use parent_->InsertChild
+
 	node->AddChild(this);
 	SetParent(node);
 }
 
+// Returns parent_
 OperNode *ExpNode::GetParent() {
 	return parent_;
 }
 
+// Checks if ExpNode has parent
 bool ExpNode::IsRoot() {
 	return parent_ == nullptr;
 }

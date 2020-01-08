@@ -6,10 +6,7 @@
 
 using namespace std;
 
-string OperNode::Print() {
-	return "";
-}
-
+// Get Priority 
 Priority OperNode::GetPriority() {
 	switch (oper_) {
 		case ADDITION:

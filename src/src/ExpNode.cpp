@@ -12,7 +12,7 @@ ExpNode::ExpNode() : parent_ (nullptr) { }
 ExpNode *ExpNode::AddNode(OperNode *node) {
 	if (node->GetPriority() < this->GetPriority()) {
 		// this is an operator
-		((OperNode*)this)->AddChild(node);
+		((OperNode*)this)->InsertChild(node);
 	} else if (node->GetPriority() == this->GetPriority()) {
 		if (parent_ == nullptr) {
 			InsertAbove(node);
@@ -56,9 +56,6 @@ void ExpNode::SetParent(OperNode* node) {
 
 // Inserts a node above the this node
 void ExpNode::InsertAbove(OperNode *node) {
-	if (parent_ != nullptr)
-		throw; // Only for use if parent is null. Use parent_->InsertChild
-
 	node->AddChild(this);
 	SetParent(node);
 }

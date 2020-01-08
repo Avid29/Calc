@@ -217,7 +217,11 @@ bool ParseState::ParseInt(char c) {
 			case '*':
 				DepositIntCache();
 
-				// TODO: Add Node
+				#ifdef DEBUG
+					printf("Add OperNode '%c'\n", c);
+				#endif
+
+				tree_->AddNode(node);
 				
 				state_ = NOPER;
 				return true;

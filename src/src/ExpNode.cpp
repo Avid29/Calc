@@ -14,19 +14,22 @@ ExpNode *ExpNode::AddNode(OperNode *node) {
 		// this is an operator
 		((OperNode*)this)->InsertChild(node);
 	} else if (node->GetPriority() == this->GetPriority()) {
+		// TODO: Handle same NOper
+		if (((OperNode*)this)->GetOperator() == node->GetOperator()) {
+			return this;
+		}
+
 		if (parent_ == nullptr) {
 			InsertAbove(node);
 		}
 	    else {
 			parent_->InsertChild(node);
 		}
-		// TODO: Handle same NOper
-
 	} else {
 		if (parent_ == nullptr) {
 			InsertAbove(node);
 		} else {
-			parent_->AddNode(node);
+			return parent_->AddNode(node);
 		}
 	}
 	return node;

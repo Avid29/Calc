@@ -24,6 +24,8 @@ class OperNode : public ExpNode {
 
 		Priority GetPriority();
 
+		Operator GetOperator();
+
 	protected:
 		Operator oper_;	
 };

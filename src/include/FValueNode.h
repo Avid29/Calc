@@ -3,7 +3,7 @@
 #include "ExpNode.h"
 #include "ValueNode.h"
 
-class FValueNode : ValueNode {
+class FValueNode : public ValueNode {
 	public:
 		/// <summary>
 		/// Create a ValueNode with f_value value

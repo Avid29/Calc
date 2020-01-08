@@ -216,6 +216,10 @@ bool ParseState::ParseInt(char c) {
 				tree_->FinishOverride();
 				state_ = CLOSED_PARENTHESIS;
 				return true;
+			case '.':
+				numProgress_.push_back(c);
+				state_ = FLOAT;
+				return true;
 		}
 	}
 
@@ -228,7 +232,31 @@ bool ParseState::ParseInt(char c) {
 /// <param name="c">Character to parse</param>
 /// <returns>false if the character can't work after FLOAT</returns>
 bool ParseState::ParseFloat(char c) {
-	// TODO: Float state
+	if (isdigit(c)) {
+		numProgress_.push_back(c);
+		return true;
+	}
+	else {
+		NOperNode* node = new NOperNode(c);
+		switch (c) {
+			case '+':
+			case '*':
+				CompleteFloat();
+				tree_->AddNode(node);
+				state_ = NOPER;
+				return true;
+			case ')':
+				CompleteFloat();
+				parenthesis_depth--;
+				if (parenthesis_depth < 0) {
+					// No parenthesis to be closed
+					return false;
+				}
+				tree_->FinishOverride();
+				state_ = CLOSED_PARENTHESIS;
+				return true;
+		}
+	}
 	return false;
 }
 
@@ -273,7 +301,11 @@ void ParseState::CompleteInt() {
 /// </summary>
 void ParseState::CompleteFloat() {
 	float value = stof(numProgress_);
-	// TODO: Add Node
+
+	FValueNode* value_node = new FValueNode(value);
+
+	tree_->AddNode(value_node);
+
 	numProgress_ = "";
 }
 

@@ -21,20 +21,49 @@ class ExpNode {
 	public:
 		ExpNode();
 
+		/// <summary>
+		/// Add an OperNode, in the appropiate place, to the tree
+		/// </summary>
+		/// <param name="node">New OperNode for the tree</param>
 		ExpNode *AddNode(OperNode *node);
+		
+		/// <summary>
+		/// Add a ValueNode, in the appropiate place, to the tree
+		/// </summary>
+		/// <param name="node">New ValueNode for the tree</param>
 		ExpNode *AddNode(ValueNode *node);
 
+		/// <summary>
+		/// Set <see cref="node"/> as the parent of <see cref="this"/>
+		/// </summary>
+		/// <param name="node">New parent node</param>
 		void SetParent(OperNode* node);
 
+		/// <summary>
+		/// Set node as the parent of this and this as the child of node
+		/// </summary>
+		/// <param name="node">New parent node</param>
 		void InsertAbove(OperNode *node);
 
+		/// <summary>
+		/// Get parent_
+		/// </summary>
+		/// <returns>parent_</returns>
 		OperNode *GetParent();
 
+		/// <summary>
+		/// Get the expression tree printed from this down
+		/// </summary>
+		/// <returns>The expression tree as a string</returns>
 		virtual string Print() = 0;
 
 		// Higher values go above
 		virtual Priority GetPriority() = 0;
 
+		/// <summary>
+		/// Checks if this has parent (if it does not, it's the root node
+		/// </summary>
+		/// <returns>true if this is the root node</returns>
 		bool IsRoot();
 	protected:
 		OperNode *parent_;

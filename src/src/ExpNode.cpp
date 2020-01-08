@@ -8,23 +8,31 @@ using namespace std;
 
 ExpNode::ExpNode() : parent_ (nullptr) { }
 
-// Add an OperNode by priority
+/// <summary>
+/// Add an OperNode, in the appropiate place, to the tree
+/// </summary>
+/// <param name="node">New OperNode for the tree</param>
 ExpNode *ExpNode::AddNode(OperNode *node) {
 	if (node->GetPriority() < this->GetPriority()) {
 		// this is an operator
 		((OperNode*)this)->InsertChild(node);
 	} else if (node->GetPriority() == this->GetPriority()) {
-		// TODO: Handle same NOper
-		if (((OperNode*)this)->GetOperator() == node->GetOperator()) {
+
+		// If the same unary operator, combine
+		if (((OperNode*)this)->GetOperator() == node->GetOperator() && IsUnary(node->GetOperator())) {
+			// TODO: Move add node children to this children
 			return this;
 		}
 
 		if (parent_ == nullptr) {
+			// If the parent of this is null, make this the new root node
 			InsertAbove(node);
 		}
 	    else {
+			// Insert the node between this and its parent
 			parent_->InsertChild(node);
 		}
+
 	} else {
 		if (parent_ == nullptr) {
 			InsertAbove(node);
@@ -35,7 +43,10 @@ ExpNode *ExpNode::AddNode(OperNode *node) {
 	return node;
 }
 
-// Try add a ValueNode by priority
+/// <summary>
+/// Add a ValueNode, in the appropiate place, to the tree
+/// </summary>
+/// <param name="node">New ValueNode for the tree</param>
 ExpNode *ExpNode::AddNode(ValueNode *node) {
 	if (node->GetPriority() < this->GetPriority()) {
 		// this must be an operator
@@ -51,24 +62,34 @@ ExpNode *ExpNode::AddNode(ValueNode *node) {
 	return node;
 }
 
-
-// Set the parent of the node in the tree
+/// <summary>
+/// Set <see cref="node"/> as the parent of <see cref="this"/>
+/// </summary>
+/// <param name="node">New parent node</param>
 void ExpNode::SetParent(OperNode* node) {
 	parent_ = node;
 }
 
-// Inserts a node above the this node
+/// <summary>
+/// Set node as the parent of this and this as the child of node
+/// </summary>
+/// <param name="node">New parent node</param>
 void ExpNode::InsertAbove(OperNode *node) {
 	node->AddChild(this);
 	SetParent(node);
 }
 
-// Returns parent_
+/// <summary>
+/// Get parent_
+/// </summary>
+/// <returns>parent_</returns>
 OperNode *ExpNode::GetParent() {
 	return parent_;
 }
-
-// Checks if ExpNode has parent
+/// <summary>
+/// Checks if this has parent (if it does not, it's the root node
+/// </summary>
+/// <returns>true if this is the root node</returns>
 bool ExpNode::IsRoot() {
 	return parent_ == nullptr;
 }

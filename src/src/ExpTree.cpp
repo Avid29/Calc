@@ -11,7 +11,10 @@ using namespace std;
 
 ExpTree::ExpTree() {}
 
-// Add an OperNode to the tree
+/// <summary>
+/// Add an OperNode to the tree
+/// </summary>
+/// <param name="node">OperNode to add to tree</pararm>
 void ExpTree::AddNode(OperNode *node) {
 	if (active_node == nullptr) {
 		// If first node
@@ -21,7 +24,10 @@ void ExpTree::AddNode(OperNode *node) {
 	}
 }
 
-// Add a ValueNode to the tree
+/// <summary>
+/// Add an ValueNode to the tree
+/// </summary>
+/// <param name="node">ValueNode to add to tree</pararm>
 void ExpTree::AddNode(ValueNode *node) {
 	if (active_node == nullptr) {
 		// If first node
@@ -31,12 +37,17 @@ void ExpTree::AddNode(ValueNode *node) {
 	}
 }
 
+/// <summary>
+/// Get the expression tree printed
+/// </summary>
+/// <returns>The expression tree as a string</returns>
 string ExpTree::Print() {
+	// Find root node
 	ExpNode* root_node = active_node;
 	while (!root_node->IsRoot())
 	{
-		printf("\nNew Root!");
 		root_node = root_node->GetParent();
 	}
+
 	return root_node->Print();
 }

@@ -7,7 +7,10 @@
 
 using namespace std;
 
-// Create NOperNode based on oper character
+/// <summary>
+/// Create an NOperNode based on the operator's character
+/// </summary>
+/// <param name="node">Character operator</param>
 NOperNode::NOperNode(char c) {
 	switch (c) {
 		case '+':
@@ -19,15 +22,21 @@ NOperNode::NOperNode(char c) {
 	}
 }
 
-// Add a child and set its parent
+/// <summary>
+/// Add child and set its parent
+/// </summary>
+/// <param name="node">New child node</param>
 void NOperNode::AddChild(::ExpNode *node) {
 	children_.push_back(node);
 	node->SetParent(this);
 }
 
-// Add a child between another node
+/// <summary>
+/// Insert child between this and its last child
+/// </summary>
+/// <param name="node">this's new child node</param>
 void NOperNode::InsertChild(::OperNode *node) {	
-	// get node's new child and remove from this
+	// Get this's last child and remove from children_
 	ExpNode *grand_child = children_.back();
 	children_.pop_back();
 
@@ -36,7 +45,10 @@ void NOperNode::InsertChild(::OperNode *node) {
 	AddChild(node);
 }
 
-// return expression as a string below this node
+/// <summary>
+/// Get the expression tree printed from this down
+/// </summary>
+/// <returns>The expression tree as a string</returns>
 string NOperNode::Print() {
 	string cache_;
 	for (int i = 0; i < children_.size(); i++) {

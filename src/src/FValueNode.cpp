@@ -7,22 +7,40 @@
 
 using namespace std;
 
-// returns the value of the node
+/// <summary>
+/// Create a ValueNode with f_value value
+/// </summary>
+/// <param name="value">initial value for node</param>
+FValueNode::FValueNode(double value) : f_value (value) {}
+
+/// <summary>
+/// Get the float value as a double
+/// </summary>
+/// <returns>f_value</returns>
 double FValueNode::GetValue() {
 	return f_value;
 }
 
-// Set the value of the node
+/// <summary>
+/// Set the float value
+/// </summary>
+/// <param name="value">New value for FValueNode</param>
 void FValueNode::SetValue(double value) {
 	f_value = value;
 }
 
-// return value of node as a string
+/// <summary>
+/// Get the value as a string
+/// </summary>
+/// <returns>The node as a string</returns>
 string FValueNode::Print() {
 	return to_string(f_value);
 }
 
-// FValueNode Priority is VALUE
+/// <summary>
+/// The Priority of a float value is always VALUE
+/// </summary>
+/// <returns>VALUE</returns>
 Priority FValueNode::GetPriority() {
 	return VALUE;
 }

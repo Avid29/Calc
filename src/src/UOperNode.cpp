@@ -7,7 +7,10 @@
 
 using namespace std;
 
-// Set the child of the node
+
+/// <summary>
+/// Set the child of the node
+/// </summary>
 void UOperNode::AddChild(::ExpNode *node) {
 	if (child_ == nullptr) {
 		// Set child
@@ -19,6 +22,7 @@ void UOperNode::AddChild(::ExpNode *node) {
 	}
 	node->SetParent(this);
 }
+
 
 // return expression as a string below this node
 string UOperNode::Print() {

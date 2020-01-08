@@ -1,6 +1,9 @@
 # include "../include/ValueNode.h"
 
-// ValueNode Priority is VALUE
+/// <summary>
+/// The Priority of a value is always VALUE
+/// </summary>
+/// <returns>VALUE</returns>
 Priority ValueNode::GetPriority()
 {
 	return VALUE;

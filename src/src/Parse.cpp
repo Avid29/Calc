@@ -13,8 +13,6 @@
 #include "../include/ValueNode.h"
 #include "../include/UOperNode.h"
 
-#define DEBUG
-
 using namespace std;
 
 ParseState::ParseState() : state_ (BEGIN), tree_ (new ExpTree()) { }
@@ -58,6 +56,8 @@ bool ParseState::ParseNextChar(char c) {
 			return ParseInt(c);
 		case FLOAT:
 			return ParseFloat(c);
+		case CLOSED_PARENTHESIS:
+			return ParseClosedPar(c);
 		default:
 			return false;	
 	}
@@ -68,22 +68,17 @@ bool ParseState::ParseNextChar(char c) {
 /// </summary>
 void ParseState::Finalize() {
 
-	#ifdef DEBUG
-		printf("\nFinalizing:\n");
-	#endif
-
 	switch (state_) {
 		case INT:
 			CompleteInt();
-			state_ = DONE;
 			break;
 		case FLOAT:
 			CompleteFloat();
-			state_ = DONE;
 			break;
 		default:
 			break;
 	}
+	state_ = DONE;
 }
 
 /// <summary>
@@ -112,51 +107,33 @@ ExpTree *ParseState::FinalizeAndReturn() {
 /// <param name="c">Character to parse</param>
 /// <returns>false if the character can't work after BEGIN</returns>
 bool ParseState::ParseBegin(char c) {
-
-	#ifdef DEBUG
-		printf("\nParse '%c' at Beginning:\n", c);
-	#endif
-
 	if (isdigit(c)) {
 		// Save int progress and declare INT state
 		numProgress_ = c;
 		state_ = INT;
-
-		#ifdef DEBUG
-			printf("\"%s\" is cache\n", numProgress_.c_str());
-		#endif
-
 		return true;
 	} else {
+		UOperNode* node = new UOperNode(c);
 		switch(c) {
 			// Unary +
 			case '+':
-				#ifdef DEBUG
-					printf("'%c' is '+', unary plus", c);
-				#endif
-
 				// TODO: Add Node
-
 				state_ = UOPER;
 				return true;
 			// Unary -
 			case '-':
-
-				#ifdef DEBUG
-					printf("'%c' is '-', unary minus", c);
-				#endif
-
 				// TODO: Add Node
-				
 				state_ = UOPER;
 				return true;
+			case '(':
+				tree_->AddNode(node);
+				parenthesis_depth++;
+				state_ = BEGIN;
+				return true;
+
 			case '*':
 			case '^':
-
-				#ifdef DEBUG
-					printf("'%c' is not valid for Beginning\n", c);
-				#endif
-
+			case ')':
 				return false;
 		}
 	}
@@ -171,26 +148,23 @@ bool ParseState::ParseBegin(char c) {
 /// <returns>false if the character can't work after NOPER</returns>
 bool ParseState::ParseNOper(char c) {
 
-	#ifdef DEBUG
-		printf("\nParse '%c' after NOper:\n", c);
-	#endif
-
 	if (isdigit(c)) {
 		// Save int progress and declare INT state
 		numProgress_ = c;
 		state_ = INT;
-
-		#ifdef DEBUG
-			printf("\"%s\" is cache\n", numProgress_.c_str());
-		#endif
 		return true;
 	} else {
+		UOperNode* node = new UOperNode(c);
 		switch (c) {
 			case '+':
-			case '*':
-			case '^':
+			case '-':
 				// TODO: Handle Unary operators
-				return false;	
+				return false;
+			case '(':
+				tree_->AddNode(node);
+				parenthesis_depth++;
+				state_ = BEGIN;
+				return true;
 		}
 	}
 	return false;
@@ -201,20 +175,12 @@ bool ParseState::ParseNOper(char c) {
 /// </summary>
 /// <param name="c">Character to parse</param>
 /// <returns>false if the character can't work after UOPER</returns>
-bool ParseState::ParseUOper(char c) {
-	
-	#ifdef DEBUG
-		printf("\nParse '%c' after Unary Op\n", c);
-	#endif		
+bool ParseState::ParseUOper(char c) {	
 	
 	if (isdigit(c)) {
 		// Save int progress and declare INT state
 		numProgress_ = c;
 		state_ = INT;
-
-		#ifdef DEBUG
-			printf("\"%s\" is cache\n", numProgress_.c_str());
-		#endif
 	}
 	return false;
 }
@@ -225,44 +191,30 @@ bool ParseState::ParseUOper(char c) {
 /// <param name="c">Character to parse</param>
 /// <returns>false if the character can't work after INT</returns>
 bool ParseState::ParseInt(char c) {
-	
-	#ifdef DEBUG
-		printf("\nParse '%c' after Int:\n", c);
-	#endif
-	
 	if (isdigit(c)) {
+
 		// Add to int progress
 		numProgress_.push_back(c);
-
-		#ifdef DEBUG
-			printf("\"%s\" is cache\n", numProgress_.c_str());
-		#endif
-
 		return true;	
-	} else {		
-		NOperNode *node = new NOperNode(c);
+
+	} else {
+		NOperNode* node = new NOperNode(c);
 		switch (c) {
 			case '+':
-				CompleteInt();
-			
-				#ifdef DEBUG
-					printf("Add OperNode '%c'\n", c);
-				#endif
-
-				tree_->AddNode(node);
-				
-				state_ = NOPER;
-				return true;
 			case '*':
 				CompleteInt();
-
-				#ifdef DEBUG
-					printf("Add OperNode '%c'\n", c);
-				#endif
-
 				tree_->AddNode(node);
-				
 				state_ = NOPER;
+				return true;
+			case ')':
+				CompleteInt();
+				parenthesis_depth--;
+				if (parenthesis_depth < 0) {
+					// No parenthesis to be closed
+					return false;
+				}
+				tree_->FinishOverride();
+				state_ = CLOSED_PARENTHESIS;
 				return true;
 		}
 	}
@@ -281,14 +233,33 @@ bool ParseState::ParseFloat(char c) {
 }
 
 /// <summary>
+/// Parse the next character from the CLOSED_PARENTHESIS state
+/// </summary>
+/// <param name="c">Character to parse</param>
+/// <returns>false if the character can't work after CLOSED_PARENTHESIS</returns>
+bool ParseState::ParseClosedPar(char c) {
+	if (isdigit(c)) {
+		// TODO: Implied multiply
+		return false;
+	}
+	else {
+		switch (c) {
+			case '+':
+			case '*':
+				NOperNode * node = new NOperNode(c);
+				tree_->AddNode(node);
+				state_ = NOPER;
+				return true;
+		}
+		return false;
+	}
+}
+
+/// <summary>
 /// Finish building an int and add to the tree
 /// </summary>
 void ParseState::CompleteInt() {
 	int value = stoi(numProgress_);
-
-	#ifdef DEBUG
-		printf("Add ValueNode %d\n", value);
-	#endif
 	
 	IValueNode *value_node = new IValueNode(value);
 	
@@ -302,13 +273,7 @@ void ParseState::CompleteInt() {
 /// </summary>
 void ParseState::CompleteFloat() {
 	float value = stof(numProgress_);
-
-	#ifdef DEBUG
-		printf("Add ValueNode %f\n", value);
-	#endif
-
 	// TODO: Add Node
-
 	numProgress_ = "";
 }
 

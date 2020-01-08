@@ -12,12 +12,18 @@ using namespace std;
 /// <returns>Proirity value</returns>
 Priority OperNode::GetPriority() {
 	switch (oper_) {
-		case ADDITION:
-				return ADD;
-		case MULTIPLICATION:
-				return MULT;
-		case POWER:
-				return POW;
+		case ADDITION_OPER:
+			return Priority::ADDITION;
+		case MULTIPLICATION_OPER:
+			return Priority::MULTIPLICATION;
+		case POWER_OPER:
+			return Priority::POWER;
+		case OVERRIDE_OPER:
+			return Priority::OVERRIDE;
+			
+			// VALUE has locked children, this prevents the OVERRIDE special case
+		case OVERRIDEN_OPER:
+			return Priority::VALUE;
 	}
 	return VALUE;
 }
@@ -36,5 +42,15 @@ Operator OperNode::GetOperator() {
 /// <param name="oper">Operator to check for Unary type</param>
 /// <returns>True if oper is a Unary operator</returns>
 bool IsUnary(Operator oper) {
-	return oper == ADDITION || oper == MULTIPLICATION;
+	return oper == POSITIVE_OPER || oper == NEGATIVE_OPER ||
+		oper == OVERRIDE_OPER || oper == OVERRIDEN_OPER;
+}
+
+/// <summary>
+/// Check if an operator is Nary
+/// </summary>
+/// <param name="oper">Operator to check for Nary type</param>
+/// <returns>True if oper is a Nary operator</returns>
+bool IsNary(Operator oper) {
+	return oper == ADDITION_OPER || oper == MULTIPLICATION_OPER;
 }

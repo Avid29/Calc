@@ -2,6 +2,7 @@
 
 #include "../include/ExpNode.h"
 #include "../include/OperNode.h"
+#include "../include/UOperNode.h"
 #include "../include/ValueNode.h"
 
 using namespace std;
@@ -13,14 +14,24 @@ ExpNode::ExpNode() : parent_ (nullptr) { }
 /// </summary>
 /// <param name="node">New OperNode for the tree</param>
 ExpNode *ExpNode::AddNode(OperNode *node) {
-	if (node->GetPriority() < this->GetPriority()) {
-		// this is an operator
-		((OperNode*)this)->InsertChild(node);
+	if ((this->GetPriority() == Priority::OVERRIDE ||
+		node->GetPriority() < this->GetPriority())) {
+		// Node belongs below this
+		// Condition 1: The parent is an unfinished override
+		// or
+		// Condition 2: The parent is higher priority value
+		if (IsUnary(node->GetOperator())) {
+			((OperNode*)this)->AddChild(node);
+		}
+		else {
+			((OperNode*)this)->InsertChild(node);
+		}
 	} else if (node->GetPriority() == this->GetPriority()) {
 
-		// If the same unary operator, combine
-		if (((OperNode*)this)->GetOperator() == node->GetOperator() && IsUnary(node->GetOperator())) {
-			// TODO: Move add node children to this children
+		// If the same Nary operator, combine
+		if (((OperNode*)this)->GetOperator() == node->GetOperator()
+			&& IsNary(node->GetOperator())) {
+			// TODO: Move node children to this children
 			return this;
 		}
 
@@ -34,6 +45,7 @@ ExpNode *ExpNode::AddNode(OperNode *node) {
 		}
 
 	} else {
+		// this is lower priority value than node
 		if (parent_ == nullptr) {
 			InsertAbove(node);
 		} else {
@@ -48,8 +60,13 @@ ExpNode *ExpNode::AddNode(OperNode *node) {
 /// </summary>
 /// <param name="node">New ValueNode for the tree</param>
 ExpNode *ExpNode::AddNode(ValueNode *node) {
-	if (node->GetPriority() < this->GetPriority()) {
-		// this must be an operator
+	if ((this->GetPriority() == Priority::OVERRIDE ||
+		node->GetPriority() < this->GetPriority())) {
+		// Node belongs below this
+		// Condition 1: The parent is an unfinished override
+		// or
+		// Condition 2: The parent is higher priority value
+
 		((OperNode*)this)->AddChild(node);
 	} else if (GetPriority() == VALUE) {
 		if (parent_ == nullptr) {

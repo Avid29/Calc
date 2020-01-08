@@ -20,6 +20,7 @@ enum ParserState {
 	UOPER,
 	INT,
 	FLOAT, // Or decimal
+	CLOSED_PARENTHESIS,
 	DONE // Finalized() ran
 };
 
@@ -99,6 +100,13 @@ class ParseState {
 		bool ParseFloat(char c);
 
 		/// <summary>
+		/// Parse the next character from the CLOSED_PARENTHESIS state
+		/// </summary>
+		/// <param name="c">Character to parse</param>
+		/// <returns>false if the character can't work after CLOSED_PARENTHESIS</returns>
+		bool ParseClosedPar(char c);
+
+		/// <summary>
 		/// Finish building an int and add to the tree
 		/// </summary>
 		void CompleteInt();
@@ -111,6 +119,7 @@ class ParseState {
 		ParserState state_;
 		ExpTree *tree_;
 		string numProgress_;
+		int parenthesis_depth;
 };
 
 /// <summary>

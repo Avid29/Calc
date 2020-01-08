@@ -6,12 +6,14 @@
 
 using namespace std;
 
+// Higher values go higher on the tree
 enum Priority {
+	OVERRIDE = -1, // Parenthesis
 	VALUE,
 	UNARY,
-	POW,
-	MULT,
-	ADD
+	POWER,
+	MULTIPLICATION,
+	ADDITION
 };
 
 class OperNode;
@@ -57,7 +59,6 @@ class ExpNode {
 		/// <returns>The expression tree as a string</returns>
 		virtual string Print() = 0;
 
-		// Higher values go above
 		virtual Priority GetPriority() = 0;
 
 		/// <summary>

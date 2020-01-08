@@ -8,11 +8,13 @@
 using namespace std;
 
 enum Operator {
-	ADDITION,
-	MULTIPLICATION,
-	POWER,
-	POS,
-	NEG
+	ADDITION_OPER,
+	MULTIPLICATION_OPER,
+	POWER_OPER,
+	POSITIVE_OPER,
+	NEGATIVE_OPER,
+	OVERRIDE_OPER, // Parenthesis
+	OVERRIDEN_OPER // Closed Parenthesis
 };
 
 class OperNode : public ExpNode {
@@ -35,7 +37,7 @@ class OperNode : public ExpNode {
 		/// Get the priority based on the oper
 		/// </summary>
 		/// <returns>Proirity value</returns>
-		Priority GetPriority();
+		virtual Priority GetPriority();
 
 		/// <summary>
 		/// Get the OperNode's Operator
@@ -53,3 +55,10 @@ class OperNode : public ExpNode {
 /// <param name="oper">Operator to check for Unary type</param>
 /// <returns>True if oper is a Unary operator</returns>
 bool IsUnary(Operator oper);
+
+/// <summary>
+/// Check if an operator is Nary
+/// </summary>
+/// <param name="oper">Operator to check for Nary type</param>
+/// <returns>True if oper is an Nary operator</returns>
+bool IsNary(Operator oper);

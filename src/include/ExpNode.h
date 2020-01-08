@@ -26,7 +26,7 @@ class ExpNode {
 
 		void SetParent(OperNode* node);
 
-		void InsertParent(OperNode *node);
+		void InsertAbove(OperNode *node);
 
 		OperNode *GetParent();
 

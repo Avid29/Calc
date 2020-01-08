@@ -7,10 +7,20 @@
 
 using namespace std;
 
+// Set the child of the node
 void UOperNode::AddChild(::ExpNode *node) {
-	child_ = node;	
+	if (child_ == nullptr) {
+		// Set child
+		child_ = node;
+	}
+	else {
+		// No 2nd child
+		throw;
+	}
+	node->SetParent(this);
 }
 
+// return expression as a string below this node
 string UOperNode::Print() {
 	string cache_;
 	switch (oper_) {

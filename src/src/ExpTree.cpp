@@ -11,16 +11,20 @@ using namespace std;
 
 ExpTree::ExpTree() {}
 
+// Add an OperNode to the tree
 void ExpTree::AddNode(OperNode *node) {
 	if (active_node == nullptr) {
+		// If first node
 		active_node = node;
 	} else {
 		active_node = active_node->AddNode(node);
 	}
 }
 
+// Add a ValueNode to the tree
 void ExpTree::AddNode(ValueNode *node) {
 	if (active_node == nullptr) {
+		// If first node
 		active_node = node;
 	} else {
 		active_node = active_node->AddNode(node);	

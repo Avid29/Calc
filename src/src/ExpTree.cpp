@@ -10,19 +10,69 @@
 
 using namespace std;
 
-ExpTree::ExpTree() {}
+ExpTree::ExpTree() : active_node (nullptr), init_value_node (nullptr)  {}
 
 /// <summary>
-/// Add an OperNode to the tree
+/// Adds an OperNode to the tree
 /// </summary>
 /// <param name="node">OperNode to add to tree</param>
 void ExpTree::AddNode(OperNode *node) {
 	if (active_node == nullptr) {
 		// If first node
+
+		if (init_value_node != nullptr) {
+			// The first node is often a ValueNode
+			// That is the only time a ValueNode will be the active or root node
+
+			// Makes node the new active_node
+			node->AddChild(init_value_node);
+		}
+
 		active_node = node;
-	} else {
-		active_node = active_node->AddNode(node);
+		return;
 	}
+
+	// Raises active_node till it's of equal or greater priority
+	while ((active_node->GetPriority() != OVERRIDE &&
+		node->GetPriority() > active_node->GetPriority())&&
+		!active_node->IsRoot()) {
+		active_node = active_node->GetParent();
+	}
+
+	// The new node is a lower priority than any node so far
+	// Add new node to top
+	if (node->GetPriority() > active_node->GetPriority()) {
+		if (active_node->GetPriority() == OVERRIDE) {
+			if (IsUnary(node->GetOperator())) {
+				// Adds child if Unary
+				active_node->AddChild(node);
+			}
+			else {
+				// Inserts child for Nary
+				active_node->InsertChild(node);
+			}
+		}
+		else if (active_node->IsRoot()) {
+			// node is new root
+			active_node->InsertAbove(node);
+		}
+	}
+	else if (node->GetOperator() == active_node->GetOperator()) {
+		// TODO: Add node's children to active_node
+		
+		// Adding node would be a duplicate of active_node
+		return;
+	}
+	else if (IsUnary(node->GetOperator())) {
+		// Adds child if Unary
+		active_node->AddChild(node);
+	}
+	else {
+		// Inserts child for Nary
+		active_node->InsertChild(node);
+	}
+
+	active_node = node;
 }
 
 /// <summary>
@@ -32,9 +82,10 @@ void ExpTree::AddNode(OperNode *node) {
 void ExpTree::AddNode(ValueNode *node) {
 	if (active_node == nullptr) {
 		// If first node
-		active_node = node;
-	} else {
-		active_node = active_node->AddNode(node);	
+		init_value_node = node;
+	}
+	else {
+		active_node->AddChild(node);
 	}
 }
 
@@ -45,7 +96,7 @@ void ExpTree::AddNode(ValueNode *node) {
 void ExpTree::FinishOverride() {
 
 	// Find OVERRIDE node
-	ExpNode* node = active_node;
+	OperNode* node = active_node;
 	while (node->GetPriority() != Priority::OVERRIDE && !node->IsRoot())
 	{
 		node = node->GetParent();
@@ -57,7 +108,7 @@ void ExpTree::FinishOverride() {
 	}
 	
 	// Close OVERRIDE node and make active
-	((UOperNode*)node)->RemoveOverride();
+	((UOperNode*)node)->RemoveOverride(); // TODO: Remove cast
 	active_node = node;
 }
 
@@ -68,6 +119,9 @@ void ExpTree::FinishOverride() {
 string ExpTree::Print() {
 	// Find root node
 	ExpNode* root_node = active_node;
+	if (root_node == nullptr) {
+		root_node = init_value_node;
+	}
 	while (!root_node->IsRoot())
 	{
 		root_node = root_node->GetParent();

@@ -29,7 +29,7 @@ Priority OperNode::GetPriority() {
 }
 
 /// <summary>
-/// Get the OperNode's Operator
+/// Gets the OperNode's Operator
 /// </summary>
 /// <returns>oper_</returns>
 Operator OperNode::GetOperator() {
@@ -37,7 +37,7 @@ Operator OperNode::GetOperator() {
 }
 
 /// <summary>
-/// Check if an operator is Unary
+/// Checks if an operator is Unary
 /// </summary>
 /// <param name="oper">Operator to check for Unary type</param>
 /// <returns>True if oper is a Unary operator</returns>
@@ -47,7 +47,7 @@ bool IsUnary(Operator oper) {
 }
 
 /// <summary>
-/// Check if an operator is Nary
+/// Checks if an operator is Nary
 /// </summary>
 /// <param name="oper">Operator to check for Nary type</param>
 /// <returns>True if oper is a Nary operator</returns>

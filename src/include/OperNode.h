@@ -20,16 +20,29 @@ enum class Operator {
 class OperNode : public ExpNode {
 	public:
 		/// <summary>
-		/// Add child and set its parent
+		/// Adds child and set its parent
 		/// </summary>
 		/// <param name="node">New child node</param>
 		virtual void AddChild(ExpNode *node) = 0;
 
-		// <summary>
-		/// Insert child between this and its last child
+		/// <summary>
+		/// Inserts child between this and its last child
 		/// </summary>
 		/// <param name="node">this's new child node</param>
 		virtual void InsertChild(OperNode *node) = 0;
+
+		/// <summary>
+		/// Replaces a child with a different ExpNode
+		// </summary>
+		virtual void ReplaceChild(ExpNode *newNode, ExpNode *oldNode) = 0;
+		
+		/// <summary>
+		/// Gets this as a double, if possible
+		/// </summary>
+		/// <returns>this node as a double value or NAN if not possible</returns>
+		double AsDouble();
+
+		virtual ExpNode* Simplify() = 0;
 
 		virtual string Print() = 0;
 

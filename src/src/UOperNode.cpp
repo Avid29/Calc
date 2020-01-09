@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "../include/ExpNode.h"
+#include "../include/FValueNode.h"
 #include "../include/OperNode.h"
 #include "../include/UOperNode.h"
 
@@ -65,6 +66,15 @@ void UOperNode::InsertChild(::OperNode *node) {
 }
 
 /// <summary>
+/// Replaces a child with a different ExpNode
+// </summary>
+void UOperNode::ReplaceChild(ExpNode* newNode, ExpNode* oldNode) {
+	if (child_ == oldNode) {
+		AddChild(newNode, true);
+	}
+}
+
+/// <summary>
 /// Check if UOperNode's child_ is set
 /// </summary>
 /// <returns>true if child_ is not null</returns>
@@ -79,6 +89,25 @@ void UOperNode::RemoveOverride() {
 	if (oper_ == Operator::UNRESOLVED_PARENTHESIS) {
 		oper_ = Operator::PARENTHESIS;
 	}
+}
+
+/// <summary>
+/// Simplifies ExpNode and children
+/// </summary>
+/// <returns>The new simplest node possible in place of this</returns>
+ExpNode* UOperNode::Simplify() {
+	double value = child_->Simplify()->AsDouble();
+	if (value != NAN) {
+		switch (oper_)
+		{
+			case Operator::POSITIVE:
+			case Operator::PARENTHESIS:
+				return new FValueNode(value);
+			case Operator::NEGATIVE:
+				return new FValueNode(-value);
+		}
+	}
+	return this;
 }
 
 /// <summary>

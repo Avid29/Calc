@@ -120,6 +120,32 @@ void ExpTree::CloseParenthesis() {
 }
 
 /// <summary>
+/// Simplifies ExpNodes and returns root node
+/// </summary>
+/// <returns>New root node</returns>
+ExpNode *ExpTree::Simplify() {
+	while (!active_node->IsRoot()) {
+		active_node = active_node->GetParent();
+	}
+
+	return active_node->Simplify();
+}
+
+/// <summary>
+/// Simplifies ExpNode and children
+/// </summary>
+/// <returns>ExpTree for chaining</returns>
+ExpTree *ExpTree::SimplifyTree() {
+	while (!active_node->IsRoot()) {
+		active_node = active_node->GetParent();
+	}
+	
+	// TODO: actually store simplify result
+	active_node->Simplify();
+	return this;
+}
+
+/// <summary>
 /// Gets the expression tree printed
 /// </summary>
 /// <returns>The expression tree as a string</returns>

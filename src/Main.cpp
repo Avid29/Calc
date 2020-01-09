@@ -15,5 +15,5 @@ int main(int argc, char **argv) {
 	cin >> str;
 
 	ExpTree *exp_tree = Parse(str);
-	cout << endl << exp_tree->Print() << endl;
+	cout << endl << exp_tree->Simplify()->Print() << endl;
 }

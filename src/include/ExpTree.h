@@ -36,6 +36,12 @@ class ExpTree {
 		string Print(); 
 
 	private:
-		ExpNode *active_node;
+		OperNode *active_node;
+
+		// The first node is often a value node.
+		//This has to be handled seperatly to avoid unsafe casting
+		ValueNode* init_value_node;
+
+
 		// TODO: Better memory management: unique_ptr<ExpNode> root_node;
 };

@@ -271,13 +271,23 @@ bool ParseState::ParseClosedPar(char c) {
 		return false;
 	}
 	else {
+		NOperNode* node = new NOperNode(c);
 		switch (c) {
 			case '+':
 			case '*':
-				NOperNode * node = new NOperNode(c);
 				tree_->AddNode(node);
 				state_ = NOPER;
 				return true;
+			case ')':
+				parenthesis_depth--;
+				if (parenthesis_depth < 0) {
+					// No parenthesis to be closed
+					return false;
+				}
+				tree_->FinishOverride();
+				state_ = CLOSED_PARENTHESIS;
+				return true;
+
 		}
 		return false;
 	}

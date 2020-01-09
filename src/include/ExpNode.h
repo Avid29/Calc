@@ -24,18 +24,6 @@ class ExpNode {
 		ExpNode();
 
 		/// <summary>
-		/// Add an OperNode, in the appropiate place, to the tree
-		/// </summary>
-		/// <param name="node">New OperNode for the tree</param>
-		ExpNode *AddNode(OperNode *node);
-		
-		/// <summary>
-		/// Add a ValueNode, in the appropiate place, to the tree
-		/// </summary>
-		/// <param name="node">New ValueNode for the tree</param>
-		ExpNode *AddNode(ValueNode *node);
-
-		/// <summary>
 		/// Set <see cref="node"/> as the parent of <see cref="this"/>
 		/// </summary>
 		/// <param name="node">New parent node</param>

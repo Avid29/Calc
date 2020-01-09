@@ -42,5 +42,5 @@ string IValueNode::Print() {
 /// </summary>
 /// <returns>VALUE</returns>
 Priority IValueNode::GetPriority() {
-	return VALUE;
+	return Priority::VALUE;
 }

@@ -113,24 +113,19 @@ bool ParseState::ParseBegin(char c) {
 		state_ = INT;
 		return true;
 	} else {
-		UOperNode* node = new UOperNode(c);
 		switch(c) {
 			// Unary +
 			case '+':
-				// TODO: Add Node
-				state_ = UOPER;
-				return true;
 			// Unary -
 			case '-':
-				// TODO: Add Node
+				tree_->AddNode(new UOperNode(c));
 				state_ = UOPER;
 				return true;
 			case '(':
-				tree_->AddNode(node);
+				tree_->AddNode(new UOperNode(c));
 				parenthesis_depth++;
 				state_ = BEGIN;
 				return true;
-
 			case '*':
 			case '^':
 			case ')':
@@ -154,14 +149,14 @@ bool ParseState::ParseNOper(char c) {
 		state_ = INT;
 		return true;
 	} else {
-		UOperNode* node = new UOperNode(c);
 		switch (c) {
 			case '+':
 			case '-':
-				// TODO: Handle Unary operators
-				return false;
+				tree_->AddNode(new UOperNode(c));
+				state_ = UOPER;
+				return true;
 			case '(':
-				tree_->AddNode(node);
+				tree_->AddNode(new UOperNode(c));
 				parenthesis_depth++;
 				state_ = BEGIN;
 				return true;
@@ -176,11 +171,26 @@ bool ParseState::ParseNOper(char c) {
 /// <param name="c">Character to parse</param>
 /// <returns>false if the character can't work after UOPER</returns>
 bool ParseState::ParseUOper(char c) {	
-	
 	if (isdigit(c)) {
 		// Save int progress and declare INT state
 		numProgress_ = c;
 		state_ = INT;
+		return true;
+	}
+	else {
+		switch (c)
+		{
+			case '+':
+			case '-':
+				tree_->AddNode(new UOperNode(c));
+				state_ = UOPER;
+				return true;
+			case '(':
+				tree_->AddNode(new UOperNode(c));
+				parenthesis_depth++;
+				state_ = BEGIN;
+				return true;
+		}
 	}
 	return false;
 }
@@ -198,13 +208,18 @@ bool ParseState::ParseInt(char c) {
 		return true;	
 
 	} else {
-		NOperNode* node = new NOperNode(c);
 		switch (c) {
 			case '+':
 			case '*':
 				CompleteInt();
-				tree_->AddNode(node);
+				tree_->AddNode(new NOperNode(c));
 				state_ = NOPER;
+				return true;
+			case '-':
+				CompleteInt();
+				tree_->AddNode(new NOperNode(c));
+				tree_->AddNode(new UOperNode('-'));
+				state_ = UOPER;
 				return true;
 			case ')':
 				CompleteInt();
@@ -245,6 +260,13 @@ bool ParseState::ParseFloat(char c) {
 				tree_->AddNode(node);
 				state_ = NOPER;
 				return true;
+			case '-':
+				CompleteFloat();
+				// Add addition operator then unary minus
+				tree_->AddNode(new NOperNode(c));
+				tree_->AddNode(new UOperNode('-'));
+				state_ = UOPER;
+				return true;
 			case ')':
 				CompleteFloat();
 				parenthesis_depth--;
@@ -277,6 +299,11 @@ bool ParseState::ParseClosedPar(char c) {
 			case '*':
 				tree_->AddNode(node);
 				state_ = NOPER;
+				return true;
+			case '-':
+				tree_->AddNode(new NOperNode(c));
+				tree_->AddNode(new UOperNode('-'));
+				state_ = UOPER;
 				return true;
 			case ')':
 				parenthesis_depth--;

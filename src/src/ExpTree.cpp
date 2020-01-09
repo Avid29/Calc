@@ -30,12 +30,7 @@ void ExpTree::AddNode(OperNode *node) {
 		return;
 	}
 	FindInsertionNode(node);
-	if (IsNary(node->GetOperator()) && node->GetOperator() == active_node->GetOperator()) {
-		// TODO: Add node's children to active_node's children
-
-		// Adding node would be a duplicate of active_node for an Nary operator
-		return;
-	}
+	
 	// The new node is a lower priority than any node so far
 	// Add new node to top
 	if (node->GetPriority() > active_node->GetPriority()) {
@@ -47,10 +42,11 @@ void ExpTree::AddNode(OperNode *node) {
 			active_node->InsertAbove(node);
 		}
 	}
-	else if (node->GetOperator() == active_node->GetOperator()) {
-		// TODO: Add node's children to active_node
-		
-		// Adding node would be a duplicate of active_node
+	else if (IsNary(node->GetOperator()) &&
+		node->GetOperator() == active_node->GetOperator()) {
+		// TODO: Add node's children to active_node's children
+
+		// Adding node would be a duplicate of active_node for an Nary operator
 		return;
 	}
 	else {
@@ -87,9 +83,9 @@ void ExpTree::InsertOperNode(OperNode* node) {
 }
 
 /// <summary>
-/// Add an ValueNode to the tree
+/// Adds a ValueNode to the tree
 /// </summary>
-/// <param name="node">ValueNode to add to tree</pararm>
+/// <param name="node">ValueNode to add to tree</param>
 void ExpTree::AddNode(ValueNode *node) {
 	if (active_node == nullptr) {
 		// If first node
@@ -124,7 +120,7 @@ void ExpTree::CloseParenthesis() {
 }
 
 /// <summary>
-/// Get the expression tree printed
+/// Gets the expression tree printed
 /// </summary>
 /// <returns>The expression tree as a string</returns>
 string ExpTree::Print() {

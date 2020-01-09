@@ -19,7 +19,7 @@ UOperNode::UOperNode(char c) {
 			oper_ = Operator::NEGATIVE_OPER;
 			break;
 		case '(':
-			oper_ = Operator::OVERRIDE_OPER;
+			oper_ = Operator::UNRESOLVED_PARENTHESIS_OPER;
 			break;
 	}
 }
@@ -76,8 +76,8 @@ bool UOperNode::HasChild() {
 /// Changes priority from OVERRIDE to OVERRIDEN when OVERRIDE finished
 /// </summary>
 void UOperNode::RemoveOverride() {
-	if (oper_ == OVERRIDE_OPER) {
-		oper_ = OVERRIDEN_OPER;
+	if (oper_ == UNRESOLVED_PARENTHESIS_OPER) {
+		oper_ = PARENTHESIS_OPER;
 	}
 }
 
@@ -98,8 +98,8 @@ string UOperNode::Print() {
 			buffer.append("-");
 			buffer.append(child_->Print());
 			break;
-		case OVERRIDE_OPER:
-		case OVERRIDEN_OPER:
+		case UNRESOLVED_PARENTHESIS_OPER:
+		case PARENTHESIS_OPER:
 			buffer.append("(");
 			buffer.append(child_->Print());
 			buffer.append(")");

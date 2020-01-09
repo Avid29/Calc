@@ -18,11 +18,11 @@ Priority OperNode::GetPriority() {
 			return Priority::MULTIPLICATION;
 		case POWER_OPER:
 			return Priority::POWER;
-		case OVERRIDE_OPER:
+		case UNRESOLVED_PARENTHESIS_OPER:
 			return Priority::OVERRIDE;
 			
 			// VALUE has locked children, this prevents the OVERRIDE special case
-		case OVERRIDEN_OPER:
+		case PARENTHESIS_OPER:
 			return Priority::VALUE;
 	}
 	return VALUE;
@@ -43,7 +43,7 @@ Operator OperNode::GetOperator() {
 /// <returns>True if oper is a Unary operator</returns>
 bool IsUnary(Operator oper) {
 	return oper == POSITIVE_OPER || oper == NEGATIVE_OPER ||
-		oper == OVERRIDE_OPER || oper == OVERRIDEN_OPER;
+		oper == UNRESOLVED_PARENTHESIS_OPER || oper == PARENTHESIS_OPER;
 }
 
 /// <summary>

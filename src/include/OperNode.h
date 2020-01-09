@@ -13,8 +13,8 @@ enum Operator {
 	POWER_OPER,
 	POSITIVE_OPER,
 	NEGATIVE_OPER,
-	OVERRIDE_OPER, // Parenthesis
-	OVERRIDEN_OPER // Closed Parenthesis
+	UNRESOLVED_PARENTHESIS_OPER, // Parenthesis
+	PARENTHESIS_OPER // Closed Parenthesis
 };
 
 class OperNode : public ExpNode {

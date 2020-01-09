@@ -57,6 +57,13 @@ class OperNode : public ExpNode {
 bool IsUnary(Operator oper);
 
 /// <summary>
+/// Checks if an operator is Binary
+/// </summary>
+/// <param name="oper">Operator to check for Nary type</param>
+/// <returns>True if oper is a Binary operator</returns>
+bool IsBinary(Operator oper);
+
+/// <summary>
 /// Check if an operator is Nary
 /// </summary>
 /// <param name="oper">Operator to check for Nary type</param>

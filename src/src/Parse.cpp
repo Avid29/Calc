@@ -172,7 +172,7 @@ bool ParseState::ParseNOper(char c) {
 /// <returns>false if the character can't work after UOPER</returns>
 bool ParseState::ParseUOper(char c) {	
 	if (isdigit(c)) {
-		// Save int progress and declare INT state
+		// Saves int progress and declares INT state
 		numProgress_ = c;
 		state_ = INT;
 		return true;
@@ -203,7 +203,7 @@ bool ParseState::ParseUOper(char c) {
 bool ParseState::ParseInt(char c) {
 	if (isdigit(c)) {
 
-		// Add to int progress
+		// Adds to int progress
 		numProgress_.push_back(c);
 		return true;	
 
@@ -217,9 +217,18 @@ bool ParseState::ParseInt(char c) {
 				return true;
 			case '-':
 				CompleteInt();
-				tree_->AddNode(new NOperNode(c));
+				// Makes addition operator and adds a unary minus
+				tree_->AddNode(new NOperNode('+'));
 				tree_->AddNode(new UOperNode('-'));
 				state_ = UOPER;
+				return true;
+			case'(':
+				CompleteInt();
+				// Adds implied multiply then parenthesis
+				tree_->AddNode(new NOperNode('*'));
+				tree_->AddNode(new UOperNode(c));
+				parenthesis_depth++;
+				state_ = BEGIN;
 				return true;
 			case ')':
 				CompleteInt();
@@ -289,8 +298,13 @@ bool ParseState::ParseFloat(char c) {
 /// <returns>false if the character can't work after CLOSED_PARENTHESIS</returns>
 bool ParseState::ParseClosedPar(char c) {
 	if (isdigit(c)) {
-		// TODO: Implied multiply
-		return false;
+		// Adds implied multiply
+		tree_->AddNode(new NOperNode('*'));
+
+		// Saves int progress and declares INT state
+		numProgress_ = c;
+		state_ = INT;
+		return true;
 	}
 	else {
 		NOperNode* node = new NOperNode(c);
@@ -301,6 +315,7 @@ bool ParseState::ParseClosedPar(char c) {
 				state_ = NOPER;
 				return true;
 			case '-':
+				// Makes addition operator and adds a unary minus
 				tree_->AddNode(new NOperNode(c));
 				tree_->AddNode(new UOperNode('-'));
 				state_ = UOPER;

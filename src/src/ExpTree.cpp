@@ -19,38 +19,28 @@ ExpTree::ExpTree() : active_node (nullptr), init_value_node (nullptr)  {}
 void ExpTree::AddNode(OperNode *node) {
 	if (active_node == nullptr) {
 		// If first node
-
 		if (init_value_node != nullptr) {
 			// The first node is often a ValueNode
 			// That is the only time a ValueNode will be the active or root node
-
+			
 			// Makes node the new active_node
 			node->AddChild(init_value_node);
 		}
-
 		active_node = node;
 		return;
 	}
+	FindInsertionNode(node);
+	if (IsNary(node->GetOperator()) && node->GetOperator() == active_node->GetOperator()) {
+		// TODO: Add node's children to active_node's children
 
-	// Raises active_node till it's of equal or greater priority
-	while ((active_node->GetPriority() != Priority::OVERRIDE &&
-		node->GetPriority() > active_node->GetPriority())&&
-		!active_node->IsRoot()) {
-		active_node = active_node->GetParent();
+		// Adding node would be a duplicate of active_node for an Nary operator
+		return;
 	}
-
 	// The new node is a lower priority than any node so far
 	// Add new node to top
 	if (node->GetPriority() > active_node->GetPriority()) {
 		if (active_node->GetPriority() == Priority::OVERRIDE) {
-			if (IsUnary(node->GetOperator())) {
-				// Adds child if Unary
-				active_node->AddChild(node);
-			}
-			else {
-				// Inserts child for Nary
-				active_node->InsertChild(node);
-			}
+			InsertOperNode(node);
 		}
 		else if (active_node->IsRoot()) {
 			// node is new root
@@ -63,7 +53,30 @@ void ExpTree::AddNode(OperNode *node) {
 		// Adding node would be a duplicate of active_node
 		return;
 	}
-	else if (IsUnary(node->GetOperator())) {
+	else {
+		InsertOperNode(node);
+	}
+	active_node = node;
+}
+
+/// <summary>
+/// Finds insertion point for node and changes active_node to it
+/// </summary>
+/// <param name="node">Node to insert</param>
+void ExpTree::FindInsertionNode(ExpNode *node) {
+	// Raises active_node till it's of equal or greater priority to node
+	while ((active_node->GetPriority() != Priority::OVERRIDE &&
+		node->GetPriority() > active_node->GetPriority()) &&
+		!active_node->IsRoot()) {
+		active_node = active_node->GetParent();
+	}
+}
+
+/// <summary>
+/// Inserts an OperNode differently depending on it's oper type
+/// </summary>
+void ExpTree::InsertOperNode(OperNode* node) {
+	if (IsUnary(node->GetOperator())) {
 		// Adds child if Unary
 		active_node->AddChild(node);
 	}
@@ -71,8 +84,6 @@ void ExpTree::AddNode(OperNode *node) {
 		// Inserts child for Nary
 		active_node->InsertChild(node);
 	}
-
-	active_node = node;
 }
 
 /// <summary>
@@ -90,12 +101,12 @@ void ExpTree::AddNode(ValueNode *node) {
 }
 
 /// <summary>
-/// Find the closest OVERRIDE and change it to OVERRIDEN. 
-/// Then, set OVERRIDE as active_node
+/// Finds the closest UNRESOLVED_PARENTHESIS and change it to PARENTHESIS. 
+/// Then, set that node as active_node
 /// </summary>
-void ExpTree::FinishOverride() {
+void ExpTree::CloseParenthesis() {
 
-	// Find OVERRIDE node
+	// Finds UNRESOLVED_PARENTHESIS node
 	OperNode* node = active_node;
 	while (node->GetPriority() != Priority::OVERRIDE && !node->IsRoot())
 	{
@@ -103,11 +114,11 @@ void ExpTree::FinishOverride() {
 	}
 
 	if (node->GetPriority() != Priority::OVERRIDE) {
-		// No OVERRIDE in tree
+		// No UNRESOLVED_PARENTHESIS in tree
 		throw;
 	}
 	
-	// Close OVERRIDE node and make active
+	// Resolves UNRESOLVED_PARENTHESIS node and make active_node
 	((UOperNode*)node)->RemoveOverride(); // TODO: Remove cast
 	active_node = node;
 }

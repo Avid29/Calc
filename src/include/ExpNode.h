@@ -24,19 +24,19 @@ class ExpNode {
 		ExpNode();
 
 		/// <summary>
-		/// Set <see cref="node"/> as the parent of <see cref="this"/>
+		/// Sets node as the parent of this
 		/// </summary>
 		/// <param name="node">New parent node</param>
 		void SetParent(OperNode* node);
 
 		/// <summary>
-		/// Set node as the parent of this and this as the child of node
+		/// Sets node as the parent of this and this as the child of node
 		/// </summary>
 		/// <param name="node">New parent node</param>
 		void InsertAbove(OperNode *node);
 
 		/// <summary>
-		/// Get parent_
+		/// Gets this node's parent
 		/// </summary>
 		/// <returns>parent_</returns>
 		OperNode *GetParent();

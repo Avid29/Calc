@@ -213,7 +213,7 @@ bool ParseState::ParseInt(char c) {
 					// No parenthesis to be closed
 					return false;
 				}
-				tree_->FinishOverride();
+				tree_->CloseParenthesis();
 				state_ = CLOSED_PARENTHESIS;
 				return true;
 			case '.':
@@ -252,7 +252,7 @@ bool ParseState::ParseFloat(char c) {
 					// No parenthesis to be closed
 					return false;
 				}
-				tree_->FinishOverride();
+				tree_->CloseParenthesis();
 				state_ = CLOSED_PARENTHESIS;
 				return true;
 		}
@@ -284,7 +284,7 @@ bool ParseState::ParseClosedPar(char c) {
 					// No parenthesis to be closed
 					return false;
 				}
-				tree_->FinishOverride();
+				tree_->CloseParenthesis();
 				state_ = CLOSED_PARENTHESIS;
 				return true;
 

@@ -28,14 +28,26 @@ class ExpTree {
 		void AddNode(ValueNode *node);
 
 		/// <summary>
-		/// Find the closest OVERRIDE and change it to OVERRIDEN. 
-		/// Then, set OVERRIDE as active_node
+		/// Finds the closest UNRESOLVED_PARENTHESIS and change it to PARENTHESIS. 
+		/// Then, set that node as active_node
 		/// </summary>
-		void FinishOverride();
+		void CloseParenthesis();
+
 
 		string Print(); 
 
 	private:
+		/// <summary>
+		/// Finds insertion point for node and changes active_node to it
+		/// </summary>
+		/// <param name="node">Node to insert</param>
+		void FindInsertionNode(ExpNode *node);
+
+		/// <summary>
+		/// Inserts an OperNode differently depending on it's oper type
+		/// </summary>
+		void InsertOperNode(OperNode *node);
+
 		OperNode *active_node;
 
 		// The first node is often a value node.

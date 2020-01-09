@@ -33,6 +33,16 @@ class ExpTree {
 		/// </summary>
 		void CloseParenthesis();
 
+		/// <summary>
+		/// Simplifies ExpNodes and returns root node
+		/// </summary>
+		/// <returns>New root node</returns>
+		ExpNode *Simplify();
+
+		/// <summary>
+		/// Simplifies ExpNode and children
+		/// </summary>
+		ExpTree *SimplifyTree();
 
 		string Print(); 
 

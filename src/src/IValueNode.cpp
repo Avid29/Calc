@@ -30,6 +30,14 @@ void IValueNode::SetValue(int value) {
 }
 
 /// <summary>
+/// Gets this as a double, if possible
+/// </summary>
+/// <returns>this node as a double value or NAN if not possible</returns>
+double IValueNode::AsDouble() {
+	return (double)GetValue();
+}
+
+/// <summary>
 /// Get the value as a string
 /// </summary>
 /// <returns>The node as a string</returns>

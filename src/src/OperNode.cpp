@@ -7,6 +7,15 @@
 using namespace std;
 
 /// <summary>
+/// Gets this as a double, if possible
+/// </summary>
+/// <returns>this node as a double value or NAN if not possible</returns>
+double OperNode::AsDouble() {
+	// TODO: Make an attempt
+	return NAN;
+}
+
+/// <summary>
 /// Get the priority based on the oper
 /// </summary>
 /// <returns>Proirity value</returns>

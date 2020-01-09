@@ -41,10 +41,10 @@ class ExpNode {
 		/// <returns>parent_</returns>
 		OperNode *GetParent();
 
-		/// <summary>
-		/// Get the expression tree printed from this down
-		/// </summary>
-		/// <returns>The expression tree as a string</returns>
+		virtual double AsDouble() = 0;
+
+		virtual ExpNode* Simplify() = 0;
+
 		virtual string Print() = 0;
 
 		virtual Priority GetPriority() = 0;

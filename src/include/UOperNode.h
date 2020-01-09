@@ -36,6 +36,11 @@ class UOperNode : public OperNode {
 		void InsertChild(::OperNode* node);
 
 		/// <summary>
+		/// Replaces a child with a different ExpNode
+		// </summary>
+		virtual void ReplaceChild(ExpNode* newNode, ExpNode* oldNode);
+
+		/// <summary>
 		/// Check if UOperNode's child_ is set
 		/// </summary>
 		/// <returns>true if child_ is not null</returns>
@@ -45,6 +50,12 @@ class UOperNode : public OperNode {
 		/// Changes priority from OVERRIDE to VALUE when OVERRIDE finished
 		/// </summary>
 		void RemoveOverride();
+
+		/// <summary>
+		/// Simplifies ExpNode and children
+		/// </summary>
+		/// <returns>The new simplest node possible in place of this</returns>
+		ExpNode* Simplify();
 
 		/// <summary>
 		/// Get the expression tree printed from this down

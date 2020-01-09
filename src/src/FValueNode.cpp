@@ -42,5 +42,5 @@ string FValueNode::Print() {
 /// </summary>
 /// <returns>VALUE</returns>
 Priority FValueNode::GetPriority() {
-	return VALUE;
+	return Priority::VALUE;
 }

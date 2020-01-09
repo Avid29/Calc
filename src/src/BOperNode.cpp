@@ -33,7 +33,7 @@ string BOperNode::Print() {
 	cache_ += left_child->Print();
 
 	switch (oper_) {
-		case POWER_OPER:
+		case Operator::POWER:
 			cache_ += "^";
 			break;
 	}

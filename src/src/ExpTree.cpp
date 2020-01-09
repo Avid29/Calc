@@ -33,7 +33,7 @@ void ExpTree::AddNode(OperNode *node) {
 	}
 
 	// Raises active_node till it's of equal or greater priority
-	while ((active_node->GetPriority() != OVERRIDE &&
+	while ((active_node->GetPriority() != Priority::OVERRIDE &&
 		node->GetPriority() > active_node->GetPriority())&&
 		!active_node->IsRoot()) {
 		active_node = active_node->GetParent();
@@ -42,7 +42,7 @@ void ExpTree::AddNode(OperNode *node) {
 	// The new node is a lower priority than any node so far
 	// Add new node to top
 	if (node->GetPriority() > active_node->GetPriority()) {
-		if (active_node->GetPriority() == OVERRIDE) {
+		if (active_node->GetPriority() == Priority::OVERRIDE) {
 			if (IsUnary(node->GetOperator())) {
 				// Adds child if Unary
 				active_node->AddChild(node);

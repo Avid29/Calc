@@ -6,5 +6,5 @@
 /// <returns>VALUE</returns>
 Priority ValueNode::GetPriority()
 {
-	return VALUE;
+	return Priority::VALUE;
 }

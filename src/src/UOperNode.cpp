@@ -13,13 +13,13 @@ using namespace std;
 UOperNode::UOperNode(char c) {
 	switch (c) {
 		case '+':
-			oper_ = Operator::POSITIVE_OPER;
+			oper_ = Operator::POSITIVE;
 			break;
 		case '-':
-			oper_ = Operator::NEGATIVE_OPER;
+			oper_ = Operator::NEGATIVE;
 			break;
 		case '(':
-			oper_ = Operator::UNRESOLVED_PARENTHESIS_OPER;
+			oper_ = Operator::UNRESOLVED_PARENTHESIS;
 			break;
 	}
 }
@@ -76,8 +76,8 @@ bool UOperNode::HasChild() {
 /// Changes priority from OVERRIDE to OVERRIDEN when OVERRIDE finished
 /// </summary>
 void UOperNode::RemoveOverride() {
-	if (oper_ == UNRESOLVED_PARENTHESIS_OPER) {
-		oper_ = PARENTHESIS_OPER;
+	if (oper_ == Operator::UNRESOLVED_PARENTHESIS) {
+		oper_ = Operator::PARENTHESIS;
 	}
 }
 
@@ -90,16 +90,17 @@ string UOperNode::Print() {
 	string buffer = "";
 
 	switch (oper_) {
-		case POSITIVE_OPER:
+		case Operator::POSITIVE:
+			// Consider wheather or not to print unary plus
 			buffer.append("+");
 			buffer.append(child_->Print());
 			break;
-		case NEGATIVE_OPER:
+		case Operator::NEGATIVE:
 			buffer.append("-");
 			buffer.append(child_->Print());
 			break;
-		case UNRESOLVED_PARENTHESIS_OPER:
-		case PARENTHESIS_OPER:
+		case Operator::UNRESOLVED_PARENTHESIS:
+		case Operator::PARENTHESIS:
 			buffer.append("(");
 			buffer.append(child_->Print());
 			buffer.append(")");

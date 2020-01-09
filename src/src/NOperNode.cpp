@@ -14,10 +14,10 @@ using namespace std;
 NOperNode::NOperNode(char c) {
 	switch (c) {
 		case '+':
-			oper_ = Operator::ADDITION_OPER;
+			oper_ = Operator::ADDITION;
 			break;
 		case '*':
-			oper_ = Operator::MULTIPLICATION_OPER;
+			oper_ = Operator::MULTIPLICATION;
 			break;
 	}
 }
@@ -54,10 +54,10 @@ string NOperNode::Print() {
 	for (int i = 0; i < children_.size(); i++) {
 		if (i != 0) {
 			switch (oper_) {
-				case ADDITION_OPER:
+				case Operator::ADDITION:
 					cache_ += "+";
 					break;
-				case MULTIPLICATION_OPER:
+				case Operator::MULTIPLICATION:
 					cache_ += "*";
 					break;
 			}

@@ -7,14 +7,14 @@
 
 using namespace std;
 
-enum Operator {
-	ADDITION_OPER,
-	MULTIPLICATION_OPER,
-	POWER_OPER,
-	POSITIVE_OPER,
-	NEGATIVE_OPER,
-	UNRESOLVED_PARENTHESIS_OPER, // Parenthesis
-	PARENTHESIS_OPER // Closed Parenthesis
+enum class Operator {
+	ADDITION,
+	MULTIPLICATION,
+	POWER,
+	POSITIVE,
+	NEGATIVE,
+	UNRESOLVED_PARENTHESIS, // Parenthesis
+	PARENTHESIS // Closed Parenthesis
 };
 
 class OperNode : public ExpNode {

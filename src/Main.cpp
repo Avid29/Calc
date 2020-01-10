@@ -10,10 +10,20 @@ using namespace std;
 
 int main(int argc, char **argv) {
 	// Get Equation
-	string str;
-	cout << "Enter an Equation: ";
-	cin >> str;
+	while (true) {
+		string str;
+		cout << "Enter an Equation (q to quit): ";
+		cin >> str;
 
-	ExpTree *exp_tree = Parse(str);
-	cout << endl << exp_tree->Simplify()->Print() << endl;
+		if (str == "q") {
+			cout << "Done!";
+			return 0;
+		}
+
+		ExpTree *exp_tree = Parse(str);
+		if (exp_tree == nullptr) {
+			cout << "error occured" << endl;
+		}
+		cout << endl << exp_tree->Simplify()->Print() << endl;
+	}
 }

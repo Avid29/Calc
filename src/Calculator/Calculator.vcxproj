@@ -18,38 +18,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="..\src\src\BOperNode.cpp" />
-    <ClCompile Include="..\src\src\ExpNode.cpp" />
-    <ClCompile Include="..\src\src\ExpTree.cpp" />
-    <ClCompile Include="..\src\src\FValueNode.cpp" />
-    <ClCompile Include="..\src\src\IValueNode.cpp" />
-    <ClCompile Include="..\src\src\NOperNode.cpp" />
-    <ClCompile Include="..\src\src\OperNode.cpp" />
-    <ClCompile Include="..\src\src\Parse.cpp" />
-    <ClCompile Include="..\src\src\UOperNode.cpp" />
-    <ClCompile Include="..\src\src\ValueNode.cpp" />
-    <ClCompile Include="src\VarValueNode.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\src\include\BOperNode.h" />
-    <ClInclude Include="..\src\include\ExpNode.h" />
-    <ClInclude Include="..\src\include\ExpTree.h" />
-    <ClInclude Include="..\src\include\FValueNode.h" />
-    <ClInclude Include="..\src\include\IValueNode.h" />
-    <ClInclude Include="..\src\include\NOperNode.h" />
-    <ClInclude Include="..\src\include\OperNode.h" />
-    <ClInclude Include="..\src\include\Parse.h" />
-    <ClInclude Include="..\src\include\UOperNode.h" />
-    <ClInclude Include="..\src\include\ValueNode.h" />
-    <ClInclude Include="include\VarValueNode.h" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{B3CA1366-D2AA-4EE4-8DA9-9D1CE17CAF22}</ProjectGuid>
+    <ProjectGuid>{DD6886CE-7C6E-40A2-8B55-AD3E356BC8C5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Calc</RootNamespace>
+    <RootNamespace>Calculator</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -83,6 +56,7 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
+    <Import Project="..\Calc-Lib\Calc-Lib.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -173,6 +147,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Calculator.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

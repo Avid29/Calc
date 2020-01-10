@@ -222,6 +222,10 @@ bool ParseState::ParseInt(char c) {
 				tree_->AddNode(new UOperNode('-'));
 				state_ = UOPER;
 				return true;
+			case '^':
+				CompleteInt();
+				tree_->AddNode(new BOperNode(c));
+				return true;
 			case'(':
 				CompleteInt();
 				// Adds implied multiply then parenthesis
@@ -276,6 +280,11 @@ bool ParseState::ParseFloat(char c) {
 				tree_->AddNode(new UOperNode('-'));
 				state_ = UOPER;
 				return true;
+			case '^':
+				CompleteFloat();
+				tree_->AddNode(new BOperNode('^'));
+				state_ = NOPER;
+				return true;
 			case ')':
 				CompleteFloat();
 				parenthesis_depth--;
@@ -319,6 +328,10 @@ bool ParseState::ParseClosedPar(char c) {
 				tree_->AddNode(new NOperNode(c));
 				tree_->AddNode(new UOperNode('-'));
 				state_ = UOPER;
+				return true;
+			case '^':
+				tree_->AddNode(new BOperNode(c));
+				state_ = NOPER;
 				return true;
 			case ')':
 				parenthesis_depth--;

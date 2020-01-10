@@ -8,7 +8,7 @@
 
 using namespace std;
 /// <summary>
-/// Create a UOperNode based on the operator's character
+/// Creates a UOperNode based on the operator's character
 /// </summary>
 /// <param name="node">Character operator</param>
 UOperNode::UOperNode(char c) {

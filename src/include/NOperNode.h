@@ -14,8 +14,14 @@ class NOperNode	: public OperNode {
 		/// <summary>
 		/// Create an NOperNode based on the operator's character
 		/// </summary>
-		/// <param name="node">Character operator</param>
+		/// <param name="c">Character operator</param>
 		NOperNode(char c);
+
+		/// <summary>
+		/// Create an NOperNode by operator
+		/// </summary>
+		/// <param name="oper">operator</param>
+		NOperNode(Operator oper);
 
 		/// <summary>
 		/// Add child and set its parent

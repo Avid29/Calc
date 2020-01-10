@@ -7,11 +7,18 @@
 using namespace std;
 
 /// <summary>
+/// Checks if node can be represented as a double
+/// </summary>
+/// <returns>True if node can be represented as a double</returns>
+bool OperNode::IsNumericalValue() {
+	return false;
+}
+
+/// <summary>
 /// Gets this as a double, if possible
 /// </summary>
 /// <returns>this node as a double value or NAN if not possible</returns>
 double OperNode::AsDouble() {
-	// TODO: Make an attempt
 	return NAN;
 }
 

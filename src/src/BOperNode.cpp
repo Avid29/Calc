@@ -20,6 +20,14 @@ BOperNode::BOperNode(char c) : left_child (nullptr), right_child (nullptr) {
 }
 
 /// <summary>
+/// Creates a BOperNode of operator
+/// </summary>
+/// <param name="oper">operator</param>
+BOperNode::BOperNode(Operator oper) : left_child(nullptr), right_child(nullptr) {
+	oper_ = oper;
+}
+
+/// <summary>
 /// Add node as a child and set node's parent to this
 /// </summary>
 /// <param name="node">New child node</param>
@@ -62,11 +70,13 @@ void BOperNode:: InsertChild(OperNode* node) {
 /// </summary>
 void BOperNode::ReplaceChild(ExpNode* newNode, ExpNode* oldNode) {
 	if (left_child == oldNode) {
+		// Sets left child to new node and this as newNode's parent
 		left_child = newNode;
 		newNode->SetParent(this);
 		return;
 	}
 	else if (right_child == oldNode) {
+		// Sets right child to new node and this as newNode's parent
 		right_child = newNode;
 		newNode->SetParent(this);
 		return;
@@ -81,20 +91,22 @@ void BOperNode::ReplaceChild(ExpNode* newNode, ExpNode* oldNode) {
 /// </summary>
 /// <returns>The new simplest node possible in place of this</returns>
 ExpNode* BOperNode::Simplify() {
-	left_child = left_child->Simplify();
-	right_child = right_child->Simplify();
-	double leftDouble = left_child->AsDouble();
-	double rightDouble = right_child->AsDouble();
-	if (leftDouble != NAN && rightDouble != NAN) {
+
+	// Always returns a clone or replacement
+	ExpNode *newNode = new BOperNode(oper_);
+
+	ExpNode *simpleLeft = left_child->Simplify();
+	ExpNode *simpleRight = right_child->Simplify();
+
+	if (simpleLeft->IsNumericalValue() && simpleRight->IsNumericalValue()) {
 		switch (oper_)
 		{
 			case Operator::POWER:
-				return new FValueNode(pow(leftDouble, rightDouble));
-				break;
+				return new FValueNode(pow(simpleLeft->AsDouble(), simpleRight->AsDouble()));
 		}
 	}
 
-	return this;
+	return newNode;
 }
 
 

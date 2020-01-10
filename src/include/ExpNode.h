@@ -41,6 +41,8 @@ class ExpNode {
 		/// <returns>parent_</returns>
 		OperNode *GetParent();
 
+		virtual bool IsNumericalValue() = 0;
+
 		virtual double AsDouble() = 0;
 
 		virtual ExpNode* Simplify() = 0;

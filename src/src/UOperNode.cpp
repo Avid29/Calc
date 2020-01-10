@@ -7,11 +7,12 @@
 #include "../include/UOperNode.h"
 
 using namespace std;
+
 /// <summary>
 /// Creates a UOperNode based on the operator's character
 /// </summary>
-/// <param name="node">Character operator</param>
-UOperNode::UOperNode(char c) {
+/// <param name="c">Character operator</param>
+UOperNode::UOperNode(char c) : child_ (nullptr) {
 	switch (c) {
 		case '+':
 			oper_ = Operator::POSITIVE;
@@ -23,6 +24,14 @@ UOperNode::UOperNode(char c) {
 			oper_ = Operator::UNRESOLVED_PARENTHESIS;
 			break;
 	}
+}
+
+/// <summary>
+/// Creates a UOperNode of operator
+/// </summary>
+/// <param name="oper">operator</param>
+UOperNode::UOperNode(Operator oper) : child_ (nullptr) {
+	oper_ = oper;
 }
 
 /// <summary>
@@ -96,18 +105,22 @@ void UOperNode::RemoveOverride() {
 /// </summary>
 /// <returns>The new simplest node possible in place of this</returns>
 ExpNode* UOperNode::Simplify() {
-	double value = child_->Simplify()->AsDouble();
-	if (value != NAN) {
+
+	// Always returns a clone or replacement
+	UOperNode *newNode = new UOperNode(oper_);
+	newNode->AddChild(child_->Simplify());
+	
+	if (newNode->child_->IsNumericalValue()) {
 		switch (oper_)
 		{
 			case Operator::POSITIVE:
 			case Operator::PARENTHESIS:
-				return new FValueNode(value);
+				return new FValueNode(newNode->child_->AsDouble());
 			case Operator::NEGATIVE:
-				return new FValueNode(-value);
+				return new FValueNode(-newNode->child_->AsDouble());
 		}
 	}
-	return this;
+	return newNode;
 }
 
 /// <summary>

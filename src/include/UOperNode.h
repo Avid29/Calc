@@ -13,8 +13,14 @@ class UOperNode : public OperNode {
 		/// <summary>
 		/// Create a UOperNode based on the operator's character
 		/// </summary>
-		/// <param name="node">Character operator</param>
+		/// <param name="c">Character operator</param>
 		UOperNode(char c);
+
+		/// <summary>
+		/// Create a UOperNode of operator
+		/// </summary>
+		/// <param name="oper">operator</param>
+		UOperNode(Operator oper);
 
 		/// <summary>
 		/// Set child of operator

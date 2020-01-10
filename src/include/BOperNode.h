@@ -14,8 +14,14 @@ class BOperNode : public OperNode {
 		/// <summary>
 		/// Creates a BOperNode based on the operator's character
 		/// </summary>
-		/// <param name="node">Character operator</param>
+		/// <param name="c">Character operator</param>
 		BOperNode(char c);
+
+		/// <summary>
+		/// Creates a BOperNode of operator
+		/// </summary>
+		/// <param name="oper">operator</param>
+		BOperNode(Operator oper);
 
 		/// <summary>
 		/// Add node as a child and set node's parent to this

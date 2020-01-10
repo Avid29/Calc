@@ -35,6 +35,12 @@ class OperNode : public ExpNode {
 		/// Replaces a child with a different ExpNode
 		// </summary>
 		virtual void ReplaceChild(ExpNode *newNode, ExpNode *oldNode) = 0;
+
+		/// <summary>
+		/// Checks if node can be represented as a double
+		/// </summary>
+		/// <returns>True if node can be represented as a double</returns>
+		bool IsNumericalValue();
 		
 		/// <summary>
 		/// Gets this as a double, if possible

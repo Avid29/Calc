@@ -24,6 +24,12 @@ class IValueNode : public ValueNode {
 		void SetValue(int value);
 
 		/// <summary>
+		/// Checks if node can be represented as a double
+		/// </summary>
+		/// <returns>True if node can be represented as a double</returns>
+		bool IsNumericalValue();
+
+		/// <summary>
 		/// Gets this as a double, if possible
 		/// </summary>
 		/// <returns>this node as a double value or NAN if not possible</returns>

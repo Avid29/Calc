@@ -24,6 +24,14 @@ NOperNode::NOperNode(char c) {
 }
 
 /// <summary>
+/// Create an NOperNode by operator
+/// </summary>
+/// <param name="oper">operator</param>
+NOperNode::NOperNode(Operator oper) {
+	oper_ = oper;
+}
+
+/// <summary>
 /// Add child and set its parent
 /// </summary>
 /// <param name="node">New child node</param>
@@ -65,49 +73,51 @@ void NOperNode::ReplaceChild(ExpNode* newNode, ExpNode* oldNode) {
 /// Simplifies ExpNode and children
 /// </summary>
 /// <returns>The new simplest node possible in place of this</returns>
-ExpNode* NOperNode::Simplify() {
-	double sumProg = 0;
+ExpNode *NOperNode::Simplify() {
+	// Running total of value node children
+	double valueProg = 0;
 	if (oper_ == Operator::MULTIPLICATION) {
-		sumProg = 1;
+		valueProg = 1;
 	}
 
-	ExpNode* replace_node = nullptr;
+	// Always returns a clone or replacement
+	NOperNode *newNode = new NOperNode(oper_);
 
+	// Iterate whole vector
 	auto i = std::begin(children_);
 	while (i != std::end(children_)) {
-		ExpNode* node = &**i;
-		double pendingValue = node->Simplify()->AsDouble();
-		if (pendingValue != NAN) {
-			if (replace_node == nullptr) {
-				// Choose which node to replace on tree
-				replace_node = node;
-				++i;
-			}
-			else {
-				i = children_.erase(i);
-			}
-			
+		ExpNode *node = *i;
+		// Doesn't update node in children_
+		node = node->Simplify();
+
+		if (node->IsNumericalValue()) {
+			// Add node value to total value progress
 			switch (oper_)
 			{
 				case Operator::ADDITION:
-					sumProg += pendingValue;
+					valueProg += node->AsDouble();
 					break;
 				case Operator::MULTIPLICATION:
-					sumProg *= pendingValue;
+					valueProg *= node->AsDouble();
 					break;
 			}
 		}
+		else {
+			newNode->AddChild(node);
+		}
+
+		++i;
 	}
 
-	if (replace_node != nullptr) {
-		ReplaceChild(new FValueNode(sumProg), replace_node);
+	newNode->AddChild(new FValueNode(valueProg));
+
+	// TODO: Sort children by degree
+
+	if (newNode->children_.size() == 1) {
+		return newNode->children_[0];
 	}
 
-	if (children_.size() == 1) {
-		return children_[0];
-	}
-
-	return this;
+	return newNode;
 }
 
 /// <summary>

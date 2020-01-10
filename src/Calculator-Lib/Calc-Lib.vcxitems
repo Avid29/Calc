@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{fea44308-338d-4ff7-b3b7-efd2960278d2}</ItemsProjectGuid>
+    <ItemsProjectName>Calculator-Library</ItemsProjectName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\BOperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\ExpNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\ExpTree.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\FValueNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\IValueNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\NOperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\OperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\Parse.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\UOperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\ValueNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\VarValueNode.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\BOperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\ExpNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\ExpTree.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\FValueNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\IValueNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\NOperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\OperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Parse.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\UOperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\ValueNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\VarValueNode.cpp" />
+  </ItemGroup>
+</Project>

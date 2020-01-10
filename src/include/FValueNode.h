@@ -6,13 +6,13 @@
 class FValueNode : public ValueNode {
 	public:
 		/// <summary>
-		/// Create a ValueNode with f_value value
+		/// Creates a ValueNode with f_value value
 		/// </summary>
 		/// <param name="value">initial value for node</param>
 		FValueNode(double value);
 
 		/// <summary>
-		/// Get the float value as a double
+		/// Gets the float value as a double
 		/// </summary>
 		/// <returns>f_value</returns>
 		double GetValue();
@@ -26,7 +26,7 @@ class FValueNode : public ValueNode {
 		/// <summary>
 		/// Checks if node can be represented as a double
 		/// </summary>
-		/// <returns>True if node can be represented as a double</returns>
+		/// <returns>true if node can be represented as a double</returns>
 		bool IsNumericalValue();
 
 		/// <summary>
@@ -36,7 +36,7 @@ class FValueNode : public ValueNode {
 		double AsDouble();
 
 		/// <summary>
-		/// Get the value as a string
+		/// Gets the value as a string
 		/// </summary>
 		/// <returns>The node as a string</returns>
 		string Print();

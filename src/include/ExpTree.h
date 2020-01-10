@@ -16,13 +16,13 @@ class ExpTree {
 		ExpTree();
 
 		/// <summary>
-		/// Add an OperNode to the tree
+		/// Adds an OperNode to the tree
 		/// </summary>
 		/// <param name="node">OperNode to add to tree</pararm>
 		void AddNode(OperNode *node);
 
 		/// <summary>
-		/// Add an ValueNode to the tree
+		/// Adds an ValueNode to the tree
 		/// </summary>
 		/// <param name="node">ValueNode to add to tree</pararm>
 		void AddNode(ValueNode *node);

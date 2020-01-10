@@ -7,6 +7,7 @@
 using namespace std;
 
 // Higher values go higher on the tree
+// Order of operations
 enum class Priority {
 	OVERRIDE = -1, // Parenthesis
 	VALUE,

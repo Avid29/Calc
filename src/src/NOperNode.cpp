@@ -9,7 +9,7 @@
 using namespace std;
 
 /// <summary>
-/// Create an NOperNode based on the operator's character
+/// Creates an NOperNode based on the operator's character
 /// </summary>
 /// <param name="node">Character operator</param>
 NOperNode::NOperNode(char c) {
@@ -24,7 +24,7 @@ NOperNode::NOperNode(char c) {
 }
 
 /// <summary>
-/// Create an NOperNode by operator
+/// Creates an NOperNode by operator
 /// </summary>
 /// <param name="oper">operator</param>
 NOperNode::NOperNode(Operator oper) {
@@ -32,7 +32,7 @@ NOperNode::NOperNode(Operator oper) {
 }
 
 /// <summary>
-/// Add child and set its parent
+/// Adds child and set its parent
 /// </summary>
 /// <param name="node">New child node</param>
 void NOperNode::AddChild(::ExpNode *node) {
@@ -41,15 +41,15 @@ void NOperNode::AddChild(::ExpNode *node) {
 }
 
 /// <summary>
-/// Insert child between this and its last child
+/// Inserts child between this and its last child
 /// </summary>
 /// <param name="node">this's new child node</param>
 void NOperNode::InsertChild(::OperNode *node) {	
-	// Get this's last child and remove from children_
+	// Gets this's last child and remove from children_
 	ExpNode *grand_child = children_.back();
 	children_.pop_back();
 
-	// Set node as parent of grand_child and add node as child
+	// Sets node as parent of grand_child and add node as child
 	grand_child->InsertAbove(node);
 	AddChild(node);
 }
@@ -83,7 +83,7 @@ ExpNode *NOperNode::Simplify() {
 	// Always returns a clone or replacement
 	NOperNode *newNode = new NOperNode(oper_);
 
-	// Iterate whole vector
+	// Iterates whole vector
 	auto i = std::begin(children_);
 	while (i != std::end(children_)) {
 		ExpNode *node = *i;
@@ -121,7 +121,7 @@ ExpNode *NOperNode::Simplify() {
 }
 
 /// <summary>
-/// Get the expression tree printed from this down
+/// Gets the expression tree printed from this down
 /// </summary>
 /// <returns>The expression tree as a string</returns>
 string NOperNode::Print() {

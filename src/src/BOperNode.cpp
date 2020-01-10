@@ -28,7 +28,7 @@ BOperNode::BOperNode(Operator oper) : left_child(nullptr), right_child(nullptr) 
 }
 
 /// <summary>
-/// Add node as a child and set node's parent to this
+/// Adds node as a child and set node's parent to this
 /// </summary>
 /// <param name="node">New child node</param>
 void BOperNode::AddChild(::ExpNode *node) {
@@ -111,7 +111,7 @@ ExpNode* BOperNode::Simplify() {
 
 
 /// <summary>
-/// Get the expression tree printed from this down
+/// Gets the expression tree printed from this down
 /// </summary>
 /// <returns>The expression tree as a string</returns>
 string BOperNode::Print() {

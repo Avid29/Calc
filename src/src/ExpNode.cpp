@@ -10,7 +10,7 @@ using namespace std;
 ExpNode::ExpNode() : parent_ (nullptr) { }
 
 /// <summary>
-/// Set node as the parent of this
+/// Sets node as the parent of this
 /// </summary>
 /// <param name="node">New parent node</param>
 void ExpNode::SetParent(OperNode* node) {
@@ -18,7 +18,7 @@ void ExpNode::SetParent(OperNode* node) {
 }
 
 /// <summary>
-/// Set node as the parent of this and this as the child of node
+/// Sets node as the parent of this and this as the child of node
 /// </summary>
 /// <param name="node">New parent node</param>
 void ExpNode::InsertAbove(OperNode *node) {
@@ -27,9 +27,9 @@ void ExpNode::InsertAbove(OperNode *node) {
 }
 
 /// <summary>
-/// Get parent_
+/// Gets parent
 /// </summary>
-/// <returns>parent_</returns>
+/// <returns>parent</returns>
 OperNode *ExpNode::GetParent() {
 	return parent_;
 }

@@ -8,13 +8,13 @@
 using namespace std;
 
 /// <summary>
-/// Create a ValueNode with f_value value
+/// Creates a ValueNode with f_value value
 /// </summary>
 /// <param name="value">initial value for node</param>
 FValueNode::FValueNode(double value) : f_value (value) {}
 
 /// <summary>
-/// Get the float value as a double
+/// Gets the float value as a double
 /// </summary>
 /// <returns>f_value</returns>
 double FValueNode::GetValue() {
@@ -22,7 +22,7 @@ double FValueNode::GetValue() {
 }
 
 /// <summary>
-/// Set the float value
+/// Sets the float value
 /// </summary>
 /// <param name="value">New value for FValueNode</param>
 void FValueNode::SetValue(double value) {
@@ -32,7 +32,7 @@ void FValueNode::SetValue(double value) {
 /// <summary>
 /// Checks if node can be represented as a double
 /// </summary>
-/// <returns>True if node can be represented as a double</returns>
+/// <returns>true if node can be represented as a double</returns>
 bool FValueNode::IsNumericalValue() {
 	return true;
 }
@@ -46,7 +46,7 @@ double FValueNode::AsDouble() {
 }
 
 /// <summary>
-/// Get the value as a string
+/// Gets the value as a string
 /// </summary>
 /// <returns>The node as a string</returns>
 string FValueNode::Print() {

@@ -12,25 +12,25 @@ using namespace std;
 class NOperNode	: public OperNode {
 	public:
 		/// <summary>
-		/// Create an NOperNode based on the operator's character
+		/// Creates an NOperNode based on the operator's character
 		/// </summary>
 		/// <param name="c">Character operator</param>
 		NOperNode(char c);
 
 		/// <summary>
-		/// Create an NOperNode by operator
+		/// Creates an NOperNode by operator
 		/// </summary>
 		/// <param name="oper">operator</param>
 		NOperNode(Operator oper);
 
 		/// <summary>
-		/// Add child and set its parent
+		/// Adds child and set its parent
 		/// </summary>
 		/// <param name="node">New child node</param>
 		void AddChild(::ExpNode *node);
 
 		/// <summary>
-		/// Insert child between this and its last child
+		/// Inserts child between this and its last child
 		/// </summary>
 		/// <param name="node">this's new child node</param>
 		void InsertChild(::OperNode *node);
@@ -47,7 +47,7 @@ class NOperNode	: public OperNode {
 		ExpNode* Simplify();
 
 		/// <summary>
-		/// Get the expression tree printed from this down
+		/// Gets the expression tree printed from this down
 		/// </summary>
 		/// <returns>The expression tree as a string</returns>
 		string Print();

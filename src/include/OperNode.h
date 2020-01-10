@@ -39,7 +39,7 @@ class OperNode : public ExpNode {
 		/// <summary>
 		/// Checks if node can be represented as a double
 		/// </summary>
-		/// <returns>True if node can be represented as a double</returns>
+		/// <returns>true if node can be represented as a double</returns>
 		bool IsNumericalValue();
 		
 		/// <summary>
@@ -53,13 +53,13 @@ class OperNode : public ExpNode {
 		virtual string Print() = 0;
 
 		/// <summary>
-		/// Get the priority based on the oper
+		/// Gets the priority based on the oper
 		/// </summary>
 		/// <returns>Proirity value</returns>
 		virtual Priority GetPriority();
 
 		/// <summary>
-		/// Get the OperNode's Operator
+		/// Gets the OperNode's Operator
 		/// </summary>
 		/// <returns>oper_</returns>
 		Operator GetOperator();
@@ -69,22 +69,22 @@ class OperNode : public ExpNode {
 };
 
 /// <summary>
-/// Check if an operator is Unary
+/// Checks if an operator is Unary
 /// </summary>
 /// <param name="oper">Operator to check for Unary type</param>
-/// <returns>True if oper is a Unary operator</returns>
+/// <returns>true if oper is a Unary operator</returns>
 bool IsUnary(Operator oper);
 
 /// <summary>
 /// Checks if an operator is Binary
 /// </summary>
 /// <param name="oper">Operator to check for Nary type</param>
-/// <returns>True if oper is a Binary operator</returns>
+/// <returns>true if oper is a Binary operator</returns>
 bool IsBinary(Operator oper);
 
 /// <summary>
-/// Check if an operator is Nary
+/// Checks if an operator is Nary
 /// </summary>
 /// <param name="oper">Operator to check for Nary type</param>
-/// <returns>True if oper is an Nary operator</returns>
+/// <returns>true if oper is an Nary operator</returns>
 bool IsNary(Operator oper);

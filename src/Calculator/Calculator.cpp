@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 			cout << "error occured" << endl;
 		}
 		
-		// Simplify ExpTree and conver back to string
+		// Simplifies ExpTree and conver back to string
 		cout << endl << exp_tree->Simplify()->Print() << endl;
 	}
 }

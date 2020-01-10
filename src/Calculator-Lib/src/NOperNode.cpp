@@ -110,8 +110,17 @@ ExpNode *NOperNode::Simplify() {
 		++i;
 	}
 
-	
-	newNode->AddChild(GetValueNode(valueProg));
+	if (oper_ == Operator::MULTIPLICATION && valueProg == 0) {
+		// Because one multiplicative term is zero
+		// The enitre node is zero
+		return GetValueNode(0);
+	}
+
+	if ((oper_ == Operator::ADDITION && valueProg != 0) ||
+		(oper_ == Operator::MULTIPLICATION && valueProg != 1)) {
+		// valueProg is not the default, so it should be added
+		newNode->AddChild(GetValueNode(valueProg));
+	}
 
 	// TODO: Sort children by degree
 
@@ -135,7 +144,7 @@ string NOperNode::Print() {
 					cache_ += "+";
 					break;
 				case Operator::MULTIPLICATION:
-					cache_ += "*";
+					// All remaining multiplication will be implied
 					break;
 			}
 		}

@@ -1,3 +1,4 @@
+#include <sstream>
 #include <string>
 
 #include "../include/ExpNode.h"
@@ -50,5 +51,7 @@ double FValueNode::AsDouble() {
 /// </summary>
 /// <returns>The node as a string</returns>
 string FValueNode::Print() {
-	return to_string(f_value);
+	ostringstream oss;
+	oss << f_value;
+	return oss.str();
 }

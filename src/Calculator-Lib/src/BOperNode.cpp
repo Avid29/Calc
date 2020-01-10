@@ -102,7 +102,8 @@ ExpNode* BOperNode::Simplify() {
 		switch (oper_)
 		{
 			case Operator::POWER:
-				return new FValueNode(pow(simpleLeft->AsDouble(), simpleRight->AsDouble()));
+				// Get a ValueNode for left to the power of right
+				return GetValueNode(pow(simpleLeft->AsDouble(), simpleRight->AsDouble()));
 		}
 	}
 

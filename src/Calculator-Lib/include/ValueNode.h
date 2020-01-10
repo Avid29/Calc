@@ -35,3 +35,9 @@ class ValueNode : public ExpNode
 		/// <returns>The priority of depth on the tree</returns>
 		Priority GetPriority();
 };
+
+/// <summary>
+/// Gets most appropiate ValueNodeType
+/// </summary>
+/// <returns>ValueNode of Value and simplest node type</returns>
+ValueNode *GetValueNode(double value);

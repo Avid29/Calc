@@ -6,19 +6,19 @@
 class IValueNode : public ValueNode {
 	public:
 		/// <summary>
-		/// Create a ValueNode with f_value value
+		/// Creates a ValueNode with i_value value
 		/// </summary>
 		/// <param name="value">initial value for node</param>
 		IValueNode(int value);
 
 		/// <summary>
-		/// Get the int value
+		/// Gets the int value
 		/// </summary>
 		/// <returns>i_value</returns>
 		int GetValue();
 
 		/// <summary>
-		/// Set the int value
+		/// Sets the int value
 		/// </summary>
 		/// <param name="value">New value for IValueNode</param>
 		void SetValue(int value);
@@ -26,7 +26,7 @@ class IValueNode : public ValueNode {
 		/// <summary>
 		/// Checks if node can be represented as a double
 		/// </summary>
-		/// <returns>True if node can be represented as a double</returns>
+		/// <returns>true if node can be represented as a double</returns>
 		bool IsNumericalValue();
 
 		/// <summary>
@@ -36,7 +36,7 @@ class IValueNode : public ValueNode {
 		double AsDouble();
 
 		/// <summary>
-		/// Get the value as a string
+		/// Gets the value as a string
 		/// </summary>
 		/// <returns>The node as a string</returns>
 		string Print();

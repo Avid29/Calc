@@ -8,13 +8,13 @@
 using namespace std;
 
 /// <summary>
-/// Create a ValueNode with f_value value
+/// Creates a ValueNode with f_value value
 /// </summary>
 /// <param name="value">initial value for node</param>
 IValueNode::IValueNode(int value) : i_value (value) {}
 
 /// <summary>
-/// Get the int value
+/// Gets the int value
 /// </summary>
 /// <returns>i_value</returns>
 int IValueNode::GetValue() {
@@ -22,7 +22,7 @@ int IValueNode::GetValue() {
 }
 
 /// <summary>
-/// Set the int value
+/// Sets the int value
 /// </summary>
 /// <param name="value">New value for IValueNode</param>
 void IValueNode::SetValue(int value) {
@@ -32,7 +32,7 @@ void IValueNode::SetValue(int value) {
 /// <summary>
 /// Checks if node can be represented as a double
 /// </summary>
-/// <returns>True if node can be represented as a double</return>
+/// <returns>true if node can be represented as a double</return>
 bool IValueNode::IsNumericalValue() {
 	return true;
 }
@@ -46,7 +46,7 @@ double IValueNode::AsDouble() {
 }
 
 /// <summary>
-/// Get the value as a string
+/// Gets the value as a string
 /// </summary>
 /// <returns>The node as a string</returns>
 string IValueNode::Print() {

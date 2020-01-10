@@ -9,7 +9,7 @@ using namespace std;
 /// <summary>
 /// Checks if node can be represented as a double
 /// </summary>
-/// <returns>True if node can be represented as a double</returns>
+/// <returns>true if node can be represented as a double</returns>
 bool OperNode::IsNumericalValue() {
 	return false;
 }
@@ -23,7 +23,7 @@ double OperNode::AsDouble() {
 }
 
 /// <summary>
-/// Get the priority based on the oper
+/// Gets the priority based on the oper
 /// </summary>
 /// <returns>Proirity value</returns>
 Priority OperNode::GetPriority() {
@@ -56,7 +56,7 @@ Operator OperNode::GetOperator() {
 /// Checks if an operator is Unary
 /// </summary>
 /// <param name="oper">Operator to check for Unary type</param>
-/// <returns>True if oper is a Unary operator</returns>
+/// <returns>true if oper is a Unary operator</returns>
 bool IsUnary(Operator oper) {
 	return oper == Operator::POSITIVE ||
 		oper == Operator::NEGATIVE ||
@@ -68,7 +68,7 @@ bool IsUnary(Operator oper) {
 /// Checks if an operator is Binary
 /// </summary>
 /// <param name="oper">Operator to check for Nary type</param>
-/// <returns>True if oper is a Binary operator</returns>
+/// <returns>true if oper is a Binary operator</returns>
 bool IsBinary(Operator oper) {
 	return oper == Operator::POWER;
 }
@@ -77,7 +77,7 @@ bool IsBinary(Operator oper) {
 /// Checks if an operator is Nary
 /// </summary>
 /// <param name="oper">Operator to check for Nary type</param>
-/// <returns>True if oper is a Nary operator</returns>
+/// <returns>true if oper is a Nary operator</returns>
 bool IsNary(Operator oper) {
 	return oper == Operator::ADDITION ||
 		oper == Operator::MULTIPLICATION;

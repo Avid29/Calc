@@ -115,9 +115,9 @@ ExpNode* UOperNode::Simplify() {
 		{
 			case Operator::POSITIVE:
 			case Operator::PARENTHESIS:
-				return new FValueNode(newNode->child_->AsDouble());
+				return GetValueNode(newNode->child_->AsDouble());
 			case Operator::NEGATIVE:
-				return new FValueNode(-newNode->child_->AsDouble());
+				return GetValueNode(-newNode->child_->AsDouble());
 		}
 	}
 	return newNode;

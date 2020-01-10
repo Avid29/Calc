@@ -14,7 +14,7 @@ struct Test {
 };
 
 // List of all tests to run
-Test const tests_[2] = { Test("2+2", "4.000000"), Test("x^2", "x^2")};
+Test const tests_[2] = { Test("2+2", "4"), Test("x^2", "x^2")};
 
 int main()
 {

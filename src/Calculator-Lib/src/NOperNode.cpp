@@ -3,6 +3,7 @@
 
 #include "../include/ExpNode.h"
 #include "../include/FValueNode.h"
+#include "../include/IValueNode.h"
 #include "../include/NOperNode.h"
 #include "../include/OperNode.h"
 
@@ -109,7 +110,8 @@ ExpNode *NOperNode::Simplify() {
 		++i;
 	}
 
-	newNode->AddChild(new FValueNode(valueProg));
+	
+	newNode->AddChild(GetValueNode(valueProg));
 
 	// TODO: Sort children by degree
 

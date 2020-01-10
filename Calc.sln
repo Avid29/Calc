@@ -9,9 +9,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Calculator", "src\Calculato
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1502F779-BA71-4D42-B67E-251F71ED1593}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Calculator-Library", "src\Calculator-Lib\Calc-Lib.vcxitems", "{FEA44308-338D-4FF7-B3B7-EFD2960278D2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Calculator-Library", "src\Calculator-Lib\Calculator-Library.vcxitems", "{FEA44308-338D-4FF7-B3B7-EFD2960278D2}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\Calculator-Lib\Calculator-Library.vcxitems*{dd6886ce-7c6e-40a2-8b55-ad3e356bc8c5}*SharedItemsImports = 4
+		src\Calculator-Lib\Calculator-Library.vcxitems*{fea44308-338d-4ff7-b3b7-efd2960278d2}*SharedItemsImports = 9
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86

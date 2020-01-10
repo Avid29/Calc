@@ -8,3 +8,9 @@
 /Debug
 /Release
 /src/Release
+/src/Calculator/Debug
+/src/Calculator/x64/Debug
+/src/Calculator/Release
+/src/Calculator/x64/Release
+/x64/Release
+/x64/Debug

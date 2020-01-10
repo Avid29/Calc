@@ -124,6 +124,10 @@ void ExpTree::CloseParenthesis() {
 /// </summary>
 /// <returns>New root node</returns>
 ExpNode *ExpTree::Simplify() {
+	if (active_node == nullptr) {
+		return init_value_node;
+	}
+
 	while (!active_node->IsRoot()) {
 		active_node = active_node->GetParent();
 	}

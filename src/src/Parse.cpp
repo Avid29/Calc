@@ -11,6 +11,7 @@
 #include "../include/NOperNode.h"
 #include "../include/Parse.h"
 #include "../include/ValueNode.h"
+#include "../include/VarValueNode.h"
 #include "../include/UOperNode.h"
 
 using namespace std;
@@ -56,6 +57,8 @@ bool ParseState::ParseNextChar(char c) {
 			return ParseInt(c);
 		case FLOAT:
 			return ParseFloat(c);
+		case VARABLE:
+			return ParseVar(c);
 		case CLOSED_PARENTHESIS:
 			return ParseClosedPar(c);
 		default:
@@ -112,7 +115,13 @@ bool ParseState::ParseBegin(char c) {
 		numProgress_ = c;
 		state_ = INT;
 		return true;
-	} else {
+	}
+	else if (islower(c)) {
+		tree_->AddNode(new VarValueNode(c));
+		state_ = VARABLE;
+		return true;
+	}
+	else {
 		switch(c) {
 			// Unary +
 			case '+':
@@ -148,7 +157,14 @@ bool ParseState::ParseNOper(char c) {
 		numProgress_ = c;
 		state_ = INT;
 		return true;
-	} else {
+	}
+	else if (islower(c)) {
+		tree_->AddNode(new NOperNode('*'));
+		tree_->AddNode(new VarValueNode(c));
+		state_ = VARABLE;
+		return true;
+	}
+	else {
 		switch (c) {
 			case '+':
 			case '-':
@@ -175,6 +191,12 @@ bool ParseState::ParseUOper(char c) {
 		// Saves int progress and declares INT state
 		numProgress_ = c;
 		state_ = INT;
+		return true;
+	}
+	else if (islower(c)) {
+		tree_->AddNode(new NOperNode('*'));
+		tree_->AddNode(new VarValueNode(c));
+		state_ = VARABLE;
 		return true;
 	}
 	else {
@@ -207,7 +229,15 @@ bool ParseState::ParseInt(char c) {
 		numProgress_.push_back(c);
 		return true;	
 
-	} else {
+	} 
+	else if (islower(c)) {
+		CompleteInt();
+		tree_->AddNode(new NOperNode('*'));
+		tree_->AddNode(new VarValueNode(c));
+		state_ = VARABLE;
+		return true;
+	} 
+	else {
 		switch (c) {
 			case '+':
 			case '*':
@@ -264,13 +294,19 @@ bool ParseState::ParseFloat(char c) {
 		numProgress_.push_back(c);
 		return true;
 	}
+	else if (islower(c)) {
+		CompleteFloat();
+		tree_->AddNode(new NOperNode('*'));
+		tree_->AddNode(new VarValueNode(c));
+		state_ = VARABLE;
+		return true;
+	}
 	else {
-		NOperNode* node = new NOperNode(c);
 		switch (c) {
 			case '+':
 			case '*':
 				CompleteFloat();
-				tree_->AddNode(node);
+				tree_->AddNode(new NOperNode(c));
 				state_ = NOPER;
 				return true;
 			case '-':
@@ -287,6 +323,49 @@ bool ParseState::ParseFloat(char c) {
 				return true;
 			case ')':
 				CompleteFloat();
+				parenthesis_depth--;
+				if (parenthesis_depth < 0) {
+					// No parenthesis to be closed
+					return false;
+				}
+				tree_->CloseParenthesis();
+				state_ = CLOSED_PARENTHESIS;
+				return true;
+		}
+	}
+	return false;
+}
+
+/// <summary>
+/// Parse the next character from the VARIABLE state
+/// </summary>
+/// <param name="c">Character to parse</param>
+/// <returns>false if the character can't work after VARIABLE</returns>
+bool ParseState::ParseVar(char c) {
+	if (islower(c)) {
+		tree_->AddNode(new NOperNode('*'));
+		tree_->AddNode(new VarValueNode(c));
+		state_ = VARABLE;
+		return true;
+	}
+	else {
+		switch (c) {
+			case '+':
+			case '*':
+				tree_->AddNode(new NOperNode(c));
+				state_ = NOPER;
+				return true;
+			case '-':
+				// Add addition operator then unary minus
+				tree_->AddNode(new NOperNode(c));
+				tree_->AddNode(new UOperNode('-'));
+				state_ = UOPER;
+				return true;
+			case '^':
+				tree_->AddNode(new BOperNode('^'));
+				state_ = NOPER;
+				return true;
+			case ')':
 				parenthesis_depth--;
 				if (parenthesis_depth < 0) {
 					// No parenthesis to be closed

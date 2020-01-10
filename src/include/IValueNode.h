@@ -41,12 +41,6 @@ class IValueNode : public ValueNode {
 		/// <returns>The node as a string</returns>
 		string Print();
 
-		/// <summary>
-		/// The Priority of an float value is always VALUE
-		/// </summary>
-		/// <returns>VALUE</returns>
-		Priority GetPriority();
-
 	private:
 		int i_value;
 };

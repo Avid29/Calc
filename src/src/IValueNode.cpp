@@ -52,11 +52,3 @@ double IValueNode::AsDouble() {
 string IValueNode::Print() {
 	return to_string(i_value); 
 }
-
-/// <summary>
-/// The Priority of an int value is always VALUE
-/// </summary>
-/// <returns>VALUE</returns>
-Priority IValueNode::GetPriority() {
-	return Priority::VALUE;
-}

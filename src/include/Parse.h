@@ -20,6 +20,7 @@ enum ParserState {
 	UOPER,
 	INT,
 	FLOAT, // Or decimal
+	VARABLE,
 	CLOSED_PARENTHESIS,
 	DONE // Finalized() ran
 };
@@ -98,6 +99,13 @@ class ParseState {
 		/// <param name="c">Character to parse</param>
 		/// <returns>false if the character can't work after FLOAT</returns>
 		bool ParseFloat(char c);
+
+		/// <summary>
+		/// Parse the next character from the VARIABLE state
+		/// </summary>
+		/// <param name="c">Character to parse</param>
+		/// <returns>false if the character can't work after VARIABLE</returns>
+		bool ParseVar(char c);
 
 		/// <summary>
 		/// Parse the next character from the CLOSED_PARENTHESIS state

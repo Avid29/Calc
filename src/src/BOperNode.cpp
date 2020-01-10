@@ -93,7 +93,7 @@ void BOperNode::ReplaceChild(ExpNode* newNode, ExpNode* oldNode) {
 ExpNode* BOperNode::Simplify() {
 
 	// Always returns a clone or replacement
-	ExpNode *newNode = new BOperNode(oper_);
+	BOperNode *newNode = new BOperNode(oper_);
 
 	ExpNode *simpleLeft = left_child->Simplify();
 	ExpNode *simpleRight = right_child->Simplify();
@@ -105,6 +105,9 @@ ExpNode* BOperNode::Simplify() {
 				return new FValueNode(pow(simpleLeft->AsDouble(), simpleRight->AsDouble()));
 		}
 	}
+
+	newNode->AddChild(simpleLeft);
+	newNode->AddChild(simpleRight);
 
 	return newNode;
 }

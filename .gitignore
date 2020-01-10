@@ -14,3 +14,7 @@
 /src/Calculator/x64/Release
 /x64/Release
 /x64/Debug
+/src/Calculator-Tests/Debug
+/src/Calculator-Tests/x64/Debug
+/src/Calculator-Tests/x64/Release
+/src/Calculator-Tests/Release

@@ -50,6 +50,10 @@ class ExpNode {
 
 		virtual string Print() = 0;
 
+		/// <summary>
+		/// Gets the priority of the node by operation or type
+		/// </summary>
+		/// <returns>The priority of depth on the tree</returns>
 		virtual Priority GetPriority() = 0;
 
 		/// <summary>

@@ -6,7 +6,7 @@ class ValueNode : public ExpNode
 {
 	public:
 		/// <summary>
-		/// Get the value as a string
+		/// Gets the value as a string
 		/// </summary>
 		/// <returns>The node as a string</returns>
 		virtual string Print() = 0;
@@ -29,5 +29,9 @@ class ValueNode : public ExpNode
 		/// <returns>The new simplest node possible in place of this</returns>
 		ExpNode* Simplify();
 
-		virtual Priority GetPriority();
+		/// <summary>
+		/// Gets the priority of the node by operation or type
+		/// </summary>
+		/// <returns>The priority of depth on the tree</returns>
+		Priority GetPriority();
 };

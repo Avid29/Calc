@@ -30,6 +30,7 @@
     <ClCompile Include="..\src\src\Parse.cpp" />
     <ClCompile Include="..\src\src\UOperNode.cpp" />
     <ClCompile Include="..\src\src\ValueNode.cpp" />
+    <ClCompile Include="src\VarValueNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\include\BOperNode.h" />
@@ -42,6 +43,7 @@
     <ClInclude Include="..\src\include\Parse.h" />
     <ClInclude Include="..\src\include\UOperNode.h" />
     <ClInclude Include="..\src\include\ValueNode.h" />
+    <ClInclude Include="include\VarValueNode.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

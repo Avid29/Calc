@@ -52,11 +52,3 @@ double FValueNode::AsDouble() {
 string FValueNode::Print() {
 	return to_string(f_value);
 }
-
-/// <summary>
-/// The Priority of a float value is always VALUE
-/// </summary>
-/// <returns>VALUE</returns>
-Priority FValueNode::GetPriority() {
-	return Priority::VALUE;
-}

@@ -7,10 +7,37 @@ using namespace std;
 
 struct Test {
     public:
-        Test(string input, string output) : input_ (input), output_ (output) { }
+        Test(string input, string output) : input_ (input), output_ (output), actual_output ("") { }
 
+        bool Passed() {
+            return output_ == actual_output;
+        }
+
+        string &GetInput() {
+            return input_;
+        }
+
+        string &GetOutput() {
+            return output_;
+        }
+
+        // Gets the result from running
+        string &GetResult() {
+            return actual_output;
+        }
+
+        // Runs test and set result
+        void Run() {
+            actual_output = Parse(input_)->Simplify()->Print();
+        }
+
+
+
+    private:
         string input_;
         string output_;
+
+        string actual_output;
 };
 
 // List of all tests to run
@@ -32,14 +59,18 @@ Test const tests_[9] =
 
 int main()
 {
-    // TODO: Track failed tests
+    int failCount = 0;
 
     // Runs each test and compares result to accepted result
     for (Test test : tests_)
     {
-        cout << "Test: " << test.input_ << " running" << endl;
-        string result = Parse(test.input_)->Simplify()->Print();
-        cout << "Expected: " << test.output_ << ". Got: " << result << endl;
-        cout << "Test " << ((result == test.output_) ? "passed" : "failed") << endl << endl;
+        cout << "Test: " << test.GetInput() << " running" << endl;
+        test.Run();
+        cout << "Expected: " << test.GetOutput() << ". Got: " << test.GetResult() << endl;
+        cout << "Test " << (test.Passed() ? "passed" : "failed") << endl << endl;
+        if (!test.Passed())
+            failCount++;
     }
+
+    cout << failCount << " tests failed!";
 }

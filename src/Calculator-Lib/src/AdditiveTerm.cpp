@@ -11,9 +11,17 @@ AdditiveTerm::AdditiveTerm(ExpNode *node) {
 		// Node is a multiply and it's first child is a numerical value
 		OperNode *operNode = (OperNode*)node;
 		coefficient_ = operNode->GetChild(0)->AsDouble();
-
-		// TODO: Multiple MTerm base
-		base_ = operNode->GetChild(1);
+		
+		if (operNode->ChildCount() > 2) {
+			NOperNode *nOperNode = new NOperNode('*');
+			for (int i = 1; i < operNode->ChildCount(); i++) {
+				nOperNode->AddChild(operNode->GetChild(i));
+			}
+			base_ = nOperNode;
+		}
+		else {
+			base_ = operNode->GetChild(1);
+		}
 		base_string = base_->Print();
 	}
 	else {

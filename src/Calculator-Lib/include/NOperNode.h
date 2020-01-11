@@ -53,6 +53,12 @@ class NOperNode	: public OperNode {
 		ExpNode *GetChild(int index);
 
 		/// <summary>
+		/// Gets amount of children
+		/// </summary>
+		/// <returns>children count</returns>
+		int ChildCount();
+
+		/// <summary>
 		/// Simplifies ExpNode and children
 		/// </summary>
 		/// <returns>The new simplest node possible in place of this</returns>

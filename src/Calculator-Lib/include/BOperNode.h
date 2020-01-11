@@ -45,6 +45,12 @@ class BOperNode : public OperNode {
 		/// </summary>
 		/// <returns>child at index</returns>
 		ExpNode *GetChild(int index);
+
+		/// <summary>
+		/// Gets amount of children
+		/// </summary>
+		/// <returns>children count</returns>
+		int ChildCount();
 		
 		/// <summary>
 		/// Simplifies ExpNode and children

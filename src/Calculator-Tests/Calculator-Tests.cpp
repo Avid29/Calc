@@ -41,7 +41,7 @@ struct Test {
 };
 
 // List of all tests to run
-Test const tests_[10] = 
+Test const tests_[11] = 
 {
     Test("2+5", "7"),
     Test("4*3", "12"),
@@ -52,10 +52,8 @@ Test const tests_[10] =
     Test("(0.1)3(4+5)", "2.7"),
     Test("x^2", "x^2"),
     Test("(0)3(4x+5)", "0"),
-    Test("2x*2x", "4x^2")
-    //Test("3(x+5)(0.1)", "0.3x+1.5"),
-    //Test("3(4x+2y)(0.5)", "6x+3y"),
-    //Test(".5(x+2y)", ".5x+y"),
+    Test("2x*2x", "4x^2"),
+    Test("3x+(5x+6x+8xy)", "14x+8xy")
 };
 
 int main()

@@ -53,6 +53,12 @@ class UOperNode : public OperNode {
 		ExpNode *GetChild(int index);
 
 		/// <summary>
+		/// Gets amount of children
+		/// </summary>
+		/// <returns>children count</returns>
+		int ChildCount();
+
+		/// <summary>
 		/// Check if UOperNode's child_ is set
 		/// </summary>
 		/// <returns>true if child_ is not null</returns>

@@ -43,6 +43,12 @@ class OperNode : public ExpNode {
 		virtual ExpNode *GetChild(int index) = 0;
 
 		/// <summary>
+		/// Gets amount of children
+		/// </summary>
+		/// <returns>children count</returns>
+		virtual int ChildCount() = 0;
+
+		/// <summary>
 		/// Checks if node can be represented as a double
 		/// </summary>
 		/// <returns>true if node can be represented as a double</returns>

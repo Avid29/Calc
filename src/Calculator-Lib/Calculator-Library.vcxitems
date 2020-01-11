@@ -27,6 +27,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)include\UOperNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\ValueNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\VarValueNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\AdditiveTerm.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)src\BOperNode.cpp" />

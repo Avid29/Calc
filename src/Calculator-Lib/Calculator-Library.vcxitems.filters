@@ -42,7 +42,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)include\VarValueNode.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\avid2\source\repos\Calc\src\Calculator-Lib\include\MultiplicativeTerm.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\MultiplicativeTerm.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\AdditiveTerm.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

@@ -38,8 +38,13 @@ class NOperNode	: public OperNode {
 		/// <summary>
 		/// Replaces a child with a different ExpNode
 		// </summary>
-		virtual void ReplaceChild(ExpNode* newNode, ExpNode* oldNode);
+		void ReplaceChild(ExpNode* newNode, ExpNode* oldNode);
 
+		/// <summary>
+		/// Steals children from node
+		/// </summary>
+		/// <returns>coefficient</returns>
+		double InheritChildren(NOperNode *node);
 
 		/// <summary>
 		/// Gets child at index

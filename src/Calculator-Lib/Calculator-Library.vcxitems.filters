@@ -42,6 +42,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)include\VarValueNode.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="C:\Users\avid2\source\repos\Calc\src\Calculator-Lib\include\MultiplicativeTerm.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)src\BOperNode.cpp">
@@ -75,6 +78,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)src\VarValueNode.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\MultiplicativeTerm.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

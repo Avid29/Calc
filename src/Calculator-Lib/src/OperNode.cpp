@@ -15,6 +15,14 @@ bool OperNode::IsNumericalValue() {
 }
 
 /// <summary>
+/// Checks if node is a value
+/// </summary>
+/// <returns>true if node is a value</returns>
+bool OperNode::IsValue() {
+	return false;
+}
+
+/// <summary>
 /// Gets this as a double, if possible
 /// </summary>
 /// <returns>this node as a double value or NAN if not possible</returns>

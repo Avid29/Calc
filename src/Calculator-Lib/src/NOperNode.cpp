@@ -1,13 +1,17 @@
+#include <algorithm>
 #include <memory>
 #include <vector>
 
 #include "../include/ExpNode.h"
 #include "../include/FValueNode.h"
 #include "../include/IValueNode.h"
+#include "../include/MultiplicativeTerm.h"
 #include "../include/NOperNode.h"
 #include "../include/OperNode.h"
 
 using namespace std;
+
+#pragma region Constrcutors
 
 /// <summary>
 /// Creates an NOperNode based on the operator's character
@@ -32,6 +36,10 @@ NOperNode::NOperNode(Operator oper) {
 	oper_ = oper;
 }
 
+#pragma endregion
+
+#pragma region TreeBuilding
+
 /// <summary>
 /// Adds child and set its parent
 /// </summary>
@@ -45,7 +53,7 @@ void NOperNode::AddChild(::ExpNode *node) {
 /// Inserts child between this and its last child
 /// </summary>
 /// <param name="node">this's new child node</param>
-void NOperNode::InsertChild(::OperNode *node) {	
+void NOperNode::InsertChild(::OperNode *node) {
 	// Gets this's last child and remove from children_
 	ExpNode *grand_child = children_.back();
 	children_.pop_back();
@@ -58,7 +66,7 @@ void NOperNode::InsertChild(::OperNode *node) {
 /// <summary>
 /// Replaces a child with a different ExpNode
 /// </summary>
-void NOperNode::ReplaceChild(ExpNode* newNode, ExpNode* oldNode) {
+void NOperNode::ReplaceChild(ExpNode *newNode, ExpNode *oldNode) {
 	for (int i = 0; i < children_.size(); i++) {
 		if (children_[i] == oldNode) {
 			children_[i] = newNode;
@@ -68,6 +76,21 @@ void NOperNode::ReplaceChild(ExpNode* newNode, ExpNode* oldNode) {
 	}
 	// Didn't find oldNode in children_
 	// TODO: Something...
+}
+#pragma endregion
+
+/// <summary>
+/// Gets child at index
+/// </summary>
+/// <returns>child at index</returns>
+ExpNode *NOperNode::GetChild(int index) {
+	return children_[index];
+}
+
+#pragma region Simplify
+
+bool compareMTerm(MultiplicativeTerm *mterm1, MultiplicativeTerm *mterm2) {
+	return mterm1->AsExpNode()->IsNumericalValue();
 }
 
 /// <summary>
@@ -106,7 +129,6 @@ ExpNode *NOperNode::Simplify() {
 		else {
 			newNode->AddChild(node);
 		}
-
 		++i;
 	}
 
@@ -122,14 +144,63 @@ ExpNode *NOperNode::Simplify() {
 		newNode->AddChild(GetValueNode(valueProg));
 	}
 
-	// TODO: Sort children by degree
-
 	if (newNode->children_.size() == 1) {
 		return newNode->children_[0];
 	}
 
+	switch (oper_)
+	{
+		case Operator::ADDITION:
+			// TODO: Simplify A terms
+			break;
+		case Operator::MULTIPLICATION:
+			newNode->SimplifyMTerms();
+			break;
+	}
+
 	return newNode;
 }
+
+void NOperNode::SimplifyMTerms() {
+
+	vector<MultiplicativeTerm*> mTerms;
+	
+	for (ExpNode *child : children_) {
+		// Gets current child as MultiplicativeTerm
+		MultiplicativeTerm *newMTerm = new MultiplicativeTerm(child);
+
+		bool foundBase = false;
+
+		// Compares to previous MultiplicativeTerms
+		if (mTerms.size() != 0) {
+			auto i = begin(mTerms);
+			while (i != end(mTerms))
+			{
+				MultiplicativeTerm *iterMTerm = *i;
+				if (iterMTerm->CompareBase(*newMTerm)) {
+					iterMTerm->AddToExponent(newMTerm);
+					foundBase = true;
+					break;
+				}
+				++i;
+			}
+		}
+
+		// Adds to list if there were no MTerms with shared base
+		if (!foundBase)
+			mTerms.push_back(newMTerm);
+	}
+
+	sort(mTerms.begin(), mTerms.end(), compareMTerm);
+
+	// Resets children then gets children from MTerms
+	children_.clear();
+	for (MultiplicativeTerm *mTerm : mTerms) {
+		children_.push_back(mTerm->AsExpNode());
+	}
+}
+
+#pragma endregion
 
 /// <summary>
 /// Gets the expression tree printed from this down

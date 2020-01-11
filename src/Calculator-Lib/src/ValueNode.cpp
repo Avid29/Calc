@@ -20,6 +20,14 @@ Priority ValueNode::GetPriority()
 }
 
 /// <summary>
+/// Checks if node is a value
+/// </summary>
+/// <returns>true if node is a value</returns>
+bool ValueNode::IsValue() {
+	return true;
+}
+
+/// <summary>
 /// Gets most appropiate ValueNodeType
 /// </summary>
 /// <returns>ValueNode of Value and simplest node type</returns>

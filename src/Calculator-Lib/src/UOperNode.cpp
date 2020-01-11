@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -82,6 +83,20 @@ void UOperNode::ReplaceChild(ExpNode* newNode, ExpNode* oldNode) {
 		AddChild(newNode, true);
 	}
 }
+
+/// <summary>
+/// Gets child at index
+/// </summary>
+/// <returns>child at index</returns>
+ExpNode *UOperNode::GetChild(int index) {
+	if (index == 0) {
+		return child_;
+	}
+	else {
+		throw out_of_range("Only 1 children on binary node. 0 is only index");
+	}
+}
+
 
 /// <summary>
 /// Check if UOperNode's child_ is set

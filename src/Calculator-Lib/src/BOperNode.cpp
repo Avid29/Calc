@@ -88,6 +88,22 @@ void BOperNode::ReplaceChild(ExpNode* newNode, ExpNode* oldNode) {
 }
 
 /// <summary>
+/// Gets child at index
+/// </summary>
+/// <returns>child at index</returns>
+ExpNode *BOperNode::GetChild(int index) {
+	if (index == 0) {
+		return left_child;
+	}
+	else if (index == 1) {
+		return right_child;
+	}
+	else {
+		throw out_of_range("Only 2 children on binary node. 1 is largest index");
+	}
+}
+
+/// <summary>
 /// Simplifies ExpNode and children
 /// </summary>
 /// <returns>The new simplest node possible in place of this</returns>
@@ -99,7 +115,8 @@ ExpNode* BOperNode::Simplify() {
 	ExpNode *simpleLeft = left_child->Simplify();
 	ExpNode *simpleRight = right_child->Simplify();
 
-	if (simpleRight->IsNumericalValue() && simpleRight->AsDouble() == 0) {
+	// Returns 1 because anything to the power of 0 is 1
+	if (oper_ == Operator::POWER && simpleRight->AsDouble() == 0) {
 		return GetValueNode(1);
 	}
 

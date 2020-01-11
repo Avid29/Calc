@@ -39,6 +39,12 @@ class BOperNode : public OperNode {
 		/// Replaces a child with a different ExpNode
 		// </summary>
 		virtual void ReplaceChild(ExpNode* newNode, ExpNode* oldNode);
+
+		/// <summary>
+		/// Gets child at index
+		/// </summary>
+		/// <returns>child at index</returns>
+		ExpNode *GetChild(int index);
 		
 		/// <summary>
 		/// Simplifies ExpNode and children

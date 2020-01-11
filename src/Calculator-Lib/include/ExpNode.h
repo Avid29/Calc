@@ -44,6 +44,8 @@ class ExpNode {
 
 		virtual bool IsNumericalValue() = 0;
 
+		virtual bool IsValue() = 0;
+
 		virtual double AsDouble() = 0;
 
 		virtual ExpNode* Simplify() = 0;

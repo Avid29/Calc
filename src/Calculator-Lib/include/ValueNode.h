@@ -16,6 +16,12 @@ class ValueNode : public ExpNode
 		/// </summary>
 		/// <returns>true if node can be represented as a double</returns>
 		virtual bool IsNumericalValue() = 0;
+		
+		/// <summary>
+		/// Checks if node is a value
+		/// </summary>
+		/// <returns>true if node is a value</returns>
+		bool IsValue();
 
 		/// <summary>
 		/// Gets this as a double, if possible

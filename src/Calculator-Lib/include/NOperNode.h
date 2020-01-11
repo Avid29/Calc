@@ -40,6 +40,13 @@ class NOperNode	: public OperNode {
 		// </summary>
 		virtual void ReplaceChild(ExpNode* newNode, ExpNode* oldNode);
 
+
+		/// <summary>
+		/// Gets child at index
+		/// </summary>
+		/// <returns>child at index</returns>
+		ExpNode *GetChild(int index);
+
 		/// <summary>
 		/// Simplifies ExpNode and children
 		/// </summary>
@@ -52,5 +59,10 @@ class NOperNode	: public OperNode {
 		/// <returns>The expression tree as a string</returns>
 		string Print();
 	private:
+		/// <summary>
+		/// Sorts children into terms and applies properties to simplify them
+		/// </summary>
+		void SimplifyMTerms();
+
 		vector<::ExpNode*> children_;
 };

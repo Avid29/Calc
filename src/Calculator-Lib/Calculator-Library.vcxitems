@@ -15,6 +15,7 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\AdditiveTerm.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\MultiplicativeTerm.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\BOperNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\ExpNode.h" />
@@ -27,9 +28,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)include\UOperNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\ValueNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\VarValueNode.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)src\AdditiveTerm.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\AdditiveTerm.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\BOperNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\ExpNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\ExpTree.cpp" />

@@ -2,12 +2,13 @@
 #include <memory>
 #include <vector>
 
-#include "../include/ExpNode.h"
-#include "../include/FValueNode.h"
-#include "../include/IValueNode.h"
-#include "../include/MultiplicativeTerm.h"
-#include "../include/NOperNode.h"
-#include "../include/OperNode.h"
+#include "include/AdditiveTerm.h"
+#include "include/ExpNode.h"
+#include "include/FValueNode.h"
+#include "include/IValueNode.h"
+#include "include/MultiplicativeTerm.h"
+#include "include/NOperNode.h"
+#include "include/OperNode.h"
 
 using namespace std;
 
@@ -121,7 +122,13 @@ ExpNode *NOperNode::GetChild(int index) {
 
 #pragma region Simplify
 
+bool compareATerm(AdditiveTerm *aterm1, AdditiveTerm *aterm2) {
+	// TODO: Better sorting
+	return !aterm1->AsExpNode()->IsNumericalValue();
+}
+
 bool compareMTerm(MultiplicativeTerm *mterm1, MultiplicativeTerm *mterm2) {
+	// TODO: Better sorting
 	return mterm1->AsExpNode()->IsNumericalValue();
 }
 
@@ -201,7 +208,7 @@ ExpNode *NOperNode::Simplify() {
 	switch (oper_)
 	{
 		case Operator::ADDITION:
-			// TODO: Simplify A terms
+			newNode->SimplifyATerms();
 			break;
 		case Operator::MULTIPLICATION:
 			newNode->SimplifyMTerms();
@@ -211,6 +218,51 @@ ExpNode *NOperNode::Simplify() {
 	return newNode;
 }
 
+/// <summary>
+/// Sorts children into ATerms and applies properties to simplify them
+/// </summary>
+void NOperNode::SimplifyATerms() {
+
+	vector<AdditiveTerm *> aTerms;
+
+	for (ExpNode *child : children_) {
+		// Gets current child as AdditiveTerm
+		AdditiveTerm *newATerm = new AdditiveTerm(child);
+
+		bool foundBase = false;
+
+		// Compares to previous AdditiveTerms
+		if (aTerms.size() != 0) {
+			auto i = begin(aTerms);
+			while (i != end(aTerms))
+			{
+				AdditiveTerm *iterATerm = *i;
+				if (iterATerm->CompareBase(*newATerm)) {
+					iterATerm->AddToCoefficient(newATerm);
+					foundBase = true;
+					break;
+				}
+				++i;
+			}
+		}
+
+		// Adds to list if there were no MTerms with shared base
+		if (!foundBase)
+			aTerms.push_back(newATerm);
+	}
+
+	//sort(aTerms.begin(), aTerms.end(), compareATerm);
+
+	// Resets children then gets children from MTerms
+	children_.clear();
+	for (AdditiveTerm *aTerm : aTerms) {
+		children_.push_back(aTerm->AsExpNode());
+	}
+}
+
+/// <summary>
+/// Sorts children into MTerms and applies properties to simplify them
+/// </summary>
 void NOperNode::SimplifyMTerms() {
 
 	vector<MultiplicativeTerm*> mTerms;

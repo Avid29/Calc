@@ -65,7 +65,12 @@ class NOperNode	: public OperNode {
 		string Print();
 	private:
 		/// <summary>
-		/// Sorts children into terms and applies properties to simplify them
+		/// Sorts children into ATerms and applies properties to simplify them
+		/// </summary>
+		void SimplifyATerms();
+
+		/// <summary>
+		/// Sorts children into MTerms and applies properties to simplify them
 		/// </summary>
 		void SimplifyMTerms();
 

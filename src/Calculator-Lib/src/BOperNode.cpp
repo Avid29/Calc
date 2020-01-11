@@ -1,4 +1,5 @@
 #include <memory>
+#include <stdexcept>
 
 #include "../include/BOperNode.h"
 #include "../include/ExpNode.h"
@@ -97,6 +98,10 @@ ExpNode* BOperNode::Simplify() {
 
 	ExpNode *simpleLeft = left_child->Simplify();
 	ExpNode *simpleRight = right_child->Simplify();
+
+	if (simpleRight->IsNumericalValue() && simpleRight->AsDouble() == 0) {
+		return GetValueNode(1);
+	}
 
 	if (simpleLeft->IsNumericalValue() && simpleRight->IsNumericalValue()) {
 		switch (oper_)

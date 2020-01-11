@@ -120,6 +120,14 @@ ExpNode *NOperNode::GetChild(int index) {
 	return children_[index];
 }
 
+/// <summary>
+/// Gets amount of children
+/// </summary>
+/// <returns>children count</returns>
+int NOperNode::ChildCount() {
+	return children_.size();
+}
+
 #pragma region Simplify
 
 bool compareATerm(AdditiveTerm *aterm1, AdditiveTerm *aterm2) {

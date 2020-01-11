@@ -97,6 +97,15 @@ ExpNode *UOperNode::GetChild(int index) {
 	}
 }
 
+/// <summary>
+/// Gets amount of children
+/// </summary>
+/// <returns>children count</returns>
+int UOperNode::ChildCount() {
+	// 1 if true, 0 if false
+	return child_ != nullptr;
+}
+
 
 /// <summary>
 /// Check if UOperNode's child_ is set

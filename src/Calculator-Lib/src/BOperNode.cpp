@@ -104,6 +104,19 @@ ExpNode *BOperNode::GetChild(int index) {
 }
 
 /// <summary>
+/// Gets amount of children
+/// </summary>
+/// <returns>children count</returns>
+int BOperNode::ChildCount() {
+	if (left_child == nullptr)
+		return 0;
+	else if (right_child == nullptr)
+		return 1;
+	else
+		return 2;
+}
+
+/// <summary>
 /// Simplifies ExpNode and children
 /// </summary>
 /// <returns>The new simplest node possible in place of this</returns>

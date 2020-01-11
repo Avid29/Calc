@@ -47,6 +47,12 @@ class UOperNode : public OperNode {
 		virtual void ReplaceChild(ExpNode* newNode, ExpNode* oldNode);
 
 		/// <summary>
+		/// Gets child at index
+		/// </summary>
+		/// <returns>child at index</returns>
+		ExpNode *GetChild(int index);
+
+		/// <summary>
 		/// Check if UOperNode's child_ is set
 		/// </summary>
 		/// <returns>true if child_ is not null</returns>

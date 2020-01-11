@@ -33,6 +33,7 @@ void ExpNode::InsertAbove(OperNode *node) {
 OperNode *ExpNode::GetParent() {
 	return parent_;
 }
+
 /// <summary>
 /// Checks if this has parent (if it does not, it's the root node
 /// </summary>

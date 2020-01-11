@@ -15,6 +15,7 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\MultiplicativeTerm.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\BOperNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\ExpNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\ExpTree.h" />
@@ -33,6 +34,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)src\ExpTree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\FValueNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\IValueNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\MultiplicativeTerm.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\NOperNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\OperNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Parse.cpp" />

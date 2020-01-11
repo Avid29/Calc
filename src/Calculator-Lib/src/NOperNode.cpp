@@ -77,6 +77,38 @@ void NOperNode::ReplaceChild(ExpNode *newNode, ExpNode *oldNode) {
 	// Didn't find oldNode in children_
 	// TODO: Something...
 }
+
+/// <summary>
+/// Steals children from node
+/// </summary>
+/// <returns>coefficient</returns>
+double NOperNode::InheritChildren(NOperNode *node) {
+	// Running total of value node children
+	double valueProg = 0;
+	if (oper_ == Operator::MULTIPLICATION) {
+		valueProg = 1;
+	}
+	
+	for (ExpNode *child : node->children_) {
+		if (child->IsNumericalValue()) {
+			switch (oper_)
+			{
+				case Operator::ADDITION:
+					valueProg += child->AsDouble();
+					break;
+				case Operator::MULTIPLICATION:
+					valueProg *= child->AsDouble();
+					break;
+			}
+		}
+		else {
+			AddChild(child);
+		}
+	}
+
+	return valueProg;
+}
+
 #pragma endregion
 
 /// <summary>
@@ -127,7 +159,25 @@ ExpNode *NOperNode::Simplify() {
 			}
 		}
 		else {
-			newNode->AddChild(node);
+			if (!node->IsValue() && ((OperNode*)node)->GetOperator() == newNode->GetOperator()) {
+				// newNode is a duplicate operator
+				// inherit children
+				// Returns values
+				double childValues = newNode->InheritChildren((NOperNode*)node);
+
+				switch (oper_)
+				{
+					case Operator::ADDITION:
+						valueProg += childValues;
+						break;
+					case Operator::MULTIPLICATION:
+						valueProg *= childValues;
+						break;
+				}
+			}
+			else {
+				newNode->AddChild(node);
+			}
 		}
 		++i;
 	}

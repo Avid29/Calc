@@ -135,6 +135,11 @@ ExpNode* UOperNode::Simplify() {
 				return GetValueNode(-newNode->child_->AsDouble());
 		}
 	}
+	else if (oper_ == Operator::PARENTHESIS &&
+		parent_ == nullptr || parent_->GetPriority() >= GetPriority()) {
+		// Parenthesis are unnecessary
+		return newNode->child_;
+	}
 	return newNode;
 }
 

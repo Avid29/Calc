@@ -364,6 +364,12 @@ bool ParseState::ParseVar(char c) {
 				tree_->AddNode(new BOperNode('^'));
 				state_ = NOPER;
 				return true;
+			case '(':
+				tree_->AddNode(new NOperNode('*'));
+				tree_->AddNode(new UOperNode('('));
+				state_ = BEGIN;
+				parenthesis_depth++;
+				return true;
 			case ')':
 				parenthesis_depth--;
 				if (parenthesis_depth < 0) {

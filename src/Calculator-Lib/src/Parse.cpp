@@ -159,7 +159,6 @@ bool ParseState::ParseNOper(char c) {
 		return true;
 	}
 	else if (islower(c)) {
-		tree_->AddNode(new NOperNode('*'));
 		tree_->AddNode(new VarValueNode(c));
 		state_ = VARABLE;
 		return true;

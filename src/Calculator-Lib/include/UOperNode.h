@@ -11,6 +11,11 @@ using namespace std;
 class UOperNode : public OperNode {
 	public:
 		/// <summary>
+		/// Copy constructor
+		/// </summary>
+		UOperNode(const UOperNode &other);
+
+		/// <summary>
 		/// Create a UOperNode based on the operator's character
 		/// </summary>
 		/// <param name="c">Character operator</param>
@@ -26,37 +31,32 @@ class UOperNode : public OperNode {
 		/// Set child of operator
 		/// </summary>
 		/// <param name="node">New child node</param>
-		virtual void AddChild(::ExpNode *node);
+		void AddChild(unique_ptr<ExpNode> node) override;
 
 		/// <summary>
 		/// Set child of operator
 		/// </summary>
 		/// <param name="node">New child node</param>
 		/// <param name="overwrite">Overwrite current child if existant</param>
-		virtual void AddChild(::ExpNode *node, bool overwrite);
+		void AddChild(unique_ptr<ExpNode> node, bool overwrite);
 
 		/// <summary>
 		/// Insert child between this and its child
 		/// </summary>
 		/// <param name="node">this's new child node</param>
-		void InsertChild(::OperNode* node);
-
-		/// <summary>
-		/// Replaces a child with a different ExpNode
-		// </summary>
-		virtual void ReplaceChild(ExpNode* newNode, ExpNode* oldNode);
+		void InsertChild(unique_ptr<OperNode> node);
 
 		/// <summary>
 		/// Gets child at index
 		/// </summary>
 		/// <returns>child at index</returns>
-		ExpNode *GetChild(int index);
+		const ExpNode &GetChild(int index) const;
 
 		/// <summary>
 		/// Gets amount of children
 		/// </summary>
 		/// <returns>children count</returns>
-		int ChildCount();
+		int ChildCount() const;
 
 		/// <summary>
 		/// Check if UOperNode's child_ is set
@@ -73,14 +73,19 @@ class UOperNode : public OperNode {
 		/// Simplifies ExpNode and children
 		/// </summary>
 		/// <returns>The new simplest node possible in place of this</returns>
-		ExpNode* Simplify();
+		unique_ptr<ExpNode> Simplify() const override;
 
 		/// <summary>
 		/// Get the expression tree printed from this down
 		/// </summary>
 		/// <returns>The expression tree as a string</returns>
-		string Print();
+		string Print() const override;
 
-	protected:
-		::ExpNode *child_;
+		/// <summary>
+		/// Gets a clone of this
+		/// </summary>
+		unique_ptr<ExpNode> Clone() const override;
+
+	private:
+		unique_ptr<ExpNode> child_;
 };

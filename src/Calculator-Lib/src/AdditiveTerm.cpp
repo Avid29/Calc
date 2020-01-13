@@ -5,43 +5,43 @@
 /// <summary>
 /// Finds AdditiveTerm to represent node
 /// </summary>
-AdditiveTerm::AdditiveTerm(ExpNode *node) {
-	if (!node->IsValue() && ((OperNode*)node)->GetOperator() == Operator::MULTIPLICATION
-		&& ((OperNode*)node)->GetChild(0)->IsNumericalValue()) {
+AdditiveTerm::AdditiveTerm(const ExpNode &node) {
+	const OperNode *operNode = dynamic_cast<const OperNode*>(&node);
+	if (operNode != nullptr && operNode->GetOperator() == Operator::MULTIPLICATION
+		&& operNode->GetChild(0).IsNumericalValue()) {
 		// Node is a multiply and it's first child is a numerical value
-		OperNode *operNode = (OperNode*)node;
-		coefficient_ = operNode->GetChild(0)->AsDouble();
-		
+		coefficient_ = operNode->GetChild(0).AsDouble();
+
 		if (operNode->ChildCount() > 2) {
-			NOperNode *nOperNode = new NOperNode('*');
+			// Makes new multiply node for non-coefficient terms
+			unique_ptr<NOperNode> nOperNode = make_unique<NOperNode>('*');
 			for (int i = 1; i < operNode->ChildCount(); i++) {
-				nOperNode->AddChild(operNode->GetChild(i));
+				nOperNode->AddChild(operNode->GetChild(i).Clone());
 			}
-			base_ = nOperNode;
+			base_ = move(nOperNode);
 		}
 		else {
-			base_ = operNode->GetChild(1);
+			base_ = operNode->GetChild(1).Clone();
 		}
 		base_string = base_->Print();
 	}
 	else {
 		coefficient_ = 1;
-		base_ = node;
+		base_ = node.Clone();
 		base_string = base_->Print();
 	}
 }
-
 /// <summary>
 /// Gets Term as an ExpNode
 /// </summary>
-ExpNode *AdditiveTerm::AsExpNode() {
+unique_ptr<ExpNode> AdditiveTerm::AsExpNode() {
 	if (coefficient_ == 1) {
-		return base_;
+		return move(base_);
 	}
 	else {
-		NOperNode *operNode = new NOperNode('*');
-		operNode->AddChild(GetValueNode(coefficient_));
-		operNode->AddChild(base_);
+		unique_ptr<NOperNode> operNode = make_unique<NOperNode>('*');
+		operNode->AddChild(MakeValueNode(coefficient_));
+		operNode->AddChild(move(base_));
 		return operNode;
 	}
 }

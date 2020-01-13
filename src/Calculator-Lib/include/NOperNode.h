@@ -12,6 +12,11 @@ using namespace std;
 class NOperNode	: public OperNode {
 	public:
 		/// <summary>
+		/// Copy constructor
+		/// </summary>
+		NOperNode(const NOperNode &other);
+
+		/// <summary>
 		/// Creates an NOperNode based on the operator's character
 		/// </summary>
 		/// <param name="c">Character operator</param>
@@ -27,18 +32,18 @@ class NOperNode	: public OperNode {
 		/// Adds child and set its parent
 		/// </summary>
 		/// <param name="node">New child node</param>
-		void AddChild(::ExpNode *node);
+		void AddChild(unique_ptr<ExpNode> node) override;
 
 		/// <summary>
 		/// Inserts child between this and its last child
 		/// </summary>
 		/// <param name="node">this's new child node</param>
-		void InsertChild(::OperNode *node);
+		void InsertChild(unique_ptr<OperNode> node) override;
 
 		/// <summary>
-		/// Replaces a child with a different ExpNode
-		// </summary>
-		void ReplaceChild(ExpNode* newNode, ExpNode* oldNode);
+		/// Inserts child as a child at index
+		/// </summary>
+		void AddChildAt(unique_ptr<ExpNode> node, int index);
 
 		/// <summary>
 		/// Steals children from node
@@ -50,25 +55,30 @@ class NOperNode	: public OperNode {
 		/// Gets child at index
 		/// </summary>
 		/// <returns>child at index</returns>
-		ExpNode *GetChild(int index);
+		const ExpNode &GetChild(int index) const override;
 
 		/// <summary>
 		/// Gets amount of children
 		/// </summary>
 		/// <returns>children count</returns>
-		int ChildCount();
+		int ChildCount() const override;
 
 		/// <summary>
 		/// Simplifies ExpNode and children
 		/// </summary>
 		/// <returns>The new simplest node possible in place of this</returns>
-		ExpNode* Simplify();
+		unique_ptr<ExpNode> Simplify() const override;
 
 		/// <summary>
 		/// Gets the expression tree printed from this down
 		/// </summary>
 		/// <returns>The expression tree as a string</returns>
-		string Print();
+		string Print() const override;
+
+		/// <summary>
+		/// Gets a clone of this
+		/// </summary>
+		unique_ptr<ExpNode> Clone() const override;
 	private:
 		/// <summary>
 		/// Sorts children into ATerms and applies properties to simplify them
@@ -80,5 +90,5 @@ class NOperNode	: public OperNode {
 		/// </summary>
 		void SimplifyMTerms();
 
-		vector<::ExpNode*> children_;
+		vector<unique_ptr<ExpNode>> children_;
 };

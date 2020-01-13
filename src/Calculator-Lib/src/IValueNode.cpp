@@ -17,7 +17,7 @@ IValueNode::IValueNode(int value) : i_value (value) {}
 /// Gets the int value
 /// </summary>
 /// <returns>i_value</returns>
-int IValueNode::GetValue() {
+int IValueNode::GetValue() const {
 	return i_value;
 }
 
@@ -33,7 +33,7 @@ void IValueNode::SetValue(int value) {
 /// Checks if node can be represented as a double
 /// </summary>
 /// <returns>true if node can be represented as a double</return>
-bool IValueNode::IsNumericalValue() {
+bool IValueNode::IsNumericalValue() const {
 	return true;
 }
 
@@ -41,7 +41,7 @@ bool IValueNode::IsNumericalValue() {
 /// Gets this as a double, if possible
 /// </summary>
 /// <returns>this node as a double value or NAN if not possible</returns>
-double IValueNode::AsDouble() {
+double IValueNode::AsDouble() const {
 	return (double)GetValue();
 }
 
@@ -49,6 +49,13 @@ double IValueNode::AsDouble() {
 /// Gets the value as a string
 /// </summary>
 /// <returns>The node as a string</returns>
-string IValueNode::Print() {
+string IValueNode::Print() const {
 	return to_string(i_value); 
+}
+
+/// <summary>
+/// Gets a clone of this
+/// </summary>
+unique_ptr<ExpNode> IValueNode::Clone() const {
+	return make_unique<IValueNode>(*this);
 }

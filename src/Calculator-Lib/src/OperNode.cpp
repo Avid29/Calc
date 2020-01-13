@@ -10,7 +10,7 @@ using namespace std;
 /// Checks if node can be represented as a double
 /// </summary>
 /// <returns>true if node can be represented as a double</returns>
-bool OperNode::IsNumericalValue() {
+bool OperNode::IsNumericalValue() const {
 	return false;
 }
 
@@ -18,7 +18,7 @@ bool OperNode::IsNumericalValue() {
 /// Checks if node is a value
 /// </summary>
 /// <returns>true if node is a value</returns>
-bool OperNode::IsValue() {
+bool OperNode::IsValue() const {
 	return false;
 }
 
@@ -26,7 +26,7 @@ bool OperNode::IsValue() {
 /// Gets this as a double, if possible
 /// </summary>
 /// <returns>this node as a double value or NAN if not possible</returns>
-double OperNode::AsDouble() {
+double OperNode::AsDouble() const {
 	return NAN;
 }
 
@@ -34,7 +34,7 @@ double OperNode::AsDouble() {
 /// Gets the priority based on the oper
 /// </summary>
 /// <returns>Proirity value</returns>
-Priority OperNode::GetPriority() {
+Priority OperNode::GetPriority() const {
 	switch (oper_) {
 		case Operator::ADDITION:
 			return Priority::ADDITION;
@@ -56,7 +56,7 @@ Priority OperNode::GetPriority() {
 /// Gets the OperNode's Operator
 /// </summary>
 /// <returns>oper_</returns>
-Operator OperNode::GetOperator() {
+Operator OperNode::GetOperator() const {
 	return oper_;
 }
 

@@ -9,6 +9,7 @@
 #include "include/MultiplicativeTerm.h"
 #include "include/NOperNode.h"
 #include "include/OperNode.h"
+#include "include/UOperNode.h"
 
 using namespace std;
 
@@ -205,6 +206,10 @@ unique_ptr<ExpNode> NOperNode::Simplify() const {
 			break;
 	}
 
+	if (oper_ == Operator::MULTIPLICATION) {
+		return newNode->Expand();
+	}
+
 	return newNode;
 }
 
@@ -221,6 +226,43 @@ double NOperNode::TryInheritChildren(ExpNode *node) {
 		return InheritChildren(nOperNode);
 	}
 	return -1;
+}
+
+/// <summary>
+/// Gets expanded version of node
+/// </summary>
+/// <returns> Expanded version of this</returns>
+unique_ptr<ExpNode> NOperNode::Expand() {
+	unique_ptr<NOperNode> newANode = make_unique<NOperNode>('+');
+
+	// Check for parenthesis
+	const UOperNode *uOperNode = dynamic_cast<const UOperNode*>(children_.back().get());
+	if (uOperNode != nullptr && uOperNode->GetOperator() == Operator::PARENTHESIS) {
+		// Child is parenthesis
+		// Check for addition
+		const NOperNode &nOperNode = dynamic_cast<const NOperNode &>(uOperNode->GetChild(0));
+		if (nOperNode.GetOperator() == Operator::ADDITION) {
+			// Grand child is addition
+			// Distribute
+			for (auto &child : nOperNode.children_)
+			{
+				unique_ptr<NOperNode> newMNode = make_unique<NOperNode>('*');
+				newMNode->AddChild(child->Clone());
+				for (auto &otherChild : children_)
+				{
+					if (otherChild.get() != uOperNode) {
+						newMNode->AddChild(otherChild->Clone());
+					}
+				}
+				newANode->AddChild(move(newMNode));
+			}
+			return newANode->Simplify();
+		}
+		return make_unique<NOperNode>(*this);
+	}
+	else {
+		return make_unique<NOperNode>(*this);
+	}
 }
 
 /// <summary>

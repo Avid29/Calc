@@ -12,6 +12,11 @@ using namespace std;
 class BOperNode : public OperNode {
 	public:
 		/// <summary>
+		/// Copy constructor
+		/// </summary>
+		BOperNode(const BOperNode &other);
+
+		/// <summary>
 		/// Creates a BOperNode based on the operator's character
 		/// </summary>
 		/// <param name="c">Character operator</param>
@@ -27,43 +32,43 @@ class BOperNode : public OperNode {
 		/// Adds node as a child and set node's parent to this
 		/// </summary>
 		/// <param name="node">New child node</param>
-		virtual void AddChild(::ExpNode *node);
+		void AddChild(unique_ptr<ExpNode> node) override;
 
 		/// <summary>
 		/// Inserts child between this and its last child
 		/// </summary>
 		/// <param name="node">this's new child node</param>
-		virtual void InsertChild(OperNode* node);
-
-		/// <summary>
-		/// Replaces a child with a different ExpNode
-		// </summary>
-		virtual void ReplaceChild(ExpNode* newNode, ExpNode* oldNode);
+		void InsertChild(unique_ptr<OperNode> node) override;
 
 		/// <summary>
 		/// Gets child at index
 		/// </summary>
 		/// <returns>child at index</returns>
-		ExpNode *GetChild(int index);
+		const ExpNode &GetChild(int index) const override;
 
 		/// <summary>
 		/// Gets amount of children
 		/// </summary>
 		/// <returns>children count</returns>
-		int ChildCount();
+		int ChildCount() const override;
 		
 		/// <summary>
-		/// Simplifies ExpNode and children
+		/// Copies and simplifies ExpNode and descendents
 		/// </summary>
-		/// <returns>The new simplest node possible in place of this</returns>
-		ExpNode* Simplify();
+		/// <returns>A simplified expression of this</returns>
+		unique_ptr<ExpNode> Simplify() const override;
 
 		/// <summary>
 		/// Gets the expression tree printed from this down
 		/// </summary>
 		/// <returns>The expression tree as a string</returns>
-		string Print();
-	protected:
-		::ExpNode *left_child;
-		::ExpNode *right_child;
+		string Print() const override;
+
+		/// <summary>
+		/// Gets a clone of this
+		/// </summary>
+		unique_ptr<ExpNode> Clone() const override;
+	private:
+		unique_ptr<ExpNode> left_child;
+		unique_ptr<ExpNode> right_child;
 };

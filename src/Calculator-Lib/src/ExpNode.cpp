@@ -18,15 +18,6 @@ void ExpNode::SetParent(OperNode* node) {
 }
 
 /// <summary>
-/// Sets node as the parent of this and this as the child of node
-/// </summary>
-/// <param name="node">New parent node</param>
-void ExpNode::InsertAbove(OperNode *node) {
-	node->AddChild(this);
-	SetParent(node);
-}
-
-/// <summary>
 /// Gets parent
 /// </summary>
 /// <returns>parent</returns>

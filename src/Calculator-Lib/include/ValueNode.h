@@ -6,44 +6,31 @@ class ValueNode : public ExpNode
 {
 	public:
 		/// <summary>
-		/// Gets the value as a string
-		/// </summary>
-		/// <returns>The node as a string</returns>
-		virtual string Print() = 0;
-		
-		/// <summary>
-		/// Checks if node can be represented as a double
-		/// </summary>
-		/// <returns>true if node can be represented as a double</returns>
-		virtual bool IsNumericalValue() = 0;
-		
-		/// <summary>
 		/// Checks if node is a value
 		/// </summary>
 		/// <returns>true if node is a value</returns>
-		bool IsValue();
-
-		/// <summary>
-		/// Gets this as a double, if possible
-		/// </summary>
-		/// <returns>this node as a double value or NAN if not possible</returns>
-		virtual double AsDouble() = 0;
+		bool IsValue() const override;
 
 		/// <summary>
 		/// Simplifies ExpNode
 		/// </summary>
 		/// <returns>The new simplest node possible in place of this</returns>
-		ExpNode* Simplify();
+		unique_ptr<ExpNode> Simplify() const override;
 
 		/// <summary>
 		/// Gets the priority of the node by operation or type
 		/// </summary>
 		/// <returns>The priority of depth on the tree</returns>
-		Priority GetPriority();
+		Priority GetPriority() const override;
+
+		/// <summary>
+		/// Gets a clone of this
+		/// </summary>
+		virtual unique_ptr<ExpNode> Clone() const = 0;
 };
 
 /// <summary>
 /// Gets most appropiate ValueNodeType
 /// </summary>
 /// <returns>ValueNode of Value and simplest node type</returns>
-ValueNode *GetValueNode(double value);
+unique_ptr<ValueNode> MakeValueNode(double value);

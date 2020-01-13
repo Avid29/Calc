@@ -8,15 +8,15 @@
 /// Finds MultiplicativeTerm to represent node
 /// </summary>
 /// <param name="node">root node of term to convert</param>
-MultiplicativeTerm::MultiplicativeTerm(ExpNode *node) {
-	if (!node->IsValue() && ((OperNode*)node)->GetOperator() == Operator::POWER) {
-		OperNode *operNode = ((OperNode *)node);
-		base_ = operNode->GetChild(0);
-		exponent_ = operNode->GetChild(1);
+MultiplicativeTerm::MultiplicativeTerm(const ExpNode &node) {
+	const OperNode *operNode = dynamic_cast<const OperNode*>(&node);
+	if (operNode != nullptr && operNode->GetOperator() == Operator::POWER) {
+		base_ = operNode->GetChild(0).Clone();
+		exponent_ = operNode->GetChild(1).Clone();
 	} else
 	{
-		base_ = node;
-		exponent_ = GetValueNode(1);
+		base_ = node.Clone();
+		exponent_ = MakeValueNode(1);
 	}
 	base_string = base_->Print();
 }
@@ -24,14 +24,14 @@ MultiplicativeTerm::MultiplicativeTerm(ExpNode *node) {
 /// <summary>
 /// Gets Term as an ExpNode
 /// </summary>
-ExpNode *MultiplicativeTerm::AsExpNode() {
+unique_ptr<ExpNode> MultiplicativeTerm::AsExpNode() {
 	if (exponent_->AsDouble() == 1) {
-		return base_;
+		return move(base_);
 	}
 	else {
-		BOperNode *node = new BOperNode('^');
-		node->AddChild(base_);
-		node->AddChild(exponent_);
+		unique_ptr<BOperNode> node = make_unique<BOperNode>('^');
+		node->AddChild(move(base_));
+		node->AddChild(move(exponent_));
 		return node;
 	}
 }
@@ -40,17 +40,18 @@ ExpNode *MultiplicativeTerm::AsExpNode() {
 /// Adds exponents
 /// </summary>
 void MultiplicativeTerm::AddToExponent(MultiplicativeTerm *other) {
-	if (!exponent_->IsValue() && ((OperNode*)exponent_)->GetOperator() == Operator::ADDITION ) {
+	OperNode *exponentNode = dynamic_cast<OperNode*>(exponent_.get());
+	if (exponentNode != nullptr && exponentNode->GetOperator() == Operator::ADDITION ) {
 		// If exponent_ root is Addition oper
-		((OperNode *)exponent_)->AddChild(other->exponent_);
+		exponentNode->AddChild(move(other->exponent_));
 		exponent_ = exponent_->Simplify();
 	}
 	else {
 		// Makes root addition node for exponent and other exponent
-		NOperNode *node = new NOperNode('+');
-		node->AddChild(exponent_);
-		node->AddChild(other->exponent_);
-		exponent_ = node->Simplify();
+		unique_ptr<NOperNode> node = make_unique<NOperNode>('+');
+		node->AddChild(move(exponent_));
+		node->AddChild(move(other->exponent_));
+		exponent_ = move(node->Simplify());
 	}
 }
 

@@ -23,65 +23,64 @@ class OperNode : public ExpNode {
 		/// Adds child and set its parent
 		/// </summary>
 		/// <param name="node">New child node</param>
-		virtual void AddChild(ExpNode *node) = 0;
+		virtual void AddChild(unique_ptr<ExpNode> node) = 0;
 
 		/// <summary>
 		/// Inserts child between this and its last child
 		/// </summary>
 		/// <param name="node">this's new child node</param>
-		virtual void InsertChild(OperNode *node) = 0;
-
-		/// <summary>
-		/// Replaces a child with a different ExpNode
-		// </summary>
-		virtual void ReplaceChild(ExpNode *newNode, ExpNode *oldNode) = 0;
+		virtual void InsertChild(unique_ptr<OperNode> node) = 0;
 
 		/// <summary>
 		/// Gets child at index
 		/// </summary>
 		/// <returns>child at index</returns>
-		virtual ExpNode *GetChild(int index) = 0;
+		virtual const ExpNode& GetChild(int index) const = 0;
 
 		/// <summary>
 		/// Gets amount of children
 		/// </summary>
 		/// <returns>children count</returns>
-		virtual int ChildCount() = 0;
+		virtual int ChildCount() const = 0;
 
 		/// <summary>
 		/// Checks if node can be represented as a double
 		/// </summary>
 		/// <returns>true if node can be represented as a double</returns>
-		bool IsNumericalValue();
+		bool IsNumericalValue() const;
 
 		/// <summary>
 		/// Checks if node is a value
 		/// </summary>
 		/// <returns>true if node is a value</returns>
-		bool IsValue();
+		bool IsValue() const;
 		
 		/// <summary>
 		/// Gets this as a double, if possible
 		/// </summary>
 		/// <returns>this node as a double value or NAN if not possible</returns>
-		double AsDouble();
+		double AsDouble() const;
 
-		virtual ExpNode* Simplify() = 0;
+		virtual unique_ptr<ExpNode> Simplify() const = 0;
 
-		virtual string Print() = 0;
+		virtual string Print() const = 0;
 
 		/// <summary>
 		/// Gets the priority based on the oper
 		/// </summary>
 		/// <returns>Proirity value</returns>
-		virtual Priority GetPriority();
+		Priority GetPriority() const override;
 
 		/// <summary>
 		/// Gets the OperNode's Operator
 		/// </summary>
 		/// <returns>oper_</returns>
-		Operator GetOperator();
+		Operator GetOperator() const;
 
+		/// <summary>
+		/// Gets a clone of this
+		/// </summary>
+		virtual unique_ptr<ExpNode> Clone() const = 0;
 	protected:
 		Operator oper_;	
 };

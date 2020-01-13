@@ -9,6 +9,15 @@
 using namespace std;
 
 /// <summary>
+/// Copy constructor
+/// </summary>
+BOperNode::BOperNode(const BOperNode &other) {
+	oper_ = other.oper_;
+	AddChild(other.left_child->Clone());
+	AddChild(other.right_child->Clone());
+}
+
+/// <summary>
 /// Creates a BOperNode based on the operator's character
 /// </summary>
 /// <param name="node">Character operator</param>
@@ -32,71 +41,48 @@ BOperNode::BOperNode(Operator oper) : left_child(nullptr), right_child(nullptr) 
 /// Adds node as a child and set node's parent to this
 /// </summary>
 /// <param name="node">New child node</param>
-void BOperNode::AddChild(::ExpNode *node) {
+void BOperNode::AddChild(unique_ptr<ExpNode> node) {
+	node->SetParent(this);
 	if (left_child == nullptr) {
 		// Add 1st child
-		left_child = node;
+		left_child = move(node);
 	} else if (right_child == nullptr) {
 		// Add 2nd child
-		right_child = node;
+		right_child = move(node);
 	} else { 
 		// No more children
 		throw;
 	}
-	node->SetParent(this);
 }
 
 /// <summary>
 /// Inserts child between this and its last child
 /// </summary>
 /// <param name="node">this's new child node</param>
-void BOperNode:: InsertChild(OperNode* node) {
-	ExpNode* grand_child;
-	if (right_child == nullptr) {
-		grand_child = left_child;
-		left_child = nullptr;
+void BOperNode:: InsertChild(unique_ptr<OperNode> node) {
+	unique_ptr<ExpNode> newGrandChild;
+	if (right_child != nullptr) {
+		newGrandChild = move(right_child);
 	}
 	else {
-		grand_child = right_child;
-		right_child = nullptr;
+		newGrandChild = move(left_child);
 	}
 
 	// Set node as parent of grand_child and add node as child
-	grand_child->InsertAbove(node);
-	AddChild(node);
-}
-
-/// <summary>
-/// Replaces a child with a different ExpNode
-/// </summary>
-void BOperNode::ReplaceChild(ExpNode* newNode, ExpNode* oldNode) {
-	if (left_child == oldNode) {
-		// Sets left child to new node and this as newNode's parent
-		left_child = newNode;
-		newNode->SetParent(this);
-		return;
-	}
-	else if (right_child == oldNode) {
-		// Sets right child to new node and this as newNode's parent
-		right_child = newNode;
-		newNode->SetParent(this);
-		return;
-	}
-
-	// Didn't find oldNode in children
-	// TODO: Something...
+	node->AddChild(move(newGrandChild));
+	AddChild(move(node));
 }
 
 /// <summary>
 /// Gets child at index
 /// </summary>
 /// <returns>child at index</returns>
-ExpNode *BOperNode::GetChild(int index) {
+const ExpNode &BOperNode::GetChild(int index) const {
 	if (index == 0) {
-		return left_child;
+		return *left_child;
 	}
 	else if (index == 1) {
-		return right_child;
+		return *right_child;
 	}
 	else {
 		throw out_of_range("Only 2 children on binary node. 1 is largest index");
@@ -107,7 +93,7 @@ ExpNode *BOperNode::GetChild(int index) {
 /// Gets amount of children
 /// </summary>
 /// <returns>children count</returns>
-int BOperNode::ChildCount() {
+int BOperNode::ChildCount() const {
 	if (left_child == nullptr)
 		return 0;
 	else if (right_child == nullptr)
@@ -120,17 +106,17 @@ int BOperNode::ChildCount() {
 /// Simplifies ExpNode and children
 /// </summary>
 /// <returns>The new simplest node possible in place of this</returns>
-ExpNode* BOperNode::Simplify() {
+unique_ptr<ExpNode> BOperNode::Simplify() const {
 
 	// Always returns a clone or replacement
-	BOperNode *newNode = new BOperNode(oper_);
+	unique_ptr<BOperNode> newNode = make_unique<BOperNode>(oper_);
 
-	ExpNode *simpleLeft = left_child->Simplify();
-	ExpNode *simpleRight = right_child->Simplify();
+	unique_ptr<ExpNode> simpleLeft = left_child->Simplify();
+	unique_ptr<ExpNode> simpleRight = right_child->Simplify();
 
 	// Returns 1 because anything to the power of 0 is 1
 	if (oper_ == Operator::POWER && simpleRight->AsDouble() == 0) {
-		return GetValueNode(1);
+		return MakeValueNode(1);
 	}
 
 	if (simpleLeft->IsNumericalValue() && simpleRight->IsNumericalValue()) {
@@ -138,12 +124,12 @@ ExpNode* BOperNode::Simplify() {
 		{
 			case Operator::POWER:
 				// Get a ValueNode for left to the power of right
-				return GetValueNode(pow(simpleLeft->AsDouble(), simpleRight->AsDouble()));
+				return MakeValueNode(pow(simpleLeft->AsDouble(), simpleRight->AsDouble()));
 		}
 	}
 
-	newNode->AddChild(simpleLeft);
-	newNode->AddChild(simpleRight);
+	newNode->AddChild(move(simpleLeft));
+	newNode->AddChild(move(simpleRight));
 
 	return newNode;
 }
@@ -153,7 +139,7 @@ ExpNode* BOperNode::Simplify() {
 /// Gets the expression tree printed from this down
 /// </summary>
 /// <returns>The expression tree as a string</returns>
-string BOperNode::Print() {
+string BOperNode::Print() const {
 	string cache_ = "";
 	cache_ += left_child->Print();
 
@@ -165,4 +151,11 @@ string BOperNode::Print() {
 
 	cache_ += right_child->Print();
 	return cache_;
+}
+
+/// <summary>
+/// Gets a clone of this
+/// </summary>
+unique_ptr<ExpNode> BOperNode::Clone() const {
+	return make_unique<BOperNode>(*this);
 }

@@ -10,6 +10,14 @@
 using namespace std;
 
 /// <summary>
+/// Copy constructor
+/// </summary>
+UOperNode::UOperNode(const UOperNode &other) {
+	oper_ = other.oper_;
+	AddChild(other.child_->Clone());
+}
+
+/// <summary>
 /// Creates a UOperNode based on the operator's character
 /// </summary>
 /// <param name="c">Character operator</param>
@@ -38,59 +46,49 @@ UOperNode::UOperNode(Operator oper) : child_ (nullptr) {
 /// <summary>
 /// Set the child of the node
 /// </summary>
-void UOperNode::AddChild(::ExpNode *node) {
+void UOperNode::AddChild(unique_ptr<ExpNode> node) {
+	node->SetParent(this);
 	if (child_ == nullptr) {
 		// Set child
-		child_ = node;
+		child_ = move(node);
 	}
 	else {
 		// No 2nd child
 		throw;
 	}
-	node->SetParent(this);
 }
 
 /// <summary>
 /// Set the child of the node
 /// </summary>
-void UOperNode::AddChild(::ExpNode *node, bool overwrite) {
+void UOperNode::AddChild(unique_ptr<ExpNode> node, bool overwrite) {
+	node->SetParent(this);
 	if (child_ == nullptr || overwrite) {
 		// Set child
-		child_ = node;
+		child_ = move(node);
 	}
 	else {
 		// No 2nd child
 		throw;
 	}
-	node->SetParent(this);
 }
 
 /// <summary>
 /// Insert child between this and its child
 /// </summary>
 /// <param name="node">this's new child node</param>
-void UOperNode::InsertChild(::OperNode *node) {
-	ExpNode* grand_child = child_;
-	grand_child->InsertAbove(node);
-	AddChild(node, true);
-}
-
-/// <summary>
-/// Replaces a child with a different ExpNode
-// </summary>
-void UOperNode::ReplaceChild(ExpNode* newNode, ExpNode* oldNode) {
-	if (child_ == oldNode) {
-		AddChild(newNode, true);
-	}
+void UOperNode::InsertChild(unique_ptr<OperNode> node) {
+	node->AddChild(move(child_));
+	AddChild(move(node), true);
 }
 
 /// <summary>
 /// Gets child at index
 /// </summary>
 /// <returns>child at index</returns>
-ExpNode *UOperNode::GetChild(int index) {
+const ExpNode &UOperNode::GetChild(int index) const{
 	if (index == 0) {
-		return child_;
+		return *child_;
 	}
 	else {
 		throw out_of_range("Only 1 children on binary node. 0 is only index");
@@ -101,11 +99,9 @@ ExpNode *UOperNode::GetChild(int index) {
 /// Gets amount of children
 /// </summary>
 /// <returns>children count</returns>
-int UOperNode::ChildCount() {
-	// 1 if true, 0 if false
-	return child_ != nullptr;
+int UOperNode::ChildCount() const {
+	return child_ != nullptr ? 1 : 0;
 }
-
 
 /// <summary>
 /// Check if UOperNode's child_ is set
@@ -128,10 +124,10 @@ void UOperNode::RemoveOverride() {
 /// Simplifies ExpNode and children
 /// </summary>
 /// <returns>The new simplest node possible in place of this</returns>
-ExpNode* UOperNode::Simplify() {
+unique_ptr<ExpNode> UOperNode::Simplify() const {
 
 	// Always returns a clone or replacement
-	UOperNode *newNode = new UOperNode(oper_);
+	unique_ptr<UOperNode> newNode = make_unique<UOperNode>(oper_);
 	newNode->AddChild(child_->Simplify());
 	
 	if (newNode->child_->IsNumericalValue()) {
@@ -139,15 +135,15 @@ ExpNode* UOperNode::Simplify() {
 		{
 			case Operator::POSITIVE:
 			case Operator::PARENTHESIS:
-				return GetValueNode(newNode->child_->AsDouble());
+				return MakeValueNode(newNode->child_->AsDouble());
 			case Operator::NEGATIVE:
-				return GetValueNode(-newNode->child_->AsDouble());
+				return MakeValueNode(-newNode->child_->AsDouble());
 		}
 	}
 	else if (oper_ == Operator::PARENTHESIS &&
 		parent_ == nullptr || parent_->GetPriority() >= GetPriority()) {
 		// Parenthesis are unnecessary
-		return newNode->child_;
+		return move(newNode->child_);
 	}
 	return newNode;
 }
@@ -156,7 +152,7 @@ ExpNode* UOperNode::Simplify() {
 /// Get the expression tree printed from this down
 /// </summary>
 /// <returns>The expression tree as a string</returns>
-string UOperNode::Print() {
+string UOperNode::Print() const {
 	// TODO: Swap to sprintf
 	string buffer = "";
 
@@ -177,4 +173,11 @@ string UOperNode::Print() {
 			buffer.append(")");
 	}
 	return buffer;
+}
+
+/// <summary>
+/// Gets a clone of this
+/// </summary>
+unique_ptr<ExpNode> UOperNode::Clone() const {
+	return make_unique<UOperNode>(*this);
 }

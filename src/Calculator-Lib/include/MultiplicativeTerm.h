@@ -2,18 +2,20 @@
 
 #include "OperNode.h"
 
+using namespace std;
+
 class MultiplicativeTerm {
 	public:
 		/// <summary>
 		/// Finds MultiplicativeTerm to represent node
 		/// </summary>
 		/// <param name="node">root node of term to convert</param>
-		MultiplicativeTerm(ExpNode *node);
+		MultiplicativeTerm(const ExpNode &node);
 
 		/// <summary>
 		/// Gets Term as an ExpNode
 		/// </summary>
-		ExpNode *AsExpNode();
+		unique_ptr<ExpNode> AsExpNode();
 
 		/// <summary>
 		/// Adds exponents
@@ -25,10 +27,20 @@ class MultiplicativeTerm {
 		/// </summary>
 		bool CompareBase(const MultiplicativeTerm &other);
 
+		bool operator<(const MultiplicativeTerm &other) const {
+			if (base_->IsNumericalValue()) {
+				return true;
+			}
+			else if (other.base_->IsNumericalValue()) {
+				return false;
+			}
+			return base_string < other.base_string;
+		}
+
 	private:
 		// Used to compare bases
 		string base_string;
 
-		ExpNode *base_;
-		ExpNode *exponent_;
+		unique_ptr<ExpNode> base_;
+		unique_ptr<ExpNode> exponent_;
 };

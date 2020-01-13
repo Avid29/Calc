@@ -70,6 +70,12 @@ class NOperNode	: public OperNode {
 		unique_ptr<ExpNode> Simplify() const override;
 
 		/// <summary>
+		/// Check if node can inhert node from children and insert if possible
+		/// </summary>
+		/// <returns>-1 for failure</returns>
+		double TryInheritChildren(ExpNode *node);
+
+		/// <summary>
 		/// Gets the expression tree printed from this down
 		/// </summary>
 		/// <returns>The expression tree as a string</returns>

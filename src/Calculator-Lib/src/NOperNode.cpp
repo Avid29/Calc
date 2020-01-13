@@ -129,16 +129,6 @@ int NOperNode::ChildCount() const {
 
 #pragma region Simplify
 
-//bool compareATerm(const AdditiveTerm& aterm1, AdditiveTerm& aterm2) {
-//	// TODO: Better sorting
-//	return !aterm1.AsExpNode()->IsNumericalValue();
-//}
-
-//bool compareMTerm(const MultiplicativeTerm &mterm1, const MultiplicativeTerm &mterm2) {
-//	// TODO: Better sorting
-//	
-//}
-
 /// <summary>
 /// Simplifies ExpNode and children
 /// </summary>
@@ -171,13 +161,8 @@ unique_ptr<ExpNode> NOperNode::Simplify() const {
 			}
 		}
 		else {
-			NOperNode *operNode = dynamic_cast<NOperNode*>(node.get());
-			if (operNode != nullptr && operNode->GetOperator() == newNode->GetOperator()) {
-				// newNode is a duplicate operator
-				// inherit children
-				// Returns values
-				double childValues = newNode->InheritChildren(operNode);
-
+			double childValues = newNode->TryInheritChildren(node.get());
+			if (childValues != -1) {
 				switch (oper_)
 				{
 					case Operator::ADDITION:
@@ -221,6 +206,21 @@ unique_ptr<ExpNode> NOperNode::Simplify() const {
 	}
 
 	return newNode;
+}
+
+/// <summary>
+/// Check if node can inhert node from children and insert if possible
+/// </summary>
+/// <returns>-1 for failure</returns>
+double NOperNode::TryInheritChildren(ExpNode *node) {
+	NOperNode *nOperNode = dynamic_cast<NOperNode *>(node);
+	if (nOperNode != nullptr && nOperNode->GetOperator() == GetOperator()) {
+		// newNode is a duplicate operator
+		// inherit children
+		// Returns values
+		return InheritChildren(nOperNode);
+	}
+	return -1;
 }
 
 /// <summary>

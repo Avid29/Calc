@@ -106,9 +106,6 @@ double NOperNode::InheritChildren(NOperNode *node) {
 			AddChild(move(child));
 		}
 	}
-
-	children_.clear();
-
 	return valueProg;
 }
 
@@ -174,12 +171,12 @@ unique_ptr<ExpNode> NOperNode::Simplify() const {
 			}
 		}
 		else {
-			OperNode *operNode = dynamic_cast<OperNode*>(node.get());
+			NOperNode *operNode = dynamic_cast<NOperNode*>(node.get());
 			if (operNode != nullptr && operNode->GetOperator() == newNode->GetOperator()) {
 				// newNode is a duplicate operator
 				// inherit children
 				// Returns values
-				double childValues = newNode->InheritChildren((NOperNode*)node.get());
+				double childValues = newNode->InheritChildren(operNode);
 
 				switch (oper_)
 				{

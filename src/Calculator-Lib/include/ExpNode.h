@@ -24,6 +24,8 @@ class ExpNode {
 	public:
 		ExpNode();
 
+		virtual ~ExpNode() = default;
+
 		/// <summary>
 		/// Sets node as the parent of this
 		/// </summary>

@@ -20,13 +20,13 @@ int main(int argc, char **argv) {
 			cout << "Done!";
 			return 0;
 		}
-		
+
 		// Convert equation to ExpTree
-		ExpTree *exp_tree = Parse(str);
+		unique_ptr<ExpTree> exp_tree = Parse(str);
 		if (exp_tree == nullptr) {
 			cout << "error occured" << endl;
 		}
-		
+
 		// Simplifies ExpTree and conver back to string
 		cout << endl << exp_tree->Simplify()->Print() << endl;
 	}

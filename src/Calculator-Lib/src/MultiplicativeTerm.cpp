@@ -56,8 +56,32 @@ void MultiplicativeTerm::AddToExponent(MultiplicativeTerm *other) {
 }
 
 /// <summary>
+/// Compares sort order of this with with
+/// </summary>
+bool MultiplicativeTerm::operator<(const MultiplicativeTerm &other) const {
+	if (base_->IsNumericalValue()) {
+		// Numbers first
+		return true;
+	}
+	else if (other.base_->IsNumericalValue()) {
+		// Numbers first
+		return false;
+	}
+	else if (base_string[0] == '(') {
+		// Parenthesis last
+		return false;
+	}
+	else if (other.base_string[0] == '(') {
+		// Parenthesis last
+		return true;
+	}
+	// Arbitrary comparsing to confirm order of like terms
+	return base_string < other.base_string;
+}
+
+/// <summary>
 /// Checks if two MultiplicateTerms have the same base
 /// </summary>
-bool MultiplicativeTerm::CompareBase(const MultiplicativeTerm &other) {
-	return base_string == other.base_string;
+bool MultiplicativeTerm::operator==(const MultiplicativeTerm &other) const {
+	return base_string == other.base_string && base_string[0] != '(';
 }

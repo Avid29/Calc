@@ -25,17 +25,12 @@ class MultiplicativeTerm {
 		/// <summary>
 		/// Checks if two MultiplicateTerms have the same base
 		/// </summary>
-		bool CompareBase(const MultiplicativeTerm &other);
+		bool operator==(const MultiplicativeTerm &other) const;
 
-		bool operator<(const MultiplicativeTerm &other) const {
-			if (base_->IsNumericalValue()) {
-				return true;
-			}
-			else if (other.base_->IsNumericalValue()) {
-				return false;
-			}
-			return base_string < other.base_string;
-		}
+		/// <summary>
+		/// Compares sort order of this with with
+		/// </summary>
+		bool operator<(const MultiplicativeTerm &other) const;
 
 	private:
 		// Used to compare bases

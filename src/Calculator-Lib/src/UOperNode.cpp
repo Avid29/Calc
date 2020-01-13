@@ -125,7 +125,6 @@ void UOperNode::RemoveOverride() {
 /// </summary>
 /// <returns>The new simplest node possible in place of this</returns>
 unique_ptr<ExpNode> UOperNode::Simplify() const {
-
 	// Always returns a clone or replacement
 	unique_ptr<UOperNode> newNode = make_unique<UOperNode>(oper_);
 	newNode->AddChild(child_->Simplify());
@@ -141,7 +140,7 @@ unique_ptr<ExpNode> UOperNode::Simplify() const {
 		}
 	}
 	else if (oper_ == Operator::PARENTHESIS &&
-		parent_ == nullptr || parent_->GetPriority() >= GetPriority()) {
+		parent_ == nullptr || parent_->GetPriority() >= child_->GetPriority()) {
 		// Parenthesis are unnecessary
 		return move(newNode->child_);
 	}

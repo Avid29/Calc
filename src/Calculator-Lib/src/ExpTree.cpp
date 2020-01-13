@@ -10,36 +10,41 @@
 
 using namespace std;
 
-ExpTree::ExpTree() : active_node (nullptr), init_value_node (nullptr)  {}
+ExpTree::ExpTree() : active_node (nullptr), root_node (nullptr)  {}
 
 /// <summary>
 /// Adds an OperNode to the tree
 /// </summary>
 /// <param name="node">OperNode to add to tree</param>
-void ExpTree::AddNode(OperNode *node) {
+void ExpTree::AddNode(unique_ptr<OperNode> node) {
+	OperNode *newActive = node.get();
 	if (active_node == nullptr) {
 		// If first node
-		if (init_value_node != nullptr) {
+		if (root_node != nullptr) {
 			// The first node is often a ValueNode
 			// That is the only time a ValueNode will be the active or root node
 			
 			// Makes node the new active_node
-			node->AddChild(init_value_node);
+			node->AddChild(move(root_node));
 		}
-		active_node = node;
+
+		root_node = move(node);
+		active_node = newActive;
 		return;
 	}
-	FindInsertionNode(node);
+
+	FindInsertionNode(*node);
 	
 	// The new node is a lower priority than any node so far
 	// Add new node to top
 	if (node->GetPriority() > active_node->GetPriority()) {
 		if (active_node->GetPriority() == Priority::OVERRIDE) {
-			InsertOperNode(node);
+			InsertOperNode(move(node));
 		}
-		else if (active_node->IsRoot()) {
+		else if (active_node == root_node.get()) {
 			// node is new root
-			active_node->InsertAbove(node);
+			node->AddChild(move(root_node));
+			root_node = move(node);
 		}
 	}
 	else if (IsNary(node->GetOperator()) &&
@@ -50,19 +55,20 @@ void ExpTree::AddNode(OperNode *node) {
 		return;
 	}
 	else {
-		InsertOperNode(node);
+		InsertOperNode(move(node));
 	}
-	active_node = node;
+
+	active_node = newActive;
 }
 
 /// <summary>
 /// Finds insertion point for node and changes active_node to it
 /// </summary>
 /// <param name="node">Node to insert</param>
-void ExpTree::FindInsertionNode(ExpNode *node) {
+void ExpTree::FindInsertionNode(const ExpNode &node) {
 	// Raises active_node till it's of equal or greater priority to node
 	while ((active_node->GetPriority() != Priority::OVERRIDE &&
-		node->GetPriority() > active_node->GetPriority()) &&
+		node.GetPriority() > active_node->GetPriority()) &&
 		!active_node->IsRoot()) {
 		active_node = active_node->GetParent();
 	}
@@ -71,14 +77,14 @@ void ExpTree::FindInsertionNode(ExpNode *node) {
 /// <summary>
 /// Inserts an OperNode differently depending on it's oper type
 /// </summary>
-void ExpTree::InsertOperNode(OperNode* node) {
+void ExpTree::InsertOperNode(unique_ptr<OperNode> node) {
 	if (IsUnary(node->GetOperator())) {
 		// Adds child if Unary
-		active_node->AddChild(node);
+		active_node->AddChild(move(node));
 	}
 	else {
 		// Inserts child for Nary
-		active_node->InsertChild(node);
+		active_node->InsertChild(move(node));
 	}
 }
 
@@ -86,13 +92,13 @@ void ExpTree::InsertOperNode(OperNode* node) {
 /// Adds a ValueNode to the tree
 /// </summary>
 /// <param name="node">ValueNode to add to tree</param>
-void ExpTree::AddNode(ValueNode *node) {
+void ExpTree::AddNode(unique_ptr<ValueNode> node) {
 	if (active_node == nullptr) {
 		// If first node
-		init_value_node = node;
+		root_node = move(node);
 	}
 	else {
-		active_node->AddChild(node);
+		active_node->AddChild(move(node));
 	}
 }
 
@@ -123,46 +129,14 @@ void ExpTree::CloseParenthesis() {
 /// Simplifies ExpNodes and returns root node
 /// </summary>
 /// <returns>New root node</returns>
-ExpNode *ExpTree::Simplify() {
-	if (active_node == nullptr) {
-		return init_value_node;
-	}
-
-	while (!active_node->IsRoot()) {
-		active_node = active_node->GetParent();
-	}
-
-	return active_node->Simplify();
-}
-
-/// <summary>
-/// Simplifies ExpNode and children
-/// </summary>
-/// <returns>ExpTree for chaining</returns>
-ExpTree *ExpTree::SimplifyTree() {
-	while (!active_node->IsRoot()) {
-		active_node = active_node->GetParent();
-	}
-	
-	// TODO: actually store simplify result
-	active_node->Simplify();
-	return this;
+unique_ptr<ExpNode> ExpTree::Simplify() const {
+	return root_node->Simplify();
 }
 
 /// <summary>
 /// Gets the expression tree printed
 /// </summary>
 /// <returns>The expression tree as a string</returns>
-string ExpTree::Print() {
-	// Find root node
-	ExpNode* root_node = active_node;
-	if (root_node == nullptr) {
-		root_node = init_value_node;
-	}
-	while (!root_node->IsRoot())
-	{
-		root_node = root_node->GetParent();
-	}
-
+string ExpTree::Print() const {
 	return root_node->Print();
 }

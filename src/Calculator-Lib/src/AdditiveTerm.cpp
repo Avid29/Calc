@@ -56,6 +56,19 @@ void AdditiveTerm::AddToCoefficient(AdditiveTerm *other) {
 /// <summary>
 /// Checks if two AdditiveTerm have the same base
 /// </summary>
-bool AdditiveTerm::CompareBase(const AdditiveTerm &other) {
+bool AdditiveTerm::operator==(const AdditiveTerm &other) {
 	return base_string == other.base_string;
+}
+
+/// <summary>
+/// Compares sort order of this with with
+/// </summary>
+bool AdditiveTerm::operator<(const AdditiveTerm &other) const {
+	if (base_->IsNumericalValue()) {
+		return false;
+	}
+	else if (other.base_->IsNumericalValue()) {
+		return true;
+	}
+	return base_string < other.base_string;
 }

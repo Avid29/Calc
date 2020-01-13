@@ -25,7 +25,7 @@ class MultiplicativeTerm {
 		/// <summary>
 		/// Checks if two MultiplicateTerms have the same base
 		/// </summary>
-		bool CompareBase(const MultiplicativeTerm &other);
+		bool operator==(const MultiplicativeTerm &other) const;
 
 		/// <summary>
 		/// Compares sort order of this with with

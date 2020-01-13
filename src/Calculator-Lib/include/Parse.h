@@ -46,22 +46,10 @@ class ParseState {
 		bool ParseNextChar(char c);
 
 		/// <summary>
-		/// Add the final ValueNode to the tree
-		/// </summary>
-		void Finalize();
-
-
-		/// <summary>
-		/// Get ExpTree from parser
-		/// </summary>
-		/// <returns>The ExpTree or nullptr if incomplete</returns>
-		ExpTree *GetTree();
-
-		/// <summary>
 		/// Add final ValueNode and return ExpTree
 		/// </summary>
 		/// <returns>The parsed expression tree, or nullptr if invalid</returns>
-		ExpTree *FinalizeAndReturn();
+		unique_ptr<ExpTree> FinalizeAndReturn();
 
 	private:
 
@@ -124,8 +112,19 @@ class ParseState {
 		/// </summary>
 		void CompleteFloat();
 
+		/// <summary>
+		/// Add the final ValueNode to the tree
+		/// </summary>
+		void Finalize();
+
+		/// <summary>
+		/// Get ExpTree from parser
+		/// </summary>
+		/// <returns>The ExpTree or nullptr if incomplete</returns>
+		unique_ptr<ExpTree> GetTree();
+
 		ParserState state_;
-		ExpTree *tree_;
+		unique_ptr<ExpTree> tree_;
 		string numProgress_;
 		int parenthesis_depth;
 };
@@ -135,4 +134,4 @@ class ParseState {
 /// </summary>
 /// <param name="c">Character to parse</param>
 /// <returns>false if the character can't work in BEGIN</returns>
-ExpTree *Parse(const string& equation);
+unique_ptr<ExpTree> Parse(const string& equation);

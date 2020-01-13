@@ -16,7 +16,7 @@
 
 using namespace std;
 
-ParseState::ParseState() : state_ (BEGIN), tree_ (new ExpTree()) { }
+ParseState::ParseState() : state_ (BEGIN), tree_ (make_unique<ExpTree>()) { }
 
 /// <summary>
 /// Parse a string into a tree
@@ -88,18 +88,22 @@ void ParseState::Finalize() {
 /// Get ExpTree from parser
 /// </summary>
 /// <returns>The ExpTree or nullptr if incomplete</returns>
-ExpTree *ParseState::GetTree() {
+unique_ptr<ExpTree> ParseState::GetTree() {
 	if (state_ != DONE) {
 		return nullptr;
 	}
-	return tree_;
+
+	state_ = BEGIN;
+	unique_ptr<ExpTree> result = move(tree_);
+	tree_ = make_unique<ExpTree>();
+	return result;
 }
 
 /// <summary>
 /// Add final ValueNode and return ExpTree
 /// </summary>
 /// <returns>The parsed expression tree, or nullptr if invalid</returns>
-ExpTree *ParseState::FinalizeAndReturn() {
+unique_ptr<ExpTree> ParseState::FinalizeAndReturn() {
 	Finalize();
 	return GetTree();
 }
@@ -464,10 +468,10 @@ void ParseState::CompleteFloat() {
 /// </summary>
 /// <param name="c">Character to parse</param>
 /// <returns>false if the character can't work in BEGIN</returns>
-ExpTree *Parse(const string& equation)
+unique_ptr<ExpTree> Parse(const string& equation)
 {
-	ParseState *state = new ParseState();
-	state->ParseString(equation);
+	ParseState state;
+	state.ParseString(equation);
 
-	return state->FinalizeAndReturn();
+	return state.FinalizeAndReturn();
 }

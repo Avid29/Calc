@@ -280,7 +280,7 @@ void NOperNode::SimplifyATerms() {
 
 		// Compares to previous AdditiveTerms
 		for (AdditiveTerm &iterATerm : aTerms) {
-			if (iterATerm.CompareBase(newATerm)) {
+			if (iterATerm == newATerm) {
 				iterATerm.AddToCoefficient(&newATerm);
 				foundLikeBase = true;
 				break;
@@ -317,7 +317,7 @@ void NOperNode::SimplifyMTerms() {
 
 		// Compares to previous MultiplicativeTerms
 		for (MultiplicativeTerm &iterMTerm : mTerms) {
-			if (iterMTerm.CompareBase(newMTerm)) {
+			if (iterMTerm == newMTerm) {
 				iterMTerm.AddToExponent(&newMTerm);
 				foundLikeBase = true;
 				break;

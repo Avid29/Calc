@@ -82,6 +82,6 @@ bool MultiplicativeTerm::operator<(const MultiplicativeTerm &other) const {
 /// <summary>
 /// Checks if two MultiplicateTerms have the same base
 /// </summary>
-bool MultiplicativeTerm::CompareBase(const MultiplicativeTerm &other) {
+bool MultiplicativeTerm::operator==(const MultiplicativeTerm &other) const {
 	return base_string == other.base_string && base_string[0] != '(';
 }

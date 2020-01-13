@@ -24,17 +24,12 @@ class AdditiveTerm {
 		/// <summary>
 		/// Checks if two AdditiveTerm have the same base
 		/// </summary>
-		bool CompareBase(const AdditiveTerm &other);
+		bool operator==(const AdditiveTerm &other);
 
-		bool operator<(const AdditiveTerm &other) const {
-			if (base_->IsNumericalValue()) {
-				return false;
-			}
-			else if (other.base_->IsNumericalValue()) {
-				return true;
-			}
-			return base_string < other.base_string;
-		}
+		/// <summary>
+		/// Compares sort order of this with with
+		/// </summary>
+		bool operator<(const AdditiveTerm &other) const;
 
 	private:
 		// Used to compare bases

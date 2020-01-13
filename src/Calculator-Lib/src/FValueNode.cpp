@@ -18,7 +18,7 @@ FValueNode::FValueNode(double value) : f_value (value) {}
 /// Gets the float value as a double
 /// </summary>
 /// <returns>f_value</returns>
-double FValueNode::GetValue() {
+double FValueNode::GetValue() const {
 	return f_value;
 }
 
@@ -34,7 +34,7 @@ void FValueNode::SetValue(double value) {
 /// Checks if node can be represented as a double
 /// </summary>
 /// <returns>true if node can be represented as a double</returns>
-bool FValueNode::IsNumericalValue() {
+bool FValueNode::IsNumericalValue() const {
 	return true;
 }
 
@@ -42,7 +42,7 @@ bool FValueNode::IsNumericalValue() {
 /// Gets this as a double, if possible
 /// </summary>
 /// <returns>this node as a double value or NAN if not possible</returns>
-double FValueNode::AsDouble() {
+double FValueNode::AsDouble() const{
 	return GetValue();
 }
 
@@ -50,8 +50,15 @@ double FValueNode::AsDouble() {
 /// Gets the value as a string
 /// </summary>
 /// <returns>The node as a string</returns>
-string FValueNode::Print() {
+string FValueNode::Print() const {
 	ostringstream oss;
 	oss << f_value;
 	return oss.str();
+}
+
+/// <summary>
+/// Gets a clone of this
+/// </summary>
+unique_ptr<ExpNode> FValueNode::Clone() const {
+	return make_unique<FValueNode>(*this);
 }

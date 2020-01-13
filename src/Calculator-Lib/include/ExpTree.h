@@ -19,13 +19,13 @@ class ExpTree {
 		/// Adds an OperNode to the tree
 		/// </summary>
 		/// <param name="node">OperNode to add to tree</pararm>
-		void AddNode(OperNode *node);
+		void AddNode(unique_ptr<OperNode> node);
 
 		/// <summary>
 		/// Adds an ValueNode to the tree
 		/// </summary>
 		/// <param name="node">ValueNode to add to tree</pararm>
-		void AddNode(ValueNode *node);
+		void AddNode(unique_ptr<ValueNode> node);
 
 		/// <summary>
 		/// Finds the closest UNRESOLVED_PARENTHESIS and change it to PARENTHESIS. 
@@ -37,33 +37,29 @@ class ExpTree {
 		/// Simplifies ExpNodes and returns root node
 		/// </summary>
 		/// <returns>New root node</returns>
-		ExpNode *Simplify();
+		unique_ptr<ExpNode> Simplify() const;
 
 		/// <summary>
 		/// Simplifies ExpNode and children
 		/// </summary>
-		ExpTree *SimplifyTree();
+		unique_ptr<ExpTree> SimplifyTree();
 
-		string Print(); 
+		string Print() const; 
 
 	private:
 		/// <summary>
 		/// Finds insertion point for node and changes active_node to it
 		/// </summary>
 		/// <param name="node">Node to insert</param>
-		void FindInsertionNode(ExpNode *node);
+		void FindInsertionNode(const ExpNode &node);
 
 		/// <summary>
 		/// Inserts an OperNode differently depending on it's oper type
 		/// </summary>
-		void InsertOperNode(OperNode *node);
+		void InsertOperNode(unique_ptr<OperNode> node);
 
+		// Tracks the last insertion point during parsing.
 		OperNode *active_node;
 
-		// The first node is often a value node.
-		//This has to be handled seperatly to avoid unsafe casting
-		ValueNode* init_value_node;
-
-
-		// TODO: Better memory management: unique_ptr<ExpNode> root_node;
+		unique_ptr<ExpNode> root_node;
 };

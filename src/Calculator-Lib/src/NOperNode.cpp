@@ -15,6 +15,17 @@ using namespace std;
 #pragma region Constrcutors
 
 /// <summary>
+/// Copy constructor
+/// </summary>
+NOperNode::NOperNode(const NOperNode &other) {
+	oper_ = other.oper_;
+	for (const unique_ptr<ExpNode> &child : other.children_)
+	{
+		AddChild(child->Clone());
+	}
+}
+
+/// <summary>
 /// Creates an NOperNode based on the operator's character
 /// </summary>
 /// <param name="node">Character operator</param>
@@ -45,38 +56,27 @@ NOperNode::NOperNode(Operator oper) {
 /// Adds child and set its parent
 /// </summary>
 /// <param name="node">New child node</param>
-void NOperNode::AddChild(::ExpNode *node) {
-	children_.push_back(node);
+void NOperNode::AddChild(unique_ptr<ExpNode> node) {
 	node->SetParent(this);
+	children_.push_back(move(node));
 }
 
 /// <summary>
 /// Inserts child between this and its last child
 /// </summary>
 /// <param name="node">this's new child node</param>
-void NOperNode::InsertChild(::OperNode *node) {
+void NOperNode::InsertChild(unique_ptr<OperNode> node) {
 	// Gets this's last child and remove from children_
-	ExpNode *grand_child = children_.back();
+	node->AddChild(move(children_.back()));
 	children_.pop_back();
-
-	// Sets node as parent of grand_child and add node as child
-	grand_child->InsertAbove(node);
-	AddChild(node);
+	AddChild(move(node));
 }
 
 /// <summary>
-/// Replaces a child with a different ExpNode
+/// Inserts child as a child at index
 /// </summary>
-void NOperNode::ReplaceChild(ExpNode *newNode, ExpNode *oldNode) {
-	for (int i = 0; i < children_.size(); i++) {
-		if (children_[i] == oldNode) {
-			children_[i] = newNode;
-			newNode->SetParent(this);
-			return;
-		}
-	}
-	// Didn't find oldNode in children_
-	// TODO: Something...
+void NOperNode::AddChildAt(unique_ptr<ExpNode> node, int index) {
+	children_.insert(children_.begin() + index, move(node));
 }
 
 /// <summary>
@@ -90,7 +90,7 @@ double NOperNode::InheritChildren(NOperNode *node) {
 		valueProg = 1;
 	}
 	
-	for (ExpNode *child : node->children_) {
+	for (auto &child : node->children_) {
 		if (child->IsNumericalValue()) {
 			switch (oper_)
 			{
@@ -103,10 +103,9 @@ double NOperNode::InheritChildren(NOperNode *node) {
 			}
 		}
 		else {
-			AddChild(child);
+			AddChild(move(child));
 		}
 	}
-
 	return valueProg;
 }
 
@@ -116,35 +115,35 @@ double NOperNode::InheritChildren(NOperNode *node) {
 /// Gets child at index
 /// </summary>
 /// <returns>child at index</returns>
-ExpNode *NOperNode::GetChild(int index) {
-	return children_[index];
+const ExpNode &NOperNode::GetChild(int index) const {
+	return *children_[index];
 }
 
 /// <summary>
 /// Gets amount of children
 /// </summary>
 /// <returns>children count</returns>
-int NOperNode::ChildCount() {
+int NOperNode::ChildCount() const {
 	return children_.size();
 }
 
 #pragma region Simplify
 
-bool compareATerm(AdditiveTerm *aterm1, AdditiveTerm *aterm2) {
-	// TODO: Better sorting
-	return !aterm1->AsExpNode()->IsNumericalValue();
-}
+//bool compareATerm(const AdditiveTerm& aterm1, AdditiveTerm& aterm2) {
+//	// TODO: Better sorting
+//	return !aterm1.AsExpNode()->IsNumericalValue();
+//}
 
-bool compareMTerm(MultiplicativeTerm *mterm1, MultiplicativeTerm *mterm2) {
-	// TODO: Better sorting
-	return mterm1->AsExpNode()->IsNumericalValue();
-}
+//bool compareMTerm(const MultiplicativeTerm &mterm1, const MultiplicativeTerm &mterm2) {
+//	// TODO: Better sorting
+//	
+//}
 
 /// <summary>
 /// Simplifies ExpNode and children
 /// </summary>
 /// <returns>The new simplest node possible in place of this</returns>
-ExpNode *NOperNode::Simplify() {
+unique_ptr<ExpNode> NOperNode::Simplify() const {
 	// Running total of value node children
 	double valueProg = 0;
 	if (oper_ == Operator::MULTIPLICATION) {
@@ -152,14 +151,12 @@ ExpNode *NOperNode::Simplify() {
 	}
 
 	// Always returns a clone or replacement
-	NOperNode *newNode = new NOperNode(oper_);
+	unique_ptr<NOperNode> newNode = make_unique<NOperNode>(oper_);
 
 	// Iterates whole vector
-	auto i = std::begin(children_);
-	while (i != std::end(children_)) {
-		ExpNode *node = *i;
+	for (auto &child : children_) {
 		// Doesn't update node in children_
-		node = node->Simplify();
+		unique_ptr<ExpNode> node = child->Simplify();
 
 		if (node->IsNumericalValue()) {
 			// Add node value to total value progress
@@ -174,11 +171,12 @@ ExpNode *NOperNode::Simplify() {
 			}
 		}
 		else {
-			if (!node->IsValue() && ((OperNode*)node)->GetOperator() == newNode->GetOperator()) {
+			NOperNode *operNode = dynamic_cast<NOperNode*>(node.get());
+			if (operNode != nullptr && operNode->GetOperator() == newNode->GetOperator()) {
 				// newNode is a duplicate operator
 				// inherit children
 				// Returns values
-				double childValues = newNode->InheritChildren((NOperNode*)node);
+				double childValues = newNode->InheritChildren(operNode);
 
 				switch (oper_)
 				{
@@ -191,26 +189,25 @@ ExpNode *NOperNode::Simplify() {
 				}
 			}
 			else {
-				newNode->AddChild(node);
+				newNode->AddChild(move(node));
 			}
 		}
-		++i;
 	}
 
 	if (oper_ == Operator::MULTIPLICATION && valueProg == 0) {
 		// Because one multiplicative term is zero
 		// The enitre node is zero
-		return GetValueNode(0);
+		return MakeValueNode(0);
 	}
 
 	if ((oper_ == Operator::ADDITION && valueProg != 0) ||
 		(oper_ == Operator::MULTIPLICATION && valueProg != 1)) {
 		// valueProg is not the default, so it should be added
-		newNode->AddChild(GetValueNode(valueProg));
+		newNode->AddChild(MakeValueNode(valueProg));
 	}
 
 	if (newNode->children_.size() == 1) {
-		return newNode->children_[0];
+		return move(newNode->children_[0]);
 	}
 
 	switch (oper_)
@@ -231,40 +228,35 @@ ExpNode *NOperNode::Simplify() {
 /// </summary>
 void NOperNode::SimplifyATerms() {
 
-	vector<AdditiveTerm *> aTerms;
+	vector<AdditiveTerm> aTerms;
 
-	for (ExpNode *child : children_) {
+	for (const unique_ptr<ExpNode> &child : children_) {
 		// Gets current child as AdditiveTerm
-		AdditiveTerm *newATerm = new AdditiveTerm(child);
+		AdditiveTerm newATerm(*child);
 
-		bool foundBase = false;
+		bool foundLikeBase = false;
 
 		// Compares to previous AdditiveTerms
-		if (aTerms.size() != 0) {
-			auto i = begin(aTerms);
-			while (i != end(aTerms))
-			{
-				AdditiveTerm *iterATerm = *i;
-				if (iterATerm->CompareBase(*newATerm)) {
-					iterATerm->AddToCoefficient(newATerm);
-					foundBase = true;
-					break;
-				}
-				++i;
+		for (AdditiveTerm &iterATerm : aTerms) {
+			if (iterATerm.CompareBase(newATerm)) {
+				iterATerm.AddToCoefficient(&newATerm);
+				foundLikeBase = true;
+				break;
 			}
 		}
 
-		// Adds to list if there were no MTerms with shared base
-		if (!foundBase)
-			aTerms.push_back(newATerm);
+		// Adds to list if there were no ATerms with shared base
+		if (!foundLikeBase) {
+			aTerms.push_back(move(newATerm));
+		}
 	}
 
 	//sort(aTerms.begin(), aTerms.end(), compareATerm);
 
-	// Resets children then gets children from MTerms
+	// Resets children then gets children from ATerms
 	children_.clear();
-	for (AdditiveTerm *aTerm : aTerms) {
-		children_.push_back(aTerm->AsExpNode());
+	for (AdditiveTerm &aTerm : aTerms) {
+		children_.push_back(aTerm.AsExpNode());
 	}
 }
 
@@ -273,40 +265,34 @@ void NOperNode::SimplifyATerms() {
 /// </summary>
 void NOperNode::SimplifyMTerms() {
 
-	vector<MultiplicativeTerm*> mTerms;
+	vector<MultiplicativeTerm> mTerms;
 	
-	for (ExpNode *child : children_) {
+	for (auto &child : children_) {
 		// Gets current child as MultiplicativeTerm
-		MultiplicativeTerm *newMTerm = new MultiplicativeTerm(child);
+		MultiplicativeTerm newMTerm(*child);
 
-		bool foundBase = false;
+		bool foundLikeBase = false;
 
 		// Compares to previous MultiplicativeTerms
-		if (mTerms.size() != 0) {
-			auto i = begin(mTerms);
-			while (i != end(mTerms))
-			{
-				MultiplicativeTerm *iterMTerm = *i;
-				if (iterMTerm->CompareBase(*newMTerm)) {
-					iterMTerm->AddToExponent(newMTerm);
-					foundBase = true;
-					break;
-				}
-				++i;
+		for (MultiplicativeTerm &iterMTerm : mTerms) {
+			if (iterMTerm.CompareBase(newMTerm)) {
+				iterMTerm.AddToExponent(&newMTerm);
+				foundLikeBase = true;
+				break;
 			}
 		}
 
 		// Adds to list if there were no MTerms with shared base
-		if (!foundBase)
-			mTerms.push_back(newMTerm);
+		if (!foundLikeBase)
+			mTerms.push_back(move(newMTerm));
 	}
 
-	sort(mTerms.begin(), mTerms.end(), compareMTerm);
+	sort(mTerms.begin(), mTerms.end());
 
 	// Resets children then gets children from MTerms
 	children_.clear();
-	for (MultiplicativeTerm *mTerm : mTerms) {
-		children_.push_back(mTerm->AsExpNode());
+	for (MultiplicativeTerm &mTerm : mTerms) {
+		children_.push_back(mTerm.AsExpNode());
 	}
 }
 
@@ -316,9 +302,9 @@ void NOperNode::SimplifyMTerms() {
 /// Gets the expression tree printed from this down
 /// </summary>
 /// <returns>The expression tree as a string</returns>
-string NOperNode::Print() {
+string NOperNode::Print() const {
 	string cache_;
-	for (int i = 0; i < children_.size(); i++) {
+	for (unsigned int i = 0; i < children_.size(); i++) {
 		if (i != 0) {
 			switch (oper_) {
 				case Operator::ADDITION:
@@ -329,8 +315,14 @@ string NOperNode::Print() {
 					break;
 			}
 		}
-		ExpNode *node = children_[i];
-		cache_ += node->Print();	
+		cache_ += children_[i]->Print();
 	}
 	return cache_;
+}
+
+/// <summary>
+/// Gets a clone of this
+/// </summary>
+unique_ptr<ExpNode> NOperNode::Clone() const {
+	return make_unique<NOperNode>(*this);
 }

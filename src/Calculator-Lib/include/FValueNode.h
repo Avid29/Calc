@@ -15,7 +15,7 @@ class FValueNode : public ValueNode {
 		/// Gets the float value as a double
 		/// </summary>
 		/// <returns>f_value</returns>
-		double GetValue();
+		double GetValue() const;
 
 		/// <summary>
 		/// Set the float value
@@ -27,19 +27,24 @@ class FValueNode : public ValueNode {
 		/// Checks if node can be represented as a double
 		/// </summary>
 		/// <returns>true if node can be represented as a double</returns>
-		bool IsNumericalValue();
+		bool IsNumericalValue() const override;
 
 		/// <summary>
 		/// Gets this as a double, if possible
 		/// </summary>
 		/// <returns>this node as a double value or NAN if not possible</returns>
-		double AsDouble();
+		double AsDouble() const override;
 
 		/// <summary>
 		/// Gets the value as a string
 		/// </summary>
 		/// <returns>The node as a string</returns>
-		string Print();
+		string Print() const override;
+
+		/// <summary>
+		/// Gets a clone of this
+		/// </summary>
+		unique_ptr<ExpNode> Clone() const override;
 
 	private:
 		double f_value;

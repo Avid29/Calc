@@ -4,6 +4,7 @@
 #include "../include/BOperNode.h"
 #include "../include/ExpNode.h"
 #include "../include/FValueNode.h"
+#include "../include/NOperNode.h"
 #include "../include/OperNode.h"
 
 using namespace std;
@@ -126,6 +127,18 @@ unique_ptr<ExpNode> BOperNode::Simplify() const {
 				// Get a ValueNode for left to the power of right
 				return MakeValueNode(pow(simpleLeft->AsDouble(), simpleRight->AsDouble()));
 		}
+	}
+
+	if (oper_ == Operator::POWER &&
+		simpleRight->IsNumericalValue() &&
+		simpleRight->AsDouble() == floor(simpleRight->AsDouble())) {
+		// if oper is Power and if right child is an int 
+		// Expand to multiply n times
+		unique_ptr<NOperNode> nOperNode = make_unique<NOperNode>('*');
+		for (int i = 0; i < simpleRight->AsDouble(); i++) {
+			nOperNode->AddChild(simpleLeft->Clone());
+		}
+		return nOperNode->Simplify();
 	}
 
 	newNode->AddChild(move(simpleLeft));

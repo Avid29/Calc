@@ -355,7 +355,7 @@ string NOperNode::Print() const {
 						!(uOperNode != nullptr &&
 							uOperNode->GetOperator() != Operator::NEGATIVE) :
 						children_[i]->AsDouble() > 0) {
-						// If child is not unary minus
+						// If child is not unary minus or a negative value
 						cache_ += "+";
 					}
 					break;

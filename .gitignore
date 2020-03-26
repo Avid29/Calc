@@ -18,3 +18,8 @@
 /src/Calculator-Tests/x64/Debug
 /src/Calculator-Tests/x64/Release
 /src/Calculator-Tests/Release
+/Calculator-Tests/Debug
+/src/Calculator-Tests-Old/.vs/Calculator-Tests-Old/v16
+/src/Calculator-Tests-Old/Release
+/src/Calculator-Tests-Old/x64
+/src/Calculator-Tests-Old/Debug

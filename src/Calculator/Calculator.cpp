@@ -22,14 +22,16 @@ int main(int argc, char **argv) {
 		}
 
 		// Convert equation to ExpTree
-		unique_ptr<ExpTree> exp_tree;
-		int result = Parse(str, exp_tree);
-		if (exp_tree == nullptr) {
-			cout << "Error occured at char " << result+1 << endl;
+		ParseState* parser = new ParseState();
+		parser->ParseString(str);
+		parser->Finalize();
+		if (!parser->IsDone()) {
+			parser->PrintError();
 		}
 		else {
 			// Simplifies ExpTree and conver back to string
-			cout << endl << exp_tree->Simplify()->Print() << endl;
+			cout << endl << parser->GetTree()->Simplify()->Print() << endl;
 		}
+		delete parser;
 	}
 }

@@ -22,7 +22,12 @@ enum class ParserState {
 	FLOAT, // Or decimal
 	VARABLE,
 	CLOSED_PARENTHESIS,
-	DONE // Finalized() ran
+	DONE, // Finalized() ran
+
+	// Errors
+	UNKNOWN_ERROR,
+	CANNOT_PROCEED,
+	UNPAIRED_PARENTHESIS
 };
 
 class ParseState {
@@ -46,11 +51,26 @@ class ParseState {
 		bool ParseNextChar(char c);
 
 		/// <summary>
+		/// Get ExpTree from parser
+		/// </summary>
+		/// <returns>The ExpTree or nullptr if incomplete</returns>
+		unique_ptr<ExpTree> GetTree();
+
+		/// <summary>
+		/// Add the final ValueNode to the tree
+		/// </summary>
+		void Finalize();
+
+		/// <summary>
 		/// Add final ValueNode and return ExpTree
 		/// </summary>
 		/// <returns>The parsed expression tree, or nullptr if invalid</returns>
 		unique_ptr<ExpTree> FinalizeAndReturn();
 
+		// Prints the error if the parser is in error state
+		void PrintError();
+
+		bool IsDone() const;
 	private:
 
 		/// <summary>
@@ -112,21 +132,12 @@ class ParseState {
 		/// </summary>
 		void CompleteFloat();
 
-		/// <summary>
-		/// Add the final ValueNode to the tree
-		/// </summary>
-		void Finalize();
-
-		/// <summary>
-		/// Get ExpTree from parser
-		/// </summary>
-		/// <returns>The ExpTree or nullptr if incomplete</returns>
-		unique_ptr<ExpTree> GetTree();
-
 		ParserState state_;
+		string input_;
 		unique_ptr<ExpTree> tree_;
 		string numProgress_;
 		int parenthesis_depth;
+		int position_;
 };
 
 /// <summary>

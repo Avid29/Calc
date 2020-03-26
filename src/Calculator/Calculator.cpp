@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
 		}
 		else {
 			// Simplifies ExpTree and conver back to string
-			cout << endl << parser->GetTree()->Simplify()->Print() << endl;
+			cout << parser->GetTree()->Simplify()->Print() << endl;
 		}
 		delete parser;
 	}

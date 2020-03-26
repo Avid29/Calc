@@ -96,6 +96,7 @@ void ParseState::Finalize() {
 
 	if (parenthesis_depth != 0) {
 		state_ = ParserState::UNPAIRED_PARENTHESIS;
+		position_ = -1;
 		return;
 	}
 
@@ -191,13 +192,10 @@ bool ParseState::ParseBegin(char c) {
 				parenthesis_depth++;
 				state_ = ParserState::BEGIN;
 				return true;
-			case '*':
-			case '^':
-			case ')':
-				return false;
 		}
 	}
 
+	state_ = ParserState::CANNOT_BEGIN;
 	return false;
 }
 

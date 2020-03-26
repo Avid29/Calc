@@ -9,6 +9,11 @@ string ParseErrorToString(ParserState error, string& input, int positon) {
 				<< "' cannot proceed '" << input[positon - 1] << "'.";
 			break;
 
+		case ParserState::CANNOT_BEGIN:
+			stringStream << "'" << input[0]
+				<< "' cannot begin the equation.";
+			break;
+
 		case ParserState::UNPAIRED_PARENTHESIS:
 			stringStream << "Parenthesis unbalanced.";
 			break;

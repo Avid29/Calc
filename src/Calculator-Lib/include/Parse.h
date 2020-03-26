@@ -12,7 +12,7 @@
 using namespace std;
 
 // The parse state is based on the previous character the parser saw
-enum ParserState {
+enum class ParserState {
 	BEGIN,
 	// Nary (or binary) Operator
 	NOPER,

@@ -16,7 +16,7 @@
 
 using namespace std;
 
-ParseState::ParseState() : state_ (BEGIN), tree_ (make_unique<ExpTree>()) { }
+ParseState::ParseState() : state_(ParserState::BEGIN), tree_(make_unique<ExpTree>()), parenthesis_depth(0) { }
 
 /// <summary>
 /// Parse a string into a tree
@@ -47,19 +47,19 @@ int ParseState::ParseString(const string& equation)
 bool ParseState::ParseNextChar(char c) {
 	// Split the parse operations into different functions based on current state
 	switch (state_) {
-		case BEGIN:
+		case ParserState::BEGIN:
 			return ParseBegin(c);
-		case NOPER:
+		case ParserState::NOPER:
 			return ParseNOper(c);
-		case UOPER:
+		case ParserState::UOPER:
 			return ParseUOper(c);
-		case INT:
+		case ParserState::INT:
 			return ParseInt(c);
-		case FLOAT:
+		case ParserState::FLOAT:
 			return ParseFloat(c);
-		case VARABLE:
+		case ParserState::VARABLE:
 			return ParseVar(c);
-		case CLOSED_PARENTHESIS:
+		case ParserState::CLOSED_PARENTHESIS:
 			return ParseClosedPar(c);
 		default:
 			return false;	
@@ -72,16 +72,16 @@ bool ParseState::ParseNextChar(char c) {
 void ParseState::Finalize() {
 
 	switch (state_) {
-		case INT:
+		case ParserState::INT:
 			CompleteInt();
 			break;
-		case FLOAT:
+		case ParserState::FLOAT:
 			CompleteFloat();
 			break;
 		default:
 			break;
 	}
-	state_ = DONE;
+	state_ = ParserState::DONE;
 }
 
 /// <summary>
@@ -89,11 +89,11 @@ void ParseState::Finalize() {
 /// </summary>
 /// <returns>The ExpTree or nullptr if incomplete</returns>
 unique_ptr<ExpTree> ParseState::GetTree() {
-	if (state_ != DONE) {
+	if (state_ != ParserState::DONE) {
 		return nullptr;
 	}
 
-	state_ = BEGIN;
+	state_ = ParserState::BEGIN;
 	unique_ptr<ExpTree> result = move(tree_);
 	tree_ = make_unique<ExpTree>();
 	return result;
@@ -117,12 +117,12 @@ bool ParseState::ParseBegin(char c) {
 	if (isdigit(c)) {
 		// Save int progress and declare INT state
 		numProgress_ = c;
-		state_ = INT;
+		state_ = ParserState::INT;
 		return true;
 	}
 	else if (islower(c)) {
 		tree_->AddNode(make_unique<VarValueNode>(c));
-		state_ = VARABLE;
+		state_ = ParserState::VARABLE;
 		return true;
 	}
 	else {
@@ -132,12 +132,12 @@ bool ParseState::ParseBegin(char c) {
 			// Unary -
 			case '-':
 				tree_->AddNode(make_unique<UOperNode>(c));
-				state_ = UOPER;
+				state_ = ParserState::UOPER;
 				return true;
 			case '(':
 				tree_->AddNode(make_unique<UOperNode>(c));
 				parenthesis_depth++;
-				state_ = BEGIN;
+				state_ = ParserState::BEGIN;
 				return true;
 			case '*':
 			case '^':
@@ -159,12 +159,12 @@ bool ParseState::ParseNOper(char c) {
 	if (isdigit(c)) {
 		// Save int progress and declare INT state
 		numProgress_ = c;
-		state_ = INT;
+		state_ = ParserState::INT;
 		return true;
 	}
 	else if (islower(c)) {
 		tree_->AddNode(make_unique<VarValueNode>(c));
-		state_ = VARABLE;
+		state_ = ParserState::VARABLE;
 		return true;
 	}
 	else {
@@ -172,12 +172,12 @@ bool ParseState::ParseNOper(char c) {
 			case '+':
 			case '-':
 				tree_->AddNode(make_unique<UOperNode>(c));
-				state_ = UOPER;
+				state_ = ParserState::UOPER;
 				return true;
 			case '(':
 				tree_->AddNode(make_unique<UOperNode>(c));
 				parenthesis_depth++;
-				state_ = BEGIN;
+				state_ = ParserState::BEGIN;
 				return true;
 		}
 	}
@@ -193,13 +193,13 @@ bool ParseState::ParseUOper(char c) {
 	if (isdigit(c)) {
 		// Saves int progress and declares INT state
 		numProgress_ = c;
-		state_ = INT;
+		state_ = ParserState::INT;
 		return true;
 	}
 	else if (islower(c)) {
 		tree_->AddNode(make_unique<NOperNode>('*'));
 		tree_->AddNode(make_unique<VarValueNode>(c));
-		state_ = VARABLE;
+		state_ = ParserState::VARABLE;
 		return true;
 	}
 	else {
@@ -208,12 +208,12 @@ bool ParseState::ParseUOper(char c) {
 			case '+':
 			case '-':
 				tree_->AddNode(make_unique<UOperNode>(c));
-				state_ = UOPER;
+				state_ = ParserState::UOPER;
 				return true;
 			case '(':
 				tree_->AddNode(make_unique<UOperNode>(c));
 				parenthesis_depth++;
-				state_ = BEGIN;
+				state_ = ParserState::BEGIN;
 				return true;
 		}
 	}
@@ -237,7 +237,7 @@ bool ParseState::ParseInt(char c) {
 		CompleteInt();
 		tree_->AddNode(make_unique<NOperNode>('*'));
 		tree_->AddNode(make_unique<VarValueNode>(c));
-		state_ = VARABLE;
+		state_ = ParserState::VARABLE;
 		return true;
 	} 
 	else {
@@ -246,14 +246,14 @@ bool ParseState::ParseInt(char c) {
 			case '*':
 				CompleteInt();
 				tree_->AddNode(make_unique<NOperNode>(c));
-				state_ = NOPER;
+				state_ = ParserState::NOPER;
 				return true;
 			case '-':
 				CompleteInt();
 				// Makes addition operator and adds a unary minus
 				tree_->AddNode(make_unique<NOperNode>('+'));
 				tree_->AddNode(make_unique<UOperNode>('-'));
-				state_ = UOPER;
+				state_ = ParserState::UOPER;
 				return true;
 			case '^':
 				CompleteInt();
@@ -265,7 +265,7 @@ bool ParseState::ParseInt(char c) {
 				tree_->AddNode(make_unique<NOperNode>('*'));
 				tree_->AddNode(make_unique<UOperNode>(c));
 				parenthesis_depth++;
-				state_ = BEGIN;
+				state_ = ParserState::BEGIN;
 				return true;
 			case ')':
 				CompleteInt();
@@ -275,11 +275,11 @@ bool ParseState::ParseInt(char c) {
 					return false;
 				}
 				tree_->CloseParenthesis();
-				state_ = CLOSED_PARENTHESIS;
+				state_ = ParserState::CLOSED_PARENTHESIS;
 				return true;
 			case '.':
 				numProgress_.push_back(c);
-				state_ = FLOAT;
+				state_ = ParserState::FLOAT;
 				return true;
 		}
 	}
@@ -301,7 +301,7 @@ bool ParseState::ParseFloat(char c) {
 		CompleteFloat();
 		tree_->AddNode(make_unique<NOperNode>('*'));
 		tree_->AddNode(make_unique<VarValueNode>(c));
-		state_ = VARABLE;
+		state_ = ParserState::VARABLE;
 		return true;
 	}
 	else {
@@ -310,19 +310,19 @@ bool ParseState::ParseFloat(char c) {
 			case '*':
 				CompleteFloat();
 				tree_->AddNode(make_unique<NOperNode>(c));
-				state_ = NOPER;
+				state_ = ParserState::NOPER;
 				return true;
 			case '-':
 				CompleteFloat();
 				// Add addition operator then unary minus
 				tree_->AddNode(make_unique<NOperNode>(c));
 				tree_->AddNode(make_unique<UOperNode>('-'));
-				state_ = UOPER;
+				state_ = ParserState::UOPER;
 				return true;
 			case '^':
 				CompleteFloat();
 				tree_->AddNode(make_unique<BOperNode>('^'));
-				state_ = NOPER;
+				state_ = ParserState::NOPER;
 				return true;
 			case ')':
 				CompleteFloat();
@@ -332,7 +332,7 @@ bool ParseState::ParseFloat(char c) {
 					return false;
 				}
 				tree_->CloseParenthesis();
-				state_ = CLOSED_PARENTHESIS;
+				state_ = ParserState::CLOSED_PARENTHESIS;
 				return true;
 		}
 	}
@@ -348,7 +348,7 @@ bool ParseState::ParseVar(char c) {
 	if (islower(c)) {
 		tree_->AddNode(make_unique<NOperNode>('*'));
 		tree_->AddNode(make_unique<VarValueNode>(c));
-		state_ = VARABLE;
+		state_ = ParserState::VARABLE;
 		return true;
 	}
 	else {
@@ -356,22 +356,22 @@ bool ParseState::ParseVar(char c) {
 			case '+':
 			case '*':
 				tree_->AddNode(make_unique<NOperNode>(c));
-				state_ = NOPER;
+				state_ = ParserState::NOPER;
 				return true;
 			case '-':
 				// Add addition operator then unary minus
 				tree_->AddNode(make_unique<NOperNode>(c));
 				tree_->AddNode(make_unique<UOperNode>('-'));
-				state_ = UOPER;
+				state_ = ParserState::UOPER;
 				return true;
 			case '^':
 				tree_->AddNode(make_unique<BOperNode>('^'));
-				state_ = NOPER;
+				state_ = ParserState::NOPER;
 				return true;
 			case '(':
 				tree_->AddNode(make_unique<NOperNode>('*'));
 				tree_->AddNode(make_unique<UOperNode>(c));
-				state_ = BEGIN;
+				state_ = ParserState::BEGIN;
 				parenthesis_depth++;
 				return true;
 			case ')':
@@ -381,7 +381,7 @@ bool ParseState::ParseVar(char c) {
 					return false;
 				}
 				tree_->CloseParenthesis();
-				state_ = CLOSED_PARENTHESIS;
+				state_ = ParserState::CLOSED_PARENTHESIS;
 				return true;
 		}
 	}
@@ -400,7 +400,7 @@ bool ParseState::ParseClosedPar(char c) {
 
 		// Saves int progress and declares INT state
 		numProgress_ = c;
-		state_ = INT;
+		state_ = ParserState::INT;
 		return true;
 	}
 	else {
@@ -409,23 +409,23 @@ bool ParseState::ParseClosedPar(char c) {
 			case '+':
 			case '*':
 				tree_->AddNode(move(node));
-				state_ = NOPER;
+				state_ = ParserState::NOPER;
 				return true;
 			case '-':
 				// Makes addition operator and adds a unary minus
 				tree_->AddNode(make_unique<NOperNode>(c));
 				tree_->AddNode(make_unique<UOperNode>('-'));
-				state_ = UOPER;
+				state_ = ParserState::UOPER;
 				return true;
 			case '^':
 				tree_->AddNode(make_unique<BOperNode>(c));
-				state_ = NOPER;
+				state_ = ParserState::NOPER;
 				return true;
 			case '(':
 				tree_->AddNode(make_unique<NOperNode>('*'));
 				tree_->AddNode(make_unique<UOperNode>(c));
 				parenthesis_depth++;
-				state_ = BEGIN;
+				state_ = ParserState::BEGIN;
 				return true;
 			case ')':
 				parenthesis_depth--;
@@ -434,7 +434,7 @@ bool ParseState::ParseClosedPar(char c) {
 					return false;
 				}
 				tree_->CloseParenthesis();
-				state_ = CLOSED_PARENTHESIS;
+				state_ = ParserState::CLOSED_PARENTHESIS;
 				return true;
 		}
 		return false;

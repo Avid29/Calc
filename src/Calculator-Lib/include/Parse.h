@@ -27,7 +27,8 @@ enum class ParserState {
 	// Errors
 	UNKNOWN_ERROR,
 	CANNOT_PROCEED,
-	UNPAIRED_PARENTHESIS
+	UNPAIRED_PARENTHESIS,
+	ALREADY_FLOAT,
 };
 
 class ParseState {

@@ -233,6 +233,8 @@ bool ParseState::ParseNOper(char c) {
 				return true;
 		}
 	}
+	
+	state_ = ParserState::CANNOT_PROCEED;
 	return false;
 }
 
@@ -269,6 +271,8 @@ bool ParseState::ParseUOper(char c) {
 				return true;
 		}
 	}
+
+	state_ = ParserState::CANNOT_PROCEED;
 	return false;
 }
 
@@ -336,6 +340,7 @@ bool ParseState::ParseInt(char c) {
 		}
 	}
 
+	state_ = ParserState::CANNOT_PROCEED;
 	return false;
 }
 
@@ -388,6 +393,14 @@ bool ParseState::ParseFloat(char c) {
 				return true;
 		}
 	}
+
+	if (c == '.') {
+		state_ = ParserState::ALREADY_FLOAT;
+	}
+	else {
+		state_ = ParserState::CANNOT_PROCEED;
+	}
+
 	return false;
 }
 
@@ -438,11 +451,7 @@ bool ParseState::ParseVar(char c) {
 		}
 	}
 
-	if (isdigit(c))
-	{
-		state_ = ParserState::CANNOT_PROCEED;
-	}
-
+	state_ = ParserState::CANNOT_PROCEED;
 	return false;
 }
 
@@ -495,6 +504,8 @@ bool ParseState::ParseClosedPar(char c) {
 				state_ = ParserState::CLOSED_PARENTHESIS;
 				return true;
 		}
+
+		state_ = ParserState::CANNOT_PROCEED;
 		return false;
 	}
 }

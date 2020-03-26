@@ -134,4 +134,4 @@ class ParseState {
 /// </summary>
 /// <param name="c">Character to parse</param>
 /// <returns>false if the character can't work in BEGIN</returns>
-unique_ptr<ExpTree> Parse(const string& equation);
+int Parse(const string& equation, unique_ptr<ExpTree>& tree);

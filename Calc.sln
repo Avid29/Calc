@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Calculator-Tests-Old", "tes
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\Calculator-Lib\Calculator-Library.vcxitems*{322cd08f-a6be-472d-b32a-55d51d684bf8}*SharedItemsImports = 4
+		src\Calculator-Lib\Calculator-Library.vcxitems*{7c346d6f-ac8a-4ae8-b8a8-44150d5363ad}*SharedItemsImports = 4
 		src\Calculator-Lib\Calculator-Library.vcxitems*{dd6886ce-7c6e-40a2-8b55-ad3e356bc8c5}*SharedItemsImports = 4
 		src\Calculator-Lib\Calculator-Library.vcxitems*{fea44308-338d-4ff7-b3b7-efd2960278d2}*SharedItemsImports = 9
 	EndGlobalSection

@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "include/ExpTree.h"
-#include "include/Parse.h"
+#include "../../src/Calculator-Lib/include/ExpNode.h"
+#include "../../src/Calculator-Lib/include/Parse.h"
 
 using namespace std;
 
@@ -28,7 +28,14 @@ struct Test {
 
         // Runs test and set result
         void Run() {
-            actual_output = Parse(input_)->Simplify()->Print();
+            /*unique_ptr<ExpTree> tree;
+            int result = Parse(input_, tree);
+            if (result == -1) {
+                actual_output = tree->Simplify()->Print();
+            }
+            else {
+                actual_output == "error at char: " + result;
+            }*/
         }
 
 

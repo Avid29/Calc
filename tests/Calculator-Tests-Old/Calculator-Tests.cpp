@@ -28,14 +28,14 @@ struct Test {
 
         // Runs test and set result
         void Run() {
-            /*unique_ptr<ExpTree> tree;
+            unique_ptr<ExpTree> tree;
             int result = Parse(input_, tree);
             if (result == -1) {
                 actual_output = tree->Simplify()->Print();
             }
             else {
                 actual_output == "error at char: " + result;
-            }*/
+            }
         }
 
 

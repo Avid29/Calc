@@ -10,13 +10,19 @@
 #include "../include/OperNode.h"
 #include "../include/NOperNode.h"
 #include "../include/Parse.h"
+#include "../include/ParserErrors.h"
 #include "../include/ValueNode.h"
 #include "../include/VarValueNode.h"
 #include "../include/UOperNode.h"
 
 using namespace std;
 
-ParseState::ParseState() : state_(ParserState::BEGIN), tree_(make_unique<ExpTree>()), parenthesis_depth(0) { }
+ParseState::ParseState() :
+	state_(ParserState::BEGIN),
+	tree_(make_unique<ExpTree>()),
+	parenthesis_depth(0),
+	position_(-1),
+	input_("") { }
 
 /// <summary>
 /// Parse a string into a tree
@@ -26,15 +32,15 @@ ParseState::ParseState() : state_(ParserState::BEGIN), tree_(make_unique<ExpTree
 int ParseState::ParseString(const string& equation)
 {
 	// Parse each character, but count position
-	int i = 0;
 	for (char c : equation) {
 		if (!ParseNextChar(c))
 		{
-			return i;
+			input_ = equation;
+			return position_;
 		}
-		i++;
 	}
 
+	position_ = -1;
 	// Success
 	return -1;
 }
@@ -45,6 +51,9 @@ int ParseState::ParseString(const string& equation)
 /// <param name="c">Character to parse</param>
 /// <returns>false if the character can't work in that position</returns>
 bool ParseState::ParseNextChar(char c) {
+	input_ += c;
+	position_++;
+
 	// Split the parse operations into different functions based on current state
 	switch (state_) {
 		case ParserState::BEGIN:
@@ -70,6 +79,9 @@ bool ParseState::ParseNextChar(char c) {
 /// Add the final ValueNode to the tree
 /// </summary>
 void ParseState::Finalize() {
+	if (state_ >= ParserState::DONE) {
+		return;
+	}
 
 	switch (state_) {
 		case ParserState::INT:
@@ -81,7 +93,25 @@ void ParseState::Finalize() {
 		default:
 			break;
 	}
-	state_ = ParserState::DONE;
+
+	if (parenthesis_depth != 0) {
+		state_ = ParserState::UNPAIRED_PARENTHESIS;
+		return;
+	}
+
+	switch (state_)
+	{
+		case ParserState::INT:
+		case ParserState::FLOAT:
+		case ParserState::VARABLE:
+		case ParserState::CLOSED_PARENTHESIS:
+			state_ = ParserState::DONE;
+			return;
+
+		default:
+			state_ = ParserState::UNKNOWN_ERROR;
+			return;
+	}
 }
 
 /// <summary>
@@ -106,6 +136,28 @@ unique_ptr<ExpTree> ParseState::GetTree() {
 unique_ptr<ExpTree> ParseState::FinalizeAndReturn() {
 	Finalize();
 	return GetTree();
+}
+
+void ParseState::PrintError() {
+	// The parser is not in an error state
+	if (state_ <= ParserState::DONE)
+	{
+		return;
+	}
+
+	cout << ParseErrorToString(state_, input_, position_);
+	if (position_ != -1) {
+		cout << input_ << endl;
+		for (int i = 0; i < input_.length(); i++)
+		{
+			printf(i == position_ ? "^" : "~");
+		}
+		cout << endl;
+	}
+}
+
+bool ParseState::IsDone() const {
+	return state_ == ParserState::DONE;
 }
 
 /// <summary>
@@ -385,6 +437,12 @@ bool ParseState::ParseVar(char c) {
 				return true;
 		}
 	}
+
+	if (isdigit(c))
+	{
+		state_ = ParserState::CANNOT_PROCEED;
+	}
+
 	return false;
 }
 

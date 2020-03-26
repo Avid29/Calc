@@ -25,6 +25,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)include\NOperNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\OperNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\Parse.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\ParserErrors.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\UOperNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\ValueNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)include\VarValueNode.h" />
@@ -40,6 +41,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)src\NOperNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\OperNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Parse.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\ParserErrors.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\UOperNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\ValueNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\VarValueNode.cpp" />

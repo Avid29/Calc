@@ -48,6 +48,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)include\VarValueNode.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\ParserErrors.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)src\BOperNode.cpp">
@@ -87,6 +90,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)src\AdditiveTerm.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\ParserErrors.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

@@ -314,6 +314,7 @@ bool ParseState::ParseInt(char c) {
 				// Makes multiplication operator and adds a unary reciprocal
 				tree_->AddNode(make_unique<NOperNode>('*'));
 				tree_->AddNode(make_unique<UOperNode>(c));
+				state_ = ParserState::UOPER;
 				return true;
 			case '^':
 				CompleteInt();
@@ -385,6 +386,7 @@ bool ParseState::ParseFloat(char c) {
 				// Makes multiplication operator and adds a unary reciprocal
 				tree_->AddNode(make_unique<NOperNode>('*'));
 				tree_->AddNode(make_unique<UOperNode>(c));
+				state_ = ParserState::UOPER;
 				return true;
 			case '^':
 				CompleteFloat();
@@ -443,6 +445,7 @@ bool ParseState::ParseVar(char c) {
 				// Makes multiplication operator and adds a unary reciprocal
 				tree_->AddNode(make_unique<NOperNode>('*'));
 				tree_->AddNode(make_unique<UOperNode>(c));
+				state_ = ParserState::UOPER;
 				return true;
 			case '^':
 				tree_->AddNode(make_unique<BOperNode>('^'));
@@ -502,6 +505,7 @@ bool ParseState::ParseClosedPar(char c) {
 				// Makes multiplication operator and adds a unary reciprocal
 				tree_->AddNode(make_unique<NOperNode>('*'));
 				tree_->AddNode(make_unique<UOperNode>(c));
+				state_ = ParserState::UOPER;
 				return true;
 			case '^':
 				tree_->AddNode(make_unique<BOperNode>(c));

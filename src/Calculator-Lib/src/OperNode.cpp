@@ -69,6 +69,7 @@ Operator OperNode::GetOperator() const {
 bool IsUnary(Operator oper) {
 	return oper == Operator::POSITIVE ||
 		oper == Operator::NEGATIVE ||
+		oper == Operator::RECIPROCAL ||
 		oper == Operator::UNRESOLVED_PARENTHESIS ||
 		oper == Operator::PARENTHESIS;
 }

@@ -13,6 +13,7 @@ enum class Operator {
 	POWER,
 	POSITIVE,
 	NEGATIVE,
+	RECIPROCAL,
 	UNRESOLVED_PARENTHESIS, // Parenthesis
 	PARENTHESIS // Closed Parenthesis
 };

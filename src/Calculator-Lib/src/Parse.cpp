@@ -309,6 +309,12 @@ bool ParseState::ParseInt(char c) {
 				tree_->AddNode(make_unique<UOperNode>('-'));
 				state_ = ParserState::UOPER;
 				return true;
+			case '/':
+				CompleteInt();
+				// Makes multiplication operator and adds a unary reciprocal
+				tree_->AddNode(make_unique<NOperNode>('*'));
+				tree_->AddNode(make_unique<UOperNode>(c));
+				return true;
 			case '^':
 				CompleteInt();
 				tree_->AddNode(make_unique<BOperNode>(c));
@@ -374,6 +380,12 @@ bool ParseState::ParseFloat(char c) {
 				tree_->AddNode(make_unique<UOperNode>('-'));
 				state_ = ParserState::UOPER;
 				return true;
+			case '/':
+				CompleteFloat();
+				// Makes multiplication operator and adds a unary reciprocal
+				tree_->AddNode(make_unique<NOperNode>('*'));
+				tree_->AddNode(make_unique<UOperNode>(c));
+				return true;
 			case '^':
 				CompleteFloat();
 				tree_->AddNode(make_unique<BOperNode>('^'));
@@ -427,6 +439,11 @@ bool ParseState::ParseVar(char c) {
 				tree_->AddNode(make_unique<UOperNode>('-'));
 				state_ = ParserState::UOPER;
 				return true;
+			case '/':
+				// Makes multiplication operator and adds a unary reciprocal
+				tree_->AddNode(make_unique<NOperNode>('*'));
+				tree_->AddNode(make_unique<UOperNode>(c));
+				return true;
 			case '^':
 				tree_->AddNode(make_unique<BOperNode>('^'));
 				state_ = ParserState::NOPER;
@@ -469,18 +486,22 @@ bool ParseState::ParseClosedPar(char c) {
 		return true;
 	}
 	else {
-		unique_ptr<NOperNode> node = make_unique<NOperNode>(c);
 		switch (c) {
 			case '+':
 			case '*':
-				tree_->AddNode(move(node));
+				tree_->AddNode(make_unique<NOperNode>(c));
 				state_ = ParserState::NOPER;
 				return true;
 			case '-':
 				// Makes addition operator and adds a unary minus
-				tree_->AddNode(make_unique<NOperNode>(c));
-				tree_->AddNode(make_unique<UOperNode>('-'));
+				tree_->AddNode(make_unique<NOperNode>('+'));
+				tree_->AddNode(make_unique<UOperNode>(c));
 				state_ = ParserState::UOPER;
+				return true;
+			case '/':
+				// Makes multiplication operator and adds a unary reciprocal
+				tree_->AddNode(make_unique<NOperNode>('*'));
+				tree_->AddNode(make_unique<UOperNode>(c));
 				return true;
 			case '^':
 				tree_->AddNode(make_unique<BOperNode>(c));

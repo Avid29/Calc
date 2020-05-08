@@ -186,8 +186,9 @@ unique_ptr<ExpNode> NOperNode::Simplify() const {
 		return MakeValueNode(0);
 	}
 
-	if ((oper_ == Operator::ADDITION && valueProg != 0) ||
-		(oper_ == Operator::MULTIPLICATION && valueProg != 1)) {
+	if (newNode->children_.size() == 0 ||
+		((oper_ == Operator::ADDITION && valueProg != 0) ||
+		(oper_ == Operator::MULTIPLICATION && valueProg != 1))) {
 		// valueProg is not the default, so it should be added
 		newNode->AddChild(MakeValueNode(valueProg));
 	}

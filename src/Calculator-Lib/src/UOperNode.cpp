@@ -32,6 +32,9 @@ UOperNode::UOperNode(char c) : child_ (nullptr) {
 		case '(':
 			oper_ = Operator::UNRESOLVED_PARENTHESIS;
 			break;
+		case '/':
+			oper_ = Operator::RECIPROCAL;
+			break;
 	}
 }
 
@@ -137,6 +140,8 @@ unique_ptr<ExpNode> UOperNode::Simplify() const {
 				return MakeValueNode(newNode->child_->AsDouble());
 			case Operator::NEGATIVE:
 				return MakeValueNode(-newNode->child_->AsDouble());
+			case Operator::RECIPROCAL:
+				return MakeValueNode(1 / newNode->child_->AsDouble());
 		}
 	}
 	else if (oper_ == Operator::PARENTHESIS &&

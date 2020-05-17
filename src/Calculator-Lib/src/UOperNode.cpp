@@ -31,6 +31,7 @@ UOperNode::UOperNode(char c) : child_ (nullptr) {
 			oper_ = Operator::NEGATIVE;
 			break;
 		case '(':
+		case '[':
 			oper_ = Operator::UNRESOLVED_PARENTHESIS;
 			break;
 		case '/':

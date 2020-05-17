@@ -190,6 +190,34 @@ string UOperNode::Print() const {
 			buffer.append("(");
 			buffer.append(child_->Print());
 			buffer.append(")");
+		case Operator::SINE:
+			buffer.append("sin(");
+			buffer.append(child_->Print());
+			buffer.append(")");
+		case Operator::COSINE:
+			buffer.append("cos(");
+			buffer.append(child_->Print());
+			buffer.append(")");
+		case Operator::TANGENT:
+			buffer.append("tan(");
+			buffer.append(child_->Print());
+			buffer.append(")");
+		case Operator::COSECANT:
+			buffer.append("csc(");
+			buffer.append(child_->Print());
+			buffer.append(")");
+		case Operator::SECANT:
+			buffer.append("sec(");
+			buffer.append(child_->Print());
+			buffer.append(")");
+		case Operator::COTANGENT:
+			buffer.append("cot(");
+			buffer.append(child_->Print());
+			buffer.append(")");
+		case Operator::DERIVATIVE:
+			buffer.append("[");
+			buffer.append(child_->Print());
+			buffer.append("]'");
 	}
 	return buffer;
 }

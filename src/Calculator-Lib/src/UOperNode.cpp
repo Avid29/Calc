@@ -194,34 +194,42 @@ string UOperNode::Print() const {
 			buffer.append("(");
 			buffer.append(child_->Print());
 			buffer.append(")");
+			break;
 		case Operator::SINE:
 			buffer.append("sin(");
 			buffer.append(child_->Print());
 			buffer.append(")");
+			break;
 		case Operator::COSINE:
 			buffer.append("cos(");
 			buffer.append(child_->Print());
 			buffer.append(")");
+			break;
 		case Operator::TANGENT:
 			buffer.append("tan(");
 			buffer.append(child_->Print());
 			buffer.append(")");
+			break;
 		case Operator::COSECANT:
 			buffer.append("csc(");
 			buffer.append(child_->Print());
 			buffer.append(")");
+			break;
 		case Operator::SECANT:
 			buffer.append("sec(");
 			buffer.append(child_->Print());
 			buffer.append(")");
+			break;
 		case Operator::COTANGENT:
 			buffer.append("cot(");
 			buffer.append(child_->Print());
 			buffer.append(")");
+			break;
 		case Operator::DERIVATIVE:
 			buffer.append("[");
 			buffer.append(child_->Print());
 			buffer.append("]'");
+			break;
 	}
 	return buffer;
 }

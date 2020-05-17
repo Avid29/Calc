@@ -10,20 +10,20 @@
 
 using namespace std;
 
-ExpTree::ExpTree() : active_node (nullptr), root_node (nullptr)  {}
+ExpTree::ExpTree() : active_node(nullptr), root_node(nullptr) {}
 
 /// <summary>
 /// Adds an OperNode to the tree
 /// </summary>
 /// <param name="node">OperNode to add to tree</param>
 void ExpTree::AddNode(unique_ptr<OperNode> node) {
-	OperNode *newActive = node.get();
+	OperNode* newActive = node.get();
 	if (active_node == nullptr) {
 		// If first node
 		if (root_node != nullptr) {
 			// The first node is often a ValueNode
 			// That is the only time a ValueNode will be the active or root node
-			
+
 			// Makes node the new active_node
 			node->AddChild(move(root_node));
 		}
@@ -34,7 +34,7 @@ void ExpTree::AddNode(unique_ptr<OperNode> node) {
 	}
 
 	FindInsertionNode(*node);
-	
+
 	// The new node is a lower priority than any node so far
 	// Add new node to top
 	if (node->GetPriority() > active_node->GetPriority()) {
@@ -47,11 +47,13 @@ void ExpTree::AddNode(unique_ptr<OperNode> node) {
 			root_node = move(node);
 		}
 	}
-	else if (IsNary(node->GetOperator()) &&
-		node->GetOperator() == active_node->GetOperator()) {
-		// TODO: Add node's children to active_node's children
-
+	else if (IsNary(node->GetOperator()) && node->GetOperator() == active_node->GetOperator()) {
 		// Adding node would be a duplicate of active_node for an Nary operator
+		for (int i = 0; i < node->ChildCount(); i++)
+		{
+			active_node->AddChild(move(node->GetChild(i).Clone()));
+		}
+
 		return;
 	}
 	else {
@@ -65,7 +67,7 @@ void ExpTree::AddNode(unique_ptr<OperNode> node) {
 /// Finds insertion point for node and changes active_node to it
 /// </summary>
 /// <param name="node">Node to insert</param>
-void ExpTree::FindInsertionNode(const ExpNode &node) {
+void ExpTree::FindInsertionNode(const ExpNode& node) {
 	// Raises active_node till it's of equal or greater priority to node
 	while ((active_node->GetPriority() != Priority::OVERRIDE &&
 		node.GetPriority() > active_node->GetPriority()) &&
@@ -119,7 +121,7 @@ void ExpTree::CloseParenthesis() {
 		// No UNRESOLVED_PARENTHESIS in tree
 		throw;
 	}
-	
+
 	// Resolves UNRESOLVED_PARENTHESIS node and make active_node
 	((UOperNode*)node)->RemoveOverride(); // TODO: Remove cast
 	active_node = node;

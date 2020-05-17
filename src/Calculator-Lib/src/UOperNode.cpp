@@ -1,6 +1,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <math.h>
 
 #include "../include/ExpNode.h"
 #include "../include/FValueNode.h"
@@ -81,7 +82,9 @@ void UOperNode::AddChild(unique_ptr<ExpNode> node, bool overwrite) {
 /// </summary>
 /// <param name="node">this's new child node</param>
 void UOperNode::InsertChild(unique_ptr<OperNode> node) {
-	node->AddChild(move(child_));
+	if (child_ != nullptr) {
+		node->AddChild(move(child_));
+	}
 	AddChild(move(node), true);
 }
 
@@ -94,7 +97,7 @@ const ExpNode &UOperNode::GetChild(int index) const{
 		return *child_;
 	}
 	else {
-		throw out_of_range("Only 1 children on binary node. 0 is only index");
+		throw out_of_range("Only 1 children on unary node. 0 is only index");
 	}
 }
 
@@ -142,6 +145,18 @@ unique_ptr<ExpNode> UOperNode::Simplify() const {
 				return MakeValueNode(-newNode->child_->AsDouble());
 			case Operator::RECIPROCAL:
 				return MakeValueNode(1 / newNode->child_->AsDouble());
+			case Operator::SINE:
+				return MakeValueNode(sin(newNode->child_->AsDouble()));
+			case Operator::COSINE:
+				return MakeValueNode(cos(newNode->child_->AsDouble()));
+			case Operator::TANGENT:
+				return MakeValueNode(tan(newNode->child_->AsDouble()));
+			case Operator::COSECANT:
+				return MakeValueNode(1 / sin(newNode->child_->AsDouble()));
+			case Operator::SECANT:
+				return MakeValueNode(1 / cos(newNode->child_->AsDouble()));
+			case Operator::COTANGENT:
+				return MakeValueNode(1 / tan(newNode->child_->AsDouble()));
 		}
 	}
 	else if (oper_ == Operator::PARENTHESIS &&

@@ -70,6 +70,12 @@ bool IsUnary(Operator oper) {
 	return oper == Operator::POSITIVE ||
 		oper == Operator::NEGATIVE ||
 		oper == Operator::RECIPROCAL ||
+		oper == Operator::SINE ||
+		oper == Operator::COSINE ||
+		oper == Operator::TANGENT ||
+		oper == Operator::COSECANT ||
+		oper == Operator::SECANT ||
+		oper == Operator::COTANGENT ||
 		oper == Operator::UNRESOLVED_PARENTHESIS ||
 		oper == Operator::PARENTHESIS;
 }

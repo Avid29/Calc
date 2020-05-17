@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <map>
 
 #include "ExpNode.h"
 #include "ExpTree.h"
@@ -134,12 +135,27 @@ class ParseState {
 		/// </summary>
 		void CompleteFloat();
 
+		/// <summary>
+		/// Finishes parsing a string of characters by adding either a unary operator or a group of variables.
+		/// </summary>
+		/// <returns>True if the string was a variable.</returns>
+		bool CompleteString();
+
 		ParserState state_;
 		string input_;
 		unique_ptr<ExpTree> tree_;
-		string numProgress_;
+		string cache_;
 		int parenthesis_depth;
 		int position_;
+		map<string, Operator> operator_map =
+		{
+			{ "sin", Operator::SINE },
+			{ "cos", Operator::COSINE },
+			{ "tan", Operator::TANGENT },
+			{ "csc", Operator::COSECANT },
+			{ "sec", Operator::SECANT },
+			{ "cot", Operator::COTANGENT, }
+		};
 };
 
 /// <summary>

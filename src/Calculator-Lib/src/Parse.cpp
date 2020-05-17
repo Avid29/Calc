@@ -90,6 +90,9 @@ void ParseState::Finalize() {
 		case ParserState::FLOAT:
 			CompleteFloat();
 			break;
+		case ParserState::VARABLE:
+			CompleteString();
+			break;
 		default:
 			break;
 	}
@@ -169,12 +172,12 @@ bool ParseState::IsDone() const {
 bool ParseState::ParseBegin(char c) {
 	if (isdigit(c)) {
 		// Save int progress and declare INT state
-		numProgress_ = c;
+		cache_ = c;
 		state_ = ParserState::INT;
 		return true;
 	}
 	else if (islower(c)) {
-		tree_->AddNode(make_unique<VarValueNode>(c));
+		cache_ = c;
 		state_ = ParserState::VARABLE;
 		return true;
 	}
@@ -208,12 +211,12 @@ bool ParseState::ParseNOper(char c) {
 
 	if (isdigit(c)) {
 		// Save int progress and declare INT state
-		numProgress_ = c;
+		cache_ = c;
 		state_ = ParserState::INT;
 		return true;
 	}
 	else if (islower(c)) {
-		tree_->AddNode(make_unique<VarValueNode>(c));
+		cache_ = c;
 		state_ = ParserState::VARABLE;
 		return true;
 	}
@@ -244,13 +247,12 @@ bool ParseState::ParseNOper(char c) {
 bool ParseState::ParseUOper(char c) {	
 	if (isdigit(c)) {
 		// Saves int progress and declares INT state
-		numProgress_ = c;
+		cache_ = c;
 		state_ = ParserState::INT;
 		return true;
 	}
 	else if (islower(c)) {
-		tree_->AddNode(make_unique<NOperNode>('*'));
-		tree_->AddNode(make_unique<VarValueNode>(c));
+		cache_ = c;
 		state_ = ParserState::VARABLE;
 		return true;
 	}
@@ -283,17 +285,16 @@ bool ParseState::ParseInt(char c) {
 	if (isdigit(c)) {
 
 		// Adds to int progress
-		numProgress_.push_back(c);
+		cache_.push_back(c);
 		return true;	
 
 	} 
 	else if (islower(c)) {
 		CompleteInt();
-		tree_->AddNode(make_unique<NOperNode>('*'));
-		tree_->AddNode(make_unique<VarValueNode>(c));
+		cache_ = c;
 		state_ = ParserState::VARABLE;
 		return true;
-	} 
+	}
 	else {
 		switch (c) {
 			case '+':
@@ -339,7 +340,7 @@ bool ParseState::ParseInt(char c) {
 				state_ = ParserState::CLOSED_PARENTHESIS;
 				return true;
 			case '.':
-				numProgress_.push_back(c);
+				cache_.push_back(c);
 				state_ = ParserState::FLOAT;
 				return true;
 		}
@@ -356,13 +357,12 @@ bool ParseState::ParseInt(char c) {
 /// <returns>false if the character can't work after FLOAT</returns>
 bool ParseState::ParseFloat(char c) {
 	if (isdigit(c)) {
-		numProgress_.push_back(c);
+		cache_.push_back(c);
 		return true;
 	}
 	else if (islower(c)) {
 		CompleteFloat();
-		tree_->AddNode(make_unique<NOperNode>('*'));
-		tree_->AddNode(make_unique<VarValueNode>(c));
+		cache_ = c;
 		state_ = ParserState::VARABLE;
 		return true;
 	}
@@ -423,41 +423,74 @@ bool ParseState::ParseFloat(char c) {
 /// <returns>false if the character can't work after VARIABLE</returns>
 bool ParseState::ParseVar(char c) {
 	if (islower(c)) {
-		tree_->AddNode(make_unique<NOperNode>('*'));
-		tree_->AddNode(make_unique<VarValueNode>(c));
+		cache_ += c;
 		state_ = ParserState::VARABLE;
 		return true;
 	}
 	else {
+		bool isVariable = true;
+
+		if (cache_.size() > 0) {
+			isVariable = CompleteString();
+		}
+
+		if (isdigit(c)) {
+			cache_.push_back(c);
+			state_ = ParserState::INT;
+			return true;
+		}
+
 		switch (c) {
 			case '+':
 			case '*':
+				if (!isVariable) {
+					state_ = ParserState::CANNOT_PROCEED;
+					return false;
+				}
 				tree_->AddNode(make_unique<NOperNode>(c));
 				state_ = ParserState::NOPER;
 				return true;
 			case '-':
+				if (!isVariable) {
+					state_ = ParserState::CANNOT_PROCEED;
+					return false;
+				}
 				// Add addition operator then unary minus
 				tree_->AddNode(make_unique<NOperNode>(c));
 				tree_->AddNode(make_unique<UOperNode>('-'));
 				state_ = ParserState::UOPER;
 				return true;
 			case '/':
+				if (!isVariable) {
+					state_ = ParserState::CANNOT_PROCEED;
+					return false;
+				}
 				// Makes multiplication operator and adds a unary reciprocal
 				tree_->AddNode(make_unique<NOperNode>('*'));
 				tree_->AddNode(make_unique<UOperNode>(c));
 				state_ = ParserState::UOPER;
 				return true;
 			case '^':
+				if (!isVariable) {
+					state_ = ParserState::CANNOT_PROCEED;
+					return false;
+				}
 				tree_->AddNode(make_unique<BOperNode>('^'));
 				state_ = ParserState::NOPER;
 				return true;
 			case '(':
-				tree_->AddNode(make_unique<NOperNode>('*'));
+				if (isVariable) {
+					tree_->AddNode(make_unique<NOperNode>('*'));
+				}
 				tree_->AddNode(make_unique<UOperNode>(c));
 				state_ = ParserState::BEGIN;
 				parenthesis_depth++;
 				return true;
 			case ')':
+				if (!isVariable) {
+					state_ = ParserState::CANNOT_PROCEED;
+					return false;
+				}
 				parenthesis_depth--;
 				if (parenthesis_depth < 0) {
 					// No parenthesis to be closed
@@ -484,7 +517,7 @@ bool ParseState::ParseClosedPar(char c) {
 		tree_->AddNode(make_unique<NOperNode>('*'));
 
 		// Saves int progress and declares INT state
-		numProgress_ = c;
+		cache_ = c;
 		state_ = ParserState::INT;
 		return true;
 	}
@@ -537,22 +570,47 @@ bool ParseState::ParseClosedPar(char c) {
 /// Finish building an int and add to the tree
 /// </summary>
 void ParseState::CompleteInt() {
-	int value = stoi(numProgress_);
+	int value = stoi(cache_);
 	
 	tree_->AddNode(MakeValueNode(value));
 	
-	numProgress_ = "";	
+	cache_ = "";	
 }
 
 /// <summary>
 /// Finished building a float and add to the tree
 /// </summary>
 void ParseState::CompleteFloat() {
-	float value = stof(numProgress_);
+	float value = stof(cache_);
 
 	tree_->AddNode(MakeValueNode(value));
 
-	numProgress_ = "";
+	cache_ = "";
+}
+
+/// <summary>
+/// Finishes parsing a string of characters by adding either a unary operator or a group of variables.
+/// </summary>
+/// <returns>True if the string was a variable.</returns>
+bool ParseState::CompleteString() {
+	if (operator_map.find(cache_) != operator_map.end()) {
+
+		// Found Operator by that string.
+		Operator oper = operator_map.at(cache_);
+		tree_->AddNode(make_unique<UOperNode>(oper));
+		cache_ = "";
+		return false;
+	}
+	else {
+		unique_ptr<NOperNode> mNode = make_unique<NOperNode>('*');
+		for (char c : cache_)
+		{
+			mNode->AddChild(make_unique<VarValueNode>(c));
+		}
+		tree_->AddNode(move(mNode));
+		cache_ = "";
+		return true;
+	}
 }
 
 /// <summary>

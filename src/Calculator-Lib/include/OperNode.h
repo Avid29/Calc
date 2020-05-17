@@ -14,6 +14,12 @@ enum class Operator {
 	POSITIVE,
 	NEGATIVE,
 	RECIPROCAL,
+	SINE,
+	COSINE,
+	TANGENT,
+	COSECANT,
+	SECANT,
+	COTANGENT,
 	UNRESOLVED_PARENTHESIS, // Parenthesis
 	PARENTHESIS // Closed Parenthesis
 };

@@ -81,8 +81,20 @@ void ExpTree::FindInsertionNode(const ExpNode& node) {
 /// </summary>
 void ExpTree::InsertOperNode(unique_ptr<OperNode> node) {
 	if (IsUnary(node->GetOperator())) {
-		// Adds child if Unary
-		active_node->AddChild(move(node));
+		if (IsSuffix(node->GetOperator())) {
+			if (active_node == root_node.get()) {
+				// node is new root
+				node->AddChild(move(root_node));
+				root_node = move(node);
+			}
+			else {
+				active_node->GetParent()->InsertChild(move(node));
+			}
+		}
+		else {
+			// Adds child if Unary
+			active_node->AddChild(move(node));
+		}
 	}
 	else {
 		// Inserts child for Nary

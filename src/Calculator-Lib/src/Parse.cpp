@@ -68,8 +68,8 @@ bool ParseState::ParseNextChar(char c) {
 			return ParseFloat(c);
 		case ParserState::VARABLE:
 			return ParseVar(c);
-		case ParserState::CLOSED_PARENTHESIS:
-			return ParseClosedPar(c);
+		case ParserState::VALUE:
+			return ParseValue(c);
 		default:
 			return false;	
 	}
@@ -108,7 +108,7 @@ void ParseState::Finalize() {
 		case ParserState::INT:
 		case ParserState::FLOAT:
 		case ParserState::VARABLE:
-		case ParserState::CLOSED_PARENTHESIS:
+		case ParserState::VALUE:
 			state_ = ParserState::DONE;
 			return;
 
@@ -337,7 +337,7 @@ bool ParseState::ParseInt(char c) {
 					return false;
 				}
 				tree_->CloseParenthesis();
-				state_ = ParserState::CLOSED_PARENTHESIS;
+				state_ = ParserState::VALUE;
 				return true;
 			case '.':
 				cache_.push_back(c);
@@ -401,7 +401,7 @@ bool ParseState::ParseFloat(char c) {
 					return false;
 				}
 				tree_->CloseParenthesis();
-				state_ = ParserState::CLOSED_PARENTHESIS;
+				state_ = ParserState::VALUE;
 				return true;
 		}
 	}
@@ -497,7 +497,15 @@ bool ParseState::ParseVar(char c) {
 					return false;
 				}
 				tree_->CloseParenthesis();
-				state_ = ParserState::CLOSED_PARENTHESIS;
+				state_ = ParserState::VALUE;
+				return true;
+			case '\'':
+				if (!isVariable) {
+					state_ = ParserState::CANNOT_PROCEED;
+					return false;
+				}
+				tree_->AddNode(make_unique<UOperNode>(c));
+				state_ = ParserState::VALUE;
 				return true;
 		}
 	}
@@ -511,7 +519,7 @@ bool ParseState::ParseVar(char c) {
 /// </summary>
 /// <param name="c">Character to parse</param>
 /// <returns>false if the character can't work after CLOSED_PARENTHESIS</returns>
-bool ParseState::ParseClosedPar(char c) {
+bool ParseState::ParseValue(char c) {
 	if (isdigit(c)) {
 		// Adds implied multiply
 		tree_->AddNode(make_unique<NOperNode>('*'));
@@ -557,7 +565,11 @@ bool ParseState::ParseClosedPar(char c) {
 					return false;
 				}
 				tree_->CloseParenthesis();
-				state_ = ParserState::CLOSED_PARENTHESIS;
+				state_ = ParserState::VALUE;
+				return true;
+			case '\'':
+				tree_->AddNode(make_unique<UOperNode>(c));
+				state_ = ParserState::VALUE;
 				return true;
 		}
 

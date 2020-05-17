@@ -36,6 +36,9 @@ UOperNode::UOperNode(char c) : child_ (nullptr) {
 		case '/':
 			oper_ = Operator::RECIPROCAL;
 			break;
+		case '\'':
+			oper_ = Operator::DERIVATIVE;
+			break;
 	}
 }
 
@@ -160,7 +163,7 @@ unique_ptr<ExpNode> UOperNode::Simplify() const {
 		}
 	}
 	else if (oper_ == Operator::PARENTHESIS &&
-		parent_ == nullptr || parent_->GetPriority() >= child_->GetPriority()) {
+		(parent_ == nullptr || parent_->GetPriority() >= child_->GetPriority())) {
 		// Parenthesis are unnecessary
 		return move(newNode->child_);
 	}
@@ -227,4 +230,11 @@ string UOperNode::Print() const {
 /// </summary>
 unique_ptr<ExpNode> UOperNode::Clone() const {
 	return make_unique<UOperNode>(*this);
+}
+
+/// <summary>
+/// Checks if the operation is a suffix or prefix
+/// </summary>
+bool IsSuffix(Operator oper) {
+	return oper == Operator::DERIVATIVE;
 }

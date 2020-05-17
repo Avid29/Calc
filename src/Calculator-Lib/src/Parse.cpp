@@ -191,6 +191,7 @@ bool ParseState::ParseBegin(char c) {
 				state_ = ParserState::UOPER;
 				return true;
 			case '(':
+			case '[':
 				tree_->AddNode(make_unique<UOperNode>(c));
 				parenthesis_depth++;
 				state_ = ParserState::BEGIN;
@@ -228,6 +229,7 @@ bool ParseState::ParseNOper(char c) {
 				state_ = ParserState::UOPER;
 				return true;
 			case '(':
+			case '[':
 				tree_->AddNode(make_unique<UOperNode>(c));
 				parenthesis_depth++;
 				state_ = ParserState::BEGIN;
@@ -265,6 +267,7 @@ bool ParseState::ParseUOper(char c) {
 				state_ = ParserState::UOPER;
 				return true;
 			case '(':
+			case '[':
 				tree_->AddNode(make_unique<UOperNode>(c));
 				parenthesis_depth++;
 				state_ = ParserState::BEGIN;
@@ -479,6 +482,7 @@ bool ParseState::ParseVar(char c) {
 				state_ = ParserState::NOPER;
 				return true;
 			case '(':
+			case '[':
 				if (isVariable) {
 					tree_->AddNode(make_unique<NOperNode>('*'));
 				}
@@ -487,6 +491,7 @@ bool ParseState::ParseVar(char c) {
 				parenthesis_depth++;
 				return true;
 			case ')':
+			case ']':
 				if (!isVariable) {
 					state_ = ParserState::CANNOT_PROCEED;
 					return false;
@@ -553,12 +558,14 @@ bool ParseState::ParseValue(char c) {
 				state_ = ParserState::NOPER;
 				return true;
 			case '(':
+			case '[':
 				tree_->AddNode(make_unique<NOperNode>('*'));
 				tree_->AddNode(make_unique<UOperNode>(c));
 				parenthesis_depth++;
 				state_ = ParserState::BEGIN;
 				return true;
 			case ')':
+			case ']':
 				parenthesis_depth--;
 				if (parenthesis_depth < 0) {
 					// No parenthesis to be closed

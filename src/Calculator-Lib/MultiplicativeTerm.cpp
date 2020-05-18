@@ -1,7 +1,7 @@
-#include "include/BOperNode.h"
-#include "include/MultiplicativeTerm.h"
-#include "include/NOperNode.h"
-#include "include/ValueNode.h"
+#include "BOperNode.h"
+#include "MultiplicativeTerm.h"
+#include "NOperNode.h"
+#include "ValueNode.h"
 
 
 /// <summary>

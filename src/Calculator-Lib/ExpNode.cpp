@@ -1,9 +1,9 @@
 #include <vector>
 
-#include "../include/ExpNode.h"
-#include "../include/OperNode.h"
-#include "../include/UOperNode.h"
-#include "../include/ValueNode.h"
+#include "ExpNode.h"
+#include "OperNode.h"
+#include "UOperNode.h"
+#include "ValueNode.h"
 
 using namespace std;
 

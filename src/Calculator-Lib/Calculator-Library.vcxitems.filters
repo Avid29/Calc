@@ -7,92 +7,95 @@
     <Filter Include="Headers">
       <UniqueIdentifier>{dcb95e9c-a64c-4199-ba29-caf2c052d0ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Parser">
+      <UniqueIdentifier>{360fffbc-5487-430a-822f-bb610addd6f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Parser">
+      <UniqueIdentifier>{bc2ba5de-cb25-4ef5-bfcf-3fd9a71fcfc5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\BOperNode.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)LaTeXParser.h">
+      <Filter>Headers\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)IParser.h">
+      <Filter>Headers\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AdditiveTerm.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\ExpNode.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)BOperNode.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\ExpTree.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)ExpNode.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\FValueNode.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)ExpTree.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\IValueNode.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)FValueNode.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\NOperNode.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)IValueNode.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\OperNode.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\Parse.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)NOperNode.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\UOperNode.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)OperNode.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\ValueNode.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)UOperNode.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\MultiplicativeTerm.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)ValueNode.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\AdditiveTerm.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\VarValueNode.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\ParserErrors.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)VarValueNode.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\BOperNode.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)LaTeXParser.cpp">
+      <Filter>Source\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AdditiveTerm.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\ExpNode.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)BOperNode.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\ExpTree.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)ExpNode.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\FValueNode.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)ExpTree.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\IValueNode.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)FValueNode.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\NOperNode.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)IValueNode.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\OperNode.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\Parse.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)NOperNode.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\UOperNode.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)OperNode.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\ValueNode.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)UOperNode.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\VarValueNode.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)ValueNode.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\MultiplicativeTerm.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\AdditiveTerm.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\ParserErrors.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)VarValueNode.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

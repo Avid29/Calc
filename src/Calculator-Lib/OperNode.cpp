@@ -2,8 +2,8 @@
 #include <string>
 #include <vector>
 
-#include "../include/ExpNode.h"
-#include "../include/OperNode.h"
+#include "ExpNode.h"
+#include "OperNode.h"
 
 using namespace std;
 

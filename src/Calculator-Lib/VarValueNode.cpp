@@ -1,7 +1,5 @@
-
-
-#include "../include/ValueNode.h"
-#include "../include/VarValueNode.h"
+#include "ValueNode.h"
+#include "VarValueNode.h"
 
 
 /// <summary>

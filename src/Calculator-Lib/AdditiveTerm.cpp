@@ -1,6 +1,6 @@
-#include "include/AdditiveTerm.h"
-#include "include/NOperNode.h"
-#include "include/ValueNode.h"
+#include "AdditiveTerm.h"
+#include "NOperNode.h"
+#include "ValueNode.h"
 
 /// <summary>
 /// Finds AdditiveTerm to represent node

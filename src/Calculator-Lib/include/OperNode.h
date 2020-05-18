@@ -20,6 +20,7 @@ enum class Operator {
 	COSECANT,
 	SECANT,
 	COTANGENT,
+	DERIVATIVE,
 	UNRESOLVED_PARENTHESIS, // Parenthesis
 	PARENTHESIS // Closed Parenthesis
 };

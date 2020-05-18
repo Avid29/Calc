@@ -22,7 +22,7 @@ enum class ParserState {
 	INT,
 	FLOAT, // Or decimal
 	VARABLE,
-	CLOSED_PARENTHESIS,
+	VALUE,
 	DONE, // Finalized() ran
 
 	// Errors
@@ -123,7 +123,7 @@ class ParseState {
 		/// </summary>
 		/// <param name="c">Character to parse</param>
 		/// <returns>false if the character can't work after CLOSED_PARENTHESIS</returns>
-		bool ParseClosedPar(char c);
+		bool ParseValue(char c);
 
 		/// <summary>
 		/// Finish building an int and add to the tree
@@ -154,7 +154,8 @@ class ParseState {
 			{ "tan", Operator::TANGENT },
 			{ "csc", Operator::COSECANT },
 			{ "sec", Operator::SECANT },
-			{ "cot", Operator::COTANGENT, }
+			{ "cot", Operator::COTANGENT, },
+			{ "'", Operator::DERIVATIVE, },
 		};
 };
 

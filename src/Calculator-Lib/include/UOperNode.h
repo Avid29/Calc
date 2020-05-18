@@ -89,3 +89,8 @@ class UOperNode : public OperNode {
 	private:
 		unique_ptr<ExpNode> child_;
 };
+
+/// <summary>
+/// Checks if the operation is a suffix or prefix
+/// </summary>
+bool IsSuffix(Operator oper);

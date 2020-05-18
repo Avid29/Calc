@@ -219,22 +219,25 @@ bool LaTeXParser::ParseBracket(const char c) {
 
 	switch (state_)
 	{
-	case State::VALUE:
-	case State::VARIABLE:
 	case State::INT:
 	case State::FLOAT:
+		CompleteValue();
+	case State::VALUE:
+	case State::VARIABLE:
 		tree_->AddNode(make_unique<NOperNode>('*'));
 	case State::BEGIN:
 	case State::UOPER:
 	case State::NOPER: {
 		if (c == '(') {
-			parenthesis_depth++;
 			tree_->AddNode(make_unique<UOperNode>(c));
+			parenthesis_depth++;
+			state_ = State::BEGIN;
 		}
 		else if (c == ')') {
 			// TODO: Check parenthesis depth
 			parenthesis_depth--;
 			tree_->CloseParenthesis();
+			state_ = State::VALUE;
 		}
 		else {
 			state_ = State::CANNOT_PROCEED;

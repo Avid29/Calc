@@ -20,7 +20,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ExpNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ExpTree.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FValueNode.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)IParser.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IValueNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LaTeXParser.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.h" />

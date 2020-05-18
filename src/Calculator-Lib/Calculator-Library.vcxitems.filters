@@ -18,9 +18,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)LaTeXParser.h">
       <Filter>Headers\Parser</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)IParser.h">
-      <Filter>Headers\Parser</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)AdditiveTerm.h">
       <Filter>Headers</Filter>
     </ClInclude>

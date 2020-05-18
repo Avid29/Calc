@@ -22,10 +22,16 @@ class ExpTree {
 		void AddNode(unique_ptr<OperNode> node);
 
 		/// <summary>
-		/// Adds an ValueNode to the tree
+		/// Adds a ValueNode to the tree
 		/// </summary>
 		/// <param name="node">ValueNode to add to tree</pararm>
 		void AddNode(unique_ptr<ValueNode> node);
+
+		/// <summary>
+		/// Adds an ExoNode to the tree
+		/// </summary>
+		/// <param name="node">ExpNode to add to tree</pararm>
+		void AddAnyNode(unique_ptr<ExpNode> node);
 
 		/// <summary>
 		/// Finds the closest UNRESOLVED_PARENTHESIS and change it to PARENTHESIS. 
@@ -38,6 +44,12 @@ class ExpTree {
 		/// </summary>
 		/// <returns>New root node</returns>
 		unique_ptr<ExpNode> Simplify() const;
+
+		/// <summary>
+		/// Gets the root node
+		/// </summary>
+		/// <returns>root_node</returns>
+		unique_ptr<ExpNode> GetRoot();
 
 		/// <summary>
 		/// Simplifies ExpNode and children

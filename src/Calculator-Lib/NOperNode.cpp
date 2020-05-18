@@ -33,9 +33,11 @@ NOperNode::NOperNode(const NOperNode &other) {
 NOperNode::NOperNode(char c) {
 	switch (c) {
 		case '+':
+		case '-':
 			oper_ = Operator::ADDITION;
 			break;
 		case '*':
+		case '/':
 			oper_ = Operator::MULTIPLICATION;
 			break;
 	}

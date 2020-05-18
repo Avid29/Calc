@@ -105,6 +105,19 @@ void ExpTree::AddNode(unique_ptr<ValueNode> node) {
 }
 
 /// <summary>
+/// Adds an ExpNode to the tree
+/// </summary>
+/// <param name="node">ValueNode to add to tree</param>
+void ExpTree::AddAnyNode(unique_ptr<ExpNode> node) {
+	if (node->IsValue()) {
+		AddNode(unique_ptr<ValueNode>(dynamic_cast<ValueNode*>(node.release())));
+	}
+	else {
+		AddNode(unique_ptr<OperNode>(dynamic_cast<OperNode*>(node.release())));
+	}
+}
+
+/// <summary>
 /// Finds the closest UNRESOLVED_PARENTHESIS and change it to PARENTHESIS. 
 /// Then, set that node as active_node
 /// </summary>
@@ -133,6 +146,14 @@ void ExpTree::CloseParenthesis() {
 /// <returns>New root node</returns>
 unique_ptr<ExpNode> ExpTree::Simplify() const {
 	return root_node->Simplify();
+}
+
+/// <summary>
+/// Gets the root node
+/// </summary>
+/// <returns>root_node</returns>
+unique_ptr<ExpNode> ExpTree::GetRoot() {
+	return move(root_node);
 }
 
 /// <summary>

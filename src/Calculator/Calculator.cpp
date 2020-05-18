@@ -3,8 +3,8 @@
 #include <string>
 #include <iostream>
 
-#include "include/Parse.h"
-#include "include/ExpTree.h"
+#include "LaTeXParser.h"
+#include "ExpTree.h"
 
 using namespace std;
 
@@ -22,16 +22,16 @@ int main(int argc, char **argv) {
 		}
 
 		// Convert equation to ExpTree
-		ParseState* parser = new ParseState();
-		parser->ParseString(str);
-		parser->Finalize();
-		if (!parser->IsDone()) {
-			parser->PrintError();
-		}
-		else {
-			// Simplifies ExpTree and conver back to string
-			cout << parser->GetTree()->Simplify()->Print() << endl;
-		}
-		delete parser;
+		//LaTeXParser* parser = new LaTeXParser();
+		//parser->ParseString(str);
+		//parser->Finalize();
+		//if (!parser->IsDone()) {
+		//	parser->PrintError();
+		//}
+		//else {
+		//	// Simplifies ExpTree and conver back to string
+		//	cout << parser->GetTree()->Simplify()->Print() << endl;
+		//}
+		//delete parser;
 	}
 }

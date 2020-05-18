@@ -1,11 +1,11 @@
 #include <memory>
 #include <stdexcept>
 
-#include "../include/BOperNode.h"
-#include "../include/ExpNode.h"
-#include "../include/FValueNode.h"
-#include "../include/NOperNode.h"
-#include "../include/OperNode.h"
+#include "BOperNode.h"
+#include "ExpNode.h"
+#include "FValueNode.h"
+#include "NOperNode.h"
+#include "OperNode.h"
 
 using namespace std;
 

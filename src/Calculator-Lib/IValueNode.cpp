@@ -1,9 +1,9 @@
 #include <string>
 
-#include "../include/ExpNode.h"
-#include "../include/FValueNode.h"
-#include "../include/IValueNode.h"
-#include "../include/ValueNode.h"
+#include "ExpNode.h"
+#include "FValueNode.h"
+#include "IValueNode.h"
+#include "ValueNode.h"
 
 using namespace std;
 

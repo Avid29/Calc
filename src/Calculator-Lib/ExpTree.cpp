@@ -1,12 +1,12 @@
 #include <memory>
 
-#include "../include/ExpNode.h"
-#include "../include/ExpTree.h"
-#include "../include/FValueNode.h"
-#include "../include/IValueNode.h"
-#include "../include/OperNode.h"
-#include "../include/UOperNode.h"
-#include "../include/ValueNode.h"
+#include "ExpNode.h"
+#include "ExpTree.h"
+#include "FValueNode.h"
+#include "IValueNode.h"
+#include "OperNode.h"
+#include "UOperNode.h"
+#include "ValueNode.h"
 
 using namespace std;
 

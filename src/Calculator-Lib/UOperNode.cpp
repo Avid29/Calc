@@ -3,10 +3,10 @@
 #include <vector>
 #include <math.h>
 
-#include "../include/ExpNode.h"
-#include "../include/FValueNode.h"
-#include "../include/OperNode.h"
-#include "../include/UOperNode.h"
+#include "ExpNode.h"
+#include "FValueNode.h"
+#include "OperNode.h"
+#include "UOperNode.h"
 
 using namespace std;
 

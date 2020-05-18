@@ -2,14 +2,14 @@
 #include <memory>
 #include <vector>
 
-#include "include/AdditiveTerm.h"
-#include "include/ExpNode.h"
-#include "include/FValueNode.h"
-#include "include/IValueNode.h"
-#include "include/MultiplicativeTerm.h"
-#include "include/NOperNode.h"
-#include "include/OperNode.h"
-#include "include/UOperNode.h"
+#include "AdditiveTerm.h"
+#include "ExpNode.h"
+#include "FValueNode.h"
+#include "IValueNode.h"
+#include "MultiplicativeTerm.h"
+#include "NOperNode.h"
+#include "OperNode.h"
+#include "UOperNode.h"
 
 using namespace std;
 

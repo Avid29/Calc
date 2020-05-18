@@ -15,35 +15,34 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\AdditiveTerm.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\MultiplicativeTerm.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\BOperNode.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\ExpNode.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\ExpTree.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\FValueNode.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\IValueNode.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\NOperNode.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\OperNode.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\Parse.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\ParserErrors.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\UOperNode.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\ValueNode.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)include\VarValueNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AdditiveTerm.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BOperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ExpNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ExpTree.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FValueNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IValueNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LaTeXParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NOperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)OperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UOperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ValueNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)VarValueNode.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\AdditiveTerm.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\BOperNode.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\ExpNode.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\ExpTree.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\FValueNode.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\IValueNode.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\MultiplicativeTerm.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\NOperNode.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\OperNode.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\Parse.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\ParserErrors.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\UOperNode.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\ValueNode.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\VarValueNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AdditiveTerm.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BOperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ExpNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ExpTree.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FValueNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)IValueNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)LaTeXParser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NOperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)OperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)UOperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ValueNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)VarValueNode.cpp" />
   </ItemGroup>
 </Project>

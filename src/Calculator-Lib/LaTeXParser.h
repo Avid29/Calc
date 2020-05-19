@@ -7,6 +7,11 @@
 
 #include "ExpNode.h"
 #include "ExpTree.h"
+#include "IFuncParser.h"
+#include "NOperNode.h"
+#include "SinusoidalFuncParser.h"
+#include "UOperNode.h"
+#include "VarValueNode.h"
 
 using namespace std;
 
@@ -24,6 +29,7 @@ public:
 		VALUE,
 		VARIABLE,
 		PARTIAL_FUNCTION,
+		FUNCTION,
 		DONE,
 
 		// Errors
@@ -32,6 +38,7 @@ public:
 		CANNOT_BEGIN,
 		CANNOT_PROCEED,
 		UNPAIRED_PARENTHESIS,
+		INVALID_FUNCTION,
 		ALREADY_FLOAT,
 	};
 
@@ -117,10 +124,19 @@ private:
 	bool ParseBracket(const char c);
 
 	/// <summary>
-	/// Parses a bracket.
+	/// Parses a '\'.
 	/// </summary>
-	/// <param name="c">The exact character</summary>
-	bool ParseSpecial(const char c);
+	bool ParseEscape();
+
+	/// <summary>
+	/// Parses any character in the PARTIAL_FUNCTION state.
+	/// </summary>
+	bool ParsePartialFunc(const char c);
+
+	/// <summary>
+	/// Parses any character in the FUNCTION state.
+	/// </summary>
+	bool ParseFunction(const char c);
 
 	/// <summary>
 	/// Finishes building an int or float and adds it to the tree
@@ -130,8 +146,19 @@ private:
 	State state_;
 	string input_;
 	unique_ptr<ExpTree> tree_;
-	stack<unique_ptr<ExpTree>> tree_stack;
+	unique_ptr<IFuncParser> active_func_parser;
 	string cache_;
 	int parenthesis_depth;
 	int position_;
+	map<string, Operator> operator_map =
+	{
+			{ "sin", Operator::SINE },
+			{ "cos", Operator::COSINE },
+			{ "tan", Operator::TANGENT },
+			{ "csc", Operator::COSECANT },
+			{ "sec", Operator::SECANT },
+			{ "cot", Operator::COTANGENT, },
+	};
 };
+
+unique_ptr<IFuncParser> MakeFuncParser(Operator oper);

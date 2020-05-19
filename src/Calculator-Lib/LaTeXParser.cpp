@@ -6,9 +6,6 @@
 #include <string>
 
 #include "LaTeXParser.h"
-#include "NOperNode.h"
-#include "UOperNode.h"
-#include "VarValueNode.h"
 
 LaTeXParser::LaTeXParser() :
 	state_(State::BEGIN),
@@ -31,7 +28,13 @@ bool LaTeXParser::ParseNextChar(const char c) {
 	input_ += c;
 	position_++;
 
-	if (isdigit(c)) {
+	if (state_ == State::FUNCTION) {
+		return ParseFunction(c);
+	}
+	else if (state_ == State::PARTIAL_FUNCTION) {
+		return ParsePartialFunc(c);
+	}
+	else if (isdigit(c)) {
 		return ParseDigit(c);
 	}
 	else if (isalpha(c)) {
@@ -53,11 +56,10 @@ bool LaTeXParser::ParseNextChar(const char c) {
 		case '-':
 		case '*':
 		case '/':
-			return ParseOper(c);
 		case '^':
-		case '_':
+			return ParseOper(c);
 		case '\\':
-			return ParseSpecial(c);
+			return ParseEscape();
 		default:
 			state_ = State::CANNOT_PROCEED;
 			return false;
@@ -121,9 +123,6 @@ bool LaTeXParser::ParseDigit(const char c) {
 	case State::FLOAT:
 		cache_ += c;
 		state_ = State::INT;
-		return true;
-	case State::PARTIAL_FUNCTION:
-		cache_ += c;
 		return true;
 	default:
 		state_ = State::CANNOT_PROCEED;
@@ -194,29 +193,6 @@ bool LaTeXParser::ParseUOper(const char c) {
 }
 
 bool LaTeXParser::ParseBracket(const char c) {
-	if (c == '}') {
-		switch (state_)
-		{
-		case State::VALUE:
-		case State::VARIABLE:
-		case State::INT:
-		case State::FLOAT: {
-			if (tree_stack.size() == 0) {
-				state_ = State::GENERIC_ERROR;
-				return false;
-			}
-			unique_ptr<ExpNode> node = tree_->GetRoot();
-			tree_ = move(tree_stack.top());
-			tree_stack.pop();
-			tree_->AddAnyNode(move(node));
-		}
-			return true;
-		default:
-			state_ = State::CANNOT_PROCEED;
-			return false;
-		}
-	}
-
 	switch (state_)
 	{
 	case State::INT:
@@ -245,19 +221,59 @@ bool LaTeXParser::ParseBracket(const char c) {
 		}
 		return true;
 	}
-	case State::PARTIAL_FUNCTION: {
-		if (c == '{') {
-			tree_stack.push(move(tree_));
-			tree_ = make_unique<ExpTree>();
-			state_ = State::BEGIN;
-		}
-		return true;
-	}
 	}
 }
 
-bool LaTeXParser::ParseSpecial(const char c) {
-	return false;
+bool LaTeXParser::ParseEscape() {
+	switch (state_)
+	{
+	case State::INT:
+	case State::FLOAT:
+		CompleteValue();
+	case State::VALUE:
+	case State::VARIABLE:
+		tree_->AddNode(make_unique<NOperNode>('*'));
+	case State::NOPER:
+	case State::UOPER:
+	case State::BEGIN:
+		cache_ = "";
+		state_ = State::PARTIAL_FUNCTION;
+		return true;
+	case State::PARTIAL_FUNCTION:
+		// TODO: handle new line
+		state_ = State::CANNOT_PROCEED;
+		return false;
+	default:
+		state_ = State::CANNOT_PROCEED;
+		return false;
+	}
+}
+
+bool LaTeXParser::ParsePartialFunc(const char c) {
+	if (isalpha(c)) {
+		cache_ += c;
+		return true;
+	}
+	else if (operator_map.find(cache_) != operator_map.end()) {
+		Operator oper = operator_map.at(cache_);
+		active_func_parser = MakeFuncParser(oper);
+		state_ = State::FUNCTION;
+		return active_func_parser->ParseFirstChar(c);
+	}
+	else {
+		state_ = State::INVALID_FUNCTION;
+		return false;
+	}
+}
+
+bool LaTeXParser::ParseFunction(const char c) {
+	unique_ptr<OperNode> node;
+	bool status = active_func_parser->ParseNextChar(c, node);
+	if (node != nullptr) {
+		tree_->AddNode(move(node));
+		state_ = State::VALUE;
+	}
+	return status;
 }
 
 void LaTeXParser::CompleteValue() {
@@ -268,4 +284,17 @@ void LaTeXParser::CompleteValue() {
 	float value = stof(cache_);
 	tree_->AddNode(MakeValueNode(value));
 	cache_ = "";
+}
+
+unique_ptr<IFuncParser> MakeFuncParser(const Operator oper) {
+	switch (oper)
+	{
+	case Operator::SINE:
+	case Operator::COSINE:
+	case Operator::TANGENT:
+	case Operator::COSECANT:
+	case Operator::SECANT:
+	case Operator::COTANGENT:
+		return unique_ptr<IFuncParser>(new SinusoidalFuncParser(oper));
+	}
 }

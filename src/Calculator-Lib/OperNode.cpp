@@ -76,6 +76,7 @@ bool IsUnary(Operator oper) {
 		oper == Operator::COSECANT ||
 		oper == Operator::SECANT ||
 		oper == Operator::COTANGENT ||
+		oper == Operator::DERIVATIVE ||
 		oper == Operator::UNRESOLVED_PARENTHESIS ||
 		oper == Operator::PARENTHESIS;
 }

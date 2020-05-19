@@ -11,7 +11,7 @@ bool SinusoidalFuncParser::ParseFirstChar(const char c) {
 }
 
 bool SinusoidalFuncParser::ParseNextChar(const char c, unique_ptr<OperNode> &outputNode) {
-	if (c == '}') {
+	if (c == '}' && depth_ == 0) {
 		unique_ptr<ExpTree> tree = child_parser->FinalizeAndReturn();
 		if (tree == nullptr) {
 			return false;
@@ -22,6 +22,12 @@ bool SinusoidalFuncParser::ParseNextChar(const char c, unique_ptr<OperNode> &out
 		return true;
 	}
 	else {
+		if (c == '{') {
+			depth_++;
+		}
+		else if (c == '}') {
+			depth_--;
+		}
 		return child_parser->ParseNextChar(c);
 	}
 }

@@ -11,6 +11,7 @@
 #include "IFuncParser.h"
 #include "NOperNode.h"
 #include "SinusoidalFuncParser.h"
+#include "DiffFuncParser.h"
 #include "UOperNode.h"
 #include "VarValueNode.h"
 
@@ -164,6 +165,7 @@ private:
 			{ "csc", Operator::COSECANT },
 			{ "sec", Operator::SECANT },
 			{ "cot", Operator::COTANGENT, },
+			{ "diff", Operator::DERIVATIVE, },
 	};
 };
 

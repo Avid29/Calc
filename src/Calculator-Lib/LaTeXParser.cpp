@@ -322,5 +322,7 @@ unique_ptr<IFuncParser> MakeFuncParser(const Operator oper) {
 	case Operator::SECANT:
 	case Operator::COTANGENT:
 		return unique_ptr<IFuncParser>(new SinusoidalFuncParser(oper));
+	case Operator::DERIVATIVE:
+		return unique_ptr<IFuncParser>(new DiffFuncParser());
 	}
 }

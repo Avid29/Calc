@@ -31,10 +31,14 @@ UOperNode::UOperNode(char c) : child_ (nullptr) {
 			oper_ = Operator::NEGATIVE;
 			break;
 		case '(':
+		case '[':
 			oper_ = Operator::UNRESOLVED_PARENTHESIS;
 			break;
 		case '/':
 			oper_ = Operator::RECIPROCAL;
+			break;
+		case '\'':
+			oper_ = Operator::DERIVATIVE;
 			break;
 	}
 }
@@ -230,4 +234,11 @@ string UOperNode::Print() const {
 /// </summary>
 unique_ptr<ExpNode> UOperNode::Clone() const {
 	return make_unique<UOperNode>(*this);
+}
+
+/// <summary>
+/// Checks if the operation is a suffix or prefix
+/// </summary>
+bool IsSuffix(Operator oper) {
+	return oper == Operator::DERIVATIVE;
 }

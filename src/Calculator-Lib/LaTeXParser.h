@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 
+#include "BOperNode.h"
 #include "ExpNode.h"
 #include "ExpTree.h"
 #include "IFuncParser.h"

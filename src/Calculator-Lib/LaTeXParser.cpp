@@ -171,7 +171,12 @@ bool LaTeXParser::ParseOper(const char c) {
 
 bool LaTeXParser::ParseNOper(const char c) {
 	// Appropiate state guarenteed
-	tree_->AddNode(make_unique<NOperNode>(c));
+	if (c == '^') {
+		tree_->AddNode(make_unique<BOperNode>(c));
+	}
+	else {
+		tree_->AddNode(make_unique<NOperNode>(c));
+	}
 	state_ = State::NOPER;
 	if (c == '-' || c == '/') {
 		tree_->AddNode(make_unique<UOperNode>(c));

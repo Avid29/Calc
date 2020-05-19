@@ -17,6 +17,8 @@
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AdditiveTerm.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BOperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DiffFuncParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DiffOperNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ExpNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ExpTree.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FValueNode.h" />
@@ -34,6 +36,8 @@
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)AdditiveTerm.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BOperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DiffFuncParser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DiffOperNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpTree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FValueNode.cpp" />

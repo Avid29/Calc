@@ -58,6 +58,8 @@ bool LaTeXParser::ParseNextChar(const char c) {
 		case '/':
 		case '^':
 			return ParseOper(c);
+		case '.':
+			return ParseDecimal();
 		case '\\':
 			return ParseEscape();
 		default:
@@ -221,6 +223,25 @@ bool LaTeXParser::ParseBracket(const char c) {
 		}
 		return true;
 	}
+	}
+}
+
+bool LaTeXParser::ParseDecimal() {
+	switch (state_)
+	{
+	case State::INT:
+		cache_ += '.';
+		state_ = State::FLOAT;
+		return true;
+	case State::FLOAT:
+		state_ = State::ALREADY_FLOAT;
+		return false;
+	case State::BEGIN:
+		state_ = State::CANNOT_BEGIN;
+		return false;
+	default:
+		state_ = State::CANNOT_PROCEED;
+		return false;
 	}
 }
 

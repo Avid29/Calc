@@ -124,6 +124,11 @@ private:
 	bool ParseBracket(const char c);
 
 	/// <summary>
+	/// Parses a '.'.
+	/// </summary>
+	bool ParseDecimal();
+
+	/// <summary>
 	/// Parses a '\'.
 	/// </summary>
 	bool ParseEscape();

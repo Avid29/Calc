@@ -44,13 +44,13 @@ class UOperNode : public OperNode {
 		/// Insert child between this and its child
 		/// </summary>
 		/// <param name="node">this's new child node</param>
-		void InsertChild(unique_ptr<OperNode> node);
+		void InsertChild(unique_ptr<OperNode> node) override;
 
 		/// <summary>
 		/// Gets child at index
 		/// </summary>
 		/// <returns>child at index</returns>
-		const ExpNode &GetChild(int index) const;
+		const ExpNode &GetChild(int index) const override;
 
 		/// <summary>
 		/// Gets amount of children

@@ -160,7 +160,7 @@ unique_ptr<ExpNode> UOperNode::Simplify() const {
 		}
 	}
 	else if (oper_ == Operator::PARENTHESIS &&
-		parent_ == nullptr || parent_->GetPriority() >= child_->GetPriority()) {
+		(parent_ == nullptr || parent_->GetPriority() >= child_->GetPriority())) {
 		// Parenthesis are unnecessary
 		return move(newNode->child_);
 	}

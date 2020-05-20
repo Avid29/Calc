@@ -15,6 +15,10 @@ string VarValueNode::Print(const IPrinter& printer) const {
 	return printer.Print(*this);
 }
 
+char VarValueNode::GetCharacter() const {
+	return variable_;
+}
+
 /// <summary>
 /// Checks if node can be represented as a double
 /// </summary>

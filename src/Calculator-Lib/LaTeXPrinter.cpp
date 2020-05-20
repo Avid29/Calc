@@ -106,6 +106,5 @@ string LaTeXPrinter::Print(const UOperNode& node) const {
 }
 
 string LaTeXPrinter::Print(const VarValueNode& node) const {
-	// TODO: Add get char to VarValueNode
-	return "";
+	return string(1, node.GetCharacter());
 }

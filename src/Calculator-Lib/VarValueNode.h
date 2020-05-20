@@ -16,6 +16,8 @@ class VarValueNode : public ValueNode {
 		/// <returns>The node as a string</returns>
 		string Print(const IPrinter& printer) const override;
 
+		char GetCharacter() const;
+
 		/// <summary>
 		/// Checks if node can be represented as a double
 		/// </summary>

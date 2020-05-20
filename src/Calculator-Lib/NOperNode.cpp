@@ -347,29 +347,8 @@ void NOperNode::SimplifyMTerms() {
 /// Gets the expression tree printed from this down
 /// </summary>
 /// <returns>The expression tree as a string</returns>
-string NOperNode::Print() const {
-	string cache_;
-	for (unsigned int i = 0; i < children_.size(); i++) {
-		if (i != 0) {
-			const UOperNode *uOperNode = dynamic_cast<const UOperNode*>(children_[i].get());
-			switch (oper_) {
-				case Operator::ADDITION:
-					if (isnan(children_[i]->AsDouble()) ?
-						!(uOperNode != nullptr &&
-							uOperNode->GetOperator() != Operator::NEGATIVE) :
-						children_[i]->AsDouble() > 0) {
-						// If child is not unary minus or a negative value
-						cache_ += "+";
-					}
-					break;
-				case Operator::MULTIPLICATION:
-					// All remaining multiplication will be implied
-					break;
-			}
-		}
-		cache_ += children_[i]->Print();
-	}
-	return cache_;
+string NOperNode::Print(const IPrinter& printer) const {
+	return printer.Print(*this);
 }
 
 /// <summary>

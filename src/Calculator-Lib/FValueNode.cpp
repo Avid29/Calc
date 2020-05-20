@@ -50,10 +50,8 @@ double FValueNode::AsDouble() const{
 /// Gets the value as a string
 /// </summary>
 /// <returns>The node as a string</returns>
-string FValueNode::Print() const {
-	ostringstream oss;
-	oss << f_value;
-	return oss.str();
+string FValueNode::Print(const IPrinter& printer) const {
+	return printer.Print(*this);
 }
 
 /// <summary>

@@ -43,7 +43,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpTree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FValueNode.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)IPrinter.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)IValueNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)LaTeXParser.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)LaTeXPrinter.cpp" />

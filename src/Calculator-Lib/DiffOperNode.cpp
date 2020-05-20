@@ -66,14 +66,8 @@ int DiffOperNode::ChildCount() const {
 	return child_ != nullptr ? 1 : 0;
 }
 
-string DiffOperNode::Print() const {
-	string buffer = "";
-	buffer.append("\\diff[");
-	buffer.append(variable_->Print());
-	buffer.append("]{");
-	buffer.append(child_->Print());
-	buffer.append("}");
-	return buffer;
+string DiffOperNode::Print(const IPrinter& printer) const {
+	return printer.Print(*this);
 }
 
 unique_ptr<ExpNode> DiffOperNode::Clone() const {

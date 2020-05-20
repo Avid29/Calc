@@ -182,9 +182,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)LaTeXParser.cpp">
       <Filter>Source\Parser\LaTeX</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)IPrinter.cpp">
-      <Filter>Source\Printer</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)LaTeXPrinter.cpp">
       <Filter>Source\Printer\LaTeX</Filter>
     </ClCompile>

@@ -49,8 +49,8 @@ double IValueNode::AsDouble() const {
 /// Gets the value as a string
 /// </summary>
 /// <returns>The node as a string</returns>
-string IValueNode::Print() const {
-	return to_string(i_value); 
+string IValueNode::Print(const IPrinter& printer) const {
+	return printer.Print(*this);
 }
 
 /// <summary>

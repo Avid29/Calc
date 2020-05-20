@@ -24,7 +24,7 @@ public:
 
 	unique_ptr<ExpNode> Simplify() const override;
 
-	string Print() const override;
+	string Print(const IPrinter& printer) const override;
 
 	unique_ptr<ExpNode> Clone() const override;
 

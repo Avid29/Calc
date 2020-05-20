@@ -4,6 +4,8 @@
 #include <memory>
 #include <vector>
 
+#include "IPrinter.h"
+
 using namespace std;
 
 // Higher values go higher on the tree
@@ -46,7 +48,7 @@ class ExpNode {
 
 		virtual unique_ptr<ExpNode> Simplify() const = 0;
 
-		virtual string Print() const = 0;
+		virtual string Print(const IPrinter& printer) const = 0;
 
 		/// <summary>
 		/// Gets the priority of the node by operation or type

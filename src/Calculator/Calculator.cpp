@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "LaTeXParser.h"
+#include "LaTeXPrinter.h"
 #include "ExpTree.h"
 
 using namespace std;
@@ -23,6 +24,7 @@ int main(int argc, char **argv) {
 
 		// Convert equation to ExpTree
 		LaTeXParser* parser = new LaTeXParser();
+		LaTeXPrinter* printer = new LaTeXPrinter();
 		parser->ParseString(str);
 		parser->Finalize();
 		if (!parser->IsDone()) {
@@ -31,8 +33,9 @@ int main(int argc, char **argv) {
 		}
 		else {
 			// Simplifies ExpTree and conver back to string
-			cout << parser->GetTree()->Simplify()->Print() << endl;
+			cout << parser->GetTree()->Simplify()->Print(*printer) << endl;
 		}
 		delete parser;
+		delete printer;
 	}
 }

@@ -56,7 +56,7 @@ class ExpTree {
 		/// </summary>
 		unique_ptr<ExpTree> SimplifyTree();
 
-		string Print() const; 
+		string Print(const IPrinter& printer) const;
 
 	private:
 		/// <summary>

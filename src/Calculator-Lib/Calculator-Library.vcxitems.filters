@@ -43,6 +43,12 @@
     <Filter Include="Source\ExpTree\Nodes\Operators">
       <UniqueIdentifier>{002a9046-e4d9-4714-9c8a-ef49fda6334c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\ExpTree\Nodes\Operators\Functions">
+      <UniqueIdentifier>{e2b3e1bf-0842-4323-bebd-f0e84400e415}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\ExpTree\Nodes\Operators\Functions">
+      <UniqueIdentifier>{911f6a4d-8300-4e7e-8bb6-e9ac171ab6e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)LaTeXParser.h">
@@ -90,6 +96,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SinusoidalFuncParser.h">
       <Filter>Headers\Parser\Functions</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DiffFuncParser.h">
+      <Filter>Headers\Parser\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DiffOperNode.h">
+      <Filter>Headers\ExpTree\Nodes\Operators\Functions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)LaTeXParser.cpp">
@@ -133,6 +145,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SinusoidalFuncParser.cpp">
       <Filter>Source\Parser\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DiffFuncParser.cpp">
+      <Filter>Source\Parser\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DiffOperNode.cpp">
+      <Filter>Source\ExpTree\Nodes\Operators\Functions</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

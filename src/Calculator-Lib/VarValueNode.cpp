@@ -11,8 +11,12 @@ VarValueNode::VarValueNode(char var) : variable_ (var) {}
 /// Gets the value as a string
 /// </summary>
 /// <returns>The node as a string</returns>
-string VarValueNode::Print() const {
-	return string(1, variable_);
+string VarValueNode::Print(const IPrinter& printer) const {
+	return printer.Print(*this);
+}
+
+char VarValueNode::GetCharacter() const {
+	return variable_;
 }
 
 /// <summary>

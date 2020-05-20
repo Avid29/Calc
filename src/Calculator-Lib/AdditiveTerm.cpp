@@ -1,11 +1,13 @@
 #include "AdditiveTerm.h"
 #include "NOperNode.h"
 #include "ValueNode.h"
+#include "LaTeXPrinter.h"
 
 /// <summary>
 /// Finds AdditiveTerm to represent node
 /// </summary>
 AdditiveTerm::AdditiveTerm(const ExpNode &node) {
+	LaTeXPrinter *printer = new LaTeXPrinter();
 	const OperNode *operNode = dynamic_cast<const OperNode*>(&node);
 	if (operNode != nullptr && operNode->GetOperator() == Operator::MULTIPLICATION
 		&& operNode->GetChild(0).IsNumericalValue()) {
@@ -23,13 +25,14 @@ AdditiveTerm::AdditiveTerm(const ExpNode &node) {
 		else {
 			base_ = operNode->GetChild(1).Clone();
 		}
-		base_string = base_->Print();
+		base_string = base_->Print(*printer);
 	}
 	else {
 		coefficient_ = 1;
 		base_ = node.Clone();
-		base_string = base_->Print();
+		base_string = base_->Print(*printer);
 	}
+	delete printer;
 }
 /// <summary>
 /// Gets Term as an ExpNode

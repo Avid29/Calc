@@ -2,6 +2,7 @@
 #include "MultiplicativeTerm.h"
 #include "NOperNode.h"
 #include "ValueNode.h"
+#include "LaTeXPrinter.h"
 
 
 /// <summary>
@@ -9,6 +10,7 @@
 /// </summary>
 /// <param name="node">root node of term to convert</param>
 MultiplicativeTerm::MultiplicativeTerm(const ExpNode &node) {
+	LaTeXPrinter* printer = new LaTeXPrinter();
 	const OperNode *operNode = dynamic_cast<const OperNode*>(&node);
 	if (operNode != nullptr && operNode->GetOperator() == Operator::POWER) {
 		base_ = operNode->GetChild(0).Clone();
@@ -18,7 +20,8 @@ MultiplicativeTerm::MultiplicativeTerm(const ExpNode &node) {
 		base_ = node.Clone();
 		exponent_ = MakeValueNode(1);
 	}
-	base_string = base_->Print();
+	base_string = base_->Print(*printer);
+	delete printer;
 }
 
 /// <summary>

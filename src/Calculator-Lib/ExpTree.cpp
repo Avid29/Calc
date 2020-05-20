@@ -172,6 +172,6 @@ unique_ptr<ExpNode> ExpTree::GetRoot() {
 /// Gets the expression tree printed
 /// </summary>
 /// <returns>The expression tree as a string</returns>
-string ExpTree::Print() const {
-	return root_node->Print();
+string ExpTree::Print(const IPrinter& printer) const {
+	return root_node->Print(printer);
 }

@@ -39,7 +39,7 @@ class FValueNode : public ValueNode {
 		/// Gets the value as a string
 		/// </summary>
 		/// <returns>The node as a string</returns>
-		string Print() const override;
+		string Print(const IPrinter& printer) const override;
 
 		/// <summary>
 		/// Gets a clone of this

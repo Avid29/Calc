@@ -71,7 +71,7 @@ class OperNode : public ExpNode {
 
 		virtual unique_ptr<ExpNode> Simplify() const = 0;
 
-		virtual string Print() const = 0;
+		virtual string Print(const IPrinter& printer) const = 0;
 
 		/// <summary>
 		/// Gets the priority based on the oper

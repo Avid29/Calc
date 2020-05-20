@@ -12,6 +12,8 @@ public:
 
 	void SetVariable(unique_ptr<VarValueNode> variable);
 
+	const VarValueNode& GetVariable() const;
+
 	void AddChild(unique_ptr<ExpNode> node) override;
 
 	void AddChild(unique_ptr<ExpNode> node, bool overwrite);
@@ -24,7 +26,7 @@ public:
 
 	unique_ptr<ExpNode> Simplify() const override;
 
-	string Print() const override;
+	string Print(const IPrinter& printer) const override;
 
 	unique_ptr<ExpNode> Clone() const override;
 

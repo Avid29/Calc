@@ -152,18 +152,8 @@ unique_ptr<ExpNode> BOperNode::Simplify() const {
 /// Gets the expression tree printed from this down
 /// </summary>
 /// <returns>The expression tree as a string</returns>
-string BOperNode::Print() const {
-	string cache_ = "";
-	cache_ += left_child->Print();
-
-	switch (oper_) {
-		case Operator::POWER:
-			cache_ += "^";
-			break;
-	}
-
-	cache_ += right_child->Print();
-	return cache_;
+string BOperNode::Print(const IPrinter& printer) const {
+	return printer.Print(*this);
 }
 
 /// <summary>

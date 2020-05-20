@@ -17,6 +17,10 @@ void DiffOperNode::SetVariable(unique_ptr<VarValueNode> variable) {
 	variable_ = move(variable);
 }
 
+const VarValueNode& DiffOperNode::GetVariable() const {
+	return *variable_;
+}
+
 void DiffOperNode::AddChild(unique_ptr<ExpNode> node) {
 	node->SetParent(this);
 	if (child_ == nullptr) {

@@ -22,8 +22,13 @@ string LaTeXPrinter::Print(const BOperNode& node) const {
 }
 
 string LaTeXPrinter::Print(const DiffOperNode& node) const {
-	// TODO: Add GetVariable to DiffOperNode
-	return "";
+	string buffer = "";
+	buffer.append("\\diff[");
+	buffer.append(node.GetVariable().Print(*this));
+	buffer.append("]{");
+	buffer.append(node.GetChild(0).Print(*this));
+	buffer.append("}");
+	return buffer;
 }
 
 string LaTeXPrinter::Print(const FValueNode& node) const {

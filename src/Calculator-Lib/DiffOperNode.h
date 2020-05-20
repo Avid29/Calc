@@ -12,6 +12,8 @@ public:
 
 	void SetVariable(unique_ptr<VarValueNode> variable);
 
+	const VarValueNode& GetVariable() const;
+
 	void AddChild(unique_ptr<ExpNode> node) override;
 
 	void AddChild(unique_ptr<ExpNode> node, bool overwrite);

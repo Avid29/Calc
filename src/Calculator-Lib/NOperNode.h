@@ -85,7 +85,7 @@ class NOperNode	: public OperNode {
 		/// Gets the expression tree printed from this down
 		/// </summary>
 		/// <returns>The expression tree as a string</returns>
-		string Print() const override;
+		string Print(const IPrinter& printer) const override;
 
 		/// <summary>
 		/// Gets a clone of this

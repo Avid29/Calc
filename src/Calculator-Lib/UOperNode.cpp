@@ -175,58 +175,8 @@ unique_ptr<ExpNode> UOperNode::Simplify() const {
 /// Get the expression tree printed from this down
 /// </summary>
 /// <returns>The expression tree as a string</returns>
-string UOperNode::Print() const {
-	// TODO: Swap to sprintf
-	string buffer = "";
-
-	switch (oper_) {
-		case Operator::POSITIVE:
-			// Consider wheather or not to print unary plus
-			buffer.append("+");
-			buffer.append(child_->Print());
-			break;
-		case Operator::NEGATIVE:
-			buffer.append("-");
-			buffer.append(child_->Print());
-			break;
-		case Operator::UNRESOLVED_PARENTHESIS:
-		case Operator::PARENTHESIS:
-			buffer.append("(");
-			buffer.append(child_->Print());
-			buffer.append(")");
-			break;
-		case Operator::SINE:
-			buffer.append("\\sin{");
-			buffer.append(child_->Print());
-			buffer.append("}");
-			break;
-		case Operator::COSINE:
-			buffer.append("\\cos{");
-			buffer.append(child_->Print());
-			buffer.append("}");
-			break;
-		case Operator::TANGENT:
-			buffer.append("\\tan{");
-			buffer.append(child_->Print());
-			buffer.append("}");
-			break;
-		case Operator::COSECANT:
-			buffer.append("\\csc{");
-			buffer.append(child_->Print());
-			buffer.append("}");
-			break;
-		case Operator::SECANT:
-			buffer.append("\\sec{");
-			buffer.append(child_->Print());
-			buffer.append("}");
-			break;
-		case Operator::COTANGENT:
-			buffer.append("\\cot{");
-			buffer.append(child_->Print());
-			buffer.append("}");
-			break;
-	}
-	return buffer;
+string UOperNode::Print(const IPrinter& printer) const {
+	return printer.Print(*this);
 }
 
 /// <summary>

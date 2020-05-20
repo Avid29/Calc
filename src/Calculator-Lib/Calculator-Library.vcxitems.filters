@@ -49,18 +49,18 @@
     <Filter Include="Headers\ExpTree\Nodes\Operators\Functions">
       <UniqueIdentifier>{911f6a4d-8300-4e7e-8bb6-e9ac171ab6e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\ExpTree\Terms">
+      <UniqueIdentifier>{2c7286cb-37ae-452c-a39a-c70b0ed81e4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\ExpTree\Terms">
+      <UniqueIdentifier>{8cc22b3c-a9d9-45d2-8a39-e43587ebc5aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)LaTeXParser.h">
       <Filter>Headers\Parser</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ExpTree.h">
-      <Filter>Headers\ExpTree</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)AdditiveTerm.h">
-      <Filter>Headers\ExpTree</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.h">
       <Filter>Headers\ExpTree</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ExpNode.h">
@@ -102,18 +102,18 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DiffOperNode.h">
       <Filter>Headers\ExpTree\Nodes\Operators\Functions</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AdditiveTerm.h">
+      <Filter>Headers\ExpTree\Terms</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.h">
+      <Filter>Headers\ExpTree\Terms</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)LaTeXParser.cpp">
       <Filter>Source\Parser</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpTree.cpp">
-      <Filter>Source\ExpTree</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)AdditiveTerm.cpp">
-      <Filter>Source\ExpTree</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.cpp">
       <Filter>Source\ExpTree</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpNode.cpp">
@@ -151,6 +151,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)DiffOperNode.cpp">
       <Filter>Source\ExpTree\Nodes\Operators\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AdditiveTerm.cpp">
+      <Filter>Source\ExpTree\Terms</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.cpp">
+      <Filter>Source\ExpTree\Terms</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

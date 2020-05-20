@@ -284,6 +284,7 @@ bool LaTeXParser::ParsePartialFunc(const char c) {
 		Operator oper = operator_map.at(cache_);
 		active_func_parser = MakeFuncParser(oper);
 		state_ = State::FUNCTION;
+		cache_ = "";
 		return active_func_parser->ParseFirstChar(c);
 	}
 	else {

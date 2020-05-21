@@ -15,10 +15,10 @@ string LaTeXPrinter::Print(const BOperNode& node) const {
 	case Operator::POWER:
 		cache_ += "^";
 		break;
-
-		cache_ += node.GetChild(1).Print(*this);
-		return cache_;
 	}
+
+	cache_ += node.GetChild(1).Print(*this);
+	return cache_;
 }
 
 string LaTeXPrinter::Print(const DiffOperNode& node) const {

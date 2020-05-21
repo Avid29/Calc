@@ -53,7 +53,6 @@ void ExpTree::AddNode(unique_ptr<OperNode> node) {
 		{
 			active_node->AddChild(move(node->GetChild(i).Clone()));
 		}
-
 		return;
 	}
 	else {

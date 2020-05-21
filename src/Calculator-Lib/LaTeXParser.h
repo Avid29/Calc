@@ -170,3 +170,5 @@ private:
 };
 
 unique_ptr<IFuncParser> MakeFuncParser(Operator oper);
+
+int Parse(const string& equation, unique_ptr<ExpTree>& tree);

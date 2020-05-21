@@ -22,6 +22,7 @@ int LaTeXParser::ParseString(const string& equation) {
 			return position_;
 		}
 	}
+	return -1;
 }
 
 bool LaTeXParser::ParseNextChar(const char c) {
@@ -326,4 +327,17 @@ unique_ptr<IFuncParser> MakeFuncParser(const Operator oper) {
 	case Operator::DERIVATIVE:
 		return unique_ptr<IFuncParser>(new DiffFuncParser());
 	}
+}
+
+int Parse(const string& equation, unique_ptr<ExpTree>& tree)
+{
+	LaTeXParser state;
+	int result = state.ParseString(equation);
+	if (result == -1) {
+		tree = state.FinalizeAndReturn();
+	}
+	else {
+		tree = nullptr;
+	}
+	return result;
 }

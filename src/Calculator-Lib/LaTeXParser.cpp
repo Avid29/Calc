@@ -142,6 +142,8 @@ bool LaTeXParser::ParseLetter(const char c) {
 		tree_->AddNode(make_unique<VarValueNode>(c));
 		state_ = State::VARIABLE;
 		return true;
+	case State::INT:
+	case State::FLOAT:
 	case State::VALUE:
 	case State::VARIABLE:
 		tree_->AddNode(make_unique<NOperNode>('*'));

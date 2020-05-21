@@ -119,6 +119,8 @@ bool LaTeXParser::IsDone() const {
 bool LaTeXParser::ParseDigit(const char c) {
 	switch (state_)
 	{
+	case State::VALUE:
+		tree_->AddNode(make_unique<NOperNode>('*'));
 	case State::BEGIN:
 	case State::UOPER:
 	case State::NOPER:

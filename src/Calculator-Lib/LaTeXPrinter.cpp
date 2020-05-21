@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "LaTeXPrinter.h"
 #include "BOperNode.h"
 #include "DiffOperNode.h"
@@ -32,7 +34,9 @@ string LaTeXPrinter::Print(const DiffOperNode& node) const {
 }
 
 string LaTeXPrinter::Print(const FValueNode& node) const {
-	return to_string(node.GetValue());
+	ostringstream oss;
+	oss << node.GetValue();
+	return oss.str();
 }
 
 string LaTeXPrinter::Print(const IValueNode& node) const {

@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "LaTeXPrinter.h"
 #include "BOperNode.h"
 #include "DiffOperNode.h"
@@ -15,10 +17,10 @@ string LaTeXPrinter::Print(const BOperNode& node) const {
 	case Operator::POWER:
 		cache_ += "^";
 		break;
-
-		cache_ += node.GetChild(1).Print(*this);
-		return cache_;
 	}
+
+	cache_ += node.GetChild(1).Print(*this);
+	return cache_;
 }
 
 string LaTeXPrinter::Print(const DiffOperNode& node) const {
@@ -32,7 +34,9 @@ string LaTeXPrinter::Print(const DiffOperNode& node) const {
 }
 
 string LaTeXPrinter::Print(const FValueNode& node) const {
-	return to_string(node.GetValue());
+	ostringstream oss;
+	oss << node.GetValue();
+	return oss.str();
 }
 
 string LaTeXPrinter::Print(const IValueNode& node) const {
@@ -44,10 +48,17 @@ string LaTeXPrinter::Print(const NOperNode& node) const {
 	for (unsigned int i = 0; i < node.ChildCount(); i++) {
 		if (i != 0) {
 			switch (node.GetOperator()) {
-			case Operator::ADDITION:
-				// TODO: Handle unary '-' child
-				cache_ += "+";
+			case Operator::ADDITION: {
+				const UOperNode* uOperNode = dynamic_cast<const UOperNode*>(node.GetChild(i).Clone().get());
+				if (isnan(node.GetChild(i).AsDouble()) ?
+					!(uOperNode != nullptr &&
+						uOperNode->GetOperator() != Operator::NEGATIVE) :
+					node.GetChild(i).AsDouble() > 0) {
+					// If child is not unary minus or a negative value
+					cache_ += "+";
+				}
 				break;
+			}
 			case Operator::MULTIPLICATION:
 				// All remaining multiplication will be implied
 				break;

@@ -1,6 +1,7 @@
 #include "CppUnitTest.h"
 
-#include "include/Parse.h"
+#include "LaTeXParser.h"
+#include "LaTeXPrinter.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -9,6 +10,14 @@ namespace CalculatorTests
 	TEST_CLASS(Tests)
 	{
 	public:
+		Tests() {
+			printer = new LaTeXPrinter();
+		}
+
+		~Tests() {
+			delete printer;
+		}
+
 		TEST_METHOD(Add)
 		{
 			Assert::IsTrue(Run("2+5") == "7");
@@ -84,7 +93,9 @@ namespace CalculatorTests
 			unique_ptr<ExpTree> tree;
 			int result = Parse(str, tree);
 			Assert::AreEqual(result, -1);
-			return tree->Simplify()->Print();
+			return tree->Simplify()->Print(*printer);
 		}
+
+		IPrinter* printer;
 	};
 }

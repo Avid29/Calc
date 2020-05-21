@@ -22,6 +22,7 @@ int LaTeXParser::ParseString(const string& equation) {
 			return position_;
 		}
 	}
+	return -1;
 }
 
 bool LaTeXParser::ParseNextChar(const char c) {
@@ -118,6 +119,8 @@ bool LaTeXParser::IsDone() const {
 bool LaTeXParser::ParseDigit(const char c) {
 	switch (state_)
 	{
+	case State::VALUE:
+		tree_->AddNode(make_unique<NOperNode>('*'));
 	case State::BEGIN:
 	case State::UOPER:
 	case State::NOPER:
@@ -141,10 +144,14 @@ bool LaTeXParser::ParseLetter(const char c) {
 		tree_->AddNode(make_unique<VarValueNode>(c));
 		state_ = State::VARIABLE;
 		return true;
+	case State::INT:
+	case State::FLOAT:
+		CompleteValue();
 	case State::VALUE:
 	case State::VARIABLE:
 		tree_->AddNode(make_unique<NOperNode>('*'));
 		tree_->AddNode(make_unique<VarValueNode>(c));
+		state_ = State::VARIABLE;
 		return true;
 	default:
 		state_ = State::CANNOT_PROCEED;
@@ -326,4 +333,17 @@ unique_ptr<IFuncParser> MakeFuncParser(const Operator oper) {
 	case Operator::DERIVATIVE:
 		return unique_ptr<IFuncParser>(new DiffFuncParser());
 	}
+}
+
+int Parse(const string& equation, unique_ptr<ExpTree>& tree)
+{
+	LaTeXParser state;
+	int result = state.ParseString(equation);
+	if (result == -1) {
+		tree = state.FinalizeAndReturn();
+	}
+	else {
+		tree = nullptr;
+	}
+	return result;
 }

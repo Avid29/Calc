@@ -51,6 +51,8 @@ class OperNode : public ExpNode {
 		/// <returns>children count</returns>
 		virtual int ChildCount() const = 0;
 
+		virtual void ClearChildren() = 0;
+
 		/// <summary>
 		/// Checks if node can be represented as a double
 		/// </summary>
@@ -68,8 +70,6 @@ class OperNode : public ExpNode {
 		/// </summary>
 		/// <returns>this node as a double value or NAN if not possible</returns>
 		double AsDouble() const;
-
-		virtual unique_ptr<ExpNode> Simplify() const = 0;
 
 		virtual string Print(const IPrinter& printer) const = 0;
 

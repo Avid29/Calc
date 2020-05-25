@@ -3,6 +3,8 @@
 #include <memory>
 #include <string>
 
+#include "IOperation.h"
+
 #include "ExpNode.h"
 #include "FValueNode.h"
 #include "IValueNode.h"
@@ -40,21 +42,16 @@ class ExpTree {
 		void CloseParenthesis();
 
 		/// <summary>
-		/// Simplifies ExpNodes and returns root node
+		/// Executes operation on ExpNodes and returns root node
 		/// </summary>
 		/// <returns>New root node</returns>
-		unique_ptr<ExpNode> Simplify() const;
+		unique_ptr<ExpNode> Execute(IOperation* operation) const;
 
 		/// <summary>
 		/// Gets the root node
 		/// </summary>
 		/// <returns>root_node</returns>
 		unique_ptr<ExpNode> GetRoot();
-
-		/// <summary>
-		/// Simplifies ExpNode and children
-		/// </summary>
-		unique_ptr<ExpTree> SimplifyTree();
 
 		string Print(const IPrinter& printer) const;
 

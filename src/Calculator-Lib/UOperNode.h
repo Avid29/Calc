@@ -58,6 +58,8 @@ class UOperNode : public OperNode {
 		/// <returns>children count</returns>
 		int ChildCount() const;
 
+		void ClearChildren();
+
 		/// <summary>
 		/// Check if UOperNode's child_ is set
 		/// </summary>
@@ -73,7 +75,7 @@ class UOperNode : public OperNode {
 		/// Simplifies ExpNode and children
 		/// </summary>
 		/// <returns>The new simplest node possible in place of this</returns>
-		unique_ptr<ExpNode> Simplify() const override;
+		unique_ptr<ExpNode> Execute(IOperation* operation) const override;
 
 		/// <summary>
 		/// Get the expression tree printed from this down

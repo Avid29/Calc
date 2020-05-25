@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 
+#include "IOperation.h"
 #include "IPrinter.h"
 
 using namespace std;
@@ -38,7 +39,7 @@ class ExpNode {
 		/// Gets this node's parent
 		/// </summary>
 		/// <returns>parent_</returns>
-		OperNode *GetParent();
+		OperNode *GetParent() const;
 
 		virtual bool IsNumericalValue() const = 0;
 
@@ -46,7 +47,7 @@ class ExpNode {
 
 		virtual double AsDouble() const = 0;
 
-		virtual unique_ptr<ExpNode> Simplify() const = 0;
+		virtual unique_ptr<ExpNode> Execute(IOperation* operation) const = 0;
 
 		virtual string Print(const IPrinter& printer) const = 0;
 

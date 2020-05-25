@@ -36,6 +36,14 @@ double VarValueNode::AsDouble() const {
 }
 
 /// <summary>
+/// Simplifies ExpNode and children
+/// </summary>
+/// <returns>The new simplest node possible in place of this</returns>
+unique_ptr<ExpNode> VarValueNode::Execute(IOperation* operation) const {
+	return operation->Execute(*this);
+}
+
+/// <summary>
 /// Gets a clone of this
 /// </summary>
 unique_ptr<ExpNode> VarValueNode::Clone() const {

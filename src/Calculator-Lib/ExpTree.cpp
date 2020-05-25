@@ -155,8 +155,8 @@ void ExpTree::CloseParenthesis() {
 /// Simplifies ExpNodes and returns root node
 /// </summary>
 /// <returns>New root node</returns>
-unique_ptr<ExpNode> ExpTree::Simplify() const {
-	return root_node->Simplify();
+unique_ptr<ExpNode> ExpTree::Execute(IOperation* operation) const {
+	return root_node->Execute(operation);
 }
 
 /// <summary>

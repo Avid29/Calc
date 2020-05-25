@@ -47,6 +47,14 @@ double FValueNode::AsDouble() const{
 }
 
 /// <summary>
+/// Simplifies ExpNode and children
+/// </summary>
+/// <returns>The new simplest node possible in place of this</returns>
+unique_ptr<ExpNode> FValueNode::Execute(IOperation* operation) const {
+	return operation->Execute(*this);
+}
+
+/// <summary>
 /// Gets the value as a string
 /// </summary>
 /// <returns>The node as a string</returns>

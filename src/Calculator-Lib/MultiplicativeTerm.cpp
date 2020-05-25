@@ -42,19 +42,19 @@ unique_ptr<ExpNode> MultiplicativeTerm::AsExpNode() {
 /// <summary>
 /// Adds exponents
 /// </summary>
-void MultiplicativeTerm::AddToExponent(MultiplicativeTerm *other) {
+void MultiplicativeTerm::AddToExponent(MultiplicativeTerm *other, IOperation* operation) {
 	OperNode *exponentNode = dynamic_cast<OperNode*>(exponent_.get());
 	if (exponentNode != nullptr && exponentNode->GetOperator() == Operator::ADDITION ) {
 		// If exponent_ root is Addition oper
 		exponentNode->AddChild(move(other->exponent_));
-		exponent_ = exponent_->Simplify();
+		exponent_ = exponent_->Execute(operation);
 	}
 	else {
 		// Makes root addition node for exponent and other exponent
 		unique_ptr<NOperNode> node = make_unique<NOperNode>('+');
 		node->AddChild(move(exponent_));
 		node->AddChild(move(other->exponent_));
-		exponent_ = move(node->Simplify());
+		exponent_ = move(node->Execute(operation));
 	}
 }
 

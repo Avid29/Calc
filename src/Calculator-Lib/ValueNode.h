@@ -12,12 +12,6 @@ class ValueNode : public ExpNode
 		bool IsValue() const override;
 
 		/// <summary>
-		/// Simplifies ExpNode
-		/// </summary>
-		/// <returns>The new simplest node possible in place of this</returns>
-		unique_ptr<ExpNode> Simplify() const override;
-
-		/// <summary>
 		/// Gets the priority of the node by operation or type
 		/// </summary>
 		/// <returns>The priority of depth on the tree</returns>

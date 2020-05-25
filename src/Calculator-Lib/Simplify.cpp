@@ -13,7 +13,7 @@
 #include "UOperNode.h"
 #include "VarValueNode.h"
 
-unique_ptr<ExpNode> Simplify::Execute(const BOperNode& node) {
+unique_ptr<ExpNode> Simplifier::Execute(const BOperNode& node) {
 	// Always returns a clone or replacement
 	unique_ptr<BOperNode> newNode = make_unique<BOperNode>(node.GetOperator());
 
@@ -52,20 +52,20 @@ unique_ptr<ExpNode> Simplify::Execute(const BOperNode& node) {
 	return newNode;
 }
 
-unique_ptr<ExpNode> Simplify::Execute(const DiffOperNode& node) {
+unique_ptr<ExpNode> Simplifier::Execute(const DiffOperNode& node) {
 	// TODO: Differentiate
 	return node.Clone();
 }
 
-unique_ptr<ExpNode> Simplify::Execute(const FValueNode& node) {
+unique_ptr<ExpNode> Simplifier::Execute(const FValueNode& node) {
 	return node.Clone();
 }
 
-unique_ptr<ExpNode> Simplify::Execute(const IValueNode& node) {
+unique_ptr<ExpNode> Simplifier::Execute(const IValueNode& node) {
 	return node.Clone();
 }
 
-unique_ptr<ExpNode> Simplify::Execute(const NOperNode& node) {
+unique_ptr<ExpNode> Simplifier::Execute(const NOperNode& node) {
 	// TODO: Move Simplify to operation
 
 	// Running total of value node children
@@ -141,13 +141,13 @@ unique_ptr<ExpNode> Simplify::Execute(const NOperNode& node) {
 	}
 
 	if (node.GetOperator() == Operator::MULTIPLICATION) {
-		return newNode->Expand(this);
+		return Expand(newNode.get());
 	}
 
 	return newNode;
 }
 
-unique_ptr<ExpNode> Simplify::Execute(const UOperNode& node) {
+unique_ptr<ExpNode> Simplifier::Execute(const UOperNode& node) {
 	// Always returns a clone or replacement
 	unique_ptr<UOperNode> newNode = make_unique<UOperNode>(node.GetOperator());
 	newNode->AddChild(node.GetChild(0).Execute(this));
@@ -184,11 +184,11 @@ unique_ptr<ExpNode> Simplify::Execute(const UOperNode& node) {
 	return newNode;
 }
 
-unique_ptr<ExpNode> Simplify::Execute(const VarValueNode& node) {
+unique_ptr<ExpNode> Simplifier::Execute(const VarValueNode& node) {
 	return node.Clone();
 }
 
-void Simplify::SimplifyATerms(NOperNode *node) {
+void Simplifier::SimplifyATerms(NOperNode *node) {
 	vector<AdditiveTerm> aTerms;
 
 	for (int i = 0; i < node->ChildCount(); i++) {
@@ -221,7 +221,7 @@ void Simplify::SimplifyATerms(NOperNode *node) {
 	}
 }
 
-void Simplify::SimplifyMTerms(NOperNode* node) {
+void Simplifier::SimplifyMTerms(NOperNode* node) {
 	vector<MultiplicativeTerm> mTerms;
 
 	for (int i = 0; i < node->ChildCount(); i++) {
@@ -250,5 +250,38 @@ void Simplify::SimplifyMTerms(NOperNode* node) {
 	node->ClearChildren();
 	for (MultiplicativeTerm& mTerm : mTerms) {
 		node->AddChild(mTerm.AsExpNode());
+	}
+}
+
+unique_ptr<ExpNode> Simplifier::Expand(NOperNode* node) {
+	unique_ptr<NOperNode> newANode = make_unique<NOperNode>('+');
+
+	// Check for parenthesis
+	const UOperNode* uOperNode = dynamic_cast<const UOperNode*>(&node->GetChild(node->ChildCount()-1));
+	if (uOperNode != nullptr && uOperNode->GetOperator() == Operator::PARENTHESIS) {
+		// Child is parenthesis
+		// Check for addition
+		const NOperNode& nOperNode = dynamic_cast<const NOperNode&>(uOperNode->GetChild(0));
+		if (nOperNode.GetOperator() == Operator::ADDITION) {
+			// Grand child is addition
+			// Distribute
+			for (int i = 0; i < nOperNode.ChildCount(); i++)
+			{
+				unique_ptr<NOperNode> newMNode = make_unique<NOperNode>('*');
+				newMNode->AddChild(nOperNode.GetChild(i).Clone());
+				for (int i = 0; i < node->ChildCount(); i++)
+				{
+					if (&node->GetChild(i) != uOperNode) {
+						newMNode->AddChild(node->GetChild(i).Clone());
+					}
+				}
+				newANode->AddChild(move(newMNode));
+			}
+			return newANode->Execute(this);
+		}
+		return make_unique<NOperNode>(*node);
+	}
+	else {
+		return make_unique<NOperNode>(*node);
 	}
 }

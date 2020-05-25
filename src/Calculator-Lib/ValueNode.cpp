@@ -5,14 +5,6 @@
 using namespace std;
 
 /// <summary>
-/// Simplifies ExpNode and children
-/// </summary>
-/// <returns>The new simplest node possible in place of this</returns>
-unique_ptr<ExpNode> ValueNode::Simplify() const {
-	return this->Clone();
-}
-
-/// <summary>
 /// The Priority of a value is always VALUE
 /// </summary>
 /// <returns>VALUE</returns>

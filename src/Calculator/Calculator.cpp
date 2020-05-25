@@ -1,8 +1,11 @@
+#pragma once
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
 #include <iostream>
 
+#include "Simplify.h"
 #include "LaTeXParser.h"
 #include "LaTeXPrinter.h"
 #include "ExpTree.h"
@@ -32,8 +35,10 @@ int main(int argc, char **argv) {
 			//parser->PrintError();
 		}
 		else {
+			Simplifier* simplifier = new Simplifier();
 			// Simplifies ExpTree and conver back to string
-			cout << parser->GetTree()->Simplify()->Print(*printer) << endl;
+			cout << parser->GetTree()->Execute(simplifier)->Print(*printer) << endl;
+			delete simplifier;
 		}
 		delete parser;
 		delete printer;

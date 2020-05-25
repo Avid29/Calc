@@ -51,12 +51,14 @@ class BOperNode : public OperNode {
 		/// </summary>
 		/// <returns>children count</returns>
 		int ChildCount() const override;
+
+		void ClearChildren();
 		
 		/// <summary>
 		/// Copies and simplifies ExpNode and descendents
 		/// </summary>
 		/// <returns>A simplified expression of this</returns>
-		unique_ptr<ExpNode> Simplify() const override;
+		unique_ptr<ExpNode> Execute(IOperation* operation) const override;
 
 		/// <summary>
 		/// Gets the expression tree printed from this down

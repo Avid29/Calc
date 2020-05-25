@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdexcept>
 
 #include "DiffOperNode.h"
@@ -52,8 +54,8 @@ void DiffOperNode::InsertChild(unique_ptr<OperNode> node) {
 	AddChild(move(node), true);
 }
 
-unique_ptr<ExpNode> DiffOperNode::Simplify() const {
-	return make_unique<DiffOperNode>(*this);
+unique_ptr<ExpNode> DiffOperNode::Execute(IOperation* operation) const {
+	return operation->Execute(*this);
 }
 
 const ExpNode& DiffOperNode::GetChild(int index) const {
@@ -68,6 +70,11 @@ const ExpNode& DiffOperNode::GetChild(int index) const {
 
 int DiffOperNode::ChildCount() const {
 	return child_ != nullptr ? 1 : 0;
+}
+
+void DiffOperNode::ClearChildren() {
+	child_ = nullptr;
+	variable_ = nullptr;
 }
 
 string DiffOperNode::Print(const IPrinter& printer) const {

@@ -113,6 +113,10 @@ int UOperNode::ChildCount() const {
 	return child_ != nullptr ? 1 : 0;
 }
 
+void UOperNode::ClearChildren() {
+	child_ = nullptr;
+}
+
 /// <summary>
 /// Check if UOperNode's child_ is set
 /// </summary>
@@ -134,41 +138,8 @@ void UOperNode::RemoveOverride() {
 /// Simplifies ExpNode and children
 /// </summary>
 /// <returns>The new simplest node possible in place of this</returns>
-unique_ptr<ExpNode> UOperNode::Simplify() const {
-	// Always returns a clone or replacement
-	unique_ptr<UOperNode> newNode = make_unique<UOperNode>(oper_);
-	newNode->AddChild(child_->Simplify());
-	
-	if (newNode->child_->IsNumericalValue()) {
-		switch (oper_)
-		{
-			case Operator::POSITIVE:
-			case Operator::PARENTHESIS:
-				return MakeValueNode(newNode->child_->AsDouble());
-			case Operator::NEGATIVE:
-				return MakeValueNode(-newNode->child_->AsDouble());
-			case Operator::RECIPROCAL:
-				return MakeValueNode(1 / newNode->child_->AsDouble());
-			case Operator::SINE:
-				return MakeValueNode(sin(newNode->child_->AsDouble()));
-			case Operator::COSINE:
-				return MakeValueNode(cos(newNode->child_->AsDouble()));
-			case Operator::TANGENT:
-				return MakeValueNode(tan(newNode->child_->AsDouble()));
-			case Operator::COSECANT:
-				return MakeValueNode(1 / sin(newNode->child_->AsDouble()));
-			case Operator::SECANT:
-				return MakeValueNode(1 / cos(newNode->child_->AsDouble()));
-			case Operator::COTANGENT:
-				return MakeValueNode(1 / tan(newNode->child_->AsDouble()));
-		}
-	}
-	else if (oper_ == Operator::PARENTHESIS &&
-		(parent_ == nullptr || parent_->GetPriority() >= child_->GetPriority())) {
-		// Parenthesis are unnecessary
-		return move(newNode->child_);
-	}
-	return newNode;
+unique_ptr<ExpNode> UOperNode::Execute(IOperation* operation) const {
+	return operation->Execute(*this);
 }
 
 /// <summary>

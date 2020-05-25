@@ -36,6 +36,12 @@ class FValueNode : public ValueNode {
 		double AsDouble() const override;
 
 		/// <summary>
+		/// Simplifies ExpNode
+		/// </summary>
+		/// <returns>The new simplest node possible in place of this</returns>
+		unique_ptr<ExpNode> Execute(IOperation* operation) const override;
+
+		/// <summary>
 		/// Gets the value as a string
 		/// </summary>
 		/// <returns>The node as a string</returns>

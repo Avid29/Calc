@@ -130,90 +130,18 @@ int NOperNode::ChildCount() const {
 	return children_.size();
 }
 
+void NOperNode::ClearChildren() {
+	children_.clear();
+}
+
 #pragma region Simplify
 
 /// <summary>
 /// Simplifies ExpNode and children
 /// </summary>
 /// <returns>The new simplest node possible in place of this</returns>
-unique_ptr<ExpNode> NOperNode::Simplify() const {
-	// Running total of value node children
-	double valueProg = 0;
-	if (oper_ == Operator::MULTIPLICATION) {
-		valueProg = 1;
-	}
-
-	// Always returns a clone or replacement
-	unique_ptr<NOperNode> newNode = make_unique<NOperNode>(oper_);
-
-	// Iterates whole vector
-	for (auto &child : children_) {
-		// Doesn't update node in children_
-		unique_ptr<ExpNode> node = child->Simplify();
-
-		if (node->IsNumericalValue()) {
-			// Add node value to total value progress
-			switch (oper_)
-			{
-				case Operator::ADDITION:
-					valueProg += node->AsDouble();
-					break;
-				case Operator::MULTIPLICATION:
-					valueProg *= node->AsDouble();
-					break;
-			}
-		}
-		else {
-			double childValues = newNode->TryInheritChildren(node.get());
-			if (childValues != -1) {
-				switch (oper_)
-				{
-					case Operator::ADDITION:
-						valueProg += childValues;
-						break;
-					case Operator::MULTIPLICATION:
-						valueProg *= childValues;
-						break;
-				}
-			}
-			else {
-				newNode->AddChild(move(node));
-			}
-		}
-	}
-
-	if (oper_ == Operator::MULTIPLICATION && valueProg == 0) {
-		// Because one multiplicative term is zero
-		// The enitre node is zero
-		return MakeValueNode(0);
-	}
-
-	if (newNode->children_.size() == 0 ||
-		((oper_ == Operator::ADDITION && valueProg != 0) ||
-		(oper_ == Operator::MULTIPLICATION && valueProg != 1))) {
-		// valueProg is not the default, so it should be added
-		newNode->AddChild(MakeValueNode(valueProg));
-	}
-
-	if (newNode->children_.size() == 1) {
-		return move(newNode->children_[0]);
-	}
-
-	switch (oper_)
-	{
-		case Operator::ADDITION:
-			newNode->SimplifyATerms();
-			break;
-		case Operator::MULTIPLICATION:
-			newNode->SimplifyMTerms();
-			break;
-	}
-
-	if (oper_ == Operator::MULTIPLICATION) {
-		return newNode->Expand();
-	}
-
-	return newNode;
+unique_ptr<ExpNode> NOperNode::Execute(IOperation* operation) const {
+	return operation->Execute(*this);
 }
 
 /// <summary>
@@ -235,7 +163,7 @@ double NOperNode::TryInheritChildren(ExpNode *node) {
 /// Gets expanded version of node
 /// </summary>
 /// <returns> Expanded version of this</returns>
-unique_ptr<ExpNode> NOperNode::Expand() {
+unique_ptr<ExpNode> NOperNode::Expand(IOperation* operation) {
 	unique_ptr<NOperNode> newANode = make_unique<NOperNode>('+');
 
 	// Check for parenthesis
@@ -259,85 +187,12 @@ unique_ptr<ExpNode> NOperNode::Expand() {
 				}
 				newANode->AddChild(move(newMNode));
 			}
-			return newANode->Simplify();
+			return newANode->Execute(operation);
 		}
 		return make_unique<NOperNode>(*this);
 	}
 	else {
 		return make_unique<NOperNode>(*this);
-	}
-}
-
-/// <summary>
-/// Sorts children into ATerms and applies properties to simplify them
-/// </summary>
-void NOperNode::SimplifyATerms() {
-
-	vector<AdditiveTerm> aTerms;
-
-	for (const unique_ptr<ExpNode> &child : children_) {
-		// Gets current child as AdditiveTerm
-		AdditiveTerm newATerm(*child);
-
-		bool foundLikeBase = false;
-
-		// Compares to previous AdditiveTerms
-		for (AdditiveTerm &iterATerm : aTerms) {
-			if (iterATerm == newATerm) {
-				iterATerm.AddToCoefficient(&newATerm);
-				foundLikeBase = true;
-				break;
-			}
-		}
-
-		// Adds to list if there were no ATerms with shared base
-		if (!foundLikeBase) {
-			aTerms.push_back(move(newATerm));
-		}
-	}
-
-	//sort(aTerms.begin(), aTerms.end(), compareATerm);
-
-	// Resets children then gets children from ATerms
-	children_.clear();
-	for (AdditiveTerm &aTerm : aTerms) {
-		children_.push_back(aTerm.AsExpNode());
-	}
-}
-
-/// <summary>
-/// Sorts children into MTerms and applies properties to simplify them
-/// </summary>
-void NOperNode::SimplifyMTerms() {
-
-	vector<MultiplicativeTerm> mTerms;
-	
-	for (auto &child : children_) {
-		// Gets current child as MultiplicativeTerm
-		MultiplicativeTerm newMTerm(*child);
-
-		bool foundLikeBase = false;
-
-		// Compares to previous MultiplicativeTerms
-		for (MultiplicativeTerm &iterMTerm : mTerms) {
-			if (iterMTerm == newMTerm) {
-				iterMTerm.AddToExponent(&newMTerm);
-				foundLikeBase = true;
-				break;
-			}
-		}
-
-		// Adds to list if there were no MTerms with shared base
-		if (!foundLikeBase)
-			mTerms.push_back(move(newMTerm));
-	}
-
-	sort(mTerms.begin(), mTerms.end());
-
-	// Resets children then gets children from MTerms
-	children_.clear();
-	for (MultiplicativeTerm &mTerm : mTerms) {
-		children_.push_back(mTerm.AsExpNode());
 	}
 }
 

@@ -21,7 +21,7 @@ void ExpNode::SetParent(OperNode* node) {
 /// Gets parent
 /// </summary>
 /// <returns>parent</returns>
-OperNode *ExpNode::GetParent() {
+OperNode *ExpNode::GetParent() const {
 	return parent_;
 }
 

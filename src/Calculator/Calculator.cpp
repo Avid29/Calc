@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 
+#include "Simplify.h"
 #include "LaTeXParser.h"
 #include "LaTeXPrinter.h"
 #include "ExpTree.h"
@@ -32,8 +33,10 @@ int main(int argc, char **argv) {
 			//parser->PrintError();
 		}
 		else {
+			Simplify* simplifier = new Simplify();
 			// Simplifies ExpTree and conver back to string
-			cout << parser->GetTree()->Simplify()->Print(*printer) << endl;
+			cout << parser->GetTree()->Execute(simplifier)->Print(*printer) << endl;
+			delete simplifier;
 		}
 		delete parser;
 		delete printer;

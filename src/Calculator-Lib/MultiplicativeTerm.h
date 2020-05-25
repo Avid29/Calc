@@ -20,7 +20,7 @@ class MultiplicativeTerm {
 		/// <summary>
 		/// Adds exponents
 		/// </summary>
-		void AddToExponent(MultiplicativeTerm *other);
+		void AddToExponent(MultiplicativeTerm *other, IOperation* operation);
 
 		/// <summary>
 		/// Checks if two MultiplicateTerms have the same base

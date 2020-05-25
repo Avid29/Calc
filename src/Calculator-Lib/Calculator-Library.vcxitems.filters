@@ -73,6 +73,12 @@
     <Filter Include="Headers\Printer\LaTeX">
       <UniqueIdentifier>{fb547c2f-b634-4612-9dca-25e1330240c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\Operations">
+      <UniqueIdentifier>{1c730170-29e1-449f-9c52-9c504f4c14b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Operations">
+      <UniqueIdentifier>{0e2fa6be-9b9f-479b-85da-327aefd03ee3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)ExpTree.h">
@@ -132,6 +138,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)LaTeXPrinter.h">
       <Filter>Headers\Printer\LaTeX</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)IOperation.h">
+      <Filter>Headers\Operations</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Simplify.h">
+      <Filter>Headers\Operations</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpTree.cpp">
@@ -184,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)LaTeXPrinter.cpp">
       <Filter>Source\Printer\LaTeX</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Simplify.cpp">
+      <Filter>Source\Operations</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

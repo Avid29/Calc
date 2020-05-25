@@ -31,6 +31,12 @@ class VarValueNode : public ValueNode {
 		double AsDouble() const;
 
 		/// <summary>
+		/// Simplifies ExpNode
+		/// </summary>
+		/// <returns>The new simplest node possible in place of this</returns>
+		unique_ptr<ExpNode> Execute(IOperation* operation) const override;
+
+		/// <summary>
 		/// Gets a clone of this
 		/// </summary>
 		unique_ptr<ExpNode> Clone() const;

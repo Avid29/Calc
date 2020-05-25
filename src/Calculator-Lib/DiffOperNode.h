@@ -24,7 +24,9 @@ public:
 	
 	int ChildCount() const;
 
-	unique_ptr<ExpNode> Simplify() const override;
+	void ClearChildren();
+
+	unique_ptr<ExpNode> Execute(IOperation* operation) const override;
 
 	string Print(const IPrinter& printer) const override;
 

@@ -103,48 +103,17 @@ int BOperNode::ChildCount() const {
 		return 2;
 }
 
+void BOperNode::ClearChildren() {
+	left_child = nullptr;
+	right_child = nullptr;
+}
+
 /// <summary>
 /// Simplifies ExpNode and children
 /// </summary>
 /// <returns>The new simplest node possible in place of this</returns>
-unique_ptr<ExpNode> BOperNode::Simplify() const {
-
-	// Always returns a clone or replacement
-	unique_ptr<BOperNode> newNode = make_unique<BOperNode>(oper_);
-
-	unique_ptr<ExpNode> simpleLeft = left_child->Simplify();
-	unique_ptr<ExpNode> simpleRight = right_child->Simplify();
-
-	// Returns 1 because anything to the power of 0 is 1
-	if (oper_ == Operator::POWER && simpleRight->AsDouble() == 0) {
-		return MakeValueNode(1);
-	}
-
-	if (simpleLeft->IsNumericalValue() && simpleRight->IsNumericalValue()) {
-		switch (oper_)
-		{
-			case Operator::POWER:
-				// Get a ValueNode for left to the power of right
-				return MakeValueNode(pow(simpleLeft->AsDouble(), simpleRight->AsDouble()));
-		}
-	}
-
-	if (oper_ == Operator::POWER &&
-		simpleRight->IsNumericalValue() &&
-		simpleRight->AsDouble() == floor(simpleRight->AsDouble())) {
-		// if oper is Power and if right child is an int 
-		// Expand to multiply n times
-		unique_ptr<NOperNode> nOperNode = make_unique<NOperNode>('*');
-		for (int i = 0; i < simpleRight->AsDouble(); i++) {
-			nOperNode->AddChild(simpleLeft->Clone());
-		}
-		return nOperNode->Simplify();
-	}
-
-	newNode->AddChild(move(simpleLeft));
-	newNode->AddChild(move(simpleRight));
-
-	return newNode;
+unique_ptr<ExpNode> BOperNode::Execute(IOperation* operation) const {
+	return operation->Execute(*this);
 }
 
 

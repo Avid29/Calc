@@ -2,6 +2,7 @@
 
 #include "LaTeXParser.h"
 #include "LaTeXPrinter.h"
+#include "Simplify.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -12,6 +13,7 @@ namespace CalculatorTests
 	public:
 		Tests() {
 			printer = new LaTeXPrinter();
+			simlifier = new Simplifier();
 		}
 
 		~Tests() {
@@ -93,9 +95,10 @@ namespace CalculatorTests
 			unique_ptr<ExpTree> tree;
 			int result = Parse(str, tree);
 			Assert::AreEqual(result, -1);
-			return tree->Simplify()->Print(*printer);
+			return tree->Execute(simlifier)->Print(*printer);
 		}
 
+		Simplifier* simlifier;
 		IPrinter* printer;
 	};
 }

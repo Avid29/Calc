@@ -63,23 +63,19 @@ class NOperNode	: public OperNode {
 		/// <returns>children count</returns>
 		int ChildCount() const override;
 
+		void ClearChildren();
+
 		/// <summary>
 		/// Simplifies ExpNode and children
 		/// </summary>
 		/// <returns>The new simplest node possible in place of this</returns>
-		unique_ptr<ExpNode> Simplify() const override;
+		unique_ptr<ExpNode> Execute(IOperation* operation) const override;
 
 		/// <summary>
 		/// Check if node can inhert node from children and insert if possible
 		/// </summary>
 		/// <returns>-1 for failure</returns>
 		double TryInheritChildren(ExpNode *node);
-
-		/// <summary>
-		/// Gets expanded version of node
-		/// </summary>
-		/// <returns> Expanded version of this</returns>
-		unique_ptr<ExpNode> Expand();
 
 		/// <summary>
 		/// Gets the expression tree printed from this down

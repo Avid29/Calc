@@ -4,7 +4,7 @@
 
 #include "IOperation.h"
 
-class Simplify : public IOperation
+class Simplifier : public IOperation
 {
 public:
 	unique_ptr<ExpNode> Execute(const BOperNode& node);
@@ -25,4 +25,6 @@ private:
 	void SimplifyATerms(NOperNode* node);
 
 	void SimplifyMTerms(NOperNode* node);
+
+	unique_ptr<ExpNode> Expand(NOperNode* node);
 };

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
@@ -33,7 +35,7 @@ int main(int argc, char **argv) {
 			//parser->PrintError();
 		}
 		else {
-			Simplify* simplifier = new Simplify();
+			Simplifier* simplifier = new Simplifier();
 			// Simplifies ExpTree and conver back to string
 			cout << parser->GetTree()->Execute(simplifier)->Print(*printer) << endl;
 			delete simplifier;

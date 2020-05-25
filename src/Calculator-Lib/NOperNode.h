@@ -78,12 +78,6 @@ class NOperNode	: public OperNode {
 		double TryInheritChildren(ExpNode *node);
 
 		/// <summary>
-		/// Gets expanded version of node
-		/// </summary>
-		/// <returns> Expanded version of this</returns>
-		unique_ptr<ExpNode> Expand(IOperation* operation);
-
-		/// <summary>
 		/// Gets the expression tree printed from this down
 		/// </summary>
 		/// <returns>The expression tree as a string</returns>

@@ -13,7 +13,7 @@ namespace CalculatorTests
 	public:
 		Tests() {
 			printer = new LaTeXPrinter();
-			simlifier = new Simplify();
+			simlifier = new Simplifier();
 		}
 
 		~Tests() {
@@ -98,7 +98,7 @@ namespace CalculatorTests
 			return tree->Execute(simlifier)->Print(*printer);
 		}
 
-		Simplify* simlifier;
+		Simplifier* simlifier;
 		IPrinter* printer;
 	};
 }

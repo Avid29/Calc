@@ -30,6 +30,14 @@ unique_ptr<ExpNode> Differentiator::Execute(const IValueNode& node) {
 
 unique_ptr<ExpNode> Differentiator::Execute(const NOperNode& node) {
 	// TODO: Product rule (multiplication) or differentiate all children (addition)
+	switch (node.GetOperator())
+	{
+	case Operator::ADDITION:
+		return ApplySumRule(node);
+	case Operator::MULTIPLICATION:
+		return ApplyProductRule(node);
+	}
+
 	return node.Clone();
 }
 
@@ -46,4 +54,17 @@ unique_ptr<ExpNode> Differentiator::Execute(const VarValueNode& node) {
 		// TODO: This is wrong I think
 		return node.Clone();
 	}
+}
+
+unique_ptr<ExpNode> Differentiator::ApplySumRule(const NOperNode& node) {
+	unique_ptr<NOperNode> nNode = make_unique<NOperNode>(node.GetOperator());
+	for (int i = 0; i < node.ChildCount(); i++)
+	{
+		nNode->AddChild(node.GetChild(i).Execute(this));
+	}
+	return move(nNode);
+}
+
+unique_ptr<ExpNode> Differentiator::ApplyProductRule(const NOperNode& node) {
+	return node.Clone();
 }

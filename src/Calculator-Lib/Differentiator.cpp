@@ -51,8 +51,7 @@ unique_ptr<ExpNode> Differentiator::Execute(const VarValueNode& node) {
 		return MakeValueNode(0);
 	}
 	else {
-		// TODO: This is wrong I think
-		return node.Clone();
+		return MakeValueNode(1);
 	}
 }
 

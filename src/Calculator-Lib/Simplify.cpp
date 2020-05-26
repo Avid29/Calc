@@ -56,7 +56,8 @@ unique_ptr<ExpNode> Simplifier::Execute(const BOperNode& node) {
 unique_ptr<ExpNode> Simplifier::Execute(const DiffOperNode& node) {
 	// TODO: Differentiate
 	Differentiator* differentiator = new Differentiator(make_unique<VarValueNode>(node.GetVariable()));
-	unique_ptr<ExpNode> result = node.GetChild(0).Execute(differentiator);
+	unique_ptr<ExpNode> result = node.GetChild(0)
+		.Execute(this)->Execute(differentiator)->Execute(this);
 	delete differentiator;
 	return move(result);
 }

@@ -4,6 +4,7 @@
 
 #include "AdditiveTerm.h"
 #include "MultiplicativeTerm.h"
+#include "Differentiator.h"
 #include "Simplify.h"
 #include "BOperNode.h"
 #include "DiffOperNode.h"
@@ -54,7 +55,10 @@ unique_ptr<ExpNode> Simplifier::Execute(const BOperNode& node) {
 
 unique_ptr<ExpNode> Simplifier::Execute(const DiffOperNode& node) {
 	// TODO: Differentiate
-	return node.Clone();
+	Differentiator* differentiator = new Differentiator(make_unique<VarValueNode>(node.GetVariable()));
+	unique_ptr<ExpNode> result = node.GetChild(0).Execute(differentiator);
+	delete differentiator;
+	return move(result);
 }
 
 unique_ptr<ExpNode> Simplifier::Execute(const FValueNode& node) {

@@ -74,5 +74,16 @@ unique_ptr<ExpNode> Differentiator::ApplySumRule(const NOperNode& node) {
 }
 
 unique_ptr<ExpNode> Differentiator::ApplyProductRule(const NOperNode& node) {
-	return node.Clone();
+	unique_ptr<NOperNode> aNode = make_unique<NOperNode>(Operator::ADDITION);
+	for (int i = 0; i < node.ChildCount(); i++) {
+		unique_ptr<NOperNode> mNode = make_unique<NOperNode>(Operator::MULTIPLICATION);
+		mNode->AddChild(node.GetChild(i).Execute(this));
+		for (int j = 0; j < node.ChildCount(); j++) {
+			if (j != i) {
+				mNode->AddChild(node.GetChild(j).Clone());
+			}
+		}
+		aNode->AddChild(move(mNode));
+	}
+	return aNode;
 }

@@ -144,6 +144,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Simplify.h">
       <Filter>Headers\Operations</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Differentiator.h">
+      <Filter>Headers\Operations</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpTree.cpp">
@@ -198,6 +201,9 @@
       <Filter>Source\Printer\LaTeX</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Simplify.cpp">
+      <Filter>Source\Operations</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Differentiator.cpp">
       <Filter>Source\Operations</Filter>
     </ClCompile>
   </ItemGroup>

@@ -54,6 +54,10 @@ class BOperNode : public OperNode {
 
 		void ClearChildren();
 		
+		bool IsConstant() const override;
+
+		bool IsConstantBy(const VarValueNode& node) const override;
+
 		/// <summary>
 		/// Copies and simplifies ExpNode and descendents
 		/// </summary>

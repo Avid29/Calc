@@ -20,6 +20,16 @@ bool ValueNode::IsValue() const {
 	return true;
 }
 
+bool ValueNode::IsConstant() const {
+	// VarValueNode overwrites
+	return true;
+}
+
+bool ValueNode::IsConstantBy(const VarValueNode& node) const {
+	// VarValueNode overwrites
+	return true;
+}
+
 /// <summary>
 /// Gets most appropiate ValueNodeType
 /// </summary>

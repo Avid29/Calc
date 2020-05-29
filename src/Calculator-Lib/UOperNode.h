@@ -71,6 +71,10 @@ class UOperNode : public OperNode {
 		/// </summary>
 		void RemoveOverride();
 
+		bool IsConstant() const override;
+
+		bool IsConstantBy(const VarValueNode& node) const override;
+
 		/// <summary>
 		/// Simplifies ExpNode and children
 		/// </summary>

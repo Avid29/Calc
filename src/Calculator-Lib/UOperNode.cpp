@@ -134,6 +134,14 @@ void UOperNode::RemoveOverride() {
 	}
 }
 
+bool UOperNode::IsConstant() const {
+	return child_->IsConstant();
+}
+
+bool UOperNode::IsConstantBy(const VarValueNode& node) const {
+	return child_->IsConstantBy(node);
+}
+
 /// <summary>
 /// Simplifies ExpNode and children
 /// </summary>

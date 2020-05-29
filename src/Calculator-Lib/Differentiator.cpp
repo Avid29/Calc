@@ -11,6 +11,10 @@
 #include "VarValueNode.h"
 
 unique_ptr<ExpNode> Differentiator::Execute(const BOperNode& node) {
+	if (node.GetChild(0).IsConstantBy(*variable_)) {
+		return MakeValueNode(0);
+	}
+
 	// TODO: Multiply by exponent, subtract one from exponent
 	unique_ptr<NOperNode> mNode = make_unique<NOperNode>(Operator::MULTIPLICATION);
 	mNode->AddChild(node.GetChild(1).Clone());

@@ -77,6 +77,14 @@ void DiffOperNode::ClearChildren() {
 	variable_ = nullptr;
 }
 
+bool DiffOperNode::IsConstant() const {
+	return child_->IsConstant();
+}
+
+bool DiffOperNode::IsConstantBy(const VarValueNode& node) const {
+	return child_->IsConstantBy(node);
+}
+
 string DiffOperNode::Print(const IPrinter& printer) const {
 	return printer.Print(*this);
 }

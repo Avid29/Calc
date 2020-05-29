@@ -108,6 +108,14 @@ void BOperNode::ClearChildren() {
 	right_child = nullptr;
 }
 
+bool BOperNode::IsConstant() const {
+	return left_child->IsConstant() && right_child->IsConstant();
+}
+
+bool BOperNode::IsConstantBy(const VarValueNode& node) const {
+	return left_child->IsConstantBy(node) && right_child->IsConstantBy(node);
+}
+
 /// <summary>
 /// Simplifies ExpNode and children
 /// </summary>

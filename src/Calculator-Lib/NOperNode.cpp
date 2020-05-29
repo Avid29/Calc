@@ -134,6 +134,26 @@ void NOperNode::ClearChildren() {
 	children_.clear();
 }
 
+bool NOperNode::IsConstant() const {
+	for (auto& child : children_)
+	{
+		if (!child->IsConstant()) {
+			return false;
+		}
+	}
+	return true;
+}
+
+bool NOperNode::IsConstantBy(const VarValueNode& node) const {
+	for (auto& child : children_)
+	{
+		if (!child->IsConstantBy(node)) {
+			return false;
+		}
+	}
+	return true;
+}
+
 #pragma region Simplify
 
 /// <summary>

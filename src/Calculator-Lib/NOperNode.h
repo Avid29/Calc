@@ -65,6 +65,10 @@ class NOperNode	: public OperNode {
 
 		void ClearChildren();
 
+		bool IsConstant() const;
+
+		bool IsConstantBy(const VarValueNode& node) const;
+
 		/// <summary>
 		/// Simplifies ExpNode and children
 		/// </summary>

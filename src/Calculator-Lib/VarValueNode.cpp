@@ -35,6 +35,14 @@ double VarValueNode::AsDouble() const {
 	return NAN;
 }
 
+bool VarValueNode::IsConstant() const {
+	return false;
+}
+
+bool VarValueNode::IsConstantBy(const VarValueNode& node) const {
+	return node.GetCharacter() != this->GetCharacter();
+}
+
 /// <summary>
 /// Simplifies ExpNode and children
 /// </summary>

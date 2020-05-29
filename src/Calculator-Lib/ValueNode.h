@@ -21,6 +21,10 @@ class ValueNode : public ExpNode
 		/// Gets a clone of this
 		/// </summary>
 		virtual unique_ptr<ExpNode> Clone() const = 0;
+
+		virtual bool IsConstant() const override;
+
+		virtual bool IsConstantBy(const VarValueNode& node) const override;
 };
 
 /// <summary>

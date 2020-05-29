@@ -30,6 +30,10 @@ class VarValueNode : public ValueNode {
 		/// <returns>this node as a double value or NAN if not possible</returns>
 		double AsDouble() const;
 
+		bool IsConstant() const override;
+
+		bool IsConstantBy(const VarValueNode& node) const override;
+
 		/// <summary>
 		/// Simplifies ExpNode
 		/// </summary>

@@ -26,6 +26,10 @@ public:
 
 	void ClearChildren();
 
+	bool IsConstant() const override;
+
+	bool IsConstantBy(const VarValueNode& node) const override;
+
 	unique_ptr<ExpNode> Execute(IOperation* operation) const override;
 
 	string Print(const IPrinter& printer) const override;

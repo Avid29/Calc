@@ -45,6 +45,10 @@ class ExpNode {
 
 		virtual bool IsValue() const = 0;
 
+		virtual bool IsConstant() const = 0;
+
+		virtual bool IsConstantBy(const VarValueNode& node) const = 0;
+
 		virtual double AsDouble() const = 0;
 
 		virtual unique_ptr<ExpNode> Execute(IOperation* operation) const = 0;

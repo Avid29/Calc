@@ -42,7 +42,6 @@ unique_ptr<ExpNode> Differentiator::Execute(const IValueNode& node) {
 }
 
 unique_ptr<ExpNode> Differentiator::Execute(const NOperNode& node) {
-	// TODO: Product rule (multiplication) or differentiate all children (addition)
 	switch (node.GetOperator())
 	{
 	case Operator::ADDITION:

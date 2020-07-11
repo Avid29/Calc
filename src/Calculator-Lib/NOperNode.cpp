@@ -195,7 +195,3 @@ string NOperNode::Print(const IPrinter& printer) const {
 unique_ptr<ExpNode> NOperNode::Clone() const {
 	return make_unique<NOperNode>(*this);
 }
-
-bool NOperNode::CanMerge(const OperNode &node) const {
-	return IsNary(node.GetOperator()) && node.GetOperator() == GetOperator();
-}

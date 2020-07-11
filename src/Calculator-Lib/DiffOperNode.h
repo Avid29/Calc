@@ -18,7 +18,7 @@ public:
 
 	void AddChild(unique_ptr<ExpNode> node, bool overwrite);
 
-	void InsertChild(unique_ptr<OperNode> node);
+	void InsertChild(unique_ptr<BranchNode> node);
 
 	const ExpNode& GetChild(int index) const;
 	

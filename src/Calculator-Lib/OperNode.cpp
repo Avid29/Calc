@@ -8,30 +8,6 @@
 using namespace std;
 
 /// <summary>
-/// Checks if node can be represented as a double
-/// </summary>
-/// <returns>true if node can be represented as a double</returns>
-bool OperNode::IsNumericalValue() const {
-	return false;
-}
-
-/// <summary>
-/// Checks if node is a value
-/// </summary>
-/// <returns>true if node is a value</returns>
-bool OperNode::IsValue() const {
-	return false;
-}
-
-/// <summary>
-/// Gets this as a double, if possible
-/// </summary>
-/// <returns>this node as a double value or NAN if not possible</returns>
-double OperNode::AsDouble() const {
-	return NAN;
-}
-
-/// <summary>
 /// Gets the priority based on the oper
 /// </summary>
 /// <returns>Proirity value</returns>

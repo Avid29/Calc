@@ -85,7 +85,7 @@ void UOperNode::AddChild(unique_ptr<ExpNode> node, bool overwrite) {
 /// Insert child between this and its child
 /// </summary>
 /// <param name="node">this's new child node</param>
-void UOperNode::InsertChild(unique_ptr<OperNode> node) {
+void UOperNode::InsertChild(unique_ptr<BranchNode> node) {
 	if (child_ != nullptr) {
 		node->AddChild(move(child_));
 	}

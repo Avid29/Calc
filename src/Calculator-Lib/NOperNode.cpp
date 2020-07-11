@@ -68,7 +68,7 @@ void NOperNode::AddChild(unique_ptr<ExpNode> node) {
 /// Inserts child between this and its last child
 /// </summary>
 /// <param name="node">this's new child node</param>
-void NOperNode::InsertChild(unique_ptr<OperNode> node) {
+void NOperNode::InsertChild(unique_ptr<BranchNode> node) {
 	// Gets this's last child and remove from children_
 	node->AddChild(move(children_.back()));
 	children_.pop_back();
@@ -127,7 +127,7 @@ const ExpNode &NOperNode::GetChild(int index) const {
 /// </summary>
 /// <returns>children count</returns>
 int NOperNode::ChildCount() const {
-	return children_.size();
+	return (int)children_.size();
 }
 
 void NOperNode::ClearChildren() {
@@ -194,4 +194,8 @@ string NOperNode::Print(const IPrinter& printer) const {
 /// </summary>
 unique_ptr<ExpNode> NOperNode::Clone() const {
 	return make_unique<NOperNode>(*this);
+}
+
+bool NOperNode::CanMerge(const OperNode &node) const {
+	return IsNary(node.GetOperator()) && node.GetOperator() == GetOperator();
 }

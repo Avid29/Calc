@@ -47,7 +47,7 @@ void ExpTree::AddNode(unique_ptr<OperNode> node) {
 			root_node = move(node);
 		}
 	}
-	else if (IsNary(node->GetOperator()) && node->GetOperator() == active_node->GetOperator()) {
+	else if (active_node->CanMerge(*node)) {
 		// Adding node would be a duplicate of active_node for an Nary operator
 		for (int i = 0; i < node->ChildCount(); i++)
 		{
@@ -135,7 +135,7 @@ void ExpTree::AddAnyNode(unique_ptr<ExpNode> node) {
 void ExpTree::CloseParenthesis() {
 
 	// Finds UNRESOLVED_PARENTHESIS node
-	OperNode* node = active_node;
+	BranchNode* node = active_node;
 	while (node->GetPriority() != Priority::OVERRIDE && !node->IsRoot())
 	{
 		node = node->GetParent();

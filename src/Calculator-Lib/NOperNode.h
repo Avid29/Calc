@@ -38,7 +38,7 @@ class NOperNode	: public OperNode {
 		/// Inserts child between this and its last child
 		/// </summary>
 		/// <param name="node">this's new child node</param>
-		void InsertChild(unique_ptr<OperNode> node) override;
+		void InsertChild(unique_ptr<BranchNode> node) override;
 
 		/// <summary>
 		/// Inserts child as a child at index
@@ -91,6 +91,13 @@ class NOperNode	: public OperNode {
 		/// Gets a clone of this
 		/// </summary>
 		unique_ptr<ExpNode> Clone() const override;
+
+		/// <summary>
+		/// Checks if the node can be merged with an OperNode.
+		/// </summary>
+		/// <param name="node">The node to merge.</param>
+		/// <returns>Whether or not the nodes can merge</returns>
+		virtual bool CanMerge(const OperNode& node) const;
 	private:
 		/// <summary>
 		/// Sorts children into ATerms and applies properties to simplify them

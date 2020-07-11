@@ -44,7 +44,7 @@ class UOperNode : public OperNode {
 		/// Insert child between this and its child
 		/// </summary>
 		/// <param name="node">this's new child node</param>
-		void InsertChild(unique_ptr<OperNode> node) override;
+		void InsertChild(unique_ptr<BranchNode> node) override;
 
 		/// <summary>
 		/// Gets child at index

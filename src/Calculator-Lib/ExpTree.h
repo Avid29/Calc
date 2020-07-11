@@ -68,7 +68,7 @@ class ExpTree {
 		void InsertOperNode(unique_ptr<OperNode> node);
 
 		// Tracks the last insertion point during parsing.
-		OperNode *active_node;
+		BranchNode *active_node;
 
 		unique_ptr<ExpNode> root_node;
 };

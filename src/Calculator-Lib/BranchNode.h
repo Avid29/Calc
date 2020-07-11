@@ -61,11 +61,4 @@ class BranchNode : public ExpNode
 		/// </summary>
 		/// <returns>Proirity value</returns>
 		virtual Priority GetPriority() const = 0;
-
-		/// <summary>
-		/// Checks if the node can be merged with an OperNode.
-		/// </summary>
-		/// <param name="node">The node to merge.</param>
-		/// <returns>Whether or not the nodes can merge</returns>
-		virtual bool CanMerge(const OperNode &node) const;
 };

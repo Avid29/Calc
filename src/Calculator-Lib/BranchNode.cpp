@@ -29,7 +29,3 @@ bool BranchNode::IsValue() const {
 double BranchNode::AsDouble() const {
 	return NAN;
 }
-
-bool BranchNode::CanMerge(const OperNode& node) const {
-	return false;
-}

@@ -47,8 +47,9 @@ void ExpTree::AddNode(unique_ptr<OperNode> node) {
 			root_node = move(node);
 		}
 	}
-	else if (active_node->CanMerge(*node)) {
+	else if (IsNary(node->GetOperator()) && node->GetPriority() == active_node->GetPriority()) {
 		// Adding node would be a duplicate of active_node for an Nary operator
+		// Checking the priority, in the context, guarentees equivilant associative operators
 		for (int i = 0; i < node->ChildCount(); i++)
 		{
 			active_node->AddChild(move(node->GetChild(i).Clone()));

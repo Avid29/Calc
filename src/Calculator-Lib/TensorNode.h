@@ -19,7 +19,7 @@ class TensorNode : public EnumerableCollectionNode {
 
 		~TensorNode();
 
-		TensorType GetDimensionCount();
+		TensorType GetDimensionCount() const;
 
 		/// <summary>
 		/// Gets the size of a dimension
@@ -29,7 +29,7 @@ class TensorNode : public EnumerableCollectionNode {
 		/// </remarks>
 		/// <param name="dimension">The dimension to check</param>
 		/// <returns>The size of the dimension</returns>
-		int GetDimensionSize(int dimension);
+		int GetDimensionSize(int dimension) const;
 
 		/// <summary>
 		/// Finishes adding to a dimension from adding children.

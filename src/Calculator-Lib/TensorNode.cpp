@@ -21,11 +21,11 @@ TensorNode::~TensorNode() {
 	delete sizes_;
 }
 
-TensorType TensorNode::GetDimensionCount() {
+TensorType TensorNode::GetDimensionCount() const {
 	return dimensions_;
 }
 
-int TensorNode::GetDimensionSize(int dimension) {
+int TensorNode::GetDimensionSize(int dimension) const {
 	return sizes_[dimension-1];
 }
 
@@ -50,15 +50,7 @@ unique_ptr<ExpNode> TensorNode::Execute(IOperation* operation) const {
 }
 
 string TensorNode::Print(const IPrinter& printer) const {
-	string progress = "<";
-	for (size_t i = 0; i < children_.size(); i++) {
-		progress += children_[i]->Print(printer);
-		if (i < children_.size()-1) {
-			progress += ",";
-		}
-	}
-	progress += '>';
-	return progress;
+	return printer.Print(*this);
 }
 
 unique_ptr<ExpNode> TensorNode::Clone() const {

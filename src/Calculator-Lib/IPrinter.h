@@ -9,6 +9,7 @@ class DiffOperNode;
 class FValueNode;
 class IValueNode;
 class NOperNode;
+class TensorNode;
 class UOperNode;
 class VarValueNode;
 
@@ -24,6 +25,8 @@ public:
 	virtual string Print(const IValueNode& node) const = 0;
 
 	virtual string Print(const NOperNode& node) const = 0;
+
+	virtual string Print(const TensorNode& node) const = 0;
 
 	virtual string Print(const UOperNode& node) const = 0;
 

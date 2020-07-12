@@ -50,7 +50,15 @@ unique_ptr<ExpNode> TensorNode::Execute(IOperation* operation) const {
 }
 
 string TensorNode::Print(const IPrinter& printer) const {
-	return "<TempVector>";
+	string progress = "<";
+	for (size_t i = 0; i < children_.size(); i++) {
+		progress += children_[i]->Print(printer);
+		if (i < children_.size()-1) {
+			progress += ",";
+		}
+	}
+	progress += '>';
+	return progress;
 }
 
 unique_ptr<ExpNode> TensorNode::Clone() const {

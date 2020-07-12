@@ -15,6 +15,8 @@ public:
 
 	string Print(const NOperNode& node) const override;
 
+	string Print(const TensorNode& node) const override;
+
 	string Print(const UOperNode& node) const override;
 
 	string Print(const VarValueNode& node) const override;

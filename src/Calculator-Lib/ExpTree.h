@@ -21,7 +21,7 @@ class ExpTree {
 		/// Adds an OperNode to the tree
 		/// </summary>
 		/// <param name="node">OperNode to add to tree</pararm>
-		void AddNode(unique_ptr<OperNode> node);
+		void AddNode(unique_ptr<BranchNode> node);
 
 		/// <summary>
 		/// Adds a ValueNode to the tree
@@ -57,6 +57,12 @@ class ExpTree {
 
 	private:
 		/// <summary>
+		/// Adds an OperNode to the tree.
+		/// </summary>
+		/// <param name="node">The oper node to add</param>
+		void AddOperNode(unique_ptr<BranchNode> node);
+
+		/// <summary>
 		/// Finds insertion point for node and changes active_node to it
 		/// </summary>
 		/// <param name="node">Node to insert</param>
@@ -65,10 +71,10 @@ class ExpTree {
 		/// <summary>
 		/// Inserts an OperNode differently depending on it's oper type
 		/// </summary>
-		void InsertOperNode(unique_ptr<OperNode> node);
+		void InsertOperNode(unique_ptr<BranchNode> node);
 
 		// Tracks the last insertion point during parsing.
-		OperNode *active_node;
+		BranchNode *active_node;
 
 		unique_ptr<ExpNode> root_node;
 };

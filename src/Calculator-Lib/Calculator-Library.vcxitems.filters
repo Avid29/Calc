@@ -79,6 +79,12 @@
     <Filter Include="Source\Operations">
       <UniqueIdentifier>{0e2fa6be-9b9f-479b-85da-327aefd03ee3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\ExpTree\Nodes\Collections">
+      <UniqueIdentifier>{598a4cba-e9d5-49cc-a51b-5f99dc0cdf70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\ExpTree\Nodes\Collections">
+      <UniqueIdentifier>{5fde2f8d-3ae5-4b9e-905e-155ed4d0ea36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)ExpTree.h">
@@ -147,6 +153,18 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Differentiator.h">
       <Filter>Headers\Operations</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BranchNode.h">
+      <Filter>Headers\ExpTree\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EnumerableCollectionNode.h">
+      <Filter>Headers\ExpTree\Nodes\Collections</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TensorNode.h">
+      <Filter>Headers\ExpTree\Nodes\Collections</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)VectorParser.h">
+      <Filter>Headers\Parser\LaTeX\Functions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpTree.cpp">
@@ -205,6 +223,18 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Differentiator.cpp">
       <Filter>Source\Operations</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EnumerableCollectionNode.cpp">
+      <Filter>Source\ExpTree\Nodes\Collections</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TensorNode.cpp">
+      <Filter>Source\ExpTree\Nodes\Collections</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\avid2\source\repos\Calc\src\Calculator-Lib\VectorParser.cpp">
+      <Filter>Source\Parser\LaTeX\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BranchNode.cpp">
+      <Filter>Source\ExpTree\Nodes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

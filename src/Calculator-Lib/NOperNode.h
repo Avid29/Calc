@@ -38,7 +38,7 @@ class NOperNode	: public OperNode {
 		/// Inserts child between this and its last child
 		/// </summary>
 		/// <param name="node">this's new child node</param>
-		void InsertChild(unique_ptr<OperNode> node) override;
+		void InsertChild(unique_ptr<BranchNode> node) override;
 
 		/// <summary>
 		/// Inserts child as a child at index
@@ -76,7 +76,7 @@ class NOperNode	: public OperNode {
 		unique_ptr<ExpNode> Execute(IOperation* operation) const override;
 
 		/// <summary>
-		/// Check if node can inhert node from children and insert if possible
+		/// Check if node can inherit node from children and insert if possible
 		/// </summary>
 		/// <returns>-1 for failure</returns>
 		double TryInheritChildren(ExpNode *node);

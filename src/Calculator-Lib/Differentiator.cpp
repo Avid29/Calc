@@ -6,6 +6,7 @@
 #include "DiffOperNode.h"
 #include "FValueNode.h"
 #include "IValueNode.h"
+#include "TensorNode.h"
 #include "NOperNode.h"
 #include "UOperNode.h"
 #include "VarValueNode.h"
@@ -51,6 +52,11 @@ unique_ptr<ExpNode> Differentiator::Execute(const NOperNode& node) {
 	}
 
 	return node.Clone();
+}
+
+unique_ptr<ExpNode> Differentiator::Execute(const TensorNode& node) {
+	return node.Clone();
+	// TODO: Tensor calculus
 }
 
 unique_ptr<ExpNode> Differentiator::Execute(const UOperNode& node) {

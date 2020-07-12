@@ -11,6 +11,7 @@ class DiffOperNode;
 class FValueNode;
 class IValueNode;
 class NOperNode;
+class TensorNode;
 class UOperNode;
 class VarValueNode;
 
@@ -26,6 +27,8 @@ public:
 	virtual unique_ptr<ExpNode> Execute(const IValueNode& node) = 0;
 
 	virtual unique_ptr<ExpNode> Execute(const NOperNode& node) = 0;
+
+	virtual unique_ptr<ExpNode> Execute(const TensorNode& node) = 0;
 
 	virtual unique_ptr<ExpNode> Execute(const UOperNode& node) = 0;
 

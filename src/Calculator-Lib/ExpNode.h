@@ -12,7 +12,7 @@ using namespace std;
 // Higher values go higher on the tree
 // Order of operations
 enum class Priority {
-	OVERRIDE = -1, // Parenthesis
+	OVERRIDE = -1, // Parenthesis or Collections
 	VALUE,
 	UNARY,
 	POWER,
@@ -20,8 +20,7 @@ enum class Priority {
 	ADDITION
 };
 
-class OperNode;
-class ValueNode;
+class BranchNode;
 
 class ExpNode {
 	public:
@@ -33,13 +32,13 @@ class ExpNode {
 		/// Sets node as the parent of this
 		/// </summary>
 		/// <param name="node">New parent node</param>
-		void SetParent(OperNode* node);
+		void SetParent(BranchNode *node);
 
 		/// <summary>
 		/// Gets this node's parent
 		/// </summary>
 		/// <returns>parent_</returns>
-		OperNode *GetParent() const;
+		BranchNode *GetParent() const;
 
 		virtual bool IsNumericalValue() const = 0;
 
@@ -62,7 +61,7 @@ class ExpNode {
 		virtual Priority GetPriority() const = 0;
 
 		/// <summary>
-		/// Checks if this has parent (if it does not, it's the root node
+		/// Checks if this has parent (if it does not, it's the root node)
 		/// </summary>
 		/// <returns>true if this is the root node</returns>
 		bool IsRoot();
@@ -72,5 +71,5 @@ class ExpNode {
 		/// </summary>
 		virtual unique_ptr<ExpNode> Clone() const = 0;
 	protected:
-		OperNode *parent_ = nullptr;
+		BranchNode *parent_ = nullptr;
 };

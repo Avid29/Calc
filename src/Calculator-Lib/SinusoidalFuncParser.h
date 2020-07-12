@@ -14,7 +14,7 @@ public:
 
 	bool ParseFirstChar(const char c);
 
-	bool ParseNextChar(const char c, unique_ptr<OperNode> &outputNode);
+	bool ParseNextChar(const char c, unique_ptr<BranchNode> &outputNode);
 
 private:
 	Operator oper_;

@@ -19,6 +19,8 @@ public:
 
 	unique_ptr<ExpNode> Execute(const NOperNode&) override;
 
+	unique_ptr<ExpNode> Execute(const TensorNode& node) override;
+
 	unique_ptr<ExpNode> Execute(const UOperNode&) override;
 
 	unique_ptr<ExpNode> Execute(const VarValueNode&) override;

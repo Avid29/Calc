@@ -10,7 +10,7 @@ bool SinusoidalFuncParser::ParseFirstChar(const char c) {
 	return c == '{';
 }
 
-bool SinusoidalFuncParser::ParseNextChar(const char c, unique_ptr<OperNode> &outputNode) {
+bool SinusoidalFuncParser::ParseNextChar(const char c, unique_ptr<BranchNode> &outputNode) {
 	if (c == '}' && depth_ == 0) {
 		unique_ptr<ExpTree> tree = child_parser->FinalizeAndReturn();
 		if (tree == nullptr) {

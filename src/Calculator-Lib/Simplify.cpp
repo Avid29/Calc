@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <map>
 
 #include "AdditiveTerm.h"
 #include "MultiplicativeTerm.h"
@@ -11,6 +12,7 @@
 #include "FValueNode.h"
 #include "IValueNode.h"
 #include "NOperNode.h"
+#include "TensorNode.h"
 #include "UOperNode.h"
 #include "VarValueNode.h"
 
@@ -137,19 +139,34 @@ unique_ptr<ExpNode> Simplifier::Execute(const NOperNode& node) {
 
 	switch (node.GetOperator())
 	{
-	case Operator::ADDITION:
-		SimplifyATerms(newNode.get());
-		break;
-	case Operator::MULTIPLICATION:
-		SimplifyMTerms(newNode.get());
-		break;
+		case Operator::ADDITION:
+			SimplifyATerms(newNode.get());
+			break;
+		case Operator::MULTIPLICATION:
+			SimplifyMTerms(newNode.get());
+			break;
 	}
 
 	if (node.GetOperator() == Operator::MULTIPLICATION) {
 		return Expand(newNode.get());
 	}
 
+	if (node.GetOperator() == Operator::ADDITION) {
+		return AddTensors(newNode.get());
+	}
+
 	return newNode;
+}
+
+unique_ptr<ExpNode> Simplifier::Execute(const TensorNode& node) {
+	unique_ptr<TensorNode> newTensor = make_unique<TensorNode>((int)node.GetDimensionCount());
+	for (int i = 0; i < node.ChildCount(); i++)
+	{
+		newTensor->AddChild(node.GetChild(i).Execute(this));
+	}
+	newTensor->EndDimension(1);
+	return newTensor;
+	// TODO: Proper Tensor and matrix support
 }
 
 unique_ptr<ExpNode> Simplifier::Execute(const UOperNode& node) {
@@ -289,4 +306,44 @@ unique_ptr<ExpNode> Simplifier::Expand(NOperNode* node) {
 	else {
 		return make_unique<NOperNode>(*node);
 	}
+}
+
+unique_ptr<ExpNode> Simplifier::AddTensors(NOperNode* node) {
+	map<string, unique_ptr<TensorNode>> nodeMap;
+	unique_ptr<NOperNode> returnValue = make_unique<NOperNode>('+');
+	for (int i = 0; i < node->ChildCount(); i++)
+	{
+		const TensorNode *tensorNode = dynamic_cast<const TensorNode*>(&node->GetChild(i));
+		if (tensorNode != nullptr) {
+			string identity = GetTensorNodeSizeIdentity(*tensorNode);
+			if (nodeMap.find(identity) != nodeMap.end()) {
+				unique_ptr<TensorNode> oldTensor = move(nodeMap[identity]);
+				unique_ptr<TensorNode> newTensor = make_unique<TensorNode>(*oldTensor);
+				newTensor->ClearChildren();
+				for (int i = 0; i < tensorNode->ChildCount(); i++)
+				{
+					auto addition = make_unique<NOperNode>('+');
+					addition->AddChild(move(oldTensor->GetChild(i).Clone()));
+					addition->AddChild(move(tensorNode->GetChild(i).Clone()));
+					newTensor->AddChild(move(addition->Execute(this)));
+				}
+				nodeMap[identity] = move(newTensor);
+			}
+			else {
+				nodeMap[identity] = make_unique<TensorNode>(*tensorNode);
+			}
+		}
+		else {
+			returnValue->AddChild(move(node->GetChild(i).Clone()));
+		}
+	}
+
+	map<string, unique_ptr<TensorNode>>::iterator it = nodeMap.begin();
+
+	while (it != nodeMap.end())
+	{
+		returnValue->AddChild(move(it->second));
+		it++;
+	}
+	return returnValue;
 }

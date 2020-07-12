@@ -29,3 +29,5 @@
 /tests/Calculator-Tests-Old/Release
 /tests/Calculator-Tests-Old/x64
 /tests/Calculator-Tests/x64/Debug
+/src/Calculator.App.UWP/obj
+/src/Calculator.App.UWP/bin/x86/Debug

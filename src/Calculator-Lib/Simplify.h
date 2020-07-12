@@ -29,4 +29,6 @@ private:
 	void SimplifyMTerms(NOperNode* node);
 
 	unique_ptr<ExpNode> Expand(NOperNode* node);
+
+	unique_ptr<ExpNode> AddTensors(NOperNode* node);
 };

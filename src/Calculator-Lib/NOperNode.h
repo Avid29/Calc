@@ -76,7 +76,7 @@ class NOperNode	: public OperNode {
 		unique_ptr<ExpNode> Execute(IOperation* operation) const override;
 
 		/// <summary>
-		/// Check if node can inhert node from children and insert if possible
+		/// Check if node can inherit node from children and insert if possible
 		/// </summary>
 		/// <returns>-1 for failure</returns>
 		double TryInheritChildren(ExpNode *node);

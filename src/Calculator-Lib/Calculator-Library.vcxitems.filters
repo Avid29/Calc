@@ -153,11 +153,14 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Differentiator.h">
       <Filter>Headers\Operations</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)CollectionNode.h">
-      <Filter>Headers\ExpTree\Nodes\Collections</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)BranchNode.h">
       <Filter>Headers\ExpTree\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EnumerableCollectionNode.h">
+      <Filter>Headers\ExpTree\Nodes\Collections</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TensorNode.h">
+      <Filter>Headers\ExpTree\Nodes\Collections</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -221,7 +224,10 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)BranchNode.cpp">
       <Filter>Source\ExpTree</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)CollectionNode.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)EnumerableCollectionNode.cpp">
+      <Filter>Source\ExpTree\Nodes\Collections</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TensorNode.cpp">
       <Filter>Source\ExpTree\Nodes\Collections</Filter>
     </ClCompile>
   </ItemGroup>

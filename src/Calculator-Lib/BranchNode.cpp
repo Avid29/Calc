@@ -29,3 +29,11 @@ bool BranchNode::IsValue() const {
 double BranchNode::AsDouble() const {
 	return NAN;
 }
+
+bool BranchNode::IsOperNode() const {
+	return false;
+}
+
+const OperNode* BranchNode::AsOperNode() const {
+	return nullptr;
+}

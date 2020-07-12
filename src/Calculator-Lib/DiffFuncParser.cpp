@@ -18,7 +18,7 @@ bool DiffFuncParser::ParseFirstChar(const char c) {
 	}
 }
 
-bool DiffFuncParser::ParseNextChar(const char c, unique_ptr<OperNode>& outputNode) {
+bool DiffFuncParser::ParseNextChar(const char c, unique_ptr<BranchNode>& outputNode) {
 	switch (state_)
 	{
 	case State::VAR: {

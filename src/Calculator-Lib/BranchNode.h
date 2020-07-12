@@ -51,6 +51,10 @@ class BranchNode : public ExpNode
 		/// <returns>this node as a double value or NAN if not possible</returns>
 		double AsDouble() const;
 
+		virtual bool IsOperNode() const;
+
+		virtual const OperNode* AsOperNode() const;
+
 		/// <summary>
 		/// Gets a clone of this
 		/// </summary>

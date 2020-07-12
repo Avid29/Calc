@@ -37,6 +37,14 @@ Operator OperNode::GetOperator() const {
 	return oper_;
 }
 
+bool OperNode::IsOperNode() const {
+	return true;
+}
+
+const OperNode* OperNode::AsOperNode() const {
+	return this;
+}
+
 /// <summary>
 /// Checks if an operator is Unary
 /// </summary>

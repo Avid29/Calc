@@ -22,7 +22,8 @@ enum class Operator {
 	COTANGENT,
 	DERIVATIVE,
 	UNRESOLVED_PARENTHESIS, // Parenthesis
-	PARENTHESIS // Closed Parenthesis
+	PARENTHESIS, // Closed Parenthesis
+	Vector,
 };
 
 class OperNode : public BranchNode {
@@ -38,6 +39,10 @@ class OperNode : public BranchNode {
 		/// </summary>
 		/// <returns>oper_</returns>
 		Operator GetOperator() const;
+
+		bool IsOperNode() const override;
+
+		const OperNode* AsOperNode() const override;
 
 	protected:
 		Operator oper_;	

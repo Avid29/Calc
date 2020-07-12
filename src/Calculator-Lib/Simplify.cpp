@@ -11,6 +11,7 @@
 #include "FValueNode.h"
 #include "IValueNode.h"
 #include "NOperNode.h"
+#include "TensorNode.h"
 #include "UOperNode.h"
 #include "VarValueNode.h"
 
@@ -150,6 +151,16 @@ unique_ptr<ExpNode> Simplifier::Execute(const NOperNode& node) {
 	}
 
 	return newNode;
+}
+
+unique_ptr<ExpNode> Simplifier::Execute(const TensorNode& node) {
+	unique_ptr<TensorNode> newTensor = make_unique<TensorNode>((int)node.GetDimensionCount());
+	for (int i = 0; i < node.ChildCount(); i++)
+	{
+		newTensor->AddChild(node.GetChild(i).Execute(this));
+	}
+	return newTensor;
+	// TODO: Proper Tensor and matrix support
 }
 
 unique_ptr<ExpNode> Simplifier::Execute(const UOperNode& node) {

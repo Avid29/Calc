@@ -13,7 +13,7 @@ ExpNode::ExpNode() : parent_ (nullptr) { }
 /// Sets node as the parent of this
 /// </summary>
 /// <param name="node">New parent node</param>
-void ExpNode::SetParent(OperNode* node) {
+void ExpNode::SetParent(BranchNode* node) {
 	parent_ = node;
 }
 
@@ -21,7 +21,7 @@ void ExpNode::SetParent(OperNode* node) {
 /// Gets parent
 /// </summary>
 /// <returns>parent</returns>
-OperNode *ExpNode::GetParent() const {
+BranchNode*ExpNode::GetParent() const {
 	return parent_;
 }
 

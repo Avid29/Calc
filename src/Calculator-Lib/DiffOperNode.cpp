@@ -47,7 +47,7 @@ void DiffOperNode::AddChild(unique_ptr<ExpNode> node, bool overwrite) {
 	}
 }
 
-void DiffOperNode::InsertChild(unique_ptr<OperNode> node) {
+void DiffOperNode::InsertChild(unique_ptr<BranchNode> node) {
 	if (child_ != nullptr) {
 		node->AddChild(move(child_));
 	}

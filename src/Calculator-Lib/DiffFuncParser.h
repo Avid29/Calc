@@ -22,11 +22,10 @@ public:
 
 	bool ParseFirstChar(const char c);
 
-	bool ParseNextChar(const char c, unique_ptr<OperNode>& outputNode);
+	bool ParseNextChar(const char c, unique_ptr<BranchNode>& outputNode);
 
 private:
 	State state_;
 	unique_ptr<DiffOperNode> node;
 	unique_ptr<LaTeXParser> child_parser;
 };
-

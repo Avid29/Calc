@@ -17,6 +17,8 @@ public:
 
 	unique_ptr<ExpNode> Execute(const NOperNode& node);
 
+	unique_ptr<ExpNode> Execute(const TensorNode& node);
+
 	unique_ptr<ExpNode> Execute(const UOperNode& node);
 
 	unique_ptr<ExpNode> Execute(const VarValueNode& node);
@@ -27,4 +29,6 @@ private:
 	void SimplifyMTerms(NOperNode* node);
 
 	unique_ptr<ExpNode> Expand(NOperNode* node);
+
+	unique_ptr<ExpNode> AddTensors(NOperNode* node);
 };

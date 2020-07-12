@@ -12,6 +12,7 @@
 #include "NOperNode.h"
 #include "SinusoidalFuncParser.h"
 #include "DiffFuncParser.h"
+#include "VectorParser.h"
 #include "UOperNode.h"
 #include "VarValueNode.h"
 

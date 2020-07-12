@@ -76,9 +76,9 @@ string LaTeXPrinter::Print(const TensorNode& node) const {
 	{
 		case TensorType::Vector:
 			progress += "<";
-			for (size_t i = 0; i < node.ChildCount(); i++) {
+			for (int i = 0; i < node.ChildCount(); i++) {
 				progress += node.GetChild(i).Print(*this);
-				if (i < (size_t)node.ChildCount() - 1) {
+				if (i < node.ChildCount() - 1) {
 					progress += ",";
 				}
 			}

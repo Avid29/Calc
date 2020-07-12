@@ -51,3 +51,5 @@ class TensorNode : public EnumerableCollectionNode {
 		TensorType dimensions_;
 		int *sizes_;
 };
+
+string GetTensorNodeSizeIdentity(const TensorNode& node);

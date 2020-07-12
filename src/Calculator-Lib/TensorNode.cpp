@@ -46,3 +46,13 @@ string TensorNode::Print(const IPrinter& printer) const {
 unique_ptr<ExpNode> TensorNode::Clone() const {
 	return make_unique<TensorNode>(*this);
 }
+
+string GetTensorNodeSizeIdentity(const TensorNode& node) {
+	string str = "";
+	for (int i = 1; i <= (int)node.GetDimensionCount(); i++)
+	{
+		str += node.GetDimensionSize(i);
+		str += ',';
+	}
+	return str;
+}

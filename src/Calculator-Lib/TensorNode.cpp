@@ -36,17 +36,7 @@ int TensorNode::EndDimension(int dimension) {
 }
 
 unique_ptr<ExpNode> TensorNode::Execute(IOperation* operation) const {
-	unique_ptr<TensorNode> newTensor = make_unique<TensorNode>((int)dimensions_);
-	newTensor->sizes_ = new int[(int)dimensions_];
-	for (size_t i = 0; i < (int)dimensions_; i++)
-	{
-		newTensor->sizes_[i] = sizes_[i];
-	}
-	for (size_t i = 0; i < children_.size(); i++)
-	{
-		newTensor->AddChild(children_[i]->Execute(operation));
-	}
-	return newTensor;
+	return operation->Execute(*this);
 }
 
 string TensorNode::Print(const IPrinter& printer) const {

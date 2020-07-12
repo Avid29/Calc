@@ -6,6 +6,7 @@
 #include "FValueNode.h"
 #include "IValueNode.h"
 #include "NOperNode.h"
+#include "TensorNode.h"
 #include "UOperNode.h"
 #include "VarValueNode.h"
 
@@ -67,6 +68,26 @@ string LaTeXPrinter::Print(const NOperNode& node) const {
 		cache_ += node.GetChild(i).Print(*this);
 	}
 	return cache_;
+}
+
+string LaTeXPrinter::Print(const TensorNode& node) const {
+	string progress;
+	switch (node.GetDimensionCount())
+	{
+		case TensorType::Vector:
+			progress += "<";
+			for (size_t i = 0; i < node.ChildCount(); i++) {
+				progress += node.GetChild(i).Print(*this);
+				if (i < (size_t)node.ChildCount() - 1) {
+					progress += ",";
+				}
+			}
+			progress += '>';
+			return progress;
+		default:
+			// TODO: Print matricies and tensors
+			return "";
+	}
 }
 
 string LaTeXPrinter::Print(const UOperNode& node) const {

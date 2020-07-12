@@ -12,93 +12,18 @@ using namespace std;
 
 ExpTree::ExpTree() : active_node(nullptr), root_node(nullptr) {}
 
-/// <summary>
-/// Adds an OperNode to the tree
-/// </summary>
-/// <param name="node">OperNode to add to tree</param>
-void ExpTree::AddNode(unique_ptr<OperNode> node) {
-	OperNode* newActive = node.get();
-	if (active_node == nullptr) {
-		// If first node
-		if (root_node != nullptr) {
-			// The first node is often a ValueNode
-			// That is the only time a ValueNode will be the active or root node
-
-			// Makes node the new active_node
-			node->AddChild(move(root_node));
-		}
-
-		root_node = move(node);
-		active_node = newActive;
-		return;
+void ExpTree::AddNode(unique_ptr<BranchNode> node) {
+	if (node->IsOperNode()) {
+		AddOperNode(move(node));
 	}
-
-	FindInsertionNode(*node);
-
-	// The new node is a lower priority than any node so far
-	// Add new node to top
-	if (node->GetPriority() > active_node->GetPriority()) {
-		if (active_node->GetPriority() == Priority::OVERRIDE) {
-			InsertOperNode(move(node));
-		}
-		else if (active_node == root_node.get()) {
-			// node is new root
-			node->AddChild(move(root_node));
+	else {
+		if (active_node == nullptr) {
+			// If first node
 			root_node = move(node);
 		}
-	}
-	else if (IsNary(node->GetOperator()) && node->GetPriority() == active_node->GetPriority()) {
-		// Adding node would be a duplicate of active_node for an Nary operator
-		// Checking the priority, in the context, guarentees equivilant associative operators
-		for (int i = 0; i < node->ChildCount(); i++)
-		{
-			active_node->AddChild(move(node->GetChild(i).Clone()));
-		}
-		return;
-	}
-	else {
-		InsertOperNode(move(node));
-	}
-
-	active_node = newActive;
-}
-
-/// <summary>
-/// Finds insertion point for node and changes active_node to it
-/// </summary>
-/// <param name="node">Node to insert</param>
-void ExpTree::FindInsertionNode(const ExpNode& node) {
-	// Raises active_node till it's of equal or greater priority to node
-	while ((active_node->GetPriority() != Priority::OVERRIDE &&
-		node.GetPriority() > active_node->GetPriority()) &&
-		!active_node->IsRoot()) {
-		active_node = active_node->GetParent();
-	}
-}
-
-/// <summary>
-/// Inserts an OperNode differently depending on it's oper type
-/// </summary>
-void ExpTree::InsertOperNode(unique_ptr<OperNode> node) {
-	if (IsUnary(node->GetOperator())) {
-		if (IsSuffix(node->GetOperator())) {
-			if (active_node == root_node.get()) {
-				// node is new root
-				node->AddChild(move(root_node));
-				root_node = move(node);
-			}
-			else {
-				active_node->GetParent()->InsertChild(move(node));
-			}
-		}
 		else {
-			// Adds child if Unary
 			active_node->AddChild(move(node));
 		}
-	}
-	else {
-		// Inserts child for Nary
-		active_node->InsertChild(move(node));
 	}
 }
 
@@ -125,7 +50,7 @@ void ExpTree::AddAnyNode(unique_ptr<ExpNode> node) {
 		AddNode(unique_ptr<ValueNode>(dynamic_cast<ValueNode*>(node.release())));
 	}
 	else {
-		AddNode(unique_ptr<OperNode>(dynamic_cast<OperNode*>(node.release())));
+		AddNode(unique_ptr<BranchNode>(dynamic_cast<BranchNode*>(node.release())));
 	}
 }
 
@@ -174,4 +99,96 @@ unique_ptr<ExpNode> ExpTree::GetRoot() {
 /// <returns>The expression tree as a string</returns>
 string ExpTree::Print(const IPrinter& printer) const {
 	return root_node->Print(printer);
+}
+
+/// <summary>
+/// Adds an OperNode to the tree
+/// </summary>
+/// <param name="node">OperNode to add to tree</param>
+void ExpTree::AddOperNode(unique_ptr<BranchNode> node) {
+	const OperNode* operNode = node->AsOperNode();
+	BranchNode* newActive = node.get();
+	if (active_node == nullptr) {
+		// If first node
+		if (root_node != nullptr) {
+			// The first node is often a ValueNode
+			// That is the only time a ValueNode will be the active or root node
+
+			// Makes node the new active_node
+			node->AddChild(move(root_node));
+		}
+
+		root_node = move(node);
+		active_node = newActive;
+		return;
+	}
+
+	FindInsertionNode(*node);
+
+	// The new node is a lower priority than any node so far
+	// Add new node to top
+	if (node->GetPriority() > active_node->GetPriority()) {
+		if (active_node->GetPriority() == Priority::OVERRIDE) {
+			InsertOperNode(move(node));
+		}
+		else if (active_node == root_node.get()) {
+			// node is new root
+			node->AddChild(move(root_node));
+			root_node = move(node);
+		}
+	}
+	else if (IsNary(operNode->GetOperator()) && node->GetPriority() == active_node->GetPriority()) {
+		// Adding node would be a duplicate of active_node for an Nary operator
+		// Checking the priority, in the context, guarentees equivilant associative operators
+		for (int i = 0; i < node->ChildCount(); i++)
+		{
+			active_node->AddChild(move(node->GetChild(i).Clone()));
+		}
+		return;
+	}
+	else {
+		InsertOperNode(move(node));
+	}
+
+	active_node = newActive;
+}
+
+/// <summary>
+/// Finds insertion point for node and changes active_node to it
+/// </summary>
+/// <param name="node">Node to insert</param>
+void ExpTree::FindInsertionNode(const ExpNode& node) {
+	// Raises active_node till it's of equal or greater priority to node
+	while ((active_node->GetPriority() != Priority::OVERRIDE &&
+		node.GetPriority() > active_node->GetPriority()) &&
+		!active_node->IsRoot()) {
+		active_node = active_node->GetParent();
+	}
+}
+
+/// <summary>
+/// Inserts an BranchNode differently depending on it's oper type
+/// </summary>
+void ExpTree::InsertOperNode(unique_ptr<BranchNode> node) {
+	const OperNode* operNode = node->AsOperNode();
+	if (IsUnary(operNode->GetOperator())) {
+		if (IsSuffix(operNode->GetOperator())) {
+			if (active_node == root_node.get()) {
+				// node is new root
+				node->AddChild(move(root_node));
+				root_node = move(node);
+			}
+			else {
+				active_node->GetParent()->InsertChild(move(node));
+			}
+		}
+		else {
+			// Adds child if Unary
+			active_node->AddChild(move(node));
+		}
+	}
+	else {
+		// Inserts child for Nary
+		active_node->InsertChild(move(node));
+	}
 }

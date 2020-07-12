@@ -40,6 +40,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)UOperNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ValueNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)VarValueNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)VectorParser.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)AdditiveTerm.cpp" />
@@ -60,6 +61,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)OperNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Simplify.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SinusoidalFuncParser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)VectorParser.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TensorNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UOperNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ValueNode.cpp" />

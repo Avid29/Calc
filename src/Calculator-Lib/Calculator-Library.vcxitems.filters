@@ -162,6 +162,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)TensorNode.h">
       <Filter>Headers\ExpTree\Nodes\Collections</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)VectorParser.h">
+      <Filter>Headers\Parser\LaTeX\Functions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpTree.cpp">
@@ -221,14 +224,17 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Differentiator.cpp">
       <Filter>Source\Operations</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)BranchNode.cpp">
-      <Filter>Source\ExpTree</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)EnumerableCollectionNode.cpp">
       <Filter>Source\ExpTree\Nodes\Collections</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)TensorNode.cpp">
       <Filter>Source\ExpTree\Nodes\Collections</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\avid2\source\repos\Calc\src\Calculator-Lib\VectorParser.cpp">
+      <Filter>Source\Parser\LaTeX\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BranchNode.cpp">
+      <Filter>Source\ExpTree\Nodes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

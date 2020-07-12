@@ -229,6 +229,11 @@ bool LaTeXParser::ParseBracket(const char c) {
 			tree_->CloseParenthesis();
 			state_ = State::VALUE;
 		}
+		else if (c == '<') {
+			active_func_parser = MakeFuncParser(Operator::Vector);
+			active_func_parser->ParseFirstChar(c);
+			state_ = State::FUNCTION;
+		}
 		else {
 			state_ = State::CANNOT_PROCEED;
 			return false;
@@ -301,7 +306,7 @@ bool LaTeXParser::ParsePartialFunc(const char c) {
 }
 
 bool LaTeXParser::ParseFunction(const char c) {
-	unique_ptr<OperNode> node;
+	unique_ptr<BranchNode> node;
 	bool status = active_func_parser->ParseNextChar(c, node);
 	if (node != nullptr) {
 		tree_->AddNode(move(node));
@@ -332,6 +337,8 @@ unique_ptr<IFuncParser> MakeFuncParser(const Operator oper) {
 		return unique_ptr<IFuncParser>(new SinusoidalFuncParser(oper));
 	case Operator::DERIVATIVE:
 		return unique_ptr<IFuncParser>(new DiffFuncParser());
+	case Operator::Vector:
+		return unique_ptr<IFuncParser>(new VectorParser());
 	}
 }
 

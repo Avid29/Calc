@@ -23,8 +23,12 @@ void EnumerableCollectionNode::InsertChild(unique_ptr<BranchNode> node) {
 /// Gets child at index
 /// </summary>
 /// <returns>child at index</returns>
-const ExpNode& EnumerableCollectionNode::GetChild(int index) {
+const ExpNode& EnumerableCollectionNode::GetChild(int index) const {
 	return *children_[index];
+}
+
+void EnumerableCollectionNode::ClearChildren() {
+	children_.clear();
 }
 
 /// <summary>
@@ -41,4 +45,24 @@ int EnumerableCollectionNode::ChildCount() const {
 /// <returns>Proirity value</returns>
 Priority EnumerableCollectionNode::GetPriority() const {
 	return Priority::VALUE;
+}
+
+bool EnumerableCollectionNode::IsConstant() const {
+	for (size_t i = 0; i < children_.size(); i++)
+	{
+		if (!children_[i]->IsConstant()) {
+			return false;
+		}
+	}
+	return true;
+}
+
+bool EnumerableCollectionNode::IsConstantBy(const VarValueNode& node) const {
+	for (size_t i = 0; i < children_.size(); i++)
+	{
+		if (!children_[i]->IsConstantBy(node)) {
+			return false;
+		}
+	}
+	return true;
 }

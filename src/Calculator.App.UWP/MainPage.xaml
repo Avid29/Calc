@@ -9,7 +9,8 @@
     mc:Ignorable="d"
     Background="{ThemeResource BaseBackgroundAcrylic}">
 
-    <NavigationView PaneDisplayMode="LeftMinimal"
+    <NavigationView x:Name="NavigationView"
+                    PaneDisplayMode="LeftMinimal"
                     IsSettingsVisible="True"
                     IsBackButtonVisible="Collapsed"
                     AlwaysShowHeader="True"

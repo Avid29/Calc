@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.ApplicationModel.Core;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace Calculator.App.UWP
@@ -55,6 +48,9 @@ namespace Calculator.App.UWP
                     //TODO: Load state from previously suspended application
                 }
 
+                // Set titlebar background
+                CustomizeTitleBar();
+
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
@@ -95,6 +91,14 @@ namespace Calculator.App.UWP
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        private void CustomizeTitleBar()
+        {
+            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.ButtonBackgroundColor = Color.FromArgb(0,0,0,0);
+            titleBar.InactiveBackgroundColor = Color.FromArgb(0,0,0,0);
         }
     }
 }

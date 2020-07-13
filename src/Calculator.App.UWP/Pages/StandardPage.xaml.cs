@@ -19,6 +19,7 @@ namespace Calculator.App.UWP.Pages
             }
             Variables.Add("𝛼");
             Variables.Add("𝛽");
+            Variables.Add("𝜃");
             Variables.Add("𝜔");
 
             this.InitializeComponent();

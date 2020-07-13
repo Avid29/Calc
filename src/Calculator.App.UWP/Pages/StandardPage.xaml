@@ -167,12 +167,14 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock x:Name="TextDisplay" Grid.ColumnSpan="100"
-                   Text="0" FontSize="96" Margin="8,0" TextAlignment="Right"/>
+                   Text="0" FontSize="96" Margin="32,0" TextAlignment="Right"/>
 
         <!--Quick Commands-->
         <StackPanel Grid.Row="1" Grid.ColumnSpan="100" Orientation="Horizontal">
             <Button Content="𝑓(𝑥)+"
                     Style="{StaticResource QuickCommandButton}" Width="52"/>
+            <Button Content="𝑀+"
+                    Style="{StaticResource QuickCommandButton}" Width="40"/>
         </StackPanel>
         
         <!--Toolbar Flyout Buttons-->
@@ -188,8 +190,37 @@
             </Grid.ColumnDefinitions>
             <Button Content="𝑠𝑖𝑛, 𝑐𝑜𝑠, ..." Style="{StaticResource CalculatorButton}"
                 Background="Transparent" FontWeight="Normal"
-                Grid.Column="0"/>
-            <Button Content="𝑥" Style="{StaticResource CalculatorButton}"
+                Grid.Column="0">
+                <Button.Flyout>
+                    <Flyout Placement="Bottom">
+                        <Grid Width="300" Height="100">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="sin" Style="{StaticResource CalculatorButton}"
+                                    Grid.Row="0" Grid.Column="0"/>
+                            <Button Content="cos" Style="{StaticResource CalculatorButton}"
+                                    Grid.Row="0" Grid.Column="1"/>
+                            <Button Content="tan" Style="{StaticResource CalculatorButton}"
+                                    Grid.Row="0" Grid.Column="2"/>
+                            <Button Content="csc" Style="{StaticResource CalculatorButton}"
+                                    Grid.Row="1" Grid.Column="0"/>
+                            <Button Content="sec" Style="{StaticResource CalculatorButton}"
+                                    Grid.Row="1" Grid.Column="1"/>
+                            <Button Content="cot" Style="{StaticResource CalculatorButton}"
+                                    Grid.Row="1" Grid.Column="2"/>
+                        </Grid>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+            <Button Content="𝑥, 𝛼, ..." Style="{StaticResource CalculatorButton}"
                 Background="Transparent" FontWeight="Normal"
                 Grid.Column="1">
                 <Button.Flyout>
@@ -208,7 +239,15 @@
             </Button>
             <Button Content="𝑓(𝑥)" Style="{StaticResource CalculatorButton}"
                 Background="Transparent" FontWeight="Normal"
-                Grid.Column="2"/>
+                Grid.Column="2">
+                <Button.Flyout>
+                    <Flyout Placement="Bottom">
+                        <Grid>
+                            <TextBlock Text="No functions cached" FontStyle="Italic" Opacity=".7"/>
+                        </Grid>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
             <Button Content="[ ... ]" Style="{StaticResource CalculatorButton}"
                 Background="Transparent" FontWeight="Normal"
                 Grid.Column="3"/>
@@ -226,6 +265,17 @@
                                 </DataTemplate>
                             </GridView.ItemTemplate>
                         </GridView>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+            <Button Content="𝑀𝑒𝑚𝑜𝑟𝑦" Style="{StaticResource CalculatorButton}"
+                Background="Transparent" FontWeight="Normal"
+                Grid.Column="5">
+                <Button.Flyout>
+                    <Flyout Placement="Bottom">
+                        <Grid>
+                            <TextBlock Text="No expressions cached" FontStyle="Italic" Opacity=".7"/>
+                        </Grid>
                     </Flyout>
                 </Button.Flyout>
             </Button>

@@ -1,0 +1,13 @@
+namespace Calculator
+{
+	[default_interface]
+	runtimeclass CalculatorState
+	{
+		CalculatorState();
+		
+		void Clear();
+		Boolean ParseNextChar(Char c);
+
+		String Simplify();
+	}
+}

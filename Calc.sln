@@ -15,8 +15,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Calculator-Tests", "tests\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.App.UWP", "src\Calculator.App.UWP\Calculator.App.UWP.csproj", "{62BAB536-426D-4AE5-A65D-45675369B0A0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Calculator", "Calculator\Calculator.vcxproj", "{1E45B7BC-C391-4C06-B2B0-9DF54A4790B0}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\Calculator-Lib\Calculator-Library.vcxitems*{1e45b7bc-c391-4c06-b2b0-9df54a4790b0}*SharedItemsImports = 4
 		src\Calculator-Lib\Calculator-Library.vcxitems*{322cd08f-a6be-472d-b32a-55d51d684bf8}*SharedItemsImports = 4
 		src\Calculator-Lib\Calculator-Library.vcxitems*{dd6886ce-7c6e-40a2-8b55-ad3e356bc8c5}*SharedItemsImports = 4
 		src\Calculator-Lib\Calculator-Library.vcxitems*{fea44308-338d-4ff7-b3b7-efd2960278d2}*SharedItemsImports = 9
@@ -80,6 +83,22 @@ Global
 		{62BAB536-426D-4AE5-A65D-45675369B0A0}.Release|x86.ActiveCfg = Release|x86
 		{62BAB536-426D-4AE5-A65D-45675369B0A0}.Release|x86.Build.0 = Release|x86
 		{62BAB536-426D-4AE5-A65D-45675369B0A0}.Release|x86.Deploy.0 = Release|x86
+		{1E45B7BC-C391-4C06-B2B0-9DF54A4790B0}.Debug|ARM.ActiveCfg = Debug|ARM
+		{1E45B7BC-C391-4C06-B2B0-9DF54A4790B0}.Debug|ARM.Build.0 = Debug|ARM
+		{1E45B7BC-C391-4C06-B2B0-9DF54A4790B0}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{1E45B7BC-C391-4C06-B2B0-9DF54A4790B0}.Debug|ARM64.Build.0 = Debug|ARM64
+		{1E45B7BC-C391-4C06-B2B0-9DF54A4790B0}.Debug|x64.ActiveCfg = Debug|x64
+		{1E45B7BC-C391-4C06-B2B0-9DF54A4790B0}.Debug|x64.Build.0 = Debug|x64
+		{1E45B7BC-C391-4C06-B2B0-9DF54A4790B0}.Debug|x86.ActiveCfg = Debug|Win32
+		{1E45B7BC-C391-4C06-B2B0-9DF54A4790B0}.Debug|x86.Build.0 = Debug|Win32
+		{1E45B7BC-C391-4C06-B2B0-9DF54A4790B0}.Release|ARM.ActiveCfg = Release|ARM
+		{1E45B7BC-C391-4C06-B2B0-9DF54A4790B0}.Release|ARM.Build.0 = Release|ARM
+		{1E45B7BC-C391-4C06-B2B0-9DF54A4790B0}.Release|ARM64.ActiveCfg = Release|ARM64
+		{1E45B7BC-C391-4C06-B2B0-9DF54A4790B0}.Release|ARM64.Build.0 = Release|ARM64
+		{1E45B7BC-C391-4C06-B2B0-9DF54A4790B0}.Release|x64.ActiveCfg = Release|x64
+		{1E45B7BC-C391-4C06-B2B0-9DF54A4790B0}.Release|x64.Build.0 = Release|x64
+		{1E45B7BC-C391-4C06-B2B0-9DF54A4790B0}.Release|x86.ActiveCfg = Release|Win32
+		{1E45B7BC-C391-4C06-B2B0-9DF54A4790B0}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +106,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{FEA44308-338D-4FF7-B3B7-EFD2960278D2} = {D9310C2E-11B3-49D8-82E4-CBC4040BCB70}
 		{322CD08F-A6BE-472D-B32A-55D51D684BF8} = {1502F779-BA71-4D42-B67E-251F71ED1593}
+		{1E45B7BC-C391-4C06-B2B0-9DF54A4790B0} = {D9310C2E-11B3-49D8-82E4-CBC4040BCB70}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {97E5AD4A-5E89-4A1A-9A95-CFAC75CBB060}

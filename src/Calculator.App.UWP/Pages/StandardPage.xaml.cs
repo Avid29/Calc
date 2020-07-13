@@ -1,13 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Calculator;
+using System.Collections.Generic;
 using Windows.UI.Xaml.Controls;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Calculator.App.UWP.Pages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class StandardPage : Page
     {
         public StandardPage()
@@ -23,6 +19,7 @@ namespace Calculator.App.UWP.Pages
             Variables.Add("𝜔");
 
             this.InitializeComponent();
+            Calculator.CalculatorState state = new Calculator.CalculatorState();
         }
 
         List<string> Variables { get; } = new List<string>();

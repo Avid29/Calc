@@ -31,3 +31,8 @@
 /tests/Calculator-Tests/x64/Debug
 /src/Calculator.App.UWP/obj
 /src/Calculator.App.UWP/bin/x86/Debug
+/Calculator/x64/Debug
+/Calculator/Generated Files
+/Calculator/Debug
+/packages/Microsoft.Windows.CppWinRT.2.0.200703.9
+/src/Calculator.App.UWP/bin/x64/Debug

@@ -5,10 +5,23 @@
     xmlns:local="using:Calculator.App.UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource BaseBackgroundAcrylic}">
 
-    <Grid>
+    <NavigationView PaneDisplayMode="LeftMinimal"
+                    IsSettingsVisible="True"
+                    IsBackButtonVisible="Collapsed"
+                    AlwaysShowHeader="True"
+                    ExpandedModeThresholdWidth="500"
+                    Header="Standard"
+                    SelectionChanged="NavigationView_SelectionChanged">
 
-    </Grid>
+        <NavigationView.MenuItems>
+            <NavigationViewItem x:Name="StandardPage" Content="Standard"/>
+            <NavigationViewItem x:Name="GraphingPage" Content="Graphing"/>
+        </NavigationView.MenuItems>
+        
+        <Frame x:Name="ContentFrame"/>
+    </NavigationView>
 </Page>

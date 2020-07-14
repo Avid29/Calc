@@ -97,7 +97,7 @@ void InternalParser::Finalize() {
 	}
 }
 
-string InternalParser::GetProgress(const IPrinter &printer) const {
+string InternalParser::PrintProgress(const IPrinter &printer) const {
 	string progress;
 	if (tree_->PeekRoot() != nullptr) {
 		progress = tree_->Print(printer);
@@ -105,6 +105,10 @@ string InternalParser::GetProgress(const IPrinter &printer) const {
 
 	if ((int)last_oper != -1) {
 		progress += printer.PrintOperatorPrefix(last_oper);
+	}
+
+	if (active_func_parser != nullptr) {
+		progress += active_func_parser->PrintProgress(printer);
 	}
 
 	progress += cache_;
@@ -338,6 +342,9 @@ bool InternalParser::ParseFunction(const char c) {
 	if (node != nullptr) {
 		tree_->AddNode(move(node));
 		state_ = State::VALUE;
+		last_oper = (Operator)-1;
+		delete active_func_parser;
+		active_func_parser = nullptr;
 	}
 	return status;
 }
@@ -352,7 +359,7 @@ void InternalParser::CompleteValue() {
 	cache_ = "";
 }
 
-unique_ptr<IFuncParser> MakeFuncParser(const Operator oper) {
+IFuncParser *MakeFuncParser(const Operator oper) {
 	switch (oper)
 	{
 	case Operator::SINE:
@@ -361,11 +368,11 @@ unique_ptr<IFuncParser> MakeFuncParser(const Operator oper) {
 	case Operator::COSECANT:
 	case Operator::SECANT:
 	case Operator::COTANGENT:
-		return unique_ptr<IFuncParser>(new SinusoidalFuncParser(oper));
+		return new SinusoidalFuncParser(oper);
 	case Operator::DERIVATIVE:
-		return unique_ptr<IFuncParser>(new DiffFuncParser());
+		return new DiffFuncParser();
 	case Operator::VECTOR:
-		return unique_ptr<IFuncParser>(new VectorParser());
+		return new VectorParser();
 	}
 }
 

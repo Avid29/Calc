@@ -201,7 +201,6 @@
             </Grid.ColumnDefinitions>
             <Button Content="𝑠𝑖𝑛, 𝑐𝑜𝑠, ..." Style="{StaticResource CalculatorButton}"
                     Background="Transparent" FontWeight="Normal"
-                    IsEnabled="False"
                     Grid.Column="0">
                 <Button.Flyout>
                     <Flyout Placement="Bottom">
@@ -217,17 +216,23 @@
                             </Grid.ColumnDefinitions>
 
                             <Button Content="sin" Style="{StaticResource CalculatorButton}"
-                                    Grid.Row="0" Grid.Column="0"/>
+                                    Grid.Row="0" Grid.Column="0"
+                                    Tag="\sin(" Click="InputKeyPressed"/>
                             <Button Content="cos" Style="{StaticResource CalculatorButton}"
-                                    Grid.Row="0" Grid.Column="1"/>
+                                    Grid.Row="0" Grid.Column="1"
+                                    Tag="\cos(" Click="InputKeyPressed"/>
                             <Button Content="tan" Style="{StaticResource CalculatorButton}"
-                                    Grid.Row="0" Grid.Column="2"/>
+                                    Grid.Row="0" Grid.Column="2"
+                                    Tag="\tan(" Click="InputKeyPressed"/>
                             <Button Content="csc" Style="{StaticResource CalculatorButton}"
-                                    Grid.Row="1" Grid.Column="0"/>
+                                    Grid.Row="1" Grid.Column="0"
+                                    Tag="\csc(" Click="InputKeyPressed"/>
                             <Button Content="sec" Style="{StaticResource CalculatorButton}"
-                                    Grid.Row="1" Grid.Column="1"/>
+                                    Grid.Row="1" Grid.Column="1"
+                                    Tag="\csc(" Click="InputKeyPressed"/>
                             <Button Content="cot" Style="{StaticResource CalculatorButton}"
-                                    Grid.Row="1" Grid.Column="2"/>
+                                    Grid.Row="1" Grid.Column="2"
+                                    Tag="\cot(" Click="InputKeyPressed"/>
                         </Grid>
                     </Flyout>
                 </Button.Flyout>

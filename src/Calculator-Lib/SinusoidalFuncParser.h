@@ -16,6 +16,7 @@ public:
 
 	bool ParseNextChar(const char c, unique_ptr<BranchNode> &outputNode);
 
+	string PrintProgress(const IPrinter& printer) const;
 private:
 	Operator oper_;
 	unique_ptr<InternalParser> child_parser;

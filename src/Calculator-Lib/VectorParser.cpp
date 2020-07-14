@@ -37,3 +37,8 @@ bool VectorParser::ParseNextChar(const char c, unique_ptr<BranchNode>& outputNod
 		return child_parser->ParseNextChar(c);
 	}
 }
+
+string VectorParser::PrintProgress(const IPrinter& printer) const {
+	// TODO: Print Vector
+	return "";
+}

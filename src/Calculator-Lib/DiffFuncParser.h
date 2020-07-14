@@ -24,6 +24,7 @@ public:
 
 	bool ParseNextChar(const char c, unique_ptr<BranchNode>& outputNode);
 
+	string PrintProgress(const IPrinter& printer) const;
 private:
 	State state_;
 	unique_ptr<DiffOperNode> node;

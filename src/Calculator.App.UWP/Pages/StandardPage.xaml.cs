@@ -36,8 +36,7 @@ namespace Calculator.App.UWP.Pages
             string tag = (sender as Button).Tag.ToString();
             foreach (char c in tag)
             {
-                state.ParseNextChar(c);
-                TextDisplay.Text += c;
+                ParseChar(c);
             }
         }
 
@@ -45,8 +44,7 @@ namespace Calculator.App.UWP.Pages
         {
             string tag = (string)e.ClickedItem;
             char c = tag[0];
-            state.ParseNextChar(c);
-            TextDisplay.Text += c;
+            ParseChar(c);
         }
 
         private void Simplify(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -62,6 +60,12 @@ namespace Calculator.App.UWP.Pages
         {
             TextDisplay.Text = "";
             state.Clear();
+        }
+
+        private void ParseChar(char c)
+        {
+            state.ParseNextChar(c);
+            TextDisplay.Text += c;
         }
     }
 }

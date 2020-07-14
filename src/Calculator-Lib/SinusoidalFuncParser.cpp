@@ -1,9 +1,9 @@
-#include "LaTeXParser.h"
+#include "InternalParser.h"
 #include "SinusoidalFuncParser.h"
 
 SinusoidalFuncParser::SinusoidalFuncParser(Operator oper) :
 	oper_(oper) {
-	child_parser = make_unique<LaTeXParser>();
+	child_parser = make_unique<InternalParser>();
 }
 
 bool SinusoidalFuncParser::ParseFirstChar(const char c) {

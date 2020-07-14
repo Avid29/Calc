@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class LaTeXParser;
+class InternalParser;
 
 class SinusoidalFuncParser : public IFuncParser
 {
@@ -18,6 +18,6 @@ public:
 
 private:
 	Operator oper_;
-	unique_ptr<LaTeXParser> child_parser;
+	unique_ptr<InternalParser> child_parser;
 };
 

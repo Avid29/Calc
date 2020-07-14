@@ -12,7 +12,7 @@ namespace CalculatorTests
 	{
 	public:
 		Tests() {
-			printer = new LaTeXPrinter();
+			printer = new InternalPrinter();
 			simlifier = new Simplifier();
 		}
 

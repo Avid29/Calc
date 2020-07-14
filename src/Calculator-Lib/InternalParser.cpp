@@ -5,16 +5,16 @@
 #include <stdio.h>
 #include <string>
 
-#include "LaTeXParser.h"
+#include "InternalParser.h"
 
-LaTeXParser::LaTeXParser() :
+InternalParser::InternalParser() :
 	state_(State::BEGIN),
 	tree_(make_unique<ExpTree>()),
 	parenthesis_depth(0),
 	position_(-1),
 	input_("") { }
 
-int LaTeXParser::ParseString(const string& equation) {
+int InternalParser::ParseString(const string& equation) {
 	// Parse each character and count position
 	for (char c : equation) {
 		if (!ParseNextChar(c)) {
@@ -25,7 +25,7 @@ int LaTeXParser::ParseString(const string& equation) {
 	return -1;
 }
 
-bool LaTeXParser::ParseNextChar(const char c) {
+bool InternalParser::ParseNextChar(const char c) {
 	input_ += c;
 	position_++;
 
@@ -70,7 +70,7 @@ bool LaTeXParser::ParseNextChar(const char c) {
 	}
 }
 
-void LaTeXParser::Finalize() {
+void InternalParser::Finalize() {
 	if (state_ >= State::DONE) {
 		return;
 	}
@@ -96,7 +96,7 @@ void LaTeXParser::Finalize() {
 	}
 }
 
-unique_ptr<ExpTree> LaTeXParser::GetTree() {
+unique_ptr<ExpTree> InternalParser::GetTree() {
 	if (state_ != State::DONE) {
 		return nullptr;
 	}
@@ -107,16 +107,16 @@ unique_ptr<ExpTree> LaTeXParser::GetTree() {
 	return result;
 }
 
-unique_ptr<ExpTree> LaTeXParser::FinalizeAndReturn() {
+unique_ptr<ExpTree> InternalParser::FinalizeAndReturn() {
 	Finalize();
 	return GetTree();
 }
 
-bool LaTeXParser::IsDone() const {
+bool InternalParser::IsDone() const {
 	return state_ == State::DONE;
 }
 
-bool LaTeXParser::ParseDigit(const char c) {
+bool InternalParser::ParseDigit(const char c) {
 	switch (state_)
 	{
 	case State::VALUE:
@@ -135,7 +135,7 @@ bool LaTeXParser::ParseDigit(const char c) {
 	}
 }
 
-bool LaTeXParser::ParseLetter(const char c) {
+bool InternalParser::ParseLetter(const char c) {
 	switch (state_)
 	{
 	case State::BEGIN:
@@ -159,7 +159,7 @@ bool LaTeXParser::ParseLetter(const char c) {
 	}
 }
 
-bool LaTeXParser::ParseOper(const char c) {
+bool InternalParser::ParseOper(const char c) {
 	switch (state_)
 	{
 	case State::BEGIN:
@@ -176,7 +176,7 @@ bool LaTeXParser::ParseOper(const char c) {
 	}
 }
 
-bool LaTeXParser::ParseNOper(const char c) {
+bool InternalParser::ParseNOper(const char c) {
 	// Appropiate state guarenteed
 	if (c == '^') {
 		tree_->AddNode(make_unique<BOperNode>(c));
@@ -192,7 +192,7 @@ bool LaTeXParser::ParseNOper(const char c) {
 	return true;
 }
 
-bool LaTeXParser::ParseUOper(const char c) {
+bool InternalParser::ParseUOper(const char c) {
 	// Appropiate state guarenteed
 	switch (c)
 	{
@@ -206,7 +206,7 @@ bool LaTeXParser::ParseUOper(const char c) {
 	}
 }
 
-bool LaTeXParser::ParseBracket(const char c) {
+bool InternalParser::ParseBracket(const char c) {
 	switch (state_)
 	{
 	case State::INT:
@@ -243,7 +243,7 @@ bool LaTeXParser::ParseBracket(const char c) {
 	}
 }
 
-bool LaTeXParser::ParseDecimal() {
+bool InternalParser::ParseDecimal() {
 	switch (state_)
 	{
 	case State::INT:
@@ -262,7 +262,7 @@ bool LaTeXParser::ParseDecimal() {
 	}
 }
 
-bool LaTeXParser::ParseEscape() {
+bool InternalParser::ParseEscape() {
 	switch (state_)
 	{
 	case State::INT:
@@ -287,7 +287,7 @@ bool LaTeXParser::ParseEscape() {
 	}
 }
 
-bool LaTeXParser::ParsePartialFunc(const char c) {
+bool InternalParser::ParsePartialFunc(const char c) {
 	if (isalpha(c)) {
 		cache_ += c;
 		return true;
@@ -305,7 +305,7 @@ bool LaTeXParser::ParsePartialFunc(const char c) {
 	}
 }
 
-bool LaTeXParser::ParseFunction(const char c) {
+bool InternalParser::ParseFunction(const char c) {
 	unique_ptr<BranchNode> node;
 	bool status = active_func_parser->ParseNextChar(c, node);
 	if (node != nullptr) {
@@ -315,7 +315,7 @@ bool LaTeXParser::ParseFunction(const char c) {
 	return status;
 }
 
-void LaTeXParser::CompleteValue() {
+void InternalParser::CompleteValue() {
 	if (state_ != State::INT && state_ != State::FLOAT) {
 		return;
 	}
@@ -344,7 +344,7 @@ unique_ptr<IFuncParser> MakeFuncParser(const Operator oper) {
 
 int Parse(const string& equation, unique_ptr<ExpTree>& tree)
 {
-	LaTeXParser state;
+	InternalParser state;
 	int result = state.ParseString(equation);
 	if (result == -1) {
 		tree = state.FinalizeAndReturn();

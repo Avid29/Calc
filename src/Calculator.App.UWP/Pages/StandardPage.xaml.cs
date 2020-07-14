@@ -1,11 +1,12 @@
-﻿using Calculator;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Windows.UI.Xaml.Controls;
 
 namespace Calculator.App.UWP.Pages
 {
     public sealed partial class StandardPage : Page
     {
+        CalculatorState state = new CalculatorState();
+
         public StandardPage()
         {
             for (char c = 'A'; c <= 'Z'; c++)
@@ -19,7 +20,6 @@ namespace Calculator.App.UWP.Pages
             Variables.Add("𝜔");
 
             this.InitializeComponent();
-            Calculator.CalculatorState state = new Calculator.CalculatorState();
         }
 
         List<string> Variables { get; } = new List<string>();
@@ -30,5 +30,38 @@ namespace Calculator.App.UWP.Pages
             "𝑒",
             "𝜑",
         };
+
+        private void InputKeyPressed(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            string tag = (sender as Button).Tag.ToString();
+            foreach (char c in tag)
+            {
+                state.ParseNextChar(c);
+                TextDisplay.Text += c;
+            }
+        }
+
+        private void VariableSelected(object sender, ItemClickEventArgs e)
+        {
+            string tag = (string)e.ClickedItem;
+            char c = tag[0];
+            state.ParseNextChar(c);
+            TextDisplay.Text += c;
+        }
+
+        private void Simplify(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            TextDisplay.Text = state.Simplify();
+            foreach (char c in TextDisplay.Text)
+            {
+                state.ParseNextChar(c);
+            }
+        }
+
+        private void Clear(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            TextDisplay.Text = "";
+            state.Clear();
+        }
     }
 }

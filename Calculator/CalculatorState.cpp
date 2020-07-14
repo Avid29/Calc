@@ -14,6 +14,7 @@ namespace winrt::Calculator::implementation {
 	}
 
 	void CalculatorState::Clear() {
+		delete parser;
 		parser = new LaTeXParser();
 	}
 

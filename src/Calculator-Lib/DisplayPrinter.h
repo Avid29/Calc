@@ -21,6 +21,9 @@ public:
 	string Print(const UOperNode& node) const override;
 
 	string Print(const VarValueNode& node) const override;
+
+	string PrintOperatorPrefix(Operator oper) const override;
+
 private:
 	bool finalPrint;
 };

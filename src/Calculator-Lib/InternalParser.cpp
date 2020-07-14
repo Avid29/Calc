@@ -10,6 +10,7 @@
 InternalParser::InternalParser() :
 	state_(State::BEGIN),
 	tree_(make_unique<ExpTree>()),
+	last_oper((Operator)-1),
 	parenthesis_depth(0),
 	position_(-1),
 	input_("") { }
@@ -101,6 +102,11 @@ string InternalParser::GetProgress(const IPrinter &printer) const {
 	if (tree_->PeekRoot() != nullptr) {
 		progress = tree_->Print(printer);
 	}
+
+	if ((int)last_oper != -1) {
+		progress += printer.PrintOperatorPrefix(last_oper);
+	}
+
 	progress += cache_;
 	return progress;
 }
@@ -186,18 +192,26 @@ bool InternalParser::ParseOper(const char c) {
 }
 
 bool InternalParser::ParseNOper(const char c) {
+	OperNode* newNode;
 	// Appropiate state guarenteed
 	if (c == '^') {
-		tree_->AddNode(make_unique<BOperNode>(c));
+		auto tempNode = make_unique<BOperNode>(c);
+		newNode = tempNode.get();
+		tree_->AddNode(move(tempNode));
 	}
 	else {
-		tree_->AddNode(make_unique<NOperNode>(c));
+		auto tempNode = make_unique<NOperNode>(c);
+		newNode = tempNode.get();
+		tree_->AddNode(move(tempNode));
 	}
 	state_ = State::NOPER;
 	if (c == '-' || c == '/') {
-		tree_->AddNode(make_unique<UOperNode>(c));
+		auto tempNode = make_unique<UOperNode>(c);
+		newNode = tempNode.get();
+		tree_->AddNode(move(tempNode));
 		state_ = State::UOPER;
 	}
+	last_oper = newNode->GetOperator();
 	return true;
 }
 
@@ -207,9 +221,13 @@ bool InternalParser::ParseUOper(const char c) {
 	{
 	case '+':
 	case '-':
-		tree_->AddNode(make_unique<UOperNode>(c));
+	{
+		auto tempNode = make_unique<UOperNode>(c);
+		last_oper = tempNode->GetOperator();
+		tree_->AddNode(move(tempNode));
 		state_ = State::UOPER;
 		return true;
+	}
 	default:
 		return false;
 	}
@@ -239,7 +257,7 @@ bool InternalParser::ParseBracket(const char c) {
 			state_ = State::VALUE;
 		}
 		else if (c == '<') {
-			active_func_parser = MakeFuncParser(Operator::Vector);
+			active_func_parser = MakeFuncParser(Operator::VECTOR);
 			active_func_parser->ParseFirstChar(c);
 			state_ = State::FUNCTION;
 		}
@@ -346,7 +364,7 @@ unique_ptr<IFuncParser> MakeFuncParser(const Operator oper) {
 		return unique_ptr<IFuncParser>(new SinusoidalFuncParser(oper));
 	case Operator::DERIVATIVE:
 		return unique_ptr<IFuncParser>(new DiffFuncParser());
-	case Operator::Vector:
+	case Operator::VECTOR:
 		return unique_ptr<IFuncParser>(new VectorParser());
 	}
 }

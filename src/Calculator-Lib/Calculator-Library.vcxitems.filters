@@ -236,7 +236,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)BranchNode.cpp">
       <Filter>Source\ExpTree\Nodes</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)VectorParser.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)InternalParser.cpp">
       <Filter>Source\Parser\Internal</Filter>
     </ClCompile>
@@ -245,6 +244,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)DisplayPrinter.cpp">
       <Filter>Source\Printer\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)VectorParser.cpp">
+      <Filter>Source\Parser\Internal\Functions</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

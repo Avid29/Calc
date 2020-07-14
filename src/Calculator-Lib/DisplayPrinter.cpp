@@ -119,7 +119,7 @@ string DisplayPrinter::Print(const UOperNode& node) const {
 	case Operator::NEGATIVE:
 		// Consider wheather or not to print unary plus
 		buffer.append(PrintOperatorPrefix(node.GetOperator()));
-		buffer.append(node.Print(*this));
+		buffer.append(child->Print(*this));
 		break;
 	case Operator::UNRESOLVED_PARENTHESIS:
 	case Operator::PARENTHESIS:

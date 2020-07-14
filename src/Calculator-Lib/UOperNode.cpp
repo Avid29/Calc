@@ -15,7 +15,9 @@ using namespace std;
 /// </summary>
 UOperNode::UOperNode(const UOperNode &other) {
 	oper_ = other.oper_;
-	AddChild(other.child_->Clone());
+	if (other.child_ != nullptr) {
+		AddChild(other.child_->Clone());
+	}
 }
 
 /// <summary>

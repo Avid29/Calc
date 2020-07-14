@@ -85,6 +85,10 @@ unique_ptr<ExpNode> ExpTree::Execute(IOperation* operation) const {
 	return root_node->Execute(operation);
 }
 
+const ExpNode* ExpTree::PeekRoot() const {
+	return root_node.get();
+}
+
 /// <summary>
 /// Gets the root node
 /// </summary>

@@ -166,8 +166,10 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock x:Name="TextDisplay" Grid.ColumnSpan="100"
-                   Text="0" FontSize="96" Margin="32,0" TextAlignment="Right"/>
+        <Viewbox Margin="32,0" Grid.ColumnSpan="100" HorizontalAlignment="Right">
+            <TextBlock x:Name="TextDisplay" HorizontalAlignment="Stretch"
+                       TextAlignment="Right"/>
+        </Viewbox>
 
         <!--Quick Commands-->
         <StackPanel Grid.Row="1" Grid.ColumnSpan="100" Orientation="Horizontal">
@@ -226,8 +228,9 @@
                 <Button.Flyout>
                     <Flyout Placement="Bottom">
                         <GridView ItemsSource="{x:Bind Variables}"
-                              IsItemClickEnabled="True" SelectionMode="None"
-                              Width="300">
+                                  ItemClick="VariableSelected"
+                                  IsItemClickEnabled="True" SelectionMode="None"
+                                  Width="300">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="x:String">
                                     <TextBlock Text="{x:Bind}"/>
@@ -282,58 +285,57 @@
         </Grid>
 
         <!--Main Buttons-->
-        <Button Content="7" Style="{StaticResource CalculatorButton}"
+        <Button Content="7" Style="{StaticResource CalculatorButton}" Tag="7"
                 Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
-                Grid.Row="3" Grid.Column="0"/>
-        <Button Content="8" Style="{StaticResource CalculatorButton}"
+                Grid.Row="3" Grid.Column="0" Click="InputKeyPressed"/>
+        <Button Content="8" Style="{StaticResource CalculatorButton}" Tag="8"
                 Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
-                Grid.Row="3" Grid.Column="1"/>
-        <Button Content="9" Style="{StaticResource CalculatorButton}"
+                Grid.Row="3" Grid.Column="1" Click="InputKeyPressed"/>
+        <Button Content="9" Style="{StaticResource CalculatorButton}" Tag="9"
                 Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
-                Grid.Row="3" Grid.Column="2"/>
-        <Button Content="^" Style="{StaticResource CalculatorButton}"
-                Grid.Row="3" Grid.Column="3"/>
+                Grid.Row="3" Grid.Column="2" Click="InputKeyPressed"/>
+        <Button Content="^" Style="{StaticResource CalculatorButton}" Tag="^"
+                Grid.Row="3" Grid.Column="3" Click="InputKeyPressed"/>
         <Button Content="C" Style="{StaticResource CalculatorButton}"
                 Background="{ThemeResource CalculatorClearButtonBackground}"
-                Grid.Row="3" Grid.Column="4"/>
-        <Button Content="4" Style="{StaticResource CalculatorButton}"
+                Grid.Row="3" Grid.Column="4" Click="Clear"/>
+        <Button Content="4" Style="{StaticResource CalculatorButton}"  Tag="4"
                 Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
-                Grid.Row="4" Grid.Column="0"/>
-        <Button Content="5" Style="{StaticResource CalculatorButton}"
+                Grid.Row="4" Grid.Column="0" Click="InputKeyPressed"/>
+        <Button Content="5" Style="{StaticResource CalculatorButton}" Tag="5"
                 Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
-                Grid.Row="4" Grid.Column="1"/>
-        <Button Content="6" Style="{StaticResource CalculatorButton}"
+                Grid.Row="4" Grid.Column="1" Click="InputKeyPressed"/>
+        <Button Content="6" Style="{StaticResource CalculatorButton}" Tag="6"
                 Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
-                Grid.Row="4" Grid.Column="2"/>
-        <Button Content="*" Style="{StaticResource CalculatorButton}"
-                Grid.Row="4" Grid.Column="3"/>
-        <Button Content="/" Style="{StaticResource CalculatorButton}"
-                Grid.Row="4" Grid.Column="4"/>
-        <Button Content="1" Style="{StaticResource CalculatorButton}"
+                Grid.Row="4" Grid.Column="2" Click="InputKeyPressed"/>
+        <Button Content="*" Style="{StaticResource CalculatorButton}" Tag="*"
+                Grid.Row="4" Grid.Column="3" Click="InputKeyPressed"/>
+        <Button Content="/" Style="{StaticResource CalculatorButton}" Tag="/"
+                Grid.Row="4" Grid.Column="4" Click="InputKeyPressed"/>
+        <Button Content="1" Style="{StaticResource CalculatorButton}" Tag="1"
                 Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
-                Grid.Row="5" Grid.Column="0"/>
-        <Button Content="2" Style="{StaticResource CalculatorButton}"
+                Grid.Row="5" Grid.Column="0" Click="InputKeyPressed"/>
+        <Button Content="2" Style="{StaticResource CalculatorButton}" Tag="2"
                 Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
-                Grid.Row="5" Grid.Column="1"/>
-        <Button Content="3" Style="{StaticResource CalculatorButton}"
+                Grid.Row="5" Grid.Column="1" Click="InputKeyPressed"/>
+        <Button Content="3" Style="{StaticResource CalculatorButton}" Tag="3"
                 Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
-                Grid.Row="5" Grid.Column="2"/>
-        <Button Content="+" Style="{StaticResource CalculatorButton}"
-                Grid.Row="5" Grid.Column="3"/>
-        <Button Content="-" Style="{StaticResource CalculatorButton}"
-                Grid.Row="5" Grid.Column="4"/>
-        <Button Content="." Style="{StaticResource CalculatorButton}"
-                Grid.Row="6" Grid.Column="0"/>
-        <Button Content="0" Style="{StaticResource CalculatorButton}"
+                Grid.Row="5" Grid.Column="2" Click="InputKeyPressed"/>
+        <Button Content="+" Style="{StaticResource CalculatorButton}" Tag="+"
+                Grid.Row="5" Grid.Column="3" Click="InputKeyPressed"/>
+        <Button Content="-" Style="{StaticResource CalculatorButton}" Tag="-"
+                Grid.Row="5" Grid.Column="4" Click="InputKeyPressed"/>
+        <Button Content="." Style="{StaticResource CalculatorButton}" Tag="."
+                Grid.Row="6" Grid.Column="0" Click="InputKeyPressed"/>
+        <Button Content="0" Style="{StaticResource CalculatorButton}" Tag="0"
                 Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
-                Grid.Row="6" Grid.Column="1"/>
-        <Button Content="(" Style="{StaticResource CalculatorButton}"
-                Grid.Row="6" Grid.Column="2"/>
-        <Button Content=")" Style="{StaticResource CalculatorButton}"
-                Grid.Row="6" Grid.Column="3"/>
+                Grid.Row="6" Grid.Column="1" Click="InputKeyPressed"/>
+        <Button Content="(" Style="{StaticResource CalculatorButton}" Tag="("
+                Grid.Row="6" Grid.Column="2" Click="InputKeyPressed"/>
+        <Button Content=")" Style="{StaticResource CalculatorButton}" Tag=")"
+                Grid.Row="6" Grid.Column="3" Click="InputKeyPressed"/>
         <Button Content="=" Style="{StaticResource CalculatorButton}"
                 Background="{ThemeResource SystemAccentColorDark1}"
-                Grid.Row="6" Grid.Column="4"/>
-
+                Grid.Row="6" Grid.Column="4" Click="Simplify"/>
     </Grid>
 </Page>

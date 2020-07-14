@@ -14,10 +14,10 @@ namespace Calculator.App.UWP.Pages
                 //Variables.Add(c.ToString()); Consider adding uppercase letters
                 Variables.Add(((char)(c + 'a' - 'A')).ToString());
             }
-            Variables.Add("𝛼");
-            Variables.Add("𝛽");
-            Variables.Add("𝜃");
-            Variables.Add("𝜔");
+            //Variables.Add("𝛼");
+            //Variables.Add("𝛽");
+            //Variables.Add("𝜃");
+            //Variables.Add("𝜔");
 
             this.InitializeComponent();
         }

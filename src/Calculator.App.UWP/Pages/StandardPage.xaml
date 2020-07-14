@@ -147,16 +147,23 @@
             </Setter>
         </Style>
     </Page.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1.5*"/> <!--Display-->
-            <RowDefinition Height="48"/> <!--Memory/Functions-->
-            <RowDefinition Height=".5*"/> <!--Variables, Functions, Tensors, and Constants-->
-            <RowDefinition/> <!--7, 8, 9, ^ and C -->
-            <RowDefinition/> <!--4, 5, 6, * and / -->
-            <RowDefinition/> <!--1, 2, 3, + and - -->
-            <RowDefinition/> <!--., 0, (, ) and = -->
+            <RowDefinition Height="1.5*"/>
+            <!--Display-->
+            <RowDefinition Height="48"/>
+            <!--Memory/Functions-->
+            <RowDefinition Height=".5*"/>
+            <!--Variables, Functions, Tensors, and Constants-->
+            <RowDefinition/>
+            <!--7, 8, 9, ^ and C -->
+            <RowDefinition/>
+            <!--4, 5, 6, * and / -->
+            <RowDefinition/>
+            <!--1, 2, 3, + and - -->
+            <RowDefinition/>
+            <!--., 0, (, ) and = -->
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1.2*"/>
@@ -180,7 +187,7 @@
                     IsEnabled="False"
                     Style="{StaticResource QuickCommandButton}" Width="40"/>
         </StackPanel>
-        
+
         <!--Toolbar Flyout Buttons-->
         <Grid Grid.Row="2" Grid.ColumnSpan="100"
               Background="#A0383838">
@@ -260,9 +267,9 @@
                     IsEnabled="False"
                 Grid.Column="3"/>
             <Button Content="𝜋, 𝑒, ..." Style="{StaticResource CalculatorButton}"
-                Background="Transparent" FontWeight="Normal"
+                    Background="Transparent" FontWeight="Normal"
                     IsEnabled="False"
-                Grid.Row="2" Grid.Column="4">
+                    Grid.Row="2" Grid.Column="4">
                 <Button.Flyout>
                     <Flyout Placement="Bottom">
                         <GridView ItemsSource="{x:Bind Constants}"

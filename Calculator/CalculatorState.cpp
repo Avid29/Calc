@@ -48,7 +48,7 @@ namespace winrt::Calculator::implementation {
 
 	hstring CalculatorState::GetDisplay() {
 		DisplayPrinter* printer = new DisplayPrinter(false);
-		string display = parser->GetProgress(*printer);
+		string display = parser->PrintProgress(*printer);
 		delete printer;
 		return to_hstring(display);
 	}

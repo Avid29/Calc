@@ -50,22 +50,18 @@ namespace Calculator.App.UWP.Pages
         private void Simplify(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             TextDisplay.Text = state.Simplify();
-            foreach (char c in TextDisplay.Text)
-            {
-                state.ParseNextChar(c);
-            }
         }
 
         private void Clear(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            TextDisplay.Text = "";
             state.Clear();
+            TextDisplay.Text = state.GetDisplay();
         }
 
         private void ParseChar(char c)
         {
             state.ParseNextChar(c);
-            TextDisplay.Text += c;
+            TextDisplay.Text = state.GetDisplay();
         }
     }
 }

@@ -96,6 +96,15 @@ void InternalParser::Finalize() {
 	}
 }
 
+string InternalParser::GetProgress(const IPrinter &printer) const {
+	string progress;
+	if (tree_->PeekRoot() != nullptr) {
+		progress = tree_->Print(printer);
+	}
+	progress += cache_;
+	return progress;
+}
+
 unique_ptr<ExpTree> InternalParser::GetTree() {
 	if (state_ != State::DONE) {
 		return nullptr;

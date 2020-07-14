@@ -85,6 +85,12 @@
     <Filter Include="Headers\Parser\Internal\Functions">
       <UniqueIdentifier>{c7acb52a-a149-4108-a41b-f06cffa7921d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\Printer\Display">
+      <UniqueIdentifier>{14b3834d-9cd4-446a-9c92-05098fbdb47d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Printer\Display">
+      <UniqueIdentifier>{c2f801dc-7b4b-4d78-8992-d45dfb11bea1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)ExpTree.h">
@@ -159,11 +165,14 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)VectorParser.h">
       <Filter>Headers\Parser\Internal\Functions</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\avid2\source\repos\Calc\src\Calculator-Lib\InternalParser.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)InternalParser.h">
       <Filter>Headers\Parser\Internal</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\avid2\source\repos\Calc\src\Calculator-Lib\InternalPrinter.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)InternalPrinter.h">
       <Filter>Headers\Printer\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DisplayPrinter.h">
+      <Filter>Headers\Printer\Display</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -228,11 +237,14 @@
       <Filter>Source\ExpTree\Nodes</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)VectorParser.cpp" />
-    <ClCompile Include="C:\Users\avid2\source\repos\Calc\src\Calculator-Lib\InternalParser.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)InternalParser.cpp">
       <Filter>Source\Parser\Internal</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\avid2\source\repos\Calc\src\Calculator-Lib\InternalPrinter.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)InternalPrinter.cpp">
       <Filter>Source\Printer\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)DisplayPrinter.cpp">
+      <Filter>Source\Printer\Display</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

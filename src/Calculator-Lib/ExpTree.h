@@ -47,6 +47,8 @@ class ExpTree {
 		/// <returns>New root node</returns>
 		unique_ptr<ExpNode> Execute(IOperation* operation) const;
 
+		const ExpNode* PeekRoot() const;
+
 		/// <summary>
 		/// Gets the root node
 		/// </summary>

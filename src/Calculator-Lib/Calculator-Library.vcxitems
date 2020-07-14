@@ -18,6 +18,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)AdditiveTerm.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BOperNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BranchNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DisplayPrinter.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EnumerableCollectionNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Differentiator.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DiffFuncParser.h" />
@@ -46,6 +47,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)AdditiveTerm.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BOperNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BranchNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DisplayPrinter.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnumerableCollectionNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Differentiator.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DiffFuncParser.cpp" />

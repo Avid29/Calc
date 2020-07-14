@@ -26,8 +26,8 @@ int main(int argc, char **argv) {
 		}
 
 		// Convert equation to ExpTree
-		LaTeXParser* parser = new LaTeXParser();
-		LaTeXPrinter* printer = new LaTeXPrinter();
+		InternalParser* parser = new InternalParser();
+		InternalPrinter* printer = new InternalPrinter();
 		parser->ParseString(str);
 		parser->Finalize();
 		if (!parser->IsDone()) {

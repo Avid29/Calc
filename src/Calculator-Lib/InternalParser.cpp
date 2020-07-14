@@ -253,12 +253,14 @@ bool InternalParser::ParseBracket(const char c) {
 			tree_->AddNode(make_unique<UOperNode>(c));
 			parenthesis_depth++;
 			state_ = State::BEGIN;
+			last_oper = Operator::UNRESOLVED_PARENTHESIS;
 		}
 		else if (c == ')') {
 			// TODO: Check parenthesis depth
 			parenthesis_depth--;
 			tree_->CloseParenthesis();
 			state_ = State::VALUE;
+			last_oper = Operator(-1);
 		}
 		else if (c == '<') {
 			active_func_parser = MakeFuncParser(Operator::VECTOR);

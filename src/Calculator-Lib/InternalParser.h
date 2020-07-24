@@ -158,7 +158,6 @@ private:
 	unique_ptr<ExpTree> tree_;
 	unique_ptr<IFuncParser> active_func_parser;
 	string cache_;
-	Operator last_oper;
 	int parenthesis_depth;
 	int position_;
 	map<string, Operator> operator_map =

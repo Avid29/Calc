@@ -145,7 +145,3 @@ string InternalPrinter::Print(const UOperNode& node) const {
 string InternalPrinter::Print(const VarValueNode& node) const {
 	return string(1, node.GetCharacter());
 }
-
-string InternalPrinter::PrintOperatorPrefix(Operator oper) const {
-	return "";
-}

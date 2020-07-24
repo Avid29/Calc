@@ -61,17 +61,14 @@ string DisplayPrinter::Print(const NOperNode& node) const {
 						uOperNode->GetOperator() != Operator::NEGATIVE) :
 					node.GetChild(i).AsDouble() > 0) {
 					// If child is not unary minus or a negative value
-					cache_ += PrintOperatorPrefix(node.GetOperator()); // Adds the "+"
+					cache_ += "+";
 				}
 				break;
 			}
 			case Operator::MULTIPLICATION:
 				// TODO: better implied multiplication
 				if (!finalPrint) {
-					const UOperNode* uOperNode = dynamic_cast<const UOperNode*>(node.GetChild(i).Clone().get());
-					if (!(uOperNode != nullptr && uOperNode->GetOperator() != Operator::RECIPROCAL)) {
-						cache_ += PrintOperatorPrefix(node.GetOperator()); // Adds the "*"
-					}
+					cache_ += "*";
 				}
 			}
 		}
@@ -101,29 +98,57 @@ string DisplayPrinter::Print(const TensorNode& node) const {
 }
 
 string DisplayPrinter::Print(const UOperNode& node) const {
-
 	string buffer = "";
 	const ExpNode* child = &node.GetChild(0);
-	if (child == nullptr) {
-		return buffer;
-	}
-
 	switch (node.GetOperator()) {
 	case Operator::POSITIVE:
-	case Operator::NEGATIVE:
 		// Consider wheather or not to print unary plus
-		buffer.append(PrintOperatorPrefix(node.GetOperator()));
-		buffer.append(node.Print(*this));
+		buffer.append("+");
+		buffer.append(node.GetChild(0).Print(*this));
+		break;
+	case Operator::NEGATIVE:
+		buffer.append("-");
+		if (child != nullptr) {
+			buffer.append(child->Print(*this));
+		}
 		break;
 	case Operator::UNRESOLVED_PARENTHESIS:
 	case Operator::PARENTHESIS:
+		buffer.append("(");
+		if (child != nullptr) {
+			buffer.append(child->Print(*this));
+			buffer.append(")");
+		}
+		break;
 	case Operator::SINE:
+		buffer.append("sin(");
+		if (child != nullptr) {
+			buffer.append(child->Print(*this));
+			buffer.append(")");
+		}
+		break;
 	case Operator::COSINE:
+		buffer.append("cos(");
+		buffer.append(child->Print(*this));
+		buffer.append(")");
+		break;
 	case Operator::TANGENT:
+		buffer.append("tan(");
+		buffer.append(child->Print(*this));
+		buffer.append(")");
+		break;
 	case Operator::COSECANT:
+		buffer.append("csc(");
+		buffer.append(child->Print(*this));
+		buffer.append(")");
+		break;
 	case Operator::SECANT:
+		buffer.append("sec(");
+		buffer.append(child->Print(*this));
+		buffer.append(")");
+		break;
 	case Operator::COTANGENT:
-		buffer.append(PrintOperatorPrefix(node.GetOperator()));
+		buffer.append("cot(");
 		buffer.append(child->Print(*this));
 		buffer.append(")");
 		break;
@@ -133,44 +158,4 @@ string DisplayPrinter::Print(const UOperNode& node) const {
 
 string DisplayPrinter::Print(const VarValueNode& node) const {
 	return string(1, node.GetCharacter());
-}
-
-string DisplayPrinter::PrintOperatorPrefix(Operator oper) const {
-	switch (oper)
-	{
-	case Operator::ADDITION:
-		return "+";
-	case Operator::MULTIPLICATION:
-		return "*";
-	case Operator::POWER:
-		return "^";
-	case Operator::POSITIVE:
-		return "+";
-	case Operator::NEGATIVE:
-		return "-";
-	case Operator::RECIPROCAL:
-		return "/";
-	case Operator::SINE:
-		return "sin(";
-	case Operator::COSINE:
-		return "cos(";
-	case Operator::TANGENT:
-		return "tan(";
-	case Operator::COSECANT:
-		return "csc(";
-	case Operator::SECANT:
-		return "sec(";
-	case Operator::COTANGENT:
-		return "cot(";
-	case Operator::DERIVATIVE:
-		return "\\diff[";
-	case Operator::UNRESOLVED_PARENTHESIS:
-		return "(";
-	case Operator::PARENTHESIS:
-		return "(";
-	case Operator::VECTOR:
-		return "<";
-	default:
-		return "?";
-	}
 }

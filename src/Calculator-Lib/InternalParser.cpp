@@ -158,7 +158,6 @@ bool InternalParser::ParseLetter(const char c) {
 	case State::NOPER:
 		tree_->AddNode(make_unique<VarValueNode>(c));
 		state_ = State::VARIABLE;
-		last_oper = (Operator)-1;
 		return true;
 	case State::INT:
 	case State::FLOAT:
@@ -168,7 +167,6 @@ bool InternalParser::ParseLetter(const char c) {
 		tree_->AddNode(make_unique<NOperNode>('*'));
 		tree_->AddNode(make_unique<VarValueNode>(c));
 		state_ = State::VARIABLE;
-		last_oper = (Operator)-1;
 		return true;
 	default:
 		state_ = State::CANNOT_PROCEED;
@@ -194,24 +192,26 @@ bool InternalParser::ParseOper(const char c) {
 }
 
 bool InternalParser::ParseNOper(const char c) {
+	OperNode* newNode;
 	// Appropiate state guarenteed
 	if (c == '^') {
 		auto tempNode = make_unique<BOperNode>(c);
-		last_oper = tempNode->GetOperator();
+		newNode = tempNode.get();
 		tree_->AddNode(move(tempNode));
 	}
 	else {
 		auto tempNode = make_unique<NOperNode>(c);
-		last_oper = tempNode->GetOperator();
+		newNode = tempNode.get();
 		tree_->AddNode(move(tempNode));
 	}
 	state_ = State::NOPER;
 	if (c == '-' || c == '/') {
 		auto tempNode = make_unique<UOperNode>(c);
-		last_oper = tempNode->GetOperator();
+		newNode = tempNode.get();
 		tree_->AddNode(move(tempNode));
 		state_ = State::UOPER;
 	}
+	last_oper = newNode->GetOperator();
 	return true;
 }
 

@@ -1,7 +1,7 @@
 #include "CppUnitTest.h"
 
-#include "LaTeXParser.h"
-#include "LaTeXPrinter.h"
+#include "InternalParser.h"
+#include "InternalPrinter.h"
 #include "Simplify.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

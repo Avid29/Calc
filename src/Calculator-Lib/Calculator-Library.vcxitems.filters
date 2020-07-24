@@ -159,10 +159,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)VectorParser.h">
       <Filter>Headers\Parser\Internal\Functions</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\avid2\source\repos\Calc\src\Calculator-Lib\InternalParser.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)InternalParser.h">
       <Filter>Headers\Parser\Internal</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\avid2\source\repos\Calc\src\Calculator-Lib\InternalPrinter.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)InternalPrinter.h">
       <Filter>Headers\Printer\Internal</Filter>
     </ClInclude>
   </ItemGroup>
@@ -227,12 +227,14 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)BranchNode.cpp">
       <Filter>Source\ExpTree\Nodes</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)VectorParser.cpp" />
-    <ClCompile Include="C:\Users\avid2\source\repos\Calc\src\Calculator-Lib\InternalParser.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)InternalParser.cpp">
       <Filter>Source\Parser\Internal</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\avid2\source\repos\Calc\src\Calculator-Lib\InternalPrinter.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)InternalPrinter.cpp">
       <Filter>Source\Printer\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)VectorParser.cpp">
+      <Filter>Source\Parser\Internal\Functions</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

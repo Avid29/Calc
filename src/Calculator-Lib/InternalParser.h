@@ -75,8 +75,6 @@ public:
 	/// </summary>
 	void Finalize();
 
-	string GetProgress(const IPrinter &printer) const;
-
 	/// <summary>
 	/// Add final ValueNode and return ExpTree
 	/// </summary>

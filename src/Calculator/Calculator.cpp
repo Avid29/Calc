@@ -6,8 +6,8 @@
 #include <iostream>
 
 #include "Simplify.h"
-#include "InternalParser.h"
-#include "InternalPrinter.h"
+#include "LaTeXParser.h"
+#include "LaTeXPrinter.h"
 #include "ExpTree.h"
 
 using namespace std;

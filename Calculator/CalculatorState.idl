@@ -9,7 +9,5 @@ namespace Calculator
 		Boolean ParseNextChar(Char c);
 
 		String Simplify();
-
-		String GetDisplay();
 	}
 }

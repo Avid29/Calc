@@ -34,38 +34,42 @@ namespace Calculator.App.UWP.Pages
         private void InputKeyPressed(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             string tag = (sender as Button).Tag.ToString();
-            foreach (char c in tag)
-            {
-                ParseChar(c);
-            }
+            ParseString(tag);
         }
 
         private void VariableSelected(object sender, ItemClickEventArgs e)
         {
             string tag = (string)e.ClickedItem;
-            char c = tag[0];
-            ParseChar(c);
+            ParseString(tag);
         }
 
         private void Simplify(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            TextDisplay.Text = state.Simplify();
-            foreach (char c in TextDisplay.Text)
+            Expression = CalculatorInterface.Simplify(Expression);
+        }
+
+        private void Backspace(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            if (Expression.Length > 0)
             {
-                state.ParseNextChar(c);
+                Expression = Expression.Substring(0, Expression.Length - 1);
             }
         }
 
-        private void Clear(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void ParseString(string c)
         {
-            TextDisplay.Text = "";
-            state.Clear();
+            Expression += c;
         }
 
-        private void ParseChar(char c)
+        private string Expression
         {
-            state.ParseNextChar(c);
-            TextDisplay.Text += c;
+            get => TextDisplay.Text;
+            set => TextDisplay.Text = value;
+        }
+
+        private void Button_RightTapped(object sender, Windows.UI.Xaml.Input.RightTappedRoutedEventArgs e)
+        {
+            Expression = "";
         }
     }
 }

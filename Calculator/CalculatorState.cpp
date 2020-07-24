@@ -15,7 +15,7 @@ namespace winrt::Calculator::implementation {
 
 	void CalculatorState::Clear() {
 		delete parser;
-		parser = new LaTeXParser();
+		parser = new InternalParser();
 	}
 
 	bool CalculatorState::ParseNextChar(char c) {
@@ -24,7 +24,7 @@ namespace winrt::Calculator::implementation {
 
 	hstring CalculatorState::Simplify() {
 		Simplifier* simplifier = new Simplifier();
-		LaTeXPrinter* printer = new LaTeXPrinter();
+		InternalPrinter* printer = new InternalPrinter();
 		string result = parser->FinalizeAndReturn()->Execute(simplifier)->Print(*printer);
 		delete simplifier;
 		delete printer;

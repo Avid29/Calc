@@ -2,8 +2,8 @@
 #include "CalculatorState.g.h"
 
 #include "Simplify.h"
-#include "LaTeXParser.h"
-#include "LaTeXPrinter.h"
+#include "InternalParser.h"
+#include "InternalPrinter.h"
 #include "ExpTree.h"
 
 namespace winrt::Calculator::implementation {
@@ -17,7 +17,7 @@ namespace winrt::Calculator::implementation {
 
 			hstring Simplify();
 		private:
-			LaTeXParser* parser;
+			InternalParser* parser;
 	};
 }
 

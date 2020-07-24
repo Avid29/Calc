@@ -1,11 +1,11 @@
 #include "DiffFuncParser.h"
-#include "LaTeXParser.h"
+#include "InternalParser.h"
 
 DiffFuncParser::DiffFuncParser() :
 	state_(State::OPEN_VAR) {
 	depth_ = 0;
 	node = make_unique<DiffOperNode>();
-	child_parser = make_unique<LaTeXParser>();
+	child_parser = make_unique<InternalParser>();
 }
 
 bool DiffFuncParser::ParseFirstChar(const char c) {

@@ -194,7 +194,6 @@
             </Grid.ColumnDefinitions>
             <Button Content="𝑠𝑖𝑛, 𝑐𝑜𝑠, ..." Style="{StaticResource CalculatorButton}"
                     Background="Transparent" FontWeight="Normal"
-                    IsEnabled="False"
                     Grid.Column="0">
                 <Button.Flyout>
                     <Flyout Placement="Bottom">
@@ -210,17 +209,23 @@
                             </Grid.ColumnDefinitions>
 
                             <Button Content="sin" Style="{StaticResource CalculatorButton}"
-                                    Grid.Row="0" Grid.Column="0"/>
+                                    Grid.Row="0" Grid.Column="0" Tag="\sin("
+                                    Click="InputKeyPressed"/>
                             <Button Content="cos" Style="{StaticResource CalculatorButton}"
-                                    Grid.Row="0" Grid.Column="1"/>
+                                    Grid.Row="0" Grid.Column="1" Tag="\cos("
+                                    Click="InputKeyPressed"/>
                             <Button Content="tan" Style="{StaticResource CalculatorButton}"
-                                    Grid.Row="0" Grid.Column="2"/>
+                                    Grid.Row="0" Grid.Column="2" Tag="\tan("
+                                    Click="InputKeyPressed"/>
                             <Button Content="csc" Style="{StaticResource CalculatorButton}"
-                                    Grid.Row="1" Grid.Column="0"/>
+                                    Grid.Row="1" Grid.Column="0" Tag="\csc("
+                                    Click="InputKeyPressed"/>
                             <Button Content="sec" Style="{StaticResource CalculatorButton}"
-                                    Grid.Row="1" Grid.Column="1"/>
+                                    Grid.Row="1" Grid.Column="1" Tag="\sec("
+                                    Click="InputKeyPressed"/>
                             <Button Content="cot" Style="{StaticResource CalculatorButton}"
-                                    Grid.Row="1" Grid.Column="2"/>
+                                    Grid.Row="1" Grid.Column="2" Tag="\cot("
+                                    Click="InputKeyPressed"/>
                         </Grid>
                     </Flyout>
                 </Button.Flyout>
@@ -303,9 +308,15 @@
                 Grid.Row="3" Grid.Column="2" Click="InputKeyPressed"/>
         <Button Content="^" Style="{StaticResource CalculatorButton}" Tag="^"
                 Grid.Row="3" Grid.Column="3" Click="InputKeyPressed"/>
-        <Button Content="C" Style="{StaticResource CalculatorButton}"
+        <Button Style="{StaticResource CalculatorButton}"
                 Background="{ThemeResource CalculatorClearButtonBackground}"
-                Grid.Row="3" Grid.Column="4" Click="Clear"/>
+                HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                Grid.Row="3" Grid.Column="4" Click="Backspace" IsHoldingEnabled="True" RightTapped="Button_RightTapped">
+            <Grid>
+                <TextBlock Text="" FontFamily="Segoe MDL2 Assets" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBlock Text="Clear" FontSize="8" HorizontalAlignment="Center" Opacity=".5" Margin="0,12,0,0" VerticalAlignment="Bottom"/>
+            </Grid>
+        </Button>
         <Button Content="4" Style="{StaticResource CalculatorButton}"  Tag="4"
                 Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
                 Grid.Row="4" Grid.Column="0" Click="InputKeyPressed"/>

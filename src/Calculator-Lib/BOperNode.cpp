@@ -15,9 +15,7 @@ using namespace std;
 BOperNode::BOperNode(const BOperNode &other) {
 	oper_ = other.oper_;
 	AddChild(other.left_child->Clone());
-	if (other.right_child != nullptr) {
-		AddChild(other.right_child->Clone());
-	}
+	AddChild(other.right_child->Clone());
 }
 
 /// <summary>

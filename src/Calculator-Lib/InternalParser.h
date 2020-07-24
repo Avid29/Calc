@@ -75,7 +75,7 @@ public:
 	/// </summary>
 	void Finalize();
 
-	string PrintProgress(const IPrinter &printer) const;
+	string GetProgress(const IPrinter &printer) const;
 
 	/// <summary>
 	/// Add final ValueNode and return ExpTree
@@ -156,7 +156,7 @@ private:
 	State state_;
 	string input_;
 	unique_ptr<ExpTree> tree_;
-	IFuncParser* active_func_parser;
+	unique_ptr<IFuncParser> active_func_parser;
 	string cache_;
 	Operator last_oper;
 	int parenthesis_depth;
@@ -173,6 +173,6 @@ private:
 	};
 };
 
-IFuncParser* MakeFuncParser(Operator oper);
+unique_ptr<IFuncParser> MakeFuncParser(Operator oper);
 
 int Parse(const string& equation, unique_ptr<ExpTree>& tree);

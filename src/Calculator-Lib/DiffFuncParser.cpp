@@ -60,8 +60,3 @@ bool DiffFuncParser::ParseNextChar(const char c, unique_ptr<BranchNode>& outputN
 		return false;
 	}
 }
-
-string DiffFuncParser::PrintProgress(const IPrinter& printer) const {
-	// TODO: Print diff
-	return "";
-}

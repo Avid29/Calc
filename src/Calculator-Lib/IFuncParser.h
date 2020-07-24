@@ -13,8 +13,6 @@ public:
 
 	virtual bool ParseNextChar(const char c, unique_ptr<BranchNode> &outputNode) = 0;
 
-	virtual string PrintProgress(const IPrinter& printer) const = 0;
-
 protected:
 	int depth_ = 0;
 };

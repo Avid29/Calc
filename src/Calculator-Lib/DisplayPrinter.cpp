@@ -18,19 +18,13 @@ string DisplayPrinter::Print(const BOperNode& node) const {
 	string cache_ = "";
 	cache_ += node.GetChild(0).Print(*this);
 
-	const ExpNode* child = &node.GetChild(1);
-
-
-	if (child != nullptr) {
-
-		switch (node.GetOperator()) {
-		case Operator::POWER:
-			cache_ += "^";
-			break;
-		}
-		cache_ += child->Print(*this);
+	switch (node.GetOperator()) {
+	case Operator::POWER:
+		cache_ += "^";
+		break;
 	}
 
+	cache_ += node.GetChild(1).Print(*this);
 	return cache_;
 }
 
@@ -61,10 +55,10 @@ string DisplayPrinter::Print(const NOperNode& node) const {
 		if (i != 0) {
 			switch (node.GetOperator()) {
 			case Operator::ADDITION: {
-				const UOperNode* uOperNode = dynamic_cast<const UOperNode*>(node.GetChild(i).Clone().release());
+				const UOperNode* uOperNode = dynamic_cast<const UOperNode*>(node.GetChild(i).Clone().get());
 				if (isnan(node.GetChild(i).AsDouble()) ?
-					uOperNode == nullptr ||
-						uOperNode->GetOperator() != Operator::NEGATIVE :
+					!(uOperNode != nullptr &&
+						uOperNode->GetOperator() != Operator::NEGATIVE) :
 					node.GetChild(i).AsDouble() > 0) {
 					// If child is not unary minus or a negative value
 					cache_ += PrintOperatorPrefix(node.GetOperator()); // Adds the "+"
@@ -74,8 +68,8 @@ string DisplayPrinter::Print(const NOperNode& node) const {
 			case Operator::MULTIPLICATION:
 				// TODO: better implied multiplication
 				if (!finalPrint) {
-					const UOperNode* uOperNode = dynamic_cast<const UOperNode*>(node.GetChild(i).Clone().release());
-					if (uOperNode == nullptr || uOperNode->GetOperator() != Operator::RECIPROCAL) {
+					const UOperNode* uOperNode = dynamic_cast<const UOperNode*>(node.GetChild(i).Clone().get());
+					if (!(uOperNode != nullptr && uOperNode->GetOperator() != Operator::RECIPROCAL)) {
 						cache_ += PrintOperatorPrefix(node.GetOperator()); // Adds the "*"
 					}
 				}

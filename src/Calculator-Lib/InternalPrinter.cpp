@@ -109,34 +109,34 @@ string InternalPrinter::Print(const UOperNode& node) const {
 		buffer.append(")");
 		break;
 	case Operator::SINE:
-		buffer.append("\\sin{");
+		buffer.append("\\sin(");
 		buffer.append(node.GetChild(0).Print(*this));
-		buffer.append("}");
+		buffer.append(")");
 		break;
 	case Operator::COSINE:
-		buffer.append("\\cos{");
+		buffer.append("\\cos(");
 		buffer.append(node.GetChild(0).Print(*this));
-		buffer.append("}");
+		buffer.append(")");
 		break;
 	case Operator::TANGENT:
-		buffer.append("\\tan{");
+		buffer.append("\\tan(");
 		buffer.append(node.GetChild(0).Print(*this));
-		buffer.append("}");
+		buffer.append(")");
 		break;
 	case Operator::COSECANT:
-		buffer.append("\\csc{");
+		buffer.append("\\csc)");
 		buffer.append(node.GetChild(0).Print(*this));
-		buffer.append("}");
+		buffer.append(")");
 		break;
 	case Operator::SECANT:
-		buffer.append("\\sec{");
+		buffer.append("\\sec(");
 		buffer.append(node.GetChild(0).Print(*this));
-		buffer.append("}");
+		buffer.append(")");
 		break;
 	case Operator::COTANGENT:
-		buffer.append("\\cot{");
+		buffer.append("\\cot(");
 		buffer.append(node.GetChild(0).Print(*this));
-		buffer.append("}");
+		buffer.append(")");
 		break;
 	}
 	return buffer;

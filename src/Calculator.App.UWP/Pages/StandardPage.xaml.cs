@@ -45,17 +45,31 @@ namespace Calculator.App.UWP.Pages
 
         private void Simplify(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            TextDisplay.Text = CalculatorInterface.Simplify(TextDisplay.Text);
+            Expression = CalculatorInterface.Simplify(Expression);
         }
 
-        private void Clear(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void Backspace(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            TextDisplay.Text = "";
+            if (Expression.Length > 0)
+            {
+                Expression = Expression.Substring(0, Expression.Length - 1);
+            }
         }
 
         private void ParseString(string c)
         {
-            TextDisplay.Text += c;
+            Expression += c;
+        }
+
+        private string Expression
+        {
+            get => TextDisplay.Text;
+            set => TextDisplay.Text = value;
+        }
+
+        private void Button_RightTapped(object sender, Windows.UI.Xaml.Input.RightTappedRoutedEventArgs e)
+        {
+            Expression = "";
         }
     }
 }

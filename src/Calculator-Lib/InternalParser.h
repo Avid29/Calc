@@ -18,7 +18,7 @@
 
 using namespace std;
 
-class LaTeXParser
+class InternalParser
 {
 public:
 	enum class State {
@@ -33,7 +33,10 @@ public:
 		VARIABLE,
 		PARTIAL_FUNCTION,
 		FUNCTION,
+
+		// Status states
 		DONE,
+		IN_PROGRESS,
 
 		// Errors
 		UNKNOWN_ERROR,
@@ -46,9 +49,9 @@ public:
 	};
 
 	/// <summary>
-	/// Initializes a new instance of the LaTeXParser class.
+	/// Initializes a new instance of the InternalParser class.
 	/// </summary>
-	LaTeXParser();
+	InternalParser();
 
 	/// <summary>
 	/// Parses a string into a tree
@@ -69,6 +72,12 @@ public:
 	/// </summary>
 	/// <returns>The ExpTree or nullptr if incomplete</returns>
 	unique_ptr<ExpTree> GetTree();
+
+	/// <summary>
+	/// Gets the error from the tree
+	/// </summary>
+	/// <returns></returns>
+	State GetError() const;
 
 	/// <summary>
 	/// Add the final ValueNode to the tree

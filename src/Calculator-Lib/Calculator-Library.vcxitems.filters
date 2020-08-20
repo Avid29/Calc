@@ -55,24 +55,6 @@
     <Filter Include="Headers\Printer">
       <UniqueIdentifier>{30e00eaa-5442-44e2-8c41-2ff12e760e58}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Headers\Parser\LaTeX">
-      <UniqueIdentifier>{1d4e0626-dee6-43a2-9a54-f7f762d2c705}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\Parser\LaTeX\Functions">
-      <UniqueIdentifier>{c7acb52a-a149-4108-a41b-f06cffa7921d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Parser\LaTeX">
-      <UniqueIdentifier>{6c40c27a-546b-42d2-8626-bd8d2ea9f0e5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Parser\LaTeX\Functions">
-      <UniqueIdentifier>{e0bc292a-35dd-4205-8a2e-47d9bbdf6a03}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Printer\LaTeX">
-      <UniqueIdentifier>{fd100c6a-c473-4f7d-9f75-1efbc6fe9605}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\Printer\LaTeX">
-      <UniqueIdentifier>{fb547c2f-b634-4612-9dca-25e1330240c1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Headers\Operations">
       <UniqueIdentifier>{1c730170-29e1-449f-9c52-9c504f4c14b1}</UniqueIdentifier>
     </Filter>
@@ -84,6 +66,24 @@
     </Filter>
     <Filter Include="Source\ExpTree\Nodes\Collections">
       <UniqueIdentifier>{5fde2f8d-3ae5-4b9e-905e-155ed4d0ea36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Printer\Internal">
+      <UniqueIdentifier>{fd100c6a-c473-4f7d-9f75-1efbc6fe9605}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Printer\Internal">
+      <UniqueIdentifier>{fb547c2f-b634-4612-9dca-25e1330240c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Parser\Internal">
+      <UniqueIdentifier>{1d4e0626-dee6-43a2-9a54-f7f762d2c705}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Parser\Internal\Functions">
+      <UniqueIdentifier>{c7acb52a-a149-4108-a41b-f06cffa7921d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Parser\Internal">
+      <UniqueIdentifier>{6c40c27a-546b-42d2-8626-bd8d2ea9f0e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Parser\Internal\Functions">
+      <UniqueIdentifier>{e0bc292a-35dd-4205-8a2e-47d9bbdf6a03}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -118,13 +118,13 @@
       <Filter>Headers\ExpTree\Nodes\Operators</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)IFuncParser.h">
-      <Filter>Headers\Parser\LaTeX\Functions</Filter>
+      <Filter>Headers\Parser\Internal\Functions</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SinusoidalFuncParser.h">
-      <Filter>Headers\Parser\LaTeX\Functions</Filter>
+      <Filter>Headers\Parser\Internal\Functions</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)DiffFuncParser.h">
-      <Filter>Headers\Parser\LaTeX\Functions</Filter>
+      <Filter>Headers\Parser\Internal\Functions</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)DiffOperNode.h">
       <Filter>Headers\ExpTree\Nodes\Operators\Functions</Filter>
@@ -135,14 +135,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.h">
       <Filter>Headers\ExpTree\Terms</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)LaTeXParser.h">
-      <Filter>Headers\Parser\LaTeX</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)IPrinter.h">
       <Filter>Headers\Printer</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)LaTeXPrinter.h">
-      <Filter>Headers\Printer\LaTeX</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)IOperation.h">
       <Filter>Headers\Operations</Filter>
@@ -163,7 +157,13 @@
       <Filter>Headers\ExpTree\Nodes\Collections</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)VectorParser.h">
-      <Filter>Headers\Parser\LaTeX\Functions</Filter>
+      <Filter>Headers\Parser\Internal\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Calculator-Lib\InternalPrinter.h">
+      <Filter>Headers\Printer\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Calculator-Lib\InternalParser.h">
+      <Filter>Headers\Parser\Internal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -198,10 +198,10 @@
       <Filter>Source\ExpTree\Nodes\Operators</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SinusoidalFuncParser.cpp">
-      <Filter>Source\Parser\LaTeX\Functions</Filter>
+      <Filter>Source\Parser\Internal\Functions</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)DiffFuncParser.cpp">
-      <Filter>Source\Parser\LaTeX\Functions</Filter>
+      <Filter>Source\Parser\Internal\Functions</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)DiffOperNode.cpp">
       <Filter>Source\ExpTree\Nodes\Operators\Functions</Filter>
@@ -211,12 +211,6 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.cpp">
       <Filter>Source\ExpTree\Terms</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)LaTeXParser.cpp">
-      <Filter>Source\Parser\LaTeX</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)LaTeXPrinter.cpp">
-      <Filter>Source\Printer\LaTeX</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Simplify.cpp">
       <Filter>Source\Operations</Filter>
@@ -234,5 +228,11 @@
       <Filter>Source\ExpTree\Nodes</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)VectorParser.cpp" />
+    <ClCompile Include="C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Calculator-Lib\InternalPrinter.cpp">
+      <Filter>Source\Printer\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Calculator-Lib\InternalParser.cpp">
+      <Filter>Source\Parser\Internal</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,8 +1,9 @@
 #pragma once
 
 #include "IPrinter.h"
+#include "InternalParser.h"
 
-class LaTeXPrinter : public IPrinter
+class InternalPrinter : public IPrinter
 {
 public:
 	string Print(const BOperNode& node) const override;

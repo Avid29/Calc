@@ -1,13 +1,13 @@
 #include "AdditiveTerm.h"
 #include "NOperNode.h"
 #include "ValueNode.h"
-#include "LaTeXPrinter.h"
+#include "InternalPrinter.h"
 
 /// <summary>
 /// Finds AdditiveTerm to represent node
 /// </summary>
 AdditiveTerm::AdditiveTerm(const ExpNode &node) {
-	LaTeXPrinter *printer = new LaTeXPrinter();
+	InternalPrinter *printer = new InternalPrinter();
 	const OperNode *operNode = dynamic_cast<const OperNode*>(&node);
 	if (operNode != nullptr && operNode->GetOperator() == Operator::MULTIPLICATION
 		&& operNode->GetChild(0).IsNumericalValue()) {

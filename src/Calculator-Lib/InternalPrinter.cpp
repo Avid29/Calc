@@ -149,8 +149,8 @@ string InternalPrinter::Print(const VarValueNode& node) const {
 string InternalPrinter::PrintError(const InternalParser& parser) const {
 	string input = parser.GetInput();
 	int position = parser.GetPosition();
+	int displayPosition = position + 1; // Display is 1 indexed
 	char invalidChar = input[position];
-	position++; // 1 indexed position.
 	ostringstream sstream;
 
 	switch (parser.GetError())
@@ -159,21 +159,27 @@ string InternalPrinter::PrintError(const InternalParser& parser) const {
 		sstream << "'";
 		sstream << invalidChar;
 		sstream << "' is not an acceptable character at position ";
-		sstream << position;
-		sstream << " because the number is already a float.";
+		sstream << displayPosition;
+		sstream << " because the number is already a float";
 		return sstream.str();
 	case InternalParser::State::CANNOT_BEGIN:
 		sstream << "Expression cannot begin with '";
 		sstream << invalidChar;
 		sstream << "'";
 		return sstream.str();
+	case InternalParser::State::CANNOT_PROCEED:
+		sstream << "'";
+		sstream << invalidChar;
+		sstream << "' cannot proceed '";
+		sstream << input[position - 1];
+		sstream << "'";
+		return sstream.str();
 	default:
 	case InternalParser::State::UNKNOWN_ERROR:
-		sstream << "Unknown error occured in parsing at ";
-		sstream << position;
-		sstream << " with character '";
+		sstream << "Unknown error occured in parsing '";
 		sstream << invalidChar;
-		sstream << "'.";
+		sstream << "' at ";
+		sstream << displayPosition;
 		return sstream.str();
 	}
 }

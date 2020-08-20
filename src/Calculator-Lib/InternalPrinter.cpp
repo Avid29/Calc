@@ -145,3 +145,31 @@ string InternalPrinter::Print(const UOperNode& node) const {
 string InternalPrinter::Print(const VarValueNode& node) const {
 	return string(1, node.GetCharacter());
 }
+
+string InternalPrinter::PrintError(const InternalParser& parser) const {
+	string input = parser.GetInput();
+	int position = parser.GetPosition();
+	char invalidChar = input[position];
+	position++; // 1 indexed position.
+	ostringstream sstream;
+
+	switch (parser.GetError())
+	{
+	case InternalParser::State::ALREADY_FLOAT:
+		sstream << "'";
+		sstream << invalidChar;
+		sstream << "' is not an acceptable character at position ";
+		sstream << position;
+		sstream << " because the number is already a float.";
+		return sstream.str();
+
+	default:
+	case InternalParser::State::UNKNOWN_ERROR:
+		sstream << "Unknown error occured in parsing at ";
+		sstream << position;
+		sstream << " with character '";
+		sstream << invalidChar;
+		sstream << "'.";
+		return sstream.str();
+	}
+}

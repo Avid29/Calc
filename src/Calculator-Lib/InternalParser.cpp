@@ -107,6 +107,23 @@ unique_ptr<ExpTree> InternalParser::GetTree() {
 	return result;
 }
 
+InternalParser::State InternalParser::GetError() const {
+	if (state_ >= InternalParser::State::UNKNOWN_ERROR) {
+		return state_;
+	}
+	else {
+		return State::IN_PROGRESS;
+	}
+}
+
+string InternalParser::GetInput() const {
+	return input_;
+}
+
+int InternalParser::GetPosition() const {
+	return position_;
+}
+
 unique_ptr<ExpTree> InternalParser::FinalizeAndReturn() {
 	Finalize();
 	return GetTree();
@@ -125,9 +142,9 @@ bool InternalParser::ParseDigit(const char c) {
 	case State::UOPER:
 	case State::NOPER:
 	case State::INT:
+		state_ = State::INT;
 	case State::FLOAT:
 		cache_ += c;
-		state_ = State::INT;
 		return true;
 	default:
 		state_ = State::CANNOT_PROCEED;

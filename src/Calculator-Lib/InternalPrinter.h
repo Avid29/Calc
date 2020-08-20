@@ -21,4 +21,6 @@ public:
 	string Print(const UOperNode& node) const override;
 
 	string Print(const VarValueNode& node) const override;
+
+	string PrintError(const InternalParser& parser) const;
 };

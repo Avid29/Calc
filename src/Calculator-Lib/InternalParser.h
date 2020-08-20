@@ -74,10 +74,22 @@ public:
 	unique_ptr<ExpTree> GetTree();
 
 	/// <summary>
-	/// Gets the error from the tree
+	/// Gets the error from parsing.
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>The error state of the tree if not in progress.</returns>
 	State GetError() const;
+
+	/// <summary>
+	/// Gets the string entered into the parser.
+	/// </summary>
+	/// <returns>The string parsed so far.</returns>
+	string GetInput() const;
+
+	/// <summary>
+	/// Gets the position of the parsing progress.
+	/// </summary>
+	/// <returns>The position of parsing.</returns>
+	int GetPosition() const;
 
 	/// <summary>
 	/// Add the final ValueNode to the tree
@@ -89,8 +101,6 @@ public:
 	/// </summary>
 	/// <returns>The parsed expression tree, or nullptr if invalid</returns>
 	unique_ptr<ExpTree> FinalizeAndReturn();
-
-	// TODO: Error printing
 
 	/// <summary>
 	/// Gets if parsing is finished

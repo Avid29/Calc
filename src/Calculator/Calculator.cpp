@@ -31,8 +31,7 @@ int main(int argc, char **argv) {
 		parser->ParseString(str);
 		parser->Finalize();
 		if (!parser->IsDone()) {
-			// TODO:
-			//parser->PrintError();
+			cout << printer->PrintError(*parser) << endl;
 		}
 		else {
 			Simplifier* simplifier = new Simplifier();

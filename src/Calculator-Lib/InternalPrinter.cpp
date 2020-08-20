@@ -162,7 +162,11 @@ string InternalPrinter::PrintError(const InternalParser& parser) const {
 		sstream << position;
 		sstream << " because the number is already a float.";
 		return sstream.str();
-
+	case InternalParser::State::CANNOT_BEGIN:
+		sstream << "Expression cannot begin with '";
+		sstream << invalidChar;
+		sstream << "'";
+		return sstream.str();
 	default:
 	case InternalParser::State::UNKNOWN_ERROR:
 		sstream << "Unknown error occured in parsing at ";

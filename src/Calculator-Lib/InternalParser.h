@@ -23,6 +23,7 @@ class InternalParser
 public:
 	enum class State {
 		BEGIN,
+		OPEN_PARENTHESIS,
 		// Nary (or binary) Operator
 		NOPER,
 		// Unary Operator

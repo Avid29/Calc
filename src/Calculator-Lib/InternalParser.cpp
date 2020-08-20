@@ -139,6 +139,7 @@ bool InternalParser::ParseDigit(const char c) {
 	case State::VALUE:
 		tree_->AddNode(make_unique<NOperNode>('*'));
 	case State::BEGIN:
+	case State::OPEN_PARENTHESIS:
 	case State::UOPER:
 	case State::NOPER:
 	case State::INT:
@@ -156,6 +157,7 @@ bool InternalParser::ParseLetter(const char c) {
 	switch (state_)
 	{
 	case State::BEGIN:
+	case State::OPEN_PARENTHESIS:
 	case State::UOPER:
 	case State::NOPER:
 		tree_->AddNode(make_unique<VarValueNode>(c));
@@ -180,6 +182,7 @@ bool InternalParser::ParseOper(const char c) {
 	switch (state_)
 	{
 	case State::BEGIN:
+	case State::OPEN_PARENTHESIS:
 	case State::NOPER:
 		return ParseUOper(c);
 	case State::INT:
@@ -233,12 +236,13 @@ bool InternalParser::ParseBracket(const char c) {
 	case State::VARIABLE:
 		tree_->AddNode(make_unique<NOperNode>('*'));
 	case State::BEGIN:
+	case State::OPEN_PARENTHESIS:
 	case State::UOPER:
 	case State::NOPER: {
 		if (c == '(') {
 			tree_->AddNode(make_unique<UOperNode>(c));
 			parenthesis_depth++;
-			state_ = State::BEGIN;
+			state_ = State::OPEN_PARENTHESIS;
 		}
 		else if (c == ')') {
 			// TODO: Check parenthesis depth
@@ -291,6 +295,7 @@ bool InternalParser::ParseEscape() {
 	case State::NOPER:
 	case State::UOPER:
 	case State::BEGIN:
+	case State::OPEN_PARENTHESIS:
 		cache_ = "";
 		state_ = State::PARTIAL_FUNCTION;
 		return true;

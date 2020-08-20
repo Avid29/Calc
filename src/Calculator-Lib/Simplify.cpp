@@ -239,7 +239,7 @@ void Simplifier::SimplifyATerms(NOperNode *node) {
 	// Resets children then gets children from ATerms
 	node->ClearChildren();
 	for (AdditiveTerm& aTerm : aTerms) {
-		node->AddChild(aTerm.AsExpNode()->Execute(this));
+		node->AddChild(aTerm.AsExpNode());
 	}
 }
 

@@ -2,7 +2,7 @@
 
 VectorParser::VectorParser()
 {
-	child_parser = make_unique<InternalParser>();
+	child_parser = make_unique<LaTeXParser>();
 	vector_ = make_unique<TensorNode>(1);
 }
 
@@ -13,7 +13,7 @@ bool VectorParser::ParseFirstChar(const char c ) {
 bool VectorParser::ParseNextChar(const char c, unique_ptr<BranchNode>& outputNode) {
 	if ((c == ',' || c == '>') && depth_ == 0) {
 		unique_ptr<ExpTree> tree = child_parser->FinalizeAndReturn();
-		child_parser = make_unique<InternalParser>();
+		child_parser = make_unique<LaTeXParser>();
 		if (tree == nullptr) {
 			return false;
 		}

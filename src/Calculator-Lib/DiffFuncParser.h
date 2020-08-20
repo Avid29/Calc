@@ -4,7 +4,7 @@
 #include "OperNode.h"
 #include "DiffOperNode.h"
 
-class InternalParser;
+class LaTeXParser;
 
 class DiffFuncParser : public IFuncParser
 {
@@ -27,5 +27,5 @@ public:
 private:
 	State state_;
 	unique_ptr<DiffOperNode> node;
-	unique_ptr<InternalParser> child_parser;
+	unique_ptr<LaTeXParser> child_parser;
 };

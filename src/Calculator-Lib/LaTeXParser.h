@@ -18,7 +18,7 @@
 
 using namespace std;
 
-class InternalParser
+class LaTeXParser
 {
 public:
 	enum class State {
@@ -46,9 +46,9 @@ public:
 	};
 
 	/// <summary>
-	/// Initializes a new instance of the InternalParser class.
+	/// Initializes a new instance of the LaTeXParser class.
 	/// </summary>
-	InternalParser();
+	LaTeXParser();
 
 	/// <summary>
 	/// Parses a string into a tree

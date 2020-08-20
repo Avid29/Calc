@@ -29,8 +29,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)IOperation.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IPrinter.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IValueNode.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)InternalParser.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)InternalPrinter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LaTeXParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LaTeXPrinter.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)NOperNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)OperNode.h" />
@@ -54,8 +54,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpTree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FValueNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)IValueNode.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)InternalParser.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)InternalPrinter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)LaTeXParser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)LaTeXPrinter.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)NOperNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)OperNode.cpp" />

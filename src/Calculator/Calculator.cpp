@@ -6,8 +6,8 @@
 #include <iostream>
 
 #include "Simplify.h"
-#include "InternalParser.h"
-#include "InternalPrinter.h"
+#include "LaTeXParser.h"
+#include "LaTeXPrinter.h"
 #include "ExpTree.h"
 
 using namespace std;
@@ -26,8 +26,8 @@ int main(int argc, char **argv) {
 		}
 
 		// Convert equation to ExpTree
-		InternalParser* parser = new InternalParser();
-		InternalPrinter* printer = new InternalPrinter();
+		LaTeXParser* parser = new LaTeXParser();
+		LaTeXPrinter* printer = new LaTeXPrinter();
 		parser->ParseString(str);
 		parser->Finalize();
 		if (!parser->IsDone()) {

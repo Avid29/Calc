@@ -2,7 +2,7 @@
 
 #include "IPrinter.h"
 
-class InternalPrinter : public IPrinter
+class LaTeXPrinter : public IPrinter
 {
 public:
 	string Print(const BOperNode& node) const override;

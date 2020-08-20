@@ -235,17 +235,26 @@ bool InternalParser::ParseBracket(const char c) {
 	case State::VALUE:
 	case State::VARIABLE:
 		tree_->AddNode(make_unique<NOperNode>('*'));
+	case State::UOPER:
+	case State::NOPER:
 	case State::BEGIN:
 	case State::OPEN_PARENTHESIS:
-	case State::UOPER:
-	case State::NOPER: {
+	 {
 		if (c == '(') {
 			tree_->AddNode(make_unique<UOperNode>(c));
 			parenthesis_depth++;
 			state_ = State::OPEN_PARENTHESIS;
 		}
 		else if (c == ')') {
-			// TODO: Check parenthesis depth
+			if (parenthesis_depth == 0) {
+				state_ = State::UNPAIRED_PARENTHESIS;
+				return false;
+			}
+			else if (state_ == State::OPEN_PARENTHESIS) {
+				state_ = State::CANNOT_PROCEED;
+				return false;
+			}
+
 			parenthesis_depth--;
 			tree_->CloseParenthesis();
 			state_ = State::VALUE;

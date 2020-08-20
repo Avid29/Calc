@@ -152,6 +152,7 @@ string InternalPrinter::PrintError(const InternalParser& parser) const {
 	int displayPosition = position + 1; // Display is 1 indexed
 	char invalidChar = input[position];
 	ostringstream sstream;
+	sstream << "Error: ";
 
 	switch (parser.GetError())
 	{
@@ -173,6 +174,9 @@ string InternalPrinter::PrintError(const InternalParser& parser) const {
 		sstream << "' cannot proceed '";
 		sstream << input[position - 1];
 		sstream << "'";
+		return sstream.str();
+	case InternalParser::State::UNPAIRED_PARENTHESIS:
+		sstream << "A parenthesis is unpaired.";
 		return sstream.str();
 	default:
 	case InternalParser::State::UNKNOWN_ERROR:

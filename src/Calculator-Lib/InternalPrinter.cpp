@@ -147,6 +147,16 @@ string InternalPrinter::Print(const VarValueNode& node) const {
 }
 
 string InternalPrinter::PrintError(const Error& error) const {
+	ostringstream sstream;
+	sstream << endl;
+	sstream << PrintErrorPosition(error);
+	sstream << endl;
+	sstream << PrintErrorMessage(error);
+	sstream << endl;
+	return sstream.str();
+}
+
+string InternalPrinter::PrintErrorMessage(const Error& error) const {
 	string input = error.GetInput();
 	int position = error.GetPosition();
 	int displayPosition = position + 1; // Display is 1 indexed
@@ -197,4 +207,21 @@ string InternalPrinter::PrintError(const Error& error) const {
 		sstream << displayPosition;
 		return sstream.str();
 	}
+}
+
+string InternalPrinter::PrintErrorPosition(const Error& error) const {
+	string input = error.GetInput();
+	int position = error.GetPosition();
+	ostringstream sstream;
+	sstream << error.GetInput() << endl;
+	for (int i = 0; i < input.size(); i++)
+	{
+		if (i == position) {
+			sstream << "^";
+		}
+		else {
+			sstream << '~';
+		}
+	}
+	return sstream.str();
 }

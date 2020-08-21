@@ -23,4 +23,9 @@ public:
 	string Print(const VarValueNode& node) const override;
 
 	string PrintError(const Error& error) const;
+
+private:
+	string PrintErrorMessage(const Error& error) const;
+
+	string PrintErrorPosition(const Error& error) const;
 };

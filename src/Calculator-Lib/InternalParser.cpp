@@ -16,18 +16,20 @@ InternalParser::InternalParser() :
 }
 
 int InternalParser::ParseString(const string& equation) {
+	input_ = equation;
 	// Parse each character and count position
 	for (char c : equation) {
-		if (!ParseNextChar(c)) {
-			input_ = equation;
+		if (!ParseNextChar(c, true)) {
 			return position_;
 		}
 	}
 	return -1;
 }
 
-bool InternalParser::ParseNextChar(const char c) {
-	input_ += c;
+bool InternalParser::ParseNextChar(const char c, bool hasFullString) {
+	if (!hasFullString) {
+		input_ += c;
+	}
 	position_++;
 
 	if (state_ == State::FUNCTION) {

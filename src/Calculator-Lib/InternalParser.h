@@ -59,7 +59,7 @@ public:
 	/// </summary>
 	/// <param name="c">Character to parse</param>
 	/// <returns>false if the character can't work in that position</returns>
-	bool ParseNextChar(char c);
+	bool ParseNextChar(char c, bool hasFullString = false);
 
 	/// <summary>
 	/// Gets the ExpTree from parser

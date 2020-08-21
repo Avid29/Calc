@@ -149,7 +149,7 @@ string InternalPrinter::Print(const VarValueNode& node) const {
 string InternalPrinter::PrintError(const Error& error) const {
 	ostringstream sstream;
 	sstream << endl;
-	sstream << PrintErrorPosition(error);
+	sstream << error.GetInput() << endl << PrintErrorPosition(DetermineErrorDisplayPositions(error), error.GetInput().size());
 	sstream << endl;
 	sstream << PrintErrorMessage(error);
 	sstream << endl;
@@ -209,14 +209,11 @@ string InternalPrinter::PrintErrorMessage(const Error& error) const {
 	}
 }
 
-string InternalPrinter::PrintErrorPosition(const Error& error) const {
-	string input = error.GetInput();
-	int position = error.GetPosition();
+string InternalPrinter::PrintErrorPosition(bool* positions, int length) const {
 	ostringstream sstream;
-	sstream << error.GetInput() << endl;
-	for (int i = 0; i < input.size(); i++)
+	for (int i = 0; i < length; i++)
 	{
-		if (i == position) {
+		if (positions[i]) {
 			sstream << "^";
 		}
 		else {
@@ -224,4 +221,16 @@ string InternalPrinter::PrintErrorPosition(const Error& error) const {
 		}
 	}
 	return sstream.str();
+}
+
+bool* InternalPrinter::DetermineErrorDisplayPositions(const Error& error) const {
+	switch (error.GetErrorType())
+	{
+	default: {
+		bool* positions = new bool[error.GetInput().size()];
+		std::fill(positions, positions + error.GetInput().size(), false);
+		positions[error.GetPosition()] = true;
+		return positions;
+	}
+	}
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <tuple>
+
 #include "IPrinter.h"
 #include "InternalParser.h"
 
@@ -27,5 +29,7 @@ public:
 private:
 	string PrintErrorMessage(const Error& error) const;
 
-	string PrintErrorPosition(const Error& error) const;
+	string PrintErrorPosition(bool *positions, int length) const;
+
+	bool* DetermineErrorDisplayPositions(const Error& error) const;
 };

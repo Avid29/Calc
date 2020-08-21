@@ -159,7 +159,6 @@ string InternalPrinter::PrintError(const Error& error) const {
 string InternalPrinter::PrintErrorMessage(const Error& error) const {
 	string input = error.GetInput();
 	int position = error.GetPosition();
-	int displayPosition = position + 1; // Display is 1 indexed
 	char invalidChar = input[position];
 	ostringstream sstream;
 	sstream << "Error: ";
@@ -169,9 +168,7 @@ string InternalPrinter::PrintErrorMessage(const Error& error) const {
 	case Error::ErrorType::ALREADY_FLOAT:
 		sstream << "'";
 		sstream << invalidChar;
-		sstream << "' is not an acceptable character at position ";
-		sstream << displayPosition;
-		sstream << " because the number is already a float";
+		sstream << "' is not an acceptable character because the number is already a float";
 		return sstream.str();
 	case Error::ErrorType::CANNOT_BEGIN:
 		sstream << "Expression cannot begin with '";
@@ -203,8 +200,7 @@ string InternalPrinter::PrintErrorMessage(const Error& error) const {
 	case Error::ErrorType::UNKNOWN:
 		sstream << "Unknown error occured in parsing '";
 		sstream << invalidChar;
-		sstream << "' at ";
-		sstream << displayPosition;
+		sstream << "'";
 		return sstream.str();
 	}
 }

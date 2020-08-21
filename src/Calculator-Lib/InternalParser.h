@@ -47,6 +47,7 @@ public:
 		UNPAIRED_PARENTHESIS,
 		INVALID_FUNCTION,
 		ALREADY_FLOAT,
+		FUNCTION_ERROR,
 	};
 
 	/// <summary>

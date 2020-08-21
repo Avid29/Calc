@@ -178,6 +178,17 @@ string InternalPrinter::PrintError(const InternalParser& parser) const {
 	case InternalParser::State::UNPAIRED_PARENTHESIS:
 		sstream << "A parenthesis is unpaired.";
 		return sstream.str();
+	case InternalParser::State::INVALID_FUNCTION: {
+		string functionName;
+		for (int i = position - 1; isalpha(input[i]); i--)
+		{
+			functionName = input[i] + functionName;
+		}
+		sstream << "No function with the name \"";
+		sstream << functionName;
+		sstream << "\" was found.";
+		return sstream.str();
+	}
 	default:
 	case InternalParser::State::UNKNOWN_ERROR:
 		sstream << "Unknown error occured in parsing '";

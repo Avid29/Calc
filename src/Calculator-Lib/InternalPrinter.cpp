@@ -226,6 +226,16 @@ string InternalPrinter::PrintErrorPosition(bool* positions, int length) const {
 bool* InternalPrinter::DetermineErrorDisplayPositions(const Error& error) const {
 	switch (error.GetErrorType())
 	{
+	case Error::ErrorType::INVALID_FUNCTION: {
+		string input = error.GetInput();
+		bool* positions = new bool[input.size()];
+		std::fill(positions, positions + error.GetInput().size(), false);
+		for (int i = error.GetPosition() - 1; isalpha(input[i]); i--)
+		{
+			positions[i] = true;
+		}
+		return positions;
+	}
 	default: {
 		bool* positions = new bool[error.GetInput().size()];
 		std::fill(positions, positions + error.GetInput().size(), false);

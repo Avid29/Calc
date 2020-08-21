@@ -165,6 +165,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)InternalPrinter.h">
       <Filter>Headers\Printer\Internal</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Error.h">
+      <Filter>Headers\Parser\Internal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpTree.cpp">
@@ -235,6 +238,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)VectorParser.cpp">
       <Filter>Source\Parser\Internal\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Error.cpp">
+      <Filter>Source\Parser\Internal</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

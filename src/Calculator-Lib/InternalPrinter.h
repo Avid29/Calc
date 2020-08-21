@@ -22,5 +22,5 @@ public:
 
 	string Print(const VarValueNode& node) const override;
 
-	string PrintError(const InternalParser& parser) const;
+	string PrintError(const Error& error) const;
 };

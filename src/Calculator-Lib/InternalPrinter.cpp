@@ -146,39 +146,39 @@ string InternalPrinter::Print(const VarValueNode& node) const {
 	return string(1, node.GetCharacter());
 }
 
-string InternalPrinter::PrintError(const InternalParser& parser) const {
-	string input = parser.GetInput();
-	int position = parser.GetPosition();
+string InternalPrinter::PrintError(const Error& error) const {
+	string input = error.GetInput();
+	int position = error.GetPosition();
 	int displayPosition = position + 1; // Display is 1 indexed
 	char invalidChar = input[position];
 	ostringstream sstream;
 	sstream << "Error: ";
 
-	switch (parser.GetError())
+	switch (error.GetErrorType())
 	{
-	case InternalParser::State::ALREADY_FLOAT:
+	case Error::ErrorType::ALREADY_FLOAT:
 		sstream << "'";
 		sstream << invalidChar;
 		sstream << "' is not an acceptable character at position ";
 		sstream << displayPosition;
 		sstream << " because the number is already a float";
 		return sstream.str();
-	case InternalParser::State::CANNOT_BEGIN:
+	case Error::ErrorType::CANNOT_BEGIN:
 		sstream << "Expression cannot begin with '";
 		sstream << invalidChar;
 		sstream << "'";
 		return sstream.str();
-	case InternalParser::State::CANNOT_PROCEED:
+	case Error::ErrorType::CANNOT_PROCEED:
 		sstream << "'";
 		sstream << invalidChar;
 		sstream << "' cannot proceed '";
 		sstream << input[position - 1];
 		sstream << "'";
 		return sstream.str();
-	case InternalParser::State::UNPAIRED_PARENTHESIS:
+	case Error::ErrorType::UNPAIRED_PARENTHESIS:
 		sstream << "A parenthesis is unpaired.";
 		return sstream.str();
-	case InternalParser::State::INVALID_FUNCTION: {
+	case Error::ErrorType::INVALID_FUNCTION: {
 		string functionName;
 		for (int i = position - 1; isalpha(input[i]); i--)
 		{
@@ -190,7 +190,7 @@ string InternalPrinter::PrintError(const InternalParser& parser) const {
 		return sstream.str();
 	}
 	default:
-	case InternalParser::State::UNKNOWN_ERROR:
+	case Error::ErrorType::UNKNOWN:
 		sstream << "Unknown error occured in parsing '";
 		sstream << invalidChar;
 		sstream << "' at ";

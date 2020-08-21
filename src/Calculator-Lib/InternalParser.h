@@ -6,6 +6,7 @@
 #include <map>
 
 #include "BOperNode.h"
+#include "Error.h"
 #include "ExpNode.h"
 #include "ExpTree.h"
 #include "IFuncParser.h"
@@ -38,16 +39,7 @@ public:
 		// Status states
 		DONE,
 		IN_PROGRESS,
-
-		// Errors
-		UNKNOWN_ERROR,
-		GENERIC_ERROR,
-		CANNOT_BEGIN,
-		CANNOT_PROCEED,
-		UNPAIRED_PARENTHESIS,
-		INVALID_FUNCTION,
-		ALREADY_FLOAT,
-		FUNCTION_ERROR,
+		ERROR,
 	};
 
 	/// <summary>
@@ -78,20 +70,8 @@ public:
 	/// <summary>
 	/// Gets the error from parsing.
 	/// </summary>
-	/// <returns>The error state of the tree if not in progress.</returns>
-	State GetError() const;
-
-	/// <summary>
-	/// Gets the string entered into the parser.
-	/// </summary>
-	/// <returns>The string parsed so far.</returns>
-	string GetInput() const;
-
-	/// <summary>
-	/// Gets the position of the parsing progress.
-	/// </summary>
-	/// <returns>The position of parsing.</returns>
-	int GetPosition() const;
+	/// <returns>The error for of the tree if not in progress.</returns>
+	Error GetError() const;
 
 	/// <summary>
 	/// Add the final ValueNode to the tree
@@ -172,8 +152,15 @@ private:
 	/// </summary>
 	void CompleteValue();
 
+	/// <summary>
+	/// Puts the parser in an error state and creates an error for it.
+	/// </summary>
+	/// <param name="errorType">The type of error being handled.</param>
+	void EnterErrorState(Error::ErrorType errorType);
+
 	State state_;
 	string input_;
+	Error error_;
 	unique_ptr<ExpTree> tree_;
 	unique_ptr<IFuncParser> active_func_parser;
 	string cache_;

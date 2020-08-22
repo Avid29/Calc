@@ -255,7 +255,7 @@ bool InternalParser::ParseBracket(const char c) {
 			state_ = State::FUNCTION;
 		}
 		else {
-			EnterErrorState(Error::ErrorType::CANNOT_PROCEED);
+			EnterErrorState(Error::ErrorType::UNPAIRED_PARENTHESIS);
 			return false;
 		}
 		return true;

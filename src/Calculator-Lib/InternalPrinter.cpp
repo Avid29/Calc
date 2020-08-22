@@ -203,6 +203,7 @@ string InternalPrinter::PrintErrorMessage(const Error& error) const {
 		sstream << "An unspecified error occured in parsing '";
 		sstream << invalidChar;
 		sstream << "'";
+		return sstream.str();
 	case Error::ErrorType::UNKNOWN:
 		sstream << "Unknown error occured in parsing '";
 		sstream << invalidChar;

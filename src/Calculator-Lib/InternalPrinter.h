@@ -29,7 +29,7 @@ public:
 private:
 	string PrintErrorMessage(const Error& error) const;
 
-	string PrintErrorPosition(bool *positions, int length) const;
+	string PrintErrorPosition(unique_ptr<bool[]> positions, int length) const;
 
-	bool* DetermineErrorDisplayPositions(const Error& error) const;
+	unique_ptr<bool[]> DetermineErrorDisplayPositions(const Error& error) const;
 };

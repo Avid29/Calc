@@ -38,6 +38,7 @@ bool DiffFuncParser::ParseNextChar(const char c, unique_ptr<BranchNode>& outputN
 	case State::EXPRESSION: {
 		if (c == '}' && depth_ == 0) {
 			unique_ptr<ExpTree> tree = child_parser->FinalizeAndReturn();
+			EnterErrorState(child_parser->GetError().GetErrorType());
 			if (tree == nullptr) {
 				return false;
 			}
@@ -53,7 +54,11 @@ bool DiffFuncParser::ParseNextChar(const char c, unique_ptr<BranchNode>& outputN
 			else if (c == '}'){
 				depth_--;
 			}
-			return child_parser->ParseNextChar(c);
+			bool result = child_parser->ParseNextChar(c);
+			if (!result) {
+				EnterErrorState(child_parser->GetError().GetErrorType());
+			}
+			return result;
 		}
 	}
 	case State::DONE:

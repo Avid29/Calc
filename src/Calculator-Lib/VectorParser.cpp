@@ -13,6 +13,7 @@ bool VectorParser::ParseFirstChar(const char c ) {
 bool VectorParser::ParseNextChar(const char c, unique_ptr<BranchNode>& outputNode) {
 	if ((c == ',' || c == '>') && depth_ == 0) {
 		unique_ptr<ExpTree> tree = child_parser->FinalizeAndReturn();
+		EnterErrorState(child_parser->GetError().GetErrorType());
 		child_parser = make_unique<InternalParser>();
 		if (tree == nullptr) {
 			return false;
@@ -34,6 +35,10 @@ bool VectorParser::ParseNextChar(const char c, unique_ptr<BranchNode>& outputNod
 		else if (c == '>') {
 			depth_--;
 		}
-		return child_parser->ParseNextChar(c);
+		bool result = child_parser->ParseNextChar(c);
+		if (!result) {
+			EnterErrorState(child_parser->GetError().GetErrorType());
+		}
+		return result;
 	}
 }

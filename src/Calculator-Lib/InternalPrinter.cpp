@@ -205,7 +205,7 @@ string InternalPrinter::PrintErrorMessage(const Error& error) const {
 	}
 }
 
-string InternalPrinter::PrintErrorPosition(bool* positions, int length) const {
+string InternalPrinter::PrintErrorPosition(unique_ptr<bool[]> positions, int length) const {
 	ostringstream sstream;
 	for (int i = 0; i < length; i++)
 	{
@@ -219,13 +219,13 @@ string InternalPrinter::PrintErrorPosition(bool* positions, int length) const {
 	return sstream.str();
 }
 
-bool* InternalPrinter::DetermineErrorDisplayPositions(const Error& error) const {
+unique_ptr<bool[]> InternalPrinter::DetermineErrorDisplayPositions(const Error& error) const {
 	switch (error.GetErrorType())
 	{
 	case Error::ErrorType::INVALID_FUNCTION: {
 		string input = error.GetInput();
-		bool* positions = new bool[input.size()];
-		std::fill(positions, positions + error.GetInput().size(), false);
+		unique_ptr<bool[]> positions(new bool[input.size()]);
+		std::fill(positions.get(), positions.get() + error.GetInput().size(), false);
 		for (int i = error.GetPosition() - 1; isalpha(input[i]); i--)
 		{
 			positions[i] = true;
@@ -233,8 +233,8 @@ bool* InternalPrinter::DetermineErrorDisplayPositions(const Error& error) const 
 		return positions;
 	}
 	default: {
-		bool* positions = new bool[error.GetInput().size()];
-		std::fill(positions, positions + error.GetInput().size(), false);
+		unique_ptr<bool[]> positions(new bool[error.GetInput().size()]);
+		std::fill(positions.get(), positions.get() + error.GetInput().size(), false);
 		positions[error.GetPosition()] = true;
 		return positions;
 	}

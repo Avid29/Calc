@@ -55,6 +55,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpTree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FValueNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)IFuncParser.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)IValueNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)InternalParser.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)InternalPrinter.cpp" />

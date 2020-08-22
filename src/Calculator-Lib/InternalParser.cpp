@@ -333,6 +333,9 @@ bool InternalParser::ParseFunction(const char c) {
 		tree_->AddNode(move(node));
 		state_ = State::VALUE;
 	}
+	else if (!status) {
+		EnterErrorState(active_func_parser->GetError());
+	}
 	return status;
 }
 

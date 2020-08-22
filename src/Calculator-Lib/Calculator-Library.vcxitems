@@ -23,6 +23,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DiffFuncParser.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DiffOperNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Error.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ErrorTypes.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ExpNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ExpTree.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FValueNode.h" />
@@ -35,6 +36,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)NOperNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)OperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PartialError.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Simplify.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SinusoidalFuncParser.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TensorNode.h" />
@@ -62,6 +64,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)NOperNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)OperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PartialError.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Simplify.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SinusoidalFuncParser.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)VectorParser.cpp" />

@@ -2,29 +2,15 @@
 
 #include <string>
 
-class Error {
-public:
-	enum class ErrorType {
-		NONE,
-		UNKNOWN,
-		GENERIC,
-		CANNOT_BEGIN,
-		CANNOT_PROCEED,
-		UNPAIRED_PARENTHESIS,
-		INVALID_FUNCTION,
-		ALREADY_FLOAT,
-		DERIVATIVE_MUST_BE_VARIABLE,
-	};
+#include "PartialError.h"
 
+class Error : public PartialError {
+public:
 	Error();
 
-	Error(ErrorType error, std::string input, int position);
+	Error(PartialError error, std::string input, int position);
 
-	/// <summary>
-	/// Gets the type of error from parsing.
-	/// </summary>
-	/// <returns>The error type.</returns>
-	ErrorType GetErrorType() const;
+	Error(ErrorTypes::ErrorType error, std::string input, int position, char expectedChar = '\0');
 
 	/// <summary>
 	/// Gets the string entered into the parser where the error occured.
@@ -39,7 +25,6 @@ public:
 	int GetPosition() const;
 
 private:
-	ErrorType error_;
 	std::string input_;
 	int position_;
 };

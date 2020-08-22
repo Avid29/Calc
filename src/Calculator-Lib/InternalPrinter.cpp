@@ -165,27 +165,27 @@ string InternalPrinter::PrintErrorMessage(const Error& error) const {
 
 	switch (error.GetErrorType())
 	{
-	case Error::ErrorType::ALREADY_FLOAT:
+	case ErrorTypes::ErrorType::ALREADY_FLOAT:
 		sstream << "'";
 		sstream << invalidChar;
 		sstream << "' is not an acceptable character because the number is already a float";
 		return sstream.str();
-	case Error::ErrorType::CANNOT_BEGIN:
+	case ErrorTypes::ErrorType::CANNOT_BEGIN:
 		sstream << "Expression cannot begin with '";
 		sstream << invalidChar;
 		sstream << "'";
 		return sstream.str();
-	case Error::ErrorType::CANNOT_PROCEED:
+	case ErrorTypes::ErrorType::CANNOT_PROCEED:
 		sstream << "'";
 		sstream << invalidChar;
 		sstream << "' cannot proceed '";
 		sstream << input[position - 1];
 		sstream << "'";
 		return sstream.str();
-	case Error::ErrorType::UNPAIRED_PARENTHESIS:
+	case ErrorTypes::ErrorType::UNPAIRED_PARENTHESIS:
 		sstream << "A parenthesis is unpaired.";
 		return sstream.str();
-	case Error::ErrorType::INVALID_FUNCTION: {
+	case ErrorTypes::ErrorType::INVALID_FUNCTION: {
 		string functionName;
 		for (int i = position - 1; isalpha(input[i]); i--)
 		{
@@ -196,15 +196,20 @@ string InternalPrinter::PrintErrorMessage(const Error& error) const {
 		sstream << "\" was found.";
 		return sstream.str();
 	}
-	case Error::ErrorType::DERIVATIVE_MUST_BE_VARIABLE:
+	case ErrorTypes::ErrorType::DERIVATIVE_MUST_BE_VARIABLE:
 		sstream << "The [] in a \\diff function must contain a single variable";
 		return sstream.str();
-	case Error::ErrorType::NONE:
+	case ErrorTypes::ErrorType::MUST_BE:
+		sstream << "Expected '";
+		sstream << error.GetExpectedChar();
+		sstream << "'";
+		return sstream.str();
+	case ErrorTypes::ErrorType::NONE:
 		sstream << "An unspecified error occured in parsing '";
 		sstream << invalidChar;
 		sstream << "'";
 		return sstream.str();
-	case Error::ErrorType::UNKNOWN:
+	case ErrorTypes::ErrorType::UNKNOWN:
 		sstream << "Unknown error occured in parsing '";
 		sstream << invalidChar;
 		sstream << "'";
@@ -234,7 +239,7 @@ string InternalPrinter::PrintErrorPosition(unique_ptr<bool[]> positions, int len
 unique_ptr<bool[]> InternalPrinter::DetermineErrorDisplayPositions(const Error& error) const {
 	switch (error.GetErrorType())
 	{
-	case Error::ErrorType::INVALID_FUNCTION: {
+	case ErrorTypes::ErrorType::INVALID_FUNCTION: {
 		string input = error.GetInput();
 		unique_ptr<bool[]> positions(new bool[input.size()]);
 		std::fill(positions.get(), positions.get() + error.GetInput().size(), false);

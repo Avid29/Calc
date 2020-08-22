@@ -156,7 +156,13 @@ private:
 	/// Puts the parser in an error state and creates an error for it.
 	/// </summary>
 	/// <param name="errorType">The type of error being handled.</param>
-	void EnterErrorState(Error::ErrorType errorType);
+	void EnterErrorState(PartialError error);
+
+	/// <summary>
+	/// Puts the parser in an error state and creates an error for it.
+	/// </summary>
+	/// <param name="errorType">The type of error being handled.</param>
+	void EnterErrorState(ErrorTypes::ErrorType errorType, char expectedChar = '\0');
 
 	State state_;
 	string input_;

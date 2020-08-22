@@ -67,7 +67,7 @@ bool InternalParser::ParseNextChar(const char c, bool hasFullString) {
 		case '\\':
 			return ParseEscape();
 		default:
-			EnterErrorState(Error::ErrorType::CANNOT_PROCEED);
+			EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
 			return false;
 		}
 	}
@@ -79,7 +79,7 @@ void InternalParser::Finalize() {
 	}
 	CompleteValue();
 	if (parenthesis_depth != 0) {
-		EnterErrorState(Error::ErrorType::UNPAIRED_PARENTHESIS);
+		EnterErrorState(ErrorTypes::ErrorType::UNPAIRED_PARENTHESIS);
 		position_ = -1;
 		return;
 	}
@@ -94,7 +94,7 @@ void InternalParser::Finalize() {
 		return;
 
 	default:
-		EnterErrorState(Error::ErrorType::UNKNOWN);
+		EnterErrorState(ErrorTypes::ErrorType::UNKNOWN);
 		return;
 	}
 }
@@ -138,7 +138,7 @@ bool InternalParser::ParseDigit(const char c) {
 		cache_ += c;
 		return true;
 	default:
-		EnterErrorState(Error::ErrorType::CANNOT_PROCEED);
+		EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
 		return false;
 	}
 }
@@ -163,7 +163,7 @@ bool InternalParser::ParseLetter(const char c) {
 		state_ = State::VARIABLE;
 		return true;
 	default:
-		EnterErrorState(Error::ErrorType::CANNOT_PROCEED);
+		EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
 		return false;
 	}
 }
@@ -237,11 +237,11 @@ bool InternalParser::ParseBracket(const char c) {
 		}
 		else if (c == ')') {
 			if (parenthesis_depth == 0) {
-				EnterErrorState(Error::ErrorType::UNPAIRED_PARENTHESIS);
+				EnterErrorState(ErrorTypes::ErrorType::UNPAIRED_PARENTHESIS);
 				return false;
 			}
 			else if (state_ == State::OPEN_PARENTHESIS) {
-				EnterErrorState(Error::ErrorType::CANNOT_PROCEED);
+				EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
 				return false;
 			}
 
@@ -255,7 +255,7 @@ bool InternalParser::ParseBracket(const char c) {
 			state_ = State::FUNCTION;
 		}
 		else {
-			EnterErrorState(Error::ErrorType::UNPAIRED_PARENTHESIS);
+			EnterErrorState(ErrorTypes::ErrorType::UNPAIRED_PARENTHESIS);
 			return false;
 		}
 		return true;
@@ -271,13 +271,13 @@ bool InternalParser::ParseDecimal() {
 		state_ = State::FLOAT;
 		return true;
 	case State::FLOAT:
-		EnterErrorState(Error::ErrorType::ALREADY_FLOAT);
+		EnterErrorState(ErrorTypes::ErrorType::ALREADY_FLOAT);
 		return false;
 	case State::BEGIN:
-		EnterErrorState(Error::ErrorType::CANNOT_BEGIN);
+		EnterErrorState(ErrorTypes::ErrorType::CANNOT_BEGIN);
 		return false;
 	default:
-		EnterErrorState(Error::ErrorType::CANNOT_PROCEED);
+		EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
 		return false;
 	}
 }
@@ -300,10 +300,10 @@ bool InternalParser::ParseEscape() {
 		return true;
 	case State::PARTIAL_FUNCTION:
 		// TODO: handle new line
-		EnterErrorState(Error::ErrorType::CANNOT_PROCEED);
+		EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
 		return false;
 	default:
-		EnterErrorState(Error::ErrorType::CANNOT_PROCEED);
+		EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
 		return false;
 	}
 }
@@ -321,7 +321,7 @@ bool InternalParser::ParsePartialFunc(const char c) {
 		return active_func_parser->ParseFirstChar(c);
 	}
 	else {
-		EnterErrorState(Error::ErrorType::INVALID_FUNCTION);
+		EnterErrorState(ErrorTypes::ErrorType::INVALID_FUNCTION);
 		return false;
 	}
 }
@@ -349,7 +349,11 @@ void InternalParser::CompleteValue() {
 	cache_ = "";
 }
 
-void InternalParser::EnterErrorState(Error::ErrorType errorType) {
+void InternalParser::EnterErrorState(PartialError error) {
+	EnterErrorState(error.GetErrorType(), error.GetExpectedChar());
+}
+
+void InternalParser::EnterErrorState(ErrorTypes::ErrorType errorType, char expectedChar) {
 	state_ = State::ERROR;
 	error_ = Error(errorType, input_, position_);
 }

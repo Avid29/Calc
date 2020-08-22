@@ -1,12 +1,16 @@
 #include "Error.h"
 
-Error::Error() : error_(ErrorType::NONE), input_(""), position_(0) {}
+Error::Error() : PartialError(ErrorTypes::ErrorType::NONE, '\0'), input_(""), position_(0) {}
 
-Error::Error(ErrorType error, std::string input, int position) : error_(error), input_(input), position_(position) {}
+Error::Error(PartialError error, std::string input, int position) : 
+	PartialError(error.GetErrorType(), error.GetExpectedChar()),
+	input_(input),
+	position_(position) {}
 
-Error::ErrorType Error::GetErrorType() const {
-	return error_;
-}
+Error::Error(ErrorTypes::ErrorType error, std::string input, int position, char expectedChar) :
+	PartialError(error, expectedChar),
+	input_(input),
+	position_(position)  {}
 
 std::string Error::GetInput() const {
 	return input_;

@@ -14,10 +14,10 @@ public:
 
 	virtual bool ParseNextChar(const char c, unique_ptr<BranchNode> &outputNode) = 0;
 
-	virtual Error::ErrorType GetError() const;
+	virtual PartialError GetError() const;
 protected:
 	int depth_ = 0;
-	Error::ErrorType error_;
+	PartialError error_;
 
-	virtual void EnterErrorState(Error::ErrorType error);
+	virtual void EnterErrorState(ErrorTypes::ErrorType error, char expectedChar = '\0');
 };

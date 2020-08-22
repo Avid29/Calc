@@ -2,10 +2,10 @@
 
 #include "IFuncParser.h"
 
-Error::ErrorType IFuncParser::GetError() const {
+PartialError IFuncParser::GetError() const {
 	return error_;
 }
 
-void IFuncParser::EnterErrorState(Error::ErrorType error) {
-	error_ = error;
+void IFuncParser::EnterErrorState(ErrorTypes::ErrorType error, char expectedChar) {
+	error_ = PartialError(error, expectedChar);
 }

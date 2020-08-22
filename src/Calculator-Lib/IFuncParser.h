@@ -19,5 +19,7 @@ protected:
 	int depth_ = 0;
 	PartialError error_;
 
+	virtual void EnterErrorState(Error error);
+
 	virtual void EnterErrorState(ErrorTypes::ErrorType error, char expectedChar = '\0');
 };

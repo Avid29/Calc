@@ -14,6 +14,7 @@ bool DiffFuncParser::ParseFirstChar(const char c) {
 		return true;
 	}
 	else {
+		EnterErrorState(ErrorTypes::ErrorType::MUST_BE, '[');
 		return false;
 	}
 }
@@ -32,10 +33,18 @@ bool DiffFuncParser::ParseNextChar(const char c, unique_ptr<BranchNode>& outputN
 	}
 	case State::CLOSING_VAR:
 		state_ = State::OPEN_EXPRESSION;
-		return c == ']';
+		if (c != ']') {
+			EnterErrorState(ErrorTypes::ErrorType::MUST_BE, ']');
+			return false;
+		}
+		return true;
 	case State::OPEN_EXPRESSION:
 		state_ = State::EXPRESSION;
-		return c == '{';
+		if (c != '{') {
+			EnterErrorState(ErrorTypes::ErrorType::MUST_BE, '{');
+			return false;
+		}
+		return true;
 	case State::EXPRESSION: {
 		if (c == '}' && depth_ == 0) {
 			unique_ptr<ExpTree> tree = child_parser->FinalizeAndReturn();

@@ -318,7 +318,11 @@ bool InternalParser::ParsePartialFunc(const char c) {
 		active_func_parser = MakeFuncParser(oper);
 		state_ = State::FUNCTION;
 		cache_ = "";
-		return active_func_parser->ParseFirstChar(c);
+		bool status = active_func_parser->ParseFirstChar(c);
+		if (!status) {
+			EnterErrorState(active_func_parser->GetError());
+		}
+		return status;
 	}
 	else {
 		EnterErrorState(ErrorTypes::ErrorType::INVALID_FUNCTION);
@@ -355,7 +359,7 @@ void InternalParser::EnterErrorState(PartialError error) {
 
 void InternalParser::EnterErrorState(ErrorTypes::ErrorType errorType, char expectedChar) {
 	state_ = State::ERROR;
-	error_ = Error(errorType, input_, position_);
+	error_ = Error(errorType, input_, position_, expectedChar);
 }
 
 unique_ptr<IFuncParser> MakeFuncParser(const Operator oper) {

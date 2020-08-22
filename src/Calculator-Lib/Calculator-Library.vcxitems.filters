@@ -251,9 +251,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)VectorParser.cpp">
       <Filter>Source\Parser\Internal\Functions</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)IFuncParser.cpp">
-      <Filter>Source\Parser\Internal\Functions</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Error.cpp">
       <Filter>Source\Parser\Internal\Errors</Filter>
     </ClCompile>

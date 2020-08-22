@@ -24,6 +24,12 @@ public:
 	/// <returns>The missing expected character.</returns>
 	char GetExpectedChar() const;
 
+	/// <summary>
+	/// Gets whether or not the error object represents an error that occured.
+	/// </summary>
+	/// <returns>Whether an error occured.</returns>
+	bool Occured() const;
+
 protected:
 	ErrorTypes::ErrorType error_;
 	char expected_char;

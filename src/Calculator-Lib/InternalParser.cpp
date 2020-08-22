@@ -19,14 +19,14 @@ int InternalParser::ParseString(const string& equation) {
 	input_ = equation;
 	// Parse each character and count position
 	for (char c : equation) {
-		if (!ParseNextChar(c, true)) {
+		if (ParseNextChar(c, true).Occured()) {
 			return position_;
 		}
 	}
 	return -1;
 }
 
-bool InternalParser::ParseNextChar(const char c, bool hasFullString) {
+Error InternalParser::ParseNextChar(const char c, bool hasFullString) {
 	if (!hasFullString) {
 		input_ += c;
 	}
@@ -67,21 +67,20 @@ bool InternalParser::ParseNextChar(const char c, bool hasFullString) {
 		case '\\':
 			return ParseEscape();
 		default:
-			EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
-			return false;
+			return Error(ErrorTypes::ErrorType::CANNOT_PROCEED, input_, position_);
 		}
 	}
 }
 
-void InternalParser::Finalize() {
+Error InternalParser::Finalize() {
 	if (state_ >= State::DONE) {
-		return;
+		return Error(input_, position_);
 	}
+
 	CompleteValue();
+
 	if (parenthesis_depth != 0) {
-		EnterErrorState(ErrorTypes::ErrorType::UNPAIRED_PARENTHESIS);
-		position_ = -1;
-		return;
+		return Error(ErrorTypes::ErrorType::UNPAIRED_PARENTHESIS, input_, position_);
 	}
 
 	switch (state_)
@@ -91,11 +90,10 @@ void InternalParser::Finalize() {
 	case State::VARIABLE:
 	case State::VALUE:
 		state_ = State::DONE;
-		return;
+		return Error(input_, position_);
 
 	default:
-		EnterErrorState(ErrorTypes::ErrorType::UNKNOWN);
-		return;
+		return Error(ErrorTypes::ErrorType::UNKNOWN, input_, position_);
 	}
 }
 
@@ -110,10 +108,6 @@ unique_ptr<ExpTree> InternalParser::GetTree() {
 	return result;
 }
 
-Error InternalParser::GetError() const {
-	return error_;
-}
-
 unique_ptr<ExpTree> InternalParser::FinalizeAndReturn() {
 	Finalize();
 	return GetTree();
@@ -123,7 +117,7 @@ bool InternalParser::IsDone() const {
 	return state_ == State::DONE;
 }
 
-bool InternalParser::ParseDigit(const char c) {
+Error InternalParser::ParseDigit(const char c) {
 	switch (state_)
 	{
 	case State::VALUE:
@@ -136,14 +130,13 @@ bool InternalParser::ParseDigit(const char c) {
 		state_ = State::INT;
 	case State::FLOAT:
 		cache_ += c;
-		return true;
+		return Error(input_, position_);
 	default:
-		EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
-		return false;
+		return Error(ErrorTypes::ErrorType::CANNOT_PROCEED, input_, position_);
 	}
 }
 
-bool InternalParser::ParseLetter(const char c) {
+Error InternalParser::ParseLetter(const char c) {
 	switch (state_)
 	{
 	case State::BEGIN:
@@ -152,7 +145,7 @@ bool InternalParser::ParseLetter(const char c) {
 	case State::NOPER:
 		tree_->AddNode(make_unique<VarValueNode>(c));
 		state_ = State::VARIABLE;
-		return true;
+		return Error(input_, position_);
 	case State::INT:
 	case State::FLOAT:
 		CompleteValue();
@@ -161,14 +154,13 @@ bool InternalParser::ParseLetter(const char c) {
 		tree_->AddNode(make_unique<NOperNode>('*'));
 		tree_->AddNode(make_unique<VarValueNode>(c));
 		state_ = State::VARIABLE;
-		return true;
+		return Error(input_, position_);
 	default:
-		EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
-		return false;
+		return Error(ErrorTypes::ErrorType::CANNOT_PROCEED, input_, position_);
 	}
 }
 
-bool InternalParser::ParseOper(const char c) {
+Error InternalParser::ParseOper(const char c) {
 	switch (state_)
 	{
 	case State::BEGIN:
@@ -182,11 +174,11 @@ bool InternalParser::ParseOper(const char c) {
 		CompleteValue();
 		return ParseNOper(c);
 	default:
-		return false;
+		return Error(ErrorTypes::ErrorType::CANNOT_PROCEED, input_, position_);
 	}
 }
 
-bool InternalParser::ParseNOper(const char c) {
+Error InternalParser::ParseNOper(const char c) {
 	// Appropiate state guarenteed
 	if (c == '^') {
 		tree_->AddNode(make_unique<BOperNode>(c));
@@ -199,10 +191,10 @@ bool InternalParser::ParseNOper(const char c) {
 		tree_->AddNode(make_unique<UOperNode>(c));
 		state_ = State::UOPER;
 	}
-	return true;
+	return Error(input_, position_);
 }
 
-bool InternalParser::ParseUOper(const char c) {
+Error InternalParser::ParseUOper(const char c) {
 	// Appropiate state guarenteed
 	switch (c)
 	{
@@ -210,13 +202,13 @@ bool InternalParser::ParseUOper(const char c) {
 	case '-':
 		tree_->AddNode(make_unique<UOperNode>(c));
 		state_ = State::UOPER;
-		return true;
+		return Error(input_, position_);
 	default:
-		return false;
+		return Error(ErrorTypes::ErrorType::CANNOT_PROCEED, input_, position_);
 	}
 }
 
-bool InternalParser::ParseBracket(const char c) {
+Error InternalParser::ParseBracket(const char c) {
 	switch (state_)
 	{
 	case State::INT:
@@ -237,12 +229,10 @@ bool InternalParser::ParseBracket(const char c) {
 		}
 		else if (c == ')') {
 			if (parenthesis_depth == 0) {
-				EnterErrorState(ErrorTypes::ErrorType::UNPAIRED_PARENTHESIS);
-				return false;
+				return Error(ErrorTypes::ErrorType::UNPAIRED_PARENTHESIS, input_, position_);
 			}
 			else if (state_ == State::OPEN_PARENTHESIS) {
-				EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
-				return false;
+				return Error(ErrorTypes::ErrorType::CANNOT_PROCEED, input_, position_);
 			}
 
 			parenthesis_depth--;
@@ -255,34 +245,30 @@ bool InternalParser::ParseBracket(const char c) {
 			state_ = State::FUNCTION;
 		}
 		else {
-			EnterErrorState(ErrorTypes::ErrorType::UNPAIRED_PARENTHESIS);
-			return false;
+			return Error(ErrorTypes::ErrorType::UNPAIRED_PARENTHESIS, input_, position_);
 		}
-		return true;
+		return Error(input_, position_);
 	}
 	}
 }
 
-bool InternalParser::ParseDecimal() {
+Error InternalParser::ParseDecimal() {
 	switch (state_)
 	{
 	case State::INT:
 		cache_ += '.';
 		state_ = State::FLOAT;
-		return true;
+		return Error(input_, position_);
 	case State::FLOAT:
-		EnterErrorState(ErrorTypes::ErrorType::ALREADY_FLOAT);
-		return false;
+		return Error(ErrorTypes::ErrorType::ALREADY_FLOAT, input_, position_);
 	case State::BEGIN:
-		EnterErrorState(ErrorTypes::ErrorType::CANNOT_BEGIN);
-		return false;
+		return Error(ErrorTypes::ErrorType::CANNOT_BEGIN, input_, position_);
 	default:
-		EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
-		return false;
+		return Error(ErrorTypes::ErrorType::CANNOT_PROCEED, input_, position_);
 	}
 }
 
-bool InternalParser::ParseEscape() {
+Error InternalParser::ParseEscape() {
 	switch (state_)
 	{
 	case State::INT:
@@ -297,50 +283,41 @@ bool InternalParser::ParseEscape() {
 	case State::OPEN_PARENTHESIS:
 		cache_ = "";
 		state_ = State::PARTIAL_FUNCTION;
-		return true;
+		return Error(input_, position_);
 	case State::PARTIAL_FUNCTION:
 		// TODO: handle new line
-		EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
-		return false;
+		return Error(ErrorTypes::ErrorType::CANNOT_PROCEED, input_, position_);
 	default:
-		EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
-		return false;
+		return Error(ErrorTypes::ErrorType::CANNOT_PROCEED, input_, position_);
 	}
 }
 
-bool InternalParser::ParsePartialFunc(const char c) {
+Error InternalParser::ParsePartialFunc(const char c) {
 	if (isalpha(c)) {
 		cache_ += c;
-		return true;
+		return Error(input_, position_);
 	}
 	else if (operator_map.find(cache_) != operator_map.end()) {
 		Operator oper = operator_map.at(cache_);
 		active_func_parser = MakeFuncParser(oper);
 		state_ = State::FUNCTION;
 		cache_ = "";
-		bool status = active_func_parser->ParseFirstChar(c);
-		if (!status) {
-			EnterErrorState(active_func_parser->GetError());
-		}
-		return status;
+		PartialError status = active_func_parser->ParseFirstChar(c);
+		return Error(status, input_, position_);
 	}
 	else {
-		EnterErrorState(ErrorTypes::ErrorType::INVALID_FUNCTION);
-		return false;
+		return Error(ErrorTypes::ErrorType::INVALID_FUNCTION, input_, position_);
 	}
 }
 
-bool InternalParser::ParseFunction(const char c) {
+Error InternalParser::ParseFunction(const char c) {
 	unique_ptr<BranchNode> node;
-	bool status = active_func_parser->ParseNextChar(c, node);
+	PartialError status = active_func_parser->ParseNextChar(c, node);
 	if (node != nullptr) {
 		tree_->AddNode(move(node));
 		state_ = State::VALUE;
 	}
-	else if (!status) {
-		EnterErrorState(active_func_parser->GetError());
-	}
-	return status;
+	return Error(status, input_, position_);
 }
 
 void InternalParser::CompleteValue() {
@@ -351,15 +328,6 @@ void InternalParser::CompleteValue() {
 	float value = stof(cache_);
 	tree_->AddNode(MakeValueNode(value));
 	cache_ = "";
-}
-
-void InternalParser::EnterErrorState(PartialError error) {
-	EnterErrorState(error.GetErrorType(), error.GetExpectedChar());
-}
-
-void InternalParser::EnterErrorState(ErrorTypes::ErrorType errorType, char expectedChar) {
-	state_ = State::ERROR;
-	error_ = Error(errorType, input_, position_, expectedChar);
 }
 
 unique_ptr<IFuncParser> MakeFuncParser(const Operator oper) {

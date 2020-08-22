@@ -8,6 +8,8 @@ class Error : public PartialError {
 public:
 	Error();
 
+	Error(std::string input, int position);
+
 	Error(PartialError error, std::string input, int position);
 
 	Error(ErrorTypes::ErrorType error, std::string input, int position, char expectedChar = '\0');

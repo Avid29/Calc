@@ -59,7 +59,7 @@ public:
 	/// </summary>
 	/// <param name="c">Character to parse</param>
 	/// <returns>false if the character can't work in that position</returns>
-	bool ParseNextChar(char c, bool hasFullString = false);
+	Error ParseNextChar(char c, bool hasFullString = false);
 
 	/// <summary>
 	/// Gets the ExpTree from parser
@@ -68,15 +68,9 @@ public:
 	unique_ptr<ExpTree> GetTree();
 
 	/// <summary>
-	/// Gets the error from parsing.
-	/// </summary>
-	/// <returns>The error for of the tree if not in progress.</returns>
-	Error GetError() const;
-
-	/// <summary>
 	/// Add the final ValueNode to the tree
 	/// </summary>
-	void Finalize();
+	Error Finalize();
 
 	/// <summary>
 	/// Add final ValueNode and return ExpTree
@@ -95,78 +89,65 @@ private:
 	/// Parses a digit.
 	/// </summary>
 	/// <param name="c">The exact digit</summary>
-	bool ParseDigit(const char c);
+	Error ParseDigit(const char c);
 
 	/// <summary>
 	/// Parses a letter.
 	/// </summary>
 	/// <param name="c">The exact letter</summary>
-	bool ParseLetter(const char c);
+	Error ParseLetter(const char c);
 
 	/// <summary>
 	/// Parses an operator
 	/// </summary>
 	/// <param name="c">The exact operator</summary>
-	bool ParseOper(const char c);
+	Error ParseOper(const char c);
 
 	/// <summary>
 	/// Parses an nary operator
 	/// </summary>
 	/// <param name="c">The exact operator</summary>
-	bool ParseNOper(const char c);
+	Error ParseNOper(const char c);
 
 	/// <summary>
 	/// Parses an unary operator
 	/// </summary>
 	/// <param name="c">The exact operator</summary>
-	bool ParseUOper(const char c);
+	Error ParseUOper(const char c);
 	
 	/// <summary>
 	/// Parses a bracket.
 	/// </summary>
 	/// <param name="c">The exact bracket</summary>
-	bool ParseBracket(const char c);
+	Error ParseBracket(const char c);
 
 	/// <summary>
 	/// Parses a '.'.
 	/// </summary>
-	bool ParseDecimal();
+	Error ParseDecimal();
 
 	/// <summary>
 	/// Parses a '\'.
 	/// </summary>
-	bool ParseEscape();
+	Error ParseEscape();
 
 	/// <summary>
 	/// Parses any character in the PARTIAL_FUNCTION state.
 	/// </summary>
-	bool ParsePartialFunc(const char c);
+	Error ParsePartialFunc(const char c);
 
 	/// <summary>
 	/// Parses any character in the FUNCTION state.
 	/// </summary>
-	bool ParseFunction(const char c);
+	Error ParseFunction(const char c);
 
 	/// <summary>
 	/// Finishes building an int or float and adds it to the tree
 	/// </summary>
 	void CompleteValue();
 
-	/// <summary>
-	/// Puts the parser in an error state and creates an error for it.
-	/// </summary>
-	/// <param name="errorType">The type of error being handled.</param>
-	void EnterErrorState(PartialError error);
-
-	/// <summary>
-	/// Puts the parser in an error state and creates an error for it.
-	/// </summary>
-	/// <param name="errorType">The type of error being handled.</param>
-	void EnterErrorState(ErrorTypes::ErrorType errorType, char expectedChar = '\0');
-
 	State state_;
 	string input_;
-	Error error_;
 	unique_ptr<ExpTree> tree_;
 	unique_ptr<IFuncParser> active_func_parser;
 	string cache_;

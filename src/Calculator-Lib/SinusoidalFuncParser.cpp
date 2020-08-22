@@ -6,25 +6,28 @@ SinusoidalFuncParser::SinusoidalFuncParser(Operator oper) :
 	child_parser = make_unique<InternalParser>();
 }
 
-bool SinusoidalFuncParser::ParseFirstChar(const char c) {
+PartialError SinusoidalFuncParser::ParseFirstChar(const char c) {
 	if (c != '{') {
-		EnterErrorState(ErrorTypes::ErrorType::MUST_BE, '{');
-		return false;
+		return PartialError(ErrorTypes::ErrorType::MUST_BE, '{');
 	}
-	return true;
+	return PartialError();
 }
 
-bool SinusoidalFuncParser::ParseNextChar(const char c, unique_ptr<BranchNode> &outputNode) {
+PartialError SinusoidalFuncParser::ParseNextChar(const char c, unique_ptr<BranchNode> &outputNode) {
 	if (c == '}' && depth_ == 0) {
-		unique_ptr<ExpTree> tree = child_parser->FinalizeAndReturn();
-		EnterErrorState(child_parser->GetError().GetErrorType());
+		Error status = child_parser->Finalize();
+		if (status.Occured()) {
+			return PartialError(status);
+		}
+
+		unique_ptr<ExpTree> tree = child_parser->GetTree();
 		if (tree == nullptr) {
-			return false;
+			return PartialError(ErrorTypes::ErrorType::UNKNOWN);
 		}
 
 		outputNode = make_unique<UOperNode>(oper_);
 		outputNode->AddChild(tree->GetRoot());
-		return true;
+		return PartialError();
 	}
 	else {
 		if (c == '{') {
@@ -33,10 +36,7 @@ bool SinusoidalFuncParser::ParseNextChar(const char c, unique_ptr<BranchNode> &o
 		else if (c == '}') {
 			depth_--;
 		}
-		bool result = child_parser->ParseNextChar(c);
-		if (!result) {
-			EnterErrorState(child_parser->GetError().GetErrorType());
-		}
-		return result;
+		Error result = child_parser->ParseNextChar(c);
+		return PartialError(result);
 	}
 }

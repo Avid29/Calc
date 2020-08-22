@@ -11,3 +11,7 @@ ErrorTypes::ErrorType PartialError::GetErrorType() const {
 char PartialError::GetExpectedChar() const {
 	return expected_char;
 }
+
+bool PartialError::Occured() const {
+	return error_ != ErrorTypes::ErrorType::NONE;
+}

@@ -8,54 +8,54 @@ DiffFuncParser::DiffFuncParser() :
 	child_parser = make_unique<InternalParser>();
 }
 
-bool DiffFuncParser::ParseFirstChar(const char c) {
+PartialError DiffFuncParser::ParseFirstChar(const char c) {
 	if (c == '[' && state_ == State::OPEN_VAR) {
 		state_ = State::VAR;
-		return true;
+		return PartialError();
 	}
 	else {
-		EnterErrorState(ErrorTypes::ErrorType::MUST_BE, '[');
-		return false;
+		return PartialError(ErrorTypes::ErrorType::MUST_BE, '[');
 	}
 }
 
-bool DiffFuncParser::ParseNextChar(const char c, unique_ptr<BranchNode>& outputNode) {
+PartialError DiffFuncParser::ParseNextChar(const char c, unique_ptr<BranchNode>& outputNode) {
 	switch (state_)
 	{
 	case State::VAR: {
 		if (isalpha(c)) {
 			node->SetVariable(make_unique<VarValueNode>(c));
 			state_ = State::CLOSING_VAR;
-			return true;
+			return PartialError();
 		}
-		EnterErrorState(ErrorTypes::ErrorType::DERIVATIVE_MUST_BE_VARIABLE);
-		return false;
+		return PartialError(ErrorTypes::ErrorType::DERIVATIVE_MUST_BE_VARIABLE);
 	}
 	case State::CLOSING_VAR:
 		state_ = State::OPEN_EXPRESSION;
 		if (c != ']') {
-			EnterErrorState(ErrorTypes::ErrorType::MUST_BE, ']');
-			return false;
+			return PartialError(ErrorTypes::ErrorType::MUST_BE, '[');
 		}
-		return true;
+		return PartialError();
 	case State::OPEN_EXPRESSION:
 		state_ = State::EXPRESSION;
 		if (c != '{') {
-			EnterErrorState(ErrorTypes::ErrorType::MUST_BE, '{');
-			return false;
+			return PartialError(ErrorTypes::ErrorType::MUST_BE, '{');
 		}
-		return true;
+		return PartialError();
 	case State::EXPRESSION: {
 		if (c == '}' && depth_ == 0) {
-			unique_ptr<ExpTree> tree = child_parser->FinalizeAndReturn();
-			EnterErrorState(child_parser->GetError().GetErrorType());
+			Error status = child_parser->Finalize();
+			if (status.Occured()) {
+				return PartialError(status);
+			}
+
+			unique_ptr<ExpTree> tree = child_parser->GetTree();
 			if (tree == nullptr) {
-				return false;
+				return PartialError(ErrorTypes::ErrorType::UNKNOWN);
 			}
 			node->AddChild(tree->GetRoot());
 			state_ = State::DONE;
 			outputNode = move(node);
-			return true;
+			return PartialError();
 		}
 		else {
 			if (c == '{') {
@@ -64,14 +64,11 @@ bool DiffFuncParser::ParseNextChar(const char c, unique_ptr<BranchNode>& outputN
 			else if (c == '}'){
 				depth_--;
 			}
-			bool result = child_parser->ParseNextChar(c);
-			if (!result) {
-				EnterErrorState(child_parser->GetError().GetErrorType());
-			}
-			return result;
+			Error result = child_parser->ParseNextChar(c);
+			return PartialError(result);
 		}
 	}
 	case State::DONE:
-		return false;
+		return PartialError(ErrorTypes::ErrorType::UNKNOWN);
 	}
 }

@@ -29,9 +29,9 @@ int main(int argc, char **argv) {
 		InternalParser* parser = new InternalParser();
 		InternalPrinter* printer = new InternalPrinter();
 		parser->ParseString(str);
-		parser->Finalize();
-		if (!parser->IsDone()) {
-			cout << printer->PrintError(parser->GetError()) << endl;
+		Error error = parser->Finalize();
+		if (error.Occured()) {
+			cout << printer->PrintError(error) << endl;
 		}
 		else {
 			Simplifier* simplifier = new Simplifier();

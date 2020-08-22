@@ -196,11 +196,22 @@ string InternalPrinter::PrintErrorMessage(const Error& error) const {
 		sstream << "\" was found.";
 		return sstream.str();
 	}
-	default:
+	case Error::ErrorType::DERIVATIVE_MUST_BE_VARIABLE:
+		sstream << "The [] in a \\diff function must contain a single variable";
+		return sstream.str();
+	case Error::ErrorType::NONE:
+		sstream << "An unspecified error occured in parsing '";
+		sstream << invalidChar;
+		sstream << "'";
 	case Error::ErrorType::UNKNOWN:
 		sstream << "Unknown error occured in parsing '";
 		sstream << invalidChar;
 		sstream << "'";
+		return sstream.str();
+	default:
+		sstream << "A known error occured parsing '";
+		sstream << invalidChar;
+		sstream << "', but the printer doesn't know what it means";
 		return sstream.str();
 	}
 }

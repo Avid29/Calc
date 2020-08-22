@@ -24,15 +24,7 @@ const VarValueNode& DiffOperNode::GetVariable() const {
 }
 
 void DiffOperNode::AddChild(unique_ptr<ExpNode> node) {
-	node->SetParent(this);
-	if (child_ == nullptr) {
-		// Set child
-		child_ = move(node);
-	}
-	else {
-		// No 2nd child
-		throw;
-	}
+	AddChild(move(node), false);
 }
 
 void DiffOperNode::AddChild(unique_ptr<ExpNode> node, bool overwrite) {

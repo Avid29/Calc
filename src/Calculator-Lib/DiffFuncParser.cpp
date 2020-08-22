@@ -27,6 +27,7 @@ bool DiffFuncParser::ParseNextChar(const char c, unique_ptr<BranchNode>& outputN
 			state_ = State::CLOSING_VAR;
 			return true;
 		}
+		EnterErrorState(Error::ErrorType::DERIVATIVE_MUST_BE_VARIABLE);
 		return false;
 	}
 	case State::CLOSING_VAR:

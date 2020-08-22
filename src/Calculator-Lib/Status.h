@@ -2,17 +2,17 @@
 
 #include <string>
 
-#include "PartialError.h"
+#include "PartialStatus.h"
 
-class Error : public PartialError {
+class Status : public PartialStatus {
 public:
-	Error();
+	Status();
 
-	Error(std::string input, int position);
+	Status(std::string input, int position);
 
-	Error(PartialError error, std::string input, int position);
+	Status(PartialStatus error, std::string input, int position);
 
-	Error(ErrorTypes::ErrorType error, std::string input, int position, char expectedChar = '\0');
+	Status(ErrorTypes::ErrorType error, std::string input, int position, char expectedChar = '\0');
 
 	/// <summary>
 	/// Gets the string entered into the parser where the error occured.

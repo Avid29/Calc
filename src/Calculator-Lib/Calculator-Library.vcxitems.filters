@@ -85,11 +85,11 @@
     <Filter Include="Source\Parser\Internal\Functions">
       <UniqueIdentifier>{e0bc292a-35dd-4205-8a2e-47d9bbdf6a03}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Headers\Parser\Internal\Errors">
-      <UniqueIdentifier>{59da0e12-512c-4092-ac23-2fa0d0f8ea44}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Parser\Internal\Errors">
       <UniqueIdentifier>{ba741ffa-d088-4bd1-9991-6646d524e5bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Parser\Internal\Status">
+      <UniqueIdentifier>{59da0e12-512c-4092-ac23-2fa0d0f8ea44}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -171,14 +171,14 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)InternalPrinter.h">
       <Filter>Headers\Printer\Internal</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Error.h">
-      <Filter>Headers\Parser\Internal\Errors</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Calculator-Lib\PartialError.h">
-      <Filter>Headers\Parser\Internal\Errors</Filter>
-    </ClInclude>
     <ClInclude Include="C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Calculator-Lib\ErrorTypes.h">
-      <Filter>Headers\Parser\Internal\Errors</Filter>
+      <Filter>Headers\Parser\Internal\Status</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Calculator-Lib\Status.h">
+      <Filter>Headers\Parser\Internal\Status</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Calculator-Lib\PartialStatus.h">
+      <Filter>Headers\Parser\Internal\Status</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -251,10 +251,10 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)VectorParser.cpp">
       <Filter>Source\Parser\Internal\Functions</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Error.cpp">
+    <ClCompile Include="C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Calculator-Lib\PartialStatus.cpp">
       <Filter>Source\Parser\Internal\Errors</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)PartialError.cpp">
+    <ClCompile Include="C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Calculator-Lib\Status.cpp">
       <Filter>Source\Parser\Internal\Errors</Filter>
     </ClCompile>
   </ItemGroup>

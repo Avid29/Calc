@@ -6,24 +6,24 @@ VectorParser::VectorParser()
 	vector_ = make_unique<TensorNode>(1);
 }
 
-PartialError VectorParser::ParseFirstChar(const char c ) {
+PartialStatus VectorParser::ParseFirstChar(const char c ) {
 	if (c == '<') {
-		return PartialError();
+		return PartialStatus();
 ;	}
-	return PartialError(ErrorTypes::ErrorType::UNKNOWN);
+	return PartialStatus(ErrorTypes::ErrorType::UNKNOWN);
 }
 
-PartialError VectorParser::ParseNextChar(const char c, unique_ptr<BranchNode>& outputNode) {
+PartialStatus VectorParser::ParseNextChar(const char c, unique_ptr<BranchNode>& outputNode) {
 	if ((c == ',' || c == '>') && depth_ == 0) {
-		Error error = child_parser->Finalize();
-		if (error.Occured()) {
-			return PartialError(error);
+		Status error = child_parser->Finalize();
+		if (error.Failed()) {
+			return PartialStatus(error);
 		}
 
 		unique_ptr<ExpTree> tree = child_parser->GetTree();
 		child_parser = make_unique<InternalParser>();
 		if (tree == nullptr) {
-			return PartialError(ErrorTypes::ErrorType::UNKNOWN);
+			return PartialStatus(ErrorTypes::ErrorType::UNKNOWN);
 		}
 
 		vector_->AddChild(tree->GetRoot());
@@ -33,7 +33,7 @@ PartialError VectorParser::ParseNextChar(const char c, unique_ptr<BranchNode>& o
 			outputNode = move(vector_);
 		}
 
-		return PartialError();
+		return PartialStatus();
 	}
 	else {
 		if (c == '<') {
@@ -42,7 +42,7 @@ PartialError VectorParser::ParseNextChar(const char c, unique_ptr<BranchNode>& o
 		else if (c == '>') {
 			depth_--;
 		}
-		Error result = child_parser->ParseNextChar(c);
-		return PartialError(result);
+		Status result = child_parser->ParseNextChar(c);
+		return PartialStatus(result);
 	}
 }

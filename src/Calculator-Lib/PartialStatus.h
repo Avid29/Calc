@@ -6,11 +6,11 @@
 
 enum class ErrorTypes::ErrorType : int;
 
-class PartialError {
+class PartialStatus {
 public:
-	PartialError();
+	PartialStatus();
 
-	PartialError(ErrorTypes::ErrorType error, char expectedChar = '\0');
+	PartialStatus(ErrorTypes::ErrorType error, char expectedChar = '\0');
 
 	/// <summary>
 	/// Gets the type of error from parsing.
@@ -28,7 +28,7 @@ public:
 	/// Gets whether or not the error object represents an error that occured.
 	/// </summary>
 	/// <returns>Whether an error occured.</returns>
-	bool Occured() const;
+	bool Failed() const;
 
 protected:
 	ErrorTypes::ErrorType error_;

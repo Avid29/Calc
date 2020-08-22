@@ -24,12 +24,12 @@ public:
 
 	string Print(const VarValueNode& node) const override;
 
-	string PrintError(const Error& error) const;
+	string PrintError(const Status& error) const;
 
 private:
-	string PrintErrorMessage(const Error& error) const;
+	string PrintErrorMessage(const Status& error) const;
 
 	string PrintErrorPosition(unique_ptr<bool[]> positions, int length) const;
 
-	unique_ptr<bool[]> DetermineErrorDisplayPositions(const Error& error) const;
+	unique_ptr<bool[]> DetermineErrorDisplayPositions(const Status& error) const;
 };

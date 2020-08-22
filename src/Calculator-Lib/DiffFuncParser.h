@@ -20,9 +20,9 @@ public:
 
 	DiffFuncParser();
 
-	PartialError ParseFirstChar(const char c);
+	PartialStatus ParseFirstChar(const char c);
 
-	PartialError ParseNextChar(const char c, unique_ptr<BranchNode>& outputNode);
+	PartialStatus ParseNextChar(const char c, unique_ptr<BranchNode>& outputNode);
 
 private:
 	State state_;

@@ -146,7 +146,7 @@ string InternalPrinter::Print(const VarValueNode& node) const {
 	return string(1, node.GetCharacter());
 }
 
-string InternalPrinter::PrintError(const Error& error) const {
+string InternalPrinter::PrintError(const Status& error) const {
 	ostringstream sstream;
 	sstream << endl;
 	sstream << error.GetInput() << endl << PrintErrorPosition(DetermineErrorDisplayPositions(error), error.GetInput().size());
@@ -156,7 +156,7 @@ string InternalPrinter::PrintError(const Error& error) const {
 	return sstream.str();
 }
 
-string InternalPrinter::PrintErrorMessage(const Error& error) const {
+string InternalPrinter::PrintErrorMessage(const Status& error) const {
 	string input = error.GetInput();
 	int position = error.GetPosition();
 	char invalidChar = input[position];
@@ -236,7 +236,7 @@ string InternalPrinter::PrintErrorPosition(unique_ptr<bool[]> positions, int len
 	return sstream.str();
 }
 
-unique_ptr<bool[]> InternalPrinter::DetermineErrorDisplayPositions(const Error& error) const {
+unique_ptr<bool[]> InternalPrinter::DetermineErrorDisplayPositions(const Status& error) const {
 	switch (error.GetErrorType())
 	{
 	case ErrorTypes::ErrorType::INVALID_FUNCTION: {

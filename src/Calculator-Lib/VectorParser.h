@@ -8,9 +8,9 @@ class VectorParser : public IFuncParser {
 	public:
 		VectorParser();
 
-		PartialError ParseFirstChar(const char c);
+		PartialStatus ParseFirstChar(const char c);
 
-		PartialError ParseNextChar(const char c, unique_ptr<BranchNode> &outputNode);
+		PartialStatus ParseNextChar(const char c, unique_ptr<BranchNode> &outputNode);
 
 	private:
 		unique_ptr<InternalParser> child_parser;

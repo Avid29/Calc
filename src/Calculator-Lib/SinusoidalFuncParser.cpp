@@ -7,7 +7,11 @@ SinusoidalFuncParser::SinusoidalFuncParser(Operator oper) :
 }
 
 bool SinusoidalFuncParser::ParseFirstChar(const char c) {
-	return c == '{';
+	if (c != '{') {
+		EnterErrorState(ErrorTypes::ErrorType::MUST_BE, '{');
+		return false;
+	}
+	return true;
 }
 
 bool SinusoidalFuncParser::ParseNextChar(const char c, unique_ptr<BranchNode> &outputNode) {

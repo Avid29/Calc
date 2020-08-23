@@ -36,3 +36,8 @@
 /Calculator/Debug
 /packages/Microsoft.Windows.CppWinRT.2.0.200703.9
 /src/Calculator.App.UWP/bin/x64/Debug
+/src/Clients/Apps/UnoApp/Platforms/Calculator.Apps.UnoApp.Droid/obj
+/src/Clients/Apps/UnoApp/Platforms/Calculator.Apps.UnoApp.iOS/obj
+/src/Clients/Apps/UnoApp/Platforms/Calculator.Apps.UnoApp.macOS/obj
+/src/Clients/Apps/UnoApp/Platforms/Calculator.Apps.UnoApp.UWP/obj
+/src/Clients/Apps/UnoApp/Platforms/Calculator.Apps.UnoApp.Wasm/obj

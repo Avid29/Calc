@@ -1,0 +1,37 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(491,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Calculator-Tests.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  AdditiveTerm.cpp
+  BOperNode.cpp
+  BranchNode.cpp
+  EnumerableCollectionNode.cpp
+  Differentiator.cpp
+  DiffFuncParser.cpp
+  DiffOperNode.cpp
+  Status.cpp
+  ExpNode.cpp
+  ExpTree.cpp
+  FValueNode.cpp
+  IValueNode.cpp
+  InternalParser.cpp
+  InternalPrinter.cpp
+C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Library\Calculator\InternalPrinter.cpp(49,29): warning C4018: '<': signed/unsigned mismatch
+  MultiplicativeTerm.cpp
+  NOperNode.cpp
+  OperNode.cpp
+  PartialStatus.cpp
+  Simplify.cpp
+  SinusoidalFuncParser.cpp
+  Generating Code...
+C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Library\Calculator\InternalParser.cpp(276): warning C4715: 'InternalParser::ParseBracket': not all control paths return a value
+C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Library\Calculator\InternalParser.cpp(376): warning C4715: 'MakeFuncParser': not all control paths return a value
+C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Library\Calculator\DiffFuncParser.cpp(74): warning C4715: 'DiffFuncParser::ParseNextChar': not all control paths return a value
+  Compiling...
+  VectorParser.cpp
+  TensorNode.cpp
+  UOperNode.cpp
+  ValueNode.cpp
+  VarValueNode.cpp
+  Addition.cpp
+C:\Users\avid2\source\repos\Personal\Avid29\Calc\tests\Calculator.Tests\Addition.cpp(96,1): error C2664: 'Status Parse(const std::string &,std::unique_ptr<ExpTree,std::default_delete<ExpTree>> *)': cannot convert argument 2 from 'std::unique_ptr<ExpTree,std::default_delete<ExpTree>>' to 'std::unique_ptr<ExpTree,std::default_delete<ExpTree>> *'
+C:\Users\avid2\source\repos\Personal\Avid29\Calc\tests\Calculator.Tests\Addition.cpp(96,28): message : No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Library\Calculator\InternalParser.h(178,8): message : see declaration of 'Parse'
+  Generating Code...

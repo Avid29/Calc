@@ -1,0 +1,35 @@
+﻿  AdditiveTerm.cpp
+  BOperNode.cpp
+  BranchNode.cpp
+  EnumerableCollectionNode.cpp
+  Differentiator.cpp
+  DiffFuncParser.cpp
+  DiffOperNode.cpp
+  Error.cpp
+  ExpNode.cpp
+  ExpTree.cpp
+  FValueNode.cpp
+  IValueNode.cpp
+  InternalParser.cpp
+  InternalPrinter.cpp
+C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Calculator-Lib\InternalPrinter.cpp(49,29): warning C4018: '<': signed/unsigned mismatch
+  MultiplicativeTerm.cpp
+  NOperNode.cpp
+  OperNode.cpp
+  PartialError.cpp
+  Simplify.cpp
+  SinusoidalFuncParser.cpp
+  Generating Code...
+C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Calculator-Lib\InternalParser.cpp(253): warning C4715: 'InternalParser::ParseBracket': not all control paths return a value
+C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Calculator-Lib\InternalParser.cpp(348): warning C4715: 'MakeFuncParser': not all control paths return a value
+C:\Users\avid2\source\repos\Personal\Avid29\Calc\src\Calculator-Lib\DiffFuncParser.cpp(74): warning C4715: 'DiffFuncParser::ParseNextChar': not all control paths return a value
+  Compiling...
+  VectorParser.cpp
+  TensorNode.cpp
+  UOperNode.cpp
+  ValueNode.cpp
+  VarValueNode.cpp
+  Addition.cpp
+  Generating Code...
+     Creating library C:\Users\avid2\source\repos\Personal\Avid29\Calc\Debug\Calculator-Tests.lib and object C:\Users\avid2\source\repos\Personal\Avid29\Calc\Debug\Calculator-Tests.exp
+  Calculator-Tests.vcxproj -> C:\Users\avid2\source\repos\Personal\Avid29\Calc\Debug\Calculator-Tests.dll

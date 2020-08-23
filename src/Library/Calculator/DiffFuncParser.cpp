@@ -32,7 +32,7 @@ PartialStatus DiffFuncParser::ParseNextChar(const char c, unique_ptr<BranchNode>
 	case State::CLOSING_VAR:
 		state_ = State::OPEN_EXPRESSION;
 		if (c != ']') {
-			return PartialStatus(ErrorTypes::ErrorType::MUST_BE, '[');
+			return PartialStatus(ErrorTypes::ErrorType::MUST_BE, ']');
 		}
 		return PartialStatus();
 	case State::OPEN_EXPRESSION:

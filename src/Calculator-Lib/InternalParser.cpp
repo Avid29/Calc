@@ -12,21 +12,26 @@ InternalParser::InternalParser() :
 	tree_(make_unique<ExpTree>()),
 	parenthesis_depth(0),
 	position_(-1),
-	input_("") { }
-
-int InternalParser::ParseString(const string& equation) {
-	// Parse each character and count position
-	for (char c : equation) {
-		if (!ParseNextChar(c)) {
-			input_ = equation;
-			return position_;
-		}
-	}
-	return -1;
+	input_("") {
 }
 
-bool InternalParser::ParseNextChar(const char c) {
-	input_ += c;
+Status InternalParser::ParseString(const string& equation) {
+	input_ = equation;
+	// Parse each character and count position
+	for (char c : equation) {
+		Status status = ParseNextChar(c, true);
+		if (status.Failed()) {
+			return status;
+		}
+	}
+
+	return Status(input_, position_);
+}
+
+Status InternalParser::ParseNextChar(const char c, bool hasFullString) {
+	if (!hasFullString) {
+		input_ += c;
+	}
 	position_++;
 
 	if (state_ == State::FUNCTION) {
@@ -64,21 +69,20 @@ bool InternalParser::ParseNextChar(const char c) {
 		case '\\':
 			return ParseEscape();
 		default:
-			state_ = State::CANNOT_PROCEED;
-			return false;
+			return EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
 		}
 	}
 }
 
-void InternalParser::Finalize() {
+Status InternalParser::Finalize() {
 	if (state_ >= State::DONE) {
-		return;
+		return Status(input_, position_);
 	}
+
 	CompleteValue();
+
 	if (parenthesis_depth != 0) {
-		state_ = State::UNPAIRED_PARENTHESIS;
-		position_ = -1;
-		return;
+		return EnterErrorState(ErrorTypes::ErrorType::UNPAIRED_PARENTHESIS);
 	}
 
 	switch (state_)
@@ -88,11 +92,36 @@ void InternalParser::Finalize() {
 	case State::VARIABLE:
 	case State::VALUE:
 		state_ = State::DONE;
-		return;
+		return Status(input_, position_);
 
 	default:
-		state_ = State::UNKNOWN_ERROR;
-		return;
+		return EnterErrorState(ErrorTypes::ErrorType::UNKNOWN);
+	}
+}
+
+Status InternalParser::Finalize(unique_ptr<ExpTree>* tree) {
+	if (state_ >= State::DONE) {
+		return Status(input_, position_);
+	}
+
+	CompleteValue();
+
+	if (parenthesis_depth != 0) {
+		return EnterErrorState(ErrorTypes::ErrorType::UNPAIRED_PARENTHESIS);
+	}
+
+	switch (state_)
+	{
+	case State::INT:
+	case State::FLOAT:
+	case State::VARIABLE:
+	case State::VALUE:
+		state_ = State::DONE;
+		*tree = GetTree();
+		return Status(input_, position_);
+
+	default:
+		return EnterErrorState(ErrorTypes::ErrorType::UNKNOWN);
 	}
 }
 
@@ -101,49 +130,45 @@ unique_ptr<ExpTree> InternalParser::GetTree() {
 		return nullptr;
 	}
 
-	state_ = State::BEGIN;
+	state_ = State::DONE;
 	unique_ptr<ExpTree> result = move(tree_);
 	tree_ = make_unique<ExpTree>();
 	return result;
 }
 
-unique_ptr<ExpTree> InternalParser::FinalizeAndReturn() {
-	Finalize();
-	return GetTree();
-}
-
 bool InternalParser::IsDone() const {
-	return state_ == State::DONE;
+	return state_ >= State::DONE;
 }
 
-bool InternalParser::ParseDigit(const char c) {
+Status InternalParser::ParseDigit(const char c) {
 	switch (state_)
 	{
 	case State::VALUE:
 		tree_->AddNode(make_unique<NOperNode>('*'));
 	case State::BEGIN:
+	case State::OPEN_PARENTHESIS:
 	case State::UOPER:
 	case State::NOPER:
 	case State::INT:
+		state_ = State::INT;
 	case State::FLOAT:
 		cache_ += c;
-		state_ = State::INT;
-		return true;
+		return Status(input_, position_);
 	default:
-		state_ = State::CANNOT_PROCEED;
-		return false;
+		return EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
 	}
 }
 
-bool InternalParser::ParseLetter(const char c) {
+Status InternalParser::ParseLetter(const char c) {
 	switch (state_)
 	{
 	case State::BEGIN:
+	case State::OPEN_PARENTHESIS:
 	case State::UOPER:
 	case State::NOPER:
 		tree_->AddNode(make_unique<VarValueNode>(c));
 		state_ = State::VARIABLE;
-		return true;
+		return Status(input_, position_);
 	case State::INT:
 	case State::FLOAT:
 		CompleteValue();
@@ -152,17 +177,17 @@ bool InternalParser::ParseLetter(const char c) {
 		tree_->AddNode(make_unique<NOperNode>('*'));
 		tree_->AddNode(make_unique<VarValueNode>(c));
 		state_ = State::VARIABLE;
-		return true;
+		return Status(input_, position_);
 	default:
-		state_ = State::CANNOT_PROCEED;
-		return false;
+		return EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
 	}
 }
 
-bool InternalParser::ParseOper(const char c) {
+Status InternalParser::ParseOper(const char c) {
 	switch (state_)
 	{
 	case State::BEGIN:
+	case State::OPEN_PARENTHESIS:
 	case State::NOPER:
 		return ParseUOper(c);
 	case State::INT:
@@ -172,11 +197,11 @@ bool InternalParser::ParseOper(const char c) {
 		CompleteValue();
 		return ParseNOper(c);
 	default:
-		return false;
+		return EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
 	}
 }
 
-bool InternalParser::ParseNOper(const char c) {
+Status InternalParser::ParseNOper(const char c) {
 	// Appropiate state guarenteed
 	if (c == '^') {
 		tree_->AddNode(make_unique<BOperNode>(c));
@@ -189,10 +214,10 @@ bool InternalParser::ParseNOper(const char c) {
 		tree_->AddNode(make_unique<UOperNode>(c));
 		state_ = State::UOPER;
 	}
-	return true;
+	return Status(input_, position_);
 }
 
-bool InternalParser::ParseUOper(const char c) {
+Status InternalParser::ParseUOper(const char c) {
 	// Appropiate state guarenteed
 	switch (c)
 	{
@@ -200,13 +225,13 @@ bool InternalParser::ParseUOper(const char c) {
 	case '-':
 		tree_->AddNode(make_unique<UOperNode>(c));
 		state_ = State::UOPER;
-		return true;
+		return Status(input_, position_);
 	default:
-		return false;
+		return EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
 	}
 }
 
-bool InternalParser::ParseBracket(const char c) {
+Status InternalParser::ParseBracket(const char c) {
 	switch (state_)
 	{
 	case State::INT:
@@ -215,16 +240,24 @@ bool InternalParser::ParseBracket(const char c) {
 	case State::VALUE:
 	case State::VARIABLE:
 		tree_->AddNode(make_unique<NOperNode>('*'));
-	case State::BEGIN:
 	case State::UOPER:
-	case State::NOPER: {
+	case State::NOPER:
+	case State::BEGIN:
+	case State::OPEN_PARENTHESIS:
+	 {
 		if (c == '(') {
 			tree_->AddNode(make_unique<UOperNode>(c));
 			parenthesis_depth++;
-			state_ = State::BEGIN;
+			state_ = State::OPEN_PARENTHESIS;
 		}
 		else if (c == ')') {
-			// TODO: Check parenthesis depth
+			if (parenthesis_depth == 0) {
+				return EnterErrorState(ErrorTypes::ErrorType::UNPAIRED_PARENTHESIS);
+			}
+			else if (state_ == State::OPEN_PARENTHESIS) {
+				return EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
+			}
+
 			parenthesis_depth--;
 			tree_->CloseParenthesis();
 			state_ = State::VALUE;
@@ -235,34 +268,30 @@ bool InternalParser::ParseBracket(const char c) {
 			state_ = State::FUNCTION;
 		}
 		else {
-			state_ = State::CANNOT_PROCEED;
-			return false;
+			return EnterErrorState(ErrorTypes::ErrorType::UNPAIRED_PARENTHESIS);
 		}
-		return true;
+		return Status(input_, position_);
 	}
 	}
 }
 
-bool InternalParser::ParseDecimal() {
+Status InternalParser::ParseDecimal() {
 	switch (state_)
 	{
 	case State::INT:
 		cache_ += '.';
 		state_ = State::FLOAT;
-		return true;
+		return Status(input_, position_);
 	case State::FLOAT:
-		state_ = State::ALREADY_FLOAT;
-		return false;
+		return EnterErrorState(ErrorTypes::ErrorType::ALREADY_FLOAT);
 	case State::BEGIN:
-		state_ = State::CANNOT_BEGIN;
-		return false;
+		return EnterErrorState(ErrorTypes::ErrorType::CANNOT_BEGIN);
 	default:
-		state_ = State::CANNOT_PROCEED;
-		return false;
+		return EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
 	}
 }
 
-bool InternalParser::ParseEscape() {
+Status InternalParser::ParseEscape() {
 	switch (state_)
 	{
 	case State::INT:
@@ -274,45 +303,44 @@ bool InternalParser::ParseEscape() {
 	case State::NOPER:
 	case State::UOPER:
 	case State::BEGIN:
+	case State::OPEN_PARENTHESIS:
 		cache_ = "";
 		state_ = State::PARTIAL_FUNCTION;
-		return true;
+		return Status(input_, position_);
 	case State::PARTIAL_FUNCTION:
 		// TODO: handle new line
-		state_ = State::CANNOT_PROCEED;
-		return false;
+		return EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
 	default:
-		state_ = State::CANNOT_PROCEED;
-		return false;
+		return EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
 	}
 }
 
-bool InternalParser::ParsePartialFunc(const char c) {
+Status InternalParser::ParsePartialFunc(const char c) {
 	if (isalpha(c)) {
 		cache_ += c;
-		return true;
+		return Status(input_, position_);
 	}
 	else if (operator_map.find(cache_) != operator_map.end()) {
 		Operator oper = operator_map.at(cache_);
 		active_func_parser = MakeFuncParser(oper);
 		state_ = State::FUNCTION;
 		cache_ = "";
-		return active_func_parser->ParseFirstChar(c);
+		PartialStatus status = active_func_parser->ParseFirstChar(c);
+		return Status(status, input_, position_);
 	}
 	else {
-		state_ = State::INVALID_FUNCTION;
-		return false;
+		return EnterErrorState(ErrorTypes::ErrorType::INVALID_FUNCTION);
 	}
 }
 
-bool InternalParser::ParseFunction(const char c) {
+Status InternalParser::ParseFunction(const char c) {
 	unique_ptr<BranchNode> node;
-	bool status = active_func_parser->ParseNextChar(c, node);
+	PartialStatus status = active_func_parser->ParseNextChar(c, node);
 	if (node != nullptr) {
 		tree_->AddNode(move(node));
 		state_ = State::VALUE;
 	}
-	return status;
+	return Status(status, input_, position_);
 }
 
 void InternalParser::CompleteValue() {
@@ -323,6 +351,11 @@ void InternalParser::CompleteValue() {
 	float value = stof(cache_);
 	tree_->AddNode(MakeValueNode(value));
 	cache_ = "";
+}
+
+Status InternalParser::EnterErrorState(ErrorTypes::ErrorType errorType, char expectedChar) {
+	state_ = State::ERROR;
+	return Status(errorType, input_, position_, expectedChar);
 }
 
 unique_ptr<IFuncParser> MakeFuncParser(const Operator oper) {
@@ -342,15 +375,19 @@ unique_ptr<IFuncParser> MakeFuncParser(const Operator oper) {
 	}
 }
 
-int Parse(const string& equation, unique_ptr<ExpTree>& tree)
+Status Parse(const string& equation, unique_ptr<ExpTree>* tree)
 {
 	InternalParser state;
-	int result = state.ParseString(equation);
-	if (result == -1) {
-		tree = state.FinalizeAndReturn();
-	}
-	else {
-		tree = nullptr;
+	Status result = state.ParseString(equation);
+	while (!state.IsDone())
+	{
+		if (!result.Failed()) {
+			result = state.Finalize(tree);
+		}
+		else {
+			*tree = nullptr;
+			return result;
+		}
 	}
 	return result;
 }

@@ -8,43 +8,54 @@ DiffFuncParser::DiffFuncParser() :
 	child_parser = make_unique<InternalParser>();
 }
 
-bool DiffFuncParser::ParseFirstChar(const char c) {
+PartialStatus DiffFuncParser::ParseFirstChar(const char c) {
 	if (c == '[' && state_ == State::OPEN_VAR) {
 		state_ = State::VAR;
-		return true;
+		return PartialStatus();
 	}
 	else {
-		return false;
+		return PartialStatus(ErrorTypes::ErrorType::MUST_BE, '[');
 	}
 }
 
-bool DiffFuncParser::ParseNextChar(const char c, unique_ptr<BranchNode>& outputNode) {
+PartialStatus DiffFuncParser::ParseNextChar(const char c, unique_ptr<BranchNode>& outputNode) {
 	switch (state_)
 	{
 	case State::VAR: {
 		if (isalpha(c)) {
 			node->SetVariable(make_unique<VarValueNode>(c));
 			state_ = State::CLOSING_VAR;
-			return true;
+			return PartialStatus();
 		}
-		return false;
+		return PartialStatus(ErrorTypes::ErrorType::DERIVATIVE_MUST_BE_VARIABLE);
 	}
 	case State::CLOSING_VAR:
 		state_ = State::OPEN_EXPRESSION;
-		return c == ']';
+		if (c != ']') {
+			return PartialStatus(ErrorTypes::ErrorType::MUST_BE, '[');
+		}
+		return PartialStatus();
 	case State::OPEN_EXPRESSION:
 		state_ = State::EXPRESSION;
-		return c == '{';
+		if (c != '{') {
+			return PartialStatus(ErrorTypes::ErrorType::MUST_BE, '{');
+		}
+		return PartialStatus();
 	case State::EXPRESSION: {
 		if (c == '}' && depth_ == 0) {
-			unique_ptr<ExpTree> tree = child_parser->FinalizeAndReturn();
+			Status status = child_parser->Finalize();
+			if (status.Failed()) {
+				return PartialStatus(status);
+			}
+
+			unique_ptr<ExpTree> tree = child_parser->GetTree();
 			if (tree == nullptr) {
-				return false;
+				return PartialStatus(ErrorTypes::ErrorType::UNKNOWN);
 			}
 			node->AddChild(tree->GetRoot());
 			state_ = State::DONE;
 			outputNode = move(node);
-			return true;
+			return PartialStatus();
 		}
 		else {
 			if (c == '{') {
@@ -53,10 +64,11 @@ bool DiffFuncParser::ParseNextChar(const char c, unique_ptr<BranchNode>& outputN
 			else if (c == '}'){
 				depth_--;
 			}
-			return child_parser->ParseNextChar(c);
+			Status result = child_parser->ParseNextChar(c);
+			return PartialStatus(result);
 		}
 	}
 	case State::DONE:
-		return false;
+		return PartialStatus(ErrorTypes::ErrorType::UNKNOWN);
 	}
 }

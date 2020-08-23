@@ -22,6 +22,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Differentiator.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DiffFuncParser.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DiffOperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Status.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ErrorTypes.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ExpNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ExpTree.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FValueNode.h" />
@@ -34,6 +36,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)NOperNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)OperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PartialStatus.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Simplify.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SinusoidalFuncParser.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TensorNode.h" />
@@ -50,6 +53,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Differentiator.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DiffFuncParser.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DiffOperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Status.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpTree.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FValueNode.cpp" />
@@ -59,6 +63,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)NOperNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)OperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PartialStatus.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Simplify.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SinusoidalFuncParser.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)VectorParser.cpp" />

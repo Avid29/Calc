@@ -1,5 +1,7 @@
 #pragma once
 
+#include <tuple>
+
 #include "IPrinter.h"
 #include "InternalParser.h"
 
@@ -21,4 +23,13 @@ public:
 	string Print(const UOperNode& node) const override;
 
 	string Print(const VarValueNode& node) const override;
+
+	string PrintError(const Status& error) const;
+
+private:
+	string PrintErrorMessage(const Status& error) const;
+
+	string PrintErrorPosition(unique_ptr<bool[]> positions, int length) const;
+
+	unique_ptr<bool[]> DetermineErrorDisplayPositions(const Status& error) const;
 };

@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
 		cout << "Enter an Equation (q to quit): ";
 		cin >> str;
 
-		// Checks for 
+		// Checks for quit
 		if (str == "q") {
 			cout << "Done!";
 			return 0;
@@ -28,16 +28,16 @@ int main(int argc, char **argv) {
 		// Convert equation to ExpTree
 		InternalParser* parser = new InternalParser();
 		InternalPrinter* printer = new InternalPrinter();
-		parser->ParseString(str);
-		parser->Finalize();
-		if (!parser->IsDone()) {
-			// TODO:
-			//parser->PrintError();
+		unique_ptr<ExpTree> tree;
+		unique_ptr<ExpTree> *treePtr = &tree;
+		Status status = Parse(str, treePtr);
+		if (status.Failed()) {
+			cout << printer->PrintError(status) << endl;
 		}
 		else {
 			Simplifier* simplifier = new Simplifier();
 			// Simplifies ExpTree and conver back to string
-			cout << parser->GetTree()->Execute(simplifier)->Print(*printer) << endl;
+			cout << endl << tree->Execute(simplifier)->Print(*printer) << endl << endl;
 			delete simplifier;
 		}
 		delete parser;

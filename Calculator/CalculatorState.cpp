@@ -19,7 +19,7 @@ namespace winrt::Calculator::implementation {
 	}
 
 	bool CalculatorState::ParseNextChar(char c) {
-		return parser->ParseNextChar(c);
+		return !parser->ParseNextChar(c).Occured();
 	}
 
 	hstring CalculatorState::Simplify() {

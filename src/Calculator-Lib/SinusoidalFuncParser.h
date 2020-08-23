@@ -12,9 +12,9 @@ class SinusoidalFuncParser : public IFuncParser
 public:
 	SinusoidalFuncParser(Operator oper);
 
-	bool ParseFirstChar(const char c);
+	PartialStatus ParseFirstChar(const char c);
 
-	bool ParseNextChar(const char c, unique_ptr<BranchNode> &outputNode);
+	PartialStatus ParseNextChar(const char c, unique_ptr<BranchNode> &outputNode);
 
 private:
 	Operator oper_;

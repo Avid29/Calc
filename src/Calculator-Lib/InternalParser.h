@@ -6,6 +6,7 @@
 #include <map>
 
 #include "BOperNode.h"
+#include "Status.h"
 #include "ExpNode.h"
 #include "ExpTree.h"
 #include "IFuncParser.h"
@@ -23,6 +24,7 @@ class InternalParser
 public:
 	enum class State {
 		BEGIN,
+		OPEN_PARENTHESIS,
 		// Nary (or binary) Operator
 		NOPER,
 		// Unary Operator
@@ -37,15 +39,7 @@ public:
 		// Status states
 		DONE,
 		IN_PROGRESS,
-
-		// Errors
-		UNKNOWN_ERROR,
-		GENERIC_ERROR,
-		CANNOT_BEGIN,
-		CANNOT_PROCEED,
-		UNPAIRED_PARENTHESIS,
-		INVALID_FUNCTION,
-		ALREADY_FLOAT,
+		ERROR,
 	};
 
 	/// <summary>
@@ -57,15 +51,15 @@ public:
 	/// Parses a string into a tree
 	/// </summary>
 	/// <param name="equation">string to parse</param>
-	/// <returns>-1 on success, or the invalid character's position</returns>
-	int ParseString(const string& equation);
+	/// <returns>A status representing the state of parsing.</returns>
+	Status ParseString(const string& equation);
 
 	/// <summary>
 	/// Parses the next character into the tree
 	/// </summary>
 	/// <param name="c">Character to parse</param>
-	/// <returns>false if the character can't work in that position</returns>
-	bool ParseNextChar(char c);
+	/// <returns>A status representing the state of parsing</returns>
+	Status ParseNextChar(char c, bool hasFullString = false);
 
 	/// <summary>
 	/// Gets the ExpTree from parser
@@ -74,23 +68,17 @@ public:
 	unique_ptr<ExpTree> GetTree();
 
 	/// <summary>
-	/// Gets the error from the tree
-	/// </summary>
-	/// <returns></returns>
-	State GetError() const;
-
-	/// <summary>
 	/// Add the final ValueNode to the tree
 	/// </summary>
-	void Finalize();
+	/// <returns>A status representing the state of parsing</returns>
+	Status Finalize();
 
 	/// <summary>
 	/// Add final ValueNode and return ExpTree
 	/// </summary>
-	/// <returns>The parsed expression tree, or nullptr if invalid</returns>
-	unique_ptr<ExpTree> FinalizeAndReturn();
-
-	// TODO: Error printing
+	/// <param name='tree'>The parsed expression tree, or nullptr if invalid</returns>
+	/// <returns>A status representing the state of parsing</returns>
+	Status Finalize(unique_ptr<ExpTree>* tree);
 
 	/// <summary>
 	/// Gets if parsing is finished
@@ -98,67 +86,73 @@ public:
 	bool IsDone() const;
 
 private:
-
 	/// <summary>
 	/// Parses a digit.
 	/// </summary>
 	/// <param name="c">The exact digit</summary>
-	bool ParseDigit(const char c);
+	Status ParseDigit(const char c);
 
 	/// <summary>
 	/// Parses a letter.
 	/// </summary>
 	/// <param name="c">The exact letter</summary>
-	bool ParseLetter(const char c);
+	Status ParseLetter(const char c);
 
 	/// <summary>
 	/// Parses an operator
 	/// </summary>
 	/// <param name="c">The exact operator</summary>
-	bool ParseOper(const char c);
+	Status ParseOper(const char c);
 
 	/// <summary>
 	/// Parses an nary operator
 	/// </summary>
 	/// <param name="c">The exact operator</summary>
-	bool ParseNOper(const char c);
+	Status ParseNOper(const char c);
 
 	/// <summary>
 	/// Parses an unary operator
 	/// </summary>
 	/// <param name="c">The exact operator</summary>
-	bool ParseUOper(const char c);
+	Status ParseUOper(const char c);
 	
 	/// <summary>
 	/// Parses a bracket.
 	/// </summary>
 	/// <param name="c">The exact bracket</summary>
-	bool ParseBracket(const char c);
+	Status ParseBracket(const char c);
 
 	/// <summary>
 	/// Parses a '.'.
 	/// </summary>
-	bool ParseDecimal();
+	Status ParseDecimal();
 
 	/// <summary>
 	/// Parses a '\'.
 	/// </summary>
-	bool ParseEscape();
+	Status ParseEscape();
 
 	/// <summary>
 	/// Parses any character in the PARTIAL_FUNCTION state.
 	/// </summary>
-	bool ParsePartialFunc(const char c);
+	Status ParsePartialFunc(const char c);
 
 	/// <summary>
 	/// Parses any character in the FUNCTION state.
 	/// </summary>
-	bool ParseFunction(const char c);
+	Status ParseFunction(const char c);
 
 	/// <summary>
 	/// Finishes building an int or float and adds it to the tree
 	/// </summary>
 	void CompleteValue();
+
+	/// <summary>
+	/// Makes an eror state and sets the parser state to error.
+	/// </summary>
+	/// <param name="errorType">The type of error to make</param>
+	/// <returns>The error status of the parser</returns>
+	Status EnterErrorState(ErrorTypes::ErrorType errorType, char expectedChar = '\0');
 
 	State state_;
 	string input_;
@@ -181,4 +175,4 @@ private:
 
 unique_ptr<IFuncParser> MakeFuncParser(Operator oper);
 
-int Parse(const string& equation, unique_ptr<ExpTree>& tree);
+Status Parse(const string& equation, unique_ptr<ExpTree>* tree);

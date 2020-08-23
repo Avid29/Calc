@@ -145,3 +145,115 @@ string InternalPrinter::Print(const UOperNode& node) const {
 string InternalPrinter::Print(const VarValueNode& node) const {
 	return string(1, node.GetCharacter());
 }
+
+string InternalPrinter::PrintError(const Status& error) const {
+	ostringstream sstream;
+	sstream << endl;
+	sstream << error.GetInput() << endl << PrintErrorPosition(DetermineErrorDisplayPositions(error), error.GetInput().size());
+	sstream << endl;
+	sstream << PrintErrorMessage(error);
+	sstream << endl;
+	return sstream.str();
+}
+
+string InternalPrinter::PrintErrorMessage(const Status& error) const {
+	string input = error.GetInput();
+	int position = error.GetPosition();
+	char invalidChar = input[position];
+	ostringstream sstream;
+	sstream << "Error: ";
+
+	switch (error.GetErrorType())
+	{
+	case ErrorTypes::ErrorType::ALREADY_FLOAT:
+		sstream << "'";
+		sstream << invalidChar;
+		sstream << "' is not an acceptable character because the number is already a float";
+		return sstream.str();
+	case ErrorTypes::ErrorType::CANNOT_BEGIN:
+		sstream << "Expression cannot begin with '";
+		sstream << invalidChar;
+		sstream << "'";
+		return sstream.str();
+	case ErrorTypes::ErrorType::CANNOT_PROCEED:
+		sstream << "'";
+		sstream << invalidChar;
+		sstream << "' cannot proceed '";
+		sstream << input[position - 1];
+		sstream << "'";
+		return sstream.str();
+	case ErrorTypes::ErrorType::UNPAIRED_PARENTHESIS:
+		sstream << "A parenthesis is unpaired.";
+		return sstream.str();
+	case ErrorTypes::ErrorType::INVALID_FUNCTION: {
+		string functionName;
+		for (int i = position - 1; isalpha(input[i]); i--)
+		{
+			functionName = input[i] + functionName;
+		}
+		sstream << "No function with the name \"";
+		sstream << functionName;
+		sstream << "\" was found.";
+		return sstream.str();
+	}
+	case ErrorTypes::ErrorType::DERIVATIVE_MUST_BE_VARIABLE:
+		sstream << "The [] in a \\diff function must contain a single variable";
+		return sstream.str();
+	case ErrorTypes::ErrorType::MUST_BE:
+		sstream << "Expected '";
+		sstream << error.GetExpectedChar();
+		sstream << "'";
+		return sstream.str();
+	case ErrorTypes::ErrorType::NONE:
+		sstream << "An unspecified error occured in parsing '";
+		sstream << invalidChar;
+		sstream << "'";
+		return sstream.str();
+	case ErrorTypes::ErrorType::UNKNOWN:
+		sstream << "Unknown error occured in parsing '";
+		sstream << invalidChar;
+		sstream << "'";
+		return sstream.str();
+	default:
+		sstream << "A known error occured parsing '";
+		sstream << invalidChar;
+		sstream << "', but the printer doesn't know what it means";
+		return sstream.str();
+	}
+}
+
+string InternalPrinter::PrintErrorPosition(unique_ptr<bool[]> positions, int length) const {
+	ostringstream sstream;
+	for (int i = 0; i < length; i++)
+	{
+		if (positions[i]) {
+			sstream << "^";
+		}
+		else {
+			sstream << '~';
+		}
+	}
+	return sstream.str();
+}
+
+unique_ptr<bool[]> InternalPrinter::DetermineErrorDisplayPositions(const Status& error) const {
+	switch (error.GetErrorType())
+	{
+	case ErrorTypes::ErrorType::INVALID_FUNCTION: {
+		string input = error.GetInput();
+		unique_ptr<bool[]> positions(new bool[input.size()]);
+		std::fill(positions.get(), positions.get() + error.GetInput().size(), false);
+		for (int i = error.GetPosition() - 1; isalpha(input[i]); i--)
+		{
+			positions[i] = true;
+		}
+		return positions;
+	}
+	default: {
+		unique_ptr<bool[]> positions(new bool[error.GetInput().size()]);
+		std::fill(positions.get(), positions.get() + error.GetInput().size(), false);
+		positions[error.GetPosition()] = true;
+		return positions;
+	}
+	}
+}

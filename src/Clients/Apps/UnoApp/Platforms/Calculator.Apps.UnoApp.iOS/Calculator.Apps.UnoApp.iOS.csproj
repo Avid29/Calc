@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProjectGuid>87c2fdaf-beab-4881-a023-feb5ad256792</ProjectGuid>
+    <ProjectGuid>{87C2FDAF-BEAB-4881-A023-FEB5AD256792}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>Calculator.Apps.UnoApp</RootNamespace>
@@ -149,10 +149,12 @@
       <Visible>false</Visible>
     </ImageAsset>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Media" Visible="false" />
-    <Folder Include="Media\AppIcons" Visible="false" />
-    <Folder Include="Media\LaunchImages" Visible="false" />
+    <ProjectReference Include="..\..\..\..\..\..\Calculator.Apps.UnoApp.CalculatorInterface\Calculator.Apps.UnoApp.CalculatorInterface.vcxproj">
+      <Project>{63f21c18-8f4d-4ebd-8c85-671db4c6c9b5}</Project>
+      <Name>Calculator.Apps.UnoApp.CalculatorInterface</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\Calculator.Apps.UnoApp.Shared\Calculator.Apps.UnoApp.Shared.projitems" Label="Shared" Condition="Exists('..\Calculator.Apps.UnoApp.Shared\Calculator.Apps.UnoApp.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

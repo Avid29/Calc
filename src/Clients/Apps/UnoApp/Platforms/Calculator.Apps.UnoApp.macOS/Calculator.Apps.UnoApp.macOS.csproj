@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProjectGuid>e88a8599-952f-44a4-813e-cecc599ff67d</ProjectGuid>
+    <ProjectGuid>{E88A8599-952F-44A4-813E-CECC599FF67D}</ProjectGuid>
     <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>Calculator.Apps.UnoApp.macOS</RootNamespace>
@@ -28,17 +28,22 @@
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
     <Profiling>true</Profiling>
-    <HttpClientHandler></HttpClientHandler>
-    <LinkMode></LinkMode>
-    <XamMacArch></XamMacArch>
-    <NoWarn></NoWarn>
+    <HttpClientHandler>
+    </HttpClientHandler>
+    <LinkMode>
+    </LinkMode>
+    <XamMacArch>
+    </XamMacArch>
+    <NoWarn>
+    </NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugSymbols>false</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <EnableCodeSigning>false</EnableCodeSigning>
@@ -48,9 +53,12 @@
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
     <LinkMode>SdkOnly</LinkMode>
-    <HttpClientHandler></HttpClientHandler>
-    <XamMacArch></XamMacArch>
-    <NoWarn></NoWarn>
+    <HttpClientHandler>
+    </HttpClientHandler>
+    <XamMacArch>
+    </XamMacArch>
+    <NoWarn>
+    </NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -83,11 +91,7 @@
     <ImageAsset Include="Assets.xcassets\unologo.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\unologo.imageset\unoplatform.jpg" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-    <Folder Include="Resources\Fonts\" />
-    <Folder Include="Assets.xcassets\unologo.imageset\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
@@ -99,6 +103,12 @@
     <BundleResource Include="Resources\Fonts\uno-fluentui-assets.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </BundleResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\Calculator.Apps.UnoApp.CalculatorInterface\Calculator.Apps.UnoApp.CalculatorInterface.vcxproj">
+      <Project>{63f21c18-8f4d-4ebd-8c85-671db4c6c9b5}</Project>
+      <Name>Calculator.Apps.UnoApp.CalculatorInterface</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Target Name="VS16Mac_RemoveSystemMemory" BeforeTargets="ResolveAssemblyReferences">

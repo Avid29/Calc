@@ -43,3 +43,5 @@
 /src/Clients/Apps/UnoApp/Platforms/Calculator.Apps.UnoApp.Wasm/obj
 /tests/Calculator.Tests/Debug
 /src/Clients/Consoles/Calculator.GenericConsole/Debug
+/Calculator.Apps.UnoApp.CalculatorInterface/Debug
+/src/Library/Platforms/Calculator.UWP/Debug

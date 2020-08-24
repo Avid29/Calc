@@ -150,12 +150,6 @@
     </ImageAsset>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Calculator.Apps.UnoApp.CalculatorInterface\Calculator.Apps.UnoApp.CalculatorInterface.vcxproj">
-      <Project>{63f21c18-8f4d-4ebd-8c85-671db4c6c9b5}</Project>
-      <Name>Calculator.Apps.UnoApp.CalculatorInterface</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="..\Calculator.Apps.UnoApp.Shared\Calculator.Apps.UnoApp.Shared.projitems" Label="Shared" Condition="Exists('..\Calculator.Apps.UnoApp.Shared\Calculator.Apps.UnoApp.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

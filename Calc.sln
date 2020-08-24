@@ -37,12 +37,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Uno", "Uno", "{CECAE720-11D
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Calculator.Apps.UnoApp.CalculatorInterface", "Calculator.Apps.UnoApp.CalculatorInterface\Calculator.Apps.UnoApp.CalculatorInterface.vcxproj", "{63F21C18-8F4D-4EBD-8C85-671DB4C6C9B5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{0F73F555-9726-41F8-9E36-4D0AD1BD62C9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Calculator.UWP", "src\Library\Platforms\Calculator.UWP\Calculator.UWP.vcxproj", "{29217993-68C7-45C8-A1E5-C07D27778DC3}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\Library\Calculator\Calculator.vcxitems*{29217993-68c7-45c8-a1e5-c07d27778dc3}*SharedItemsImports = 4
 		src\Library\Calculator\Calculator.vcxitems*{322cd08f-a6be-472d-b32a-55d51d684bf8}*SharedItemsImports = 4
 		src\Clients\Apps\UnoApp\Calculator.Apps.UnoApp.Shared\Calculator.Apps.UnoApp.Shared.projitems*{6279c845-92f8-4333-ab99-3d213163593c}*SharedItemsImports = 13
 		src\Library\Calculator\Calculator.vcxitems*{63f21c18-8f4d-4ebd-8c85-671db4c6c9b5}*SharedItemsImports = 4
 		src\Library\Calculator\Calculator.vcxitems*{8040748e-1f86-4da6-8058-4ff02a92e0ae}*SharedItemsImports = 4
+		src\Clients\Apps\UnoApp\Calculator.Apps.UnoApp.Shared\Calculator.Apps.UnoApp.Shared.projitems*{a38b5d70-ef4c-4bf4-918d-82bf63daf2e3}*SharedItemsImports = 5
 		src\Library\Calculator\Calculator.vcxitems*{fea44308-338d-4ff7-b3b7-efd2960278d2}*SharedItemsImports = 9
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -510,6 +516,56 @@ Global
 		{63F21C18-8F4D-4EBD-8C85-671DB4C6C9B5}.Release|x64.Build.0 = Release|x64
 		{63F21C18-8F4D-4EBD-8C85-671DB4C6C9B5}.Release|x86.ActiveCfg = Release|Win32
 		{63F21C18-8F4D-4EBD-8C85-671DB4C6C9B5}.Release|x86.Build.0 = Release|Win32
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Ad-Hoc|Any CPU.ActiveCfg = Release|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Ad-Hoc|Any CPU.Build.0 = Release|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Ad-Hoc|ARM.ActiveCfg = Release|ARM
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Ad-Hoc|ARM.Build.0 = Release|ARM
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Ad-Hoc|ARM64.ActiveCfg = Release|ARM64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Ad-Hoc|ARM64.Build.0 = Release|ARM64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Ad-Hoc|iPhone.ActiveCfg = Release|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Ad-Hoc|iPhone.Build.0 = Release|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Release|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Ad-Hoc|iPhoneSimulator.Build.0 = Release|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Ad-Hoc|x64.ActiveCfg = Release|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Ad-Hoc|x64.Build.0 = Release|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Ad-Hoc|x86.ActiveCfg = Release|Win32
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Ad-Hoc|x86.Build.0 = Release|Win32
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.AppStore|Any CPU.ActiveCfg = Release|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.AppStore|Any CPU.Build.0 = Release|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.AppStore|ARM.ActiveCfg = Release|ARM
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.AppStore|ARM.Build.0 = Release|ARM
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.AppStore|ARM64.ActiveCfg = Release|ARM64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.AppStore|ARM64.Build.0 = Release|ARM64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.AppStore|iPhone.ActiveCfg = Release|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.AppStore|iPhone.Build.0 = Release|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.AppStore|iPhoneSimulator.ActiveCfg = Release|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.AppStore|iPhoneSimulator.Build.0 = Release|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.AppStore|x64.ActiveCfg = Release|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.AppStore|x64.Build.0 = Release|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.AppStore|x86.ActiveCfg = Release|Win32
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.AppStore|x86.Build.0 = Release|Win32
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Debug|ARM.ActiveCfg = Debug|ARM
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Debug|ARM.Build.0 = Debug|ARM
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Debug|ARM64.Build.0 = Debug|ARM64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Debug|iPhone.ActiveCfg = Debug|Win32
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Debug|iPhoneSimulator.ActiveCfg = Debug|Win32
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Debug|x64.ActiveCfg = Debug|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Debug|x64.Build.0 = Debug|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Debug|x86.ActiveCfg = Debug|Win32
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Debug|x86.Build.0 = Debug|Win32
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Release|Any CPU.ActiveCfg = Release|Win32
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Release|ARM.ActiveCfg = Release|ARM
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Release|ARM.Build.0 = Release|ARM
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Release|ARM64.ActiveCfg = Release|ARM64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Release|ARM64.Build.0 = Release|ARM64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Release|iPhone.ActiveCfg = Release|Win32
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Release|iPhoneSimulator.ActiveCfg = Release|Win32
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Release|x64.ActiveCfg = Release|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Release|x64.Build.0 = Release|x64
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Release|x86.ActiveCfg = Release|Win32
+		{29217993-68C7-45C8-A1E5-C07D27778DC3}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -529,6 +585,8 @@ Global
 		{A38B5D70-EF4C-4BF4-918D-82BF63DAF2E3} = {4003948A-E114-4580-A2D2-31BA6B729280}
 		{CECAE720-11D8-4EF2-923D-C7EBEFF63F90} = {D0B180C6-1B6F-43FD-AD90-91E04B00C4E8}
 		{63F21C18-8F4D-4EBD-8C85-671DB4C6C9B5} = {CECAE720-11D8-4EF2-923D-C7EBEFF63F90}
+		{0F73F555-9726-41F8-9E36-4D0AD1BD62C9} = {D9310C2E-11B3-49D8-82E4-CBC4040BCB70}
+		{29217993-68C7-45C8-A1E5-C07D27778DC3} = {0F73F555-9726-41F8-9E36-4D0AD1BD62C9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {97E5AD4A-5E89-4A1A-9A95-CFAC75CBB060}

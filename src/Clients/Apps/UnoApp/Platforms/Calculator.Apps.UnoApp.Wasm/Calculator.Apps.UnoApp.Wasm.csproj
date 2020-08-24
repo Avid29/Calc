@@ -48,4 +48,5 @@
     <ProjectReference Include="..\..\..\..\..\..\Calculator.Apps.UnoApp.CalculatorInterface\Calculator.Apps.UnoApp.CalculatorInterface.vcxproj" />
   </ItemGroup>
   <Import Project="..\Calculator.Apps.UnoApp.Shared\Calculator.Apps.UnoApp.Shared.projitems" Label="Shared" Condition="Exists('..\Calculator.Apps.UnoApp.Shared\Calculator.Apps.UnoApp.Shared.projitems')" />
+  <Import Project="..\..\Calculator.Apps.UnoApp.Shared\Calculator.Apps.UnoApp.Shared.projitems" Label="Shared" />
 </Project>

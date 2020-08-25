@@ -45,7 +45,7 @@
     <PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="1.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Calculator.Apps.UnoApp.CalculatorInterface\Calculator.Apps.UnoApp.CalculatorInterface.vcxproj" />
+    <ProjectReference Include="..\..\CalculatorInterface\CalculatorInterface.vcxproj" />
   </ItemGroup>
   <Import Project="..\Calculator.Apps.UnoApp.Shared\Calculator.Apps.UnoApp.Shared.projitems" Label="Shared" Condition="Exists('..\Calculator.Apps.UnoApp.Shared\Calculator.Apps.UnoApp.Shared.projitems')" />
   <Import Project="..\..\Calculator.Apps.UnoApp.Shared\Calculator.Apps.UnoApp.Shared.projitems" Label="Shared" />

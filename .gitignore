@@ -45,3 +45,15 @@
 /src/Clients/Consoles/Calculator.GenericConsole/Debug
 /Calculator.Apps.UnoApp.CalculatorInterface/Debug
 /src/Library/Platforms/Calculator.UWP/Debug
+/src/Clients/Apps/UnoApp/Calculator.Apps.UnoApp.CalculatorInterface/Debug
+/src/Clients/Apps/UnoApp/CalculatorInterface/Debug
+/src/Clients/Apps/UnoApp/CalculatorInterface/Generated Files
+/src/Clients/Apps/UnoApp/Platforms/Calculator.Apps.UnoApp.Wasm/bin/Debug/netstandard2.0
+/Calculator.Apps.UWPApp/obj
+/packages/Microsoft.Windows.CppWinRT.2.0.200729.8/bin
+/packages/Microsoft.Windows.CppWinRT.2.0.200729.8/build/native
+/packages/Microsoft.Windows.CppWinRT.2.0.200729.8
+/src/Clients/Apps/UWP/CalculatorInterface/Debug
+/src/Clients/Apps/UWP/CalculatorInterface/Generated Files
+/src/Clients/Apps/UWP/Calculator.Apps.UWPApp/obj
+/src/Clients/Apps/UWP/Calculator.Apps.UWPApp/bin/x86/Debug

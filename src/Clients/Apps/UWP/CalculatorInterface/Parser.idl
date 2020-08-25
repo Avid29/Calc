@@ -1,0 +1,13 @@
+import "Expression.idl";
+
+namespace CalculatorInterface
+{
+    [default_interface]
+    runtimeclass Parser
+    {
+        Parser();
+        Boolean ParseChar(Char c);
+        void Finalize();
+        //Expression GetResult();
+    }
+}

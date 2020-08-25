@@ -1,37 +1,31 @@
-#include "Expression.h"
+﻿#include "Expression.h"
+#include "Expression.g.cpp"
 
 #include "Simplify.h"
+#include "InternalPrinter.h"
 
-namespace winrt::CalculatorInterface::implementation {
-	Expression::Expression(unique_ptr<ExpTree> rootNode) {
-		root_node = rootNode->GetRoot();
-	}
+namespace winrt::CalculatorInterface::implementation
+{
+    Expression::Expression() {
+        parser = new InternalParser();
+    }
 
-	void Expression::Execute(IOperation *operation) {
-		bool defaultOperation = operation == nullptr;
-		if (defaultOperation) {
-			operation = new Simplifier();
-		}
+    Expression::~Expression() {
+        delete parser;
+    }
 
-		root_node = root_node->Execute(operation);
+    bool Expression::ParseChar(char c)
+    {
+        return !parser->ParseNextChar(c).Failed();
+    }
 
-		if (defaultOperation) {
-			delete operation;
-		}
-	}
+    hstring Expression::FinalizeSimplifyPrint() {
+        Simplifier* simplify = new Simplifier();
+        InternalPrinter* printer = new InternalPrinter();
 
-	hstring Expression::Print(IPrinter *printer) {
-		bool defaultOperation = printer == nullptr;
-		if (defaultOperation) {
-			printer = new InternalPrinter();
-		}
-
-		string result = root_node->Print(*printer);
-
-		if (defaultOperation) {
-			delete printer;
-		}
-
-		return to_hstring(result);
-	}
+        parser->Finalize();
+        unique_ptr<ExpTree> tree = parser->GetTree();
+        string str = tree->Execute(simplify)->Print(*printer);
+        return to_hstring(str);
+    }
 }

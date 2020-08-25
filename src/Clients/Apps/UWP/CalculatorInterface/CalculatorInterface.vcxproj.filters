@@ -10,7 +10,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Class.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="Expression.cpp" />
   </ItemGroup>
@@ -29,7 +28,6 @@
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="Parser.idl" />
     <Midl Include="Expression.idl" />
   </ItemGroup>
 </Project>

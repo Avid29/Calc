@@ -3,8 +3,8 @@ namespace CalculatorInterface
     [default_interface]
     runtimeclass Expression
     {
-        void Execute();
-    
-        String Print();
+        Expression();
+        Boolean ParseChar(Char c);
+        String FinalizeSimplifyPrint();
     }
 }

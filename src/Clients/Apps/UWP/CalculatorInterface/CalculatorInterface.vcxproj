@@ -118,26 +118,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-	<ClInclude Include="Expression.h">
-		<DependentUpon>Expression.idl</DependentUpon>
-    </ClInclude>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Parser.h">
-		<DependentUpon>Parser.idl</DependentUpon>
-	</ClInclude>
-</ItemGroup>
-<ItemGroup>
-	<ClCompile Include="Expression.cpp">
-		<DependentUpon>Expression.idl</DependentUpon>
-	</ClCompile>
-	<ClCompile Include="Parser.cpp">
-		<DependentUpon>Parser.idl</DependentUpon>
+    <ClInclude Include="Expression.h">
+      <DependentUpon>Expression.idl</DependentUpon>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Expression.cpp">
+      <DependentUpon>Expression.idl</DependentUpon>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="Expression.idl" />
-    <Midl Include="Parser.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CalculatorInterface.def" />

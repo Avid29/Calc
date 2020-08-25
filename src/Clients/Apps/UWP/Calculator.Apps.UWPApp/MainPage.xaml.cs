@@ -1,6 +1,5 @@
-﻿using Windows.UI.Xaml.Controls;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+﻿using CalculatorInterface;
+using Windows.UI.Xaml.Controls;
 
 namespace Calculator.Apps.UWPApp
 {
@@ -12,6 +11,12 @@ namespace Calculator.Apps.UWPApp
         public MainPage()
         {
             this.InitializeComponent();
+            Expression expression = new Expression();
+            foreach (char c in "2+2")
+            {
+                expression.ParseChar(c);
+            }
+            string result = expression.FinalizeSimplifyPrint();
         }
     }
 }

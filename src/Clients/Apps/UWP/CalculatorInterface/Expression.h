@@ -1,21 +1,25 @@
-#pragma once
+﻿#pragma once
 
-#include <winrt/Windows.Foundation.h>
+#include "Expression.g.h"
+#include "InternalParser.h"
 
-#include "ExpNode.h"
-#include "InternalPrinter.h"
+namespace winrt::CalculatorInterface::implementation
+{
+    struct Expression : ExpressionT<Expression>
+    {
+    public:
+        Expression();
+        ~Expression();
+        bool ParseChar(char c);
+        hstring FinalizeSimplifyPrint();
+    private:
+        InternalParser *parser;
+    };
+}
 
-namespace winrt::CalculatorInterface::implementation {
-	struct Expression
-	{
-	public:
-		Expression(unique_ptr<ExpTree> rootNode);
-
-		void Execute(IOperation* operation = nullptr);
-
-		hstring Print(IPrinter* printer = nullptr);
-		 
-	private:
-		unique_ptr<ExpNode> root_node;
-	};
+namespace winrt::CalculatorInterface::factory_implementation
+{
+    struct Expression : ExpressionT<Expression, implementation::Expression>
+    {
+    };
 }

@@ -38,9 +38,9 @@ unique_ptr<ExpNode> Simplifier::Execute(const BOperNode& node) {
 	}
 
 	if (node.GetOperator() == Operator::POWER &&
-		simpleRight->IsNumericalValue() &&
+		simpleRight->IsNumericalValue() && simpleRight->AsDouble() > 0 &&
 		simpleRight->AsDouble() == floor(simpleRight->AsDouble())) {
-		// if oper is Power and if right child is an int 
+		// if oper is Power and if right child is a positive integer
 		// Expand to multiply n times
 		unique_ptr<NOperNode> nOperNode = make_unique<NOperNode>('*');
 		for (int i = 0; i < simpleRight->AsDouble(); i++) {
@@ -147,6 +147,11 @@ unique_ptr<ExpNode> Simplifier::Execute(const NOperNode& node) {
 			break;
 	}
 
+	if (newNode->ChildCount() == 1) {
+		// No more operations to be run, and trim child's parent node
+		return newNode->GetChild(0).Clone();
+	}
+
 	if (node.GetOperator() == Operator::MULTIPLICATION) {
 		return Expand(newNode.get());
 	}
@@ -171,6 +176,15 @@ unique_ptr<ExpNode> Simplifier::Execute(const TensorNode& node) {
 
 unique_ptr<ExpNode> Simplifier::Execute(const UOperNode& node) {
 	// Always returns a clone or replacement
+	
+	if (node.GetOperator() == Operator::RECIPROCAL) {
+		// Return the reciprical, by putting to the power of -1
+		unique_ptr<BOperNode> newNode = make_unique<BOperNode>(Operator::POWER);
+		newNode->AddChild(node.GetChild(0).Execute(this));
+		newNode->AddChild(MakeValueNode(-1));
+		return newNode->Execute(this);
+	}
+
 	unique_ptr<UOperNode> newNode = make_unique<UOperNode>(node.GetOperator());
 	newNode->AddChild(node.GetChild(0).Execute(this));
 

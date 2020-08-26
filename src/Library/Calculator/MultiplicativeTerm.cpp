@@ -28,7 +28,10 @@ MultiplicativeTerm::MultiplicativeTerm(const ExpNode &node) {
 /// Gets Term as an ExpNode
 /// </summary>
 unique_ptr<ExpNode> MultiplicativeTerm::AsExpNode() {
-	if (exponent_->AsDouble() == 1) {
+	if (exponent_->AsDouble() == 0) {
+		return MakeValueNode(1);
+	}
+	else if (exponent_->AsDouble() == 1) {
 		return move(base_);
 	}
 	else {

@@ -89,5 +89,10 @@ bool MultiplicativeTerm::operator<(const MultiplicativeTerm &other) const {
 /// Checks if two MultiplicateTerms have the same base
 /// </summary>
 bool MultiplicativeTerm::operator==(const MultiplicativeTerm &other) const {
-	return base_string == other.base_string && base_string[0] != '(';
+	bool notOverride = true;
+	bool isParenthsis = base_string[0] == '('; // Don't combine parenthesis because they should expand
+	bool isPositive = exponent_->AsDouble() > 0 && other.exponent_->AsDouble() > 0;
+	bool isInteger = exponent_->AsDouble() == floor(exponent_->AsDouble()) && other.exponent_->AsDouble() == floor(other.exponent_->AsDouble());
+	notOverride = !(isParenthsis && isPositive && isInteger);
+	return base_string == other.base_string && notOverride; 
 }

@@ -285,7 +285,11 @@ void Simplifier::SimplifyMTerms(NOperNode* node) {
 	// Resets children then gets children from MTerms
 	node->ClearChildren();
 	for (MultiplicativeTerm& mTerm : mTerms) {
-		node->AddChild(mTerm.AsExpNode());
+		unique_ptr<ExpNode> mtermNode = mTerm.AsExpNode();
+		if (mtermNode->AsDouble() != 1 || (node->ChildCount() != 0 && &mTerm != &mTerms.back())) {
+			// If the value is not 1 or the term isn't the last in the vector while the node is empty
+			node->AddChild(move(mtermNode));
+		}
 	}
 }
 

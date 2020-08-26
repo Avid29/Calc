@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{fea44308-338d-4ff7-b3b7-efd2960278d2}</ItemsProjectGuid>
+    <ItemsProjectName>Calculator</ItemsProjectName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AdditiveTerm.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BOperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BranchNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)EnumerableCollectionNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Differentiator.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DiffFuncParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DiffOperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Status.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ErrorTypes.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ExpNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ExpTree.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FValueNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IFuncParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IOperation.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IPrinter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IValueNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)InternalParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)InternalPrinter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NOperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)OperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PartialStatus.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Simplify.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SinusoidalFuncParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TensorNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UOperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ValueNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)VarValueNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)VectorParser.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AdditiveTerm.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BOperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BranchNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)EnumerableCollectionNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Differentiator.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DiffFuncParser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DiffOperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Status.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ExpNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ExpTree.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FValueNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)IValueNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)InternalParser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)InternalPrinter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MultiplicativeTerm.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NOperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)OperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PartialStatus.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Simplify.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SinusoidalFuncParser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)VectorParser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TensorNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)UOperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ValueNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)VarValueNode.cpp" />
+  </ItemGroup>
+</Project>

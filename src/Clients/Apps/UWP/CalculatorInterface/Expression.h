@@ -11,6 +11,7 @@ namespace winrt::CalculatorInterface::implementation
         Expression();
         ~Expression();
         bool ParseChar(char c);
+        void Clear();
         hstring FinalizeSimplifyPrint();
     private:
         InternalParser *parser;

@@ -19,6 +19,11 @@ namespace winrt::CalculatorInterface::implementation
         return !parser->ParseNextChar(c).Failed();
     }
 
+    void Expression::Clear() {
+        delete parser;
+        parser = new InternalParser();
+    }
+
     hstring Expression::FinalizeSimplifyPrint() {
         Simplifier* simplify = new Simplifier();
         InternalPrinter* printer = new InternalPrinter();

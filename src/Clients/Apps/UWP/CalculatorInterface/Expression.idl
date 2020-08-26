@@ -5,6 +5,7 @@ namespace CalculatorInterface
     {
         Expression();
         Boolean ParseChar(Char c);
+        void Clear();
         String FinalizeSimplifyPrint();
     }
 }

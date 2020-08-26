@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
+using CalculatorInterface;
 using Windows.UI.Xaml.Controls;
 
 namespace Calculator.Apps.UWPApp.Pages
 {
     public sealed partial class StandardPage : Page
     {
+        private Expression expression = new Expression();
+
         public StandardPage()
         {
             this.InitializeComponent();
@@ -24,7 +27,7 @@ namespace Calculator.Apps.UWPApp.Pages
             string tag = (sender as Button).Tag.ToString();
             foreach (char c in tag)
             {
-                //state.ParseNextChar(c);
+                expression.ParseChar(c);
                 TextDisplay.Text += c;
             }
         }
@@ -39,17 +42,17 @@ namespace Calculator.Apps.UWPApp.Pages
 
         private void Simplify(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            //TextDisplay.Text = state.Simplify();
+            TextDisplay.Text = expression.FinalizeSimplifyPrint();
             foreach (char c in TextDisplay.Text)
             {
-                //state.ParseNextChar(c);
+                expression.ParseChar(c);
             }
         }
 
         private void Clear(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             TextDisplay.Text = "";
-            //state.Clear();
+            expression.Clear();
         }
     }
 }

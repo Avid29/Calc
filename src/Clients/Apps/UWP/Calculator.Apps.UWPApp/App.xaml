@@ -3,5 +3,12 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Calculator.Apps.UWPApp">
-
+    <Application.Resources>
+        <AcrylicBrush x:Key="BaseBackgroundAcrylic" TintColor="#101010" TintOpacity=".6" BackgroundSource="HostBackdrop"
+                      FallbackColor="#222222"/>
+        <RevealBackgroundBrush x:Key="CalculatorButtonBackground" Color="#A0101010"/>
+        <RevealBackgroundBrush x:Key="CalculatorNumberButtonBackground" Color="#A0000000"/>
+        <RevealBackgroundBrush x:Key="CalculatorClearButtonBackground" Color="#A0A03018"/>
+        <RevealBackgroundBrush x:Key="CalculatorSubmitButtonBackground" Color="{ThemeResource SystemAccentColorDark1}" Opacity=".625"/>
+    </Application.Resources>
 </Application>

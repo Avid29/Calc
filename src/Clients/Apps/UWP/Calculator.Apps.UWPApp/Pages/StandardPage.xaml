@@ -1,0 +1,356 @@
+﻿<Page
+    x:Class="Calculator.Apps.UWPApp.Pages.StandardPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Calculator.Apps.UWPApp.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource BaseBackgroundAcrylic}">
+
+    <Page.Resources>
+        <Style x:Key="CalculatorButton" TargetType="Button">
+            <Setter Property="Background" Value="{ThemeResource CalculatorButtonBackground}"/>
+            <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}"/>
+            <Setter Property="BorderBrush" Value="{ThemeResource ButtonRevealBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="36"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+            <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}"/>
+            <Setter Property="FocusVisualMargin" Value="-3"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="RootGrid" Background="{TemplateBinding Background}" CornerRadius="{TemplateBinding CornerRadius}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="PointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Target="RootGrid.(RevealBrush.State)" Value="PointerOver"/>
+                                            <Setter Target="RootGrid.Background" Value="{ThemeResource ButtonRevealBackgroundPointerOver}"/>
+                                            <Setter Target="ContentPresenter.BorderBrush" Value="{ThemeResource ButtonRevealBorderBrushPointerOver}"/>
+                                            <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource ButtonForegroundPointerOver}"/>
+                                        </VisualState.Setters>
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <VisualState.Setters>
+                                            <Setter Target="RootGrid.(RevealBrush.State)" Value="Pressed"/>
+                                            <Setter Target="RootGrid.Background" Value="{ThemeResource ButtonRevealBackgroundPressed}"/>
+                                            <Setter Target="ContentPresenter.BorderBrush" Value="{ThemeResource ButtonRevealBorderBrushPressed}"/>
+                                            <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource ButtonForegroundPressed}"/>
+                                        </VisualState.Setters>
+                                        <Storyboard>
+                                            <PointerDownThemeAnimation Storyboard.TargetName="RootGrid"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <VisualState.Setters>
+                                            <Setter Target="RootGrid.Background" Value="{ThemeResource ButtonRevealBackgroundDisabled}"/>
+                                            <Setter Target="ContentPresenter.BorderBrush" Value="{ThemeResource ButtonRevealBorderBrushDisabled}"/>
+                                            <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource ButtonForegroundDisabled}"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="{TemplateBinding CornerRadius}">
+                                
+                            </Border>
+                            <Viewbox>
+                                <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Padding="{TemplateBinding Padding}" ContentTransitions="{TemplateBinding ContentTransitions}"/>
+                            </Viewbox>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ToolbarCalculatorButton" TargetType="Button" BasedOn="{StaticResource CalculatorButton}">
+            <Setter Property="Padding" Value="24"/>
+        </Style>
+        <Style x:Key="QuickCommandButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BackgroundSizing" Value="OuterBorderEdge"/>
+            <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}"/>
+            <Setter Property="BorderBrush" Value="{ThemeResource ButtonBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="{ThemeResource ButtonBorderThemeThickness}"/>
+            <Setter Property="Padding" Value="{StaticResource ButtonPadding}"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+            <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}"/>
+            <Setter Property="FocusVisualMargin" Value="-3"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Width" Value="48"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" BackgroundSizing="{TemplateBinding BackgroundSizing}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" CornerRadius="{TemplateBinding CornerRadius}" ContentTransitions="{TemplateBinding ContentTransitions}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="ContentPresenter"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBackgroundPointerOver}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBorderBrushPointerOver}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonForegroundPointerOver}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="ContentPresenter"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBackgroundPressed}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBorderBrushPressed}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonForegroundPressed}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <PointerDownThemeAnimation Storyboard.TargetName="ContentPresenter"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBackgroundDisabled}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBorderBrushDisabled}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonForegroundDisabled}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </ContentPresenter>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.5*"/>
+            <!--Display-->
+            <RowDefinition Height="48"/>
+            <!--Memory/Functions-->
+            <RowDefinition Height=".5*"/>
+            <!--Variables, Functions, Tensors, and Constants-->
+            <RowDefinition/>
+            <!--7, 8, 9, ^ and C -->
+            <RowDefinition/>
+            <!--4, 5, 6, * and / -->
+            <RowDefinition/>
+            <!--1, 2, 3, + and - -->
+            <RowDefinition/>
+            <!--., 0, (, ) and = -->
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.2*"/>
+            <ColumnDefinition Width="1.2*"/>
+            <ColumnDefinition Width="1.2*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Viewbox Margin="32,0" Grid.ColumnSpan="100" HorizontalAlignment="Right">
+            <TextBlock x:Name="TextDisplay" HorizontalAlignment="Stretch"
+                       TextAlignment="Right"/>
+        </Viewbox>
+
+        <!--Quick Commands-->
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="100" Orientation="Horizontal">
+            <Button Content="𝑓(𝑥)+"
+                    Style="{StaticResource QuickCommandButton}" Width="52"/>
+            <Button Content="𝑀+"
+                    Style="{StaticResource QuickCommandButton}" Width="40"/>
+        </StackPanel>
+
+        <!--Toolbar Flyout Buttons-->
+        <Grid Grid.Row="2" Grid.ColumnSpan="100"
+              Background="#A0383838">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Content="𝑠𝑖𝑛, ..." Style="{StaticResource ToolbarCalculatorButton}"
+                Background="Transparent" FontWeight="Normal"
+                Grid.Column="0">
+                <Button.Flyout>
+                    <Flyout Placement="Bottom">
+                        <Grid Width="300" Height="100">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Content="sin" Style="{StaticResource CalculatorButton}"
+                                    Grid.Row="0" Grid.Column="0"/>
+                            <Button Content="cos" Style="{StaticResource CalculatorButton}"
+                                    Grid.Row="0" Grid.Column="1"/>
+                            <Button Content="tan" Style="{StaticResource CalculatorButton}"
+                                    Grid.Row="0" Grid.Column="2"/>
+                            <Button Content="csc" Style="{StaticResource CalculatorButton}"
+                                    Grid.Row="1" Grid.Column="0"/>
+                            <Button Content="sec" Style="{StaticResource CalculatorButton}"
+                                    Grid.Row="1" Grid.Column="1"/>
+                            <Button Content="cot" Style="{StaticResource CalculatorButton}"
+                                    Grid.Row="1" Grid.Column="2"/>
+                        </Grid>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+            <Button Content="𝑥, 𝛼, ..." Style="{StaticResource ToolbarCalculatorButton}"
+                Background="Transparent" FontWeight="Normal"
+                Grid.Column="1">
+                <Button.Flyout>
+                    <Flyout Placement="Bottom">
+                        <GridView ItemsSource="{x:Bind Variables}"
+                                  ItemClick="VariableSelected"
+                                  IsItemClickEnabled="True" SelectionMode="None"
+                                  Width="300">
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <TextBlock Text="{x:Bind}"/>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+            <Button Content="𝑓(𝑥)" Style="{StaticResource ToolbarCalculatorButton}"
+                Background="Transparent" FontWeight="Normal"
+                Grid.Column="2">
+                <Button.Flyout>
+                    <Flyout Placement="Bottom">
+                        <Grid>
+                            <TextBlock Text="No functions cached" FontStyle="Italic" Opacity=".7"/>
+                        </Grid>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+            <Button Content="[ ... ]" Style="{StaticResource ToolbarCalculatorButton}"
+                Background="Transparent" FontWeight="Normal"
+                Grid.Column="3"/>
+            <Button Content="𝜋, 𝑒, ..." Style="{StaticResource ToolbarCalculatorButton}"
+                Background="Transparent" FontWeight="Normal"
+                Grid.Row="2" Grid.Column="4">
+                <Button.Flyout>
+                    <Flyout Placement="Bottom">
+                        <GridView ItemsSource="{x:Bind Constants}"
+                              IsItemClickEnabled="True" SelectionMode="None"
+                              Width="300">
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <TextBlock Text="{x:Bind}"/>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+            <Button Content="𝑀𝑒𝑚𝑜𝑟𝑦" Style="{StaticResource ToolbarCalculatorButton}"
+                Background="Transparent" FontWeight="Normal"
+                Grid.Column="5">
+                <Button.Flyout>
+                    <Flyout Placement="Bottom">
+                        <Grid>
+                            <TextBlock Text="No expressions cached" FontStyle="Italic" Opacity=".7"/>
+                        </Grid>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </Grid>
+
+        <!--Main Buttons-->
+        <Button Content="7" Style="{StaticResource CalculatorButton}" Tag="7"
+                Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
+                Grid.Row="3" Grid.Column="0" Click="InputKeyPressed"/>
+        <Button Content="8" Style="{StaticResource CalculatorButton}" Tag="8"
+                Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
+                Grid.Row="3" Grid.Column="1" Click="InputKeyPressed"/>
+        <Button Content="9" Style="{StaticResource CalculatorButton}" Tag="9"
+                Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
+                Grid.Row="3" Grid.Column="2" Click="InputKeyPressed"/>
+        <Button Content="^" Style="{StaticResource CalculatorButton}" Tag="^"
+                Grid.Row="3" Grid.Column="3" Click="InputKeyPressed"/>
+        <Button Content="C" Style="{StaticResource CalculatorButton}"
+                Background="{ThemeResource CalculatorClearButtonBackground}"
+                Grid.Row="3" Grid.Column="4" Click="Clear"/>
+        <Button Content="4" Style="{StaticResource CalculatorButton}"  Tag="4"
+                Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
+                Grid.Row="4" Grid.Column="0" Click="InputKeyPressed"/>
+        <Button Content="5" Style="{StaticResource CalculatorButton}" Tag="5"
+                Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
+                Grid.Row="4" Grid.Column="1" Click="InputKeyPressed"/>
+        <Button Content="6" Style="{StaticResource CalculatorButton}" Tag="6"
+                Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
+                Grid.Row="4" Grid.Column="2" Click="InputKeyPressed"/>
+        <Button Content="*" Style="{StaticResource CalculatorButton}" Tag="*"
+                Grid.Row="4" Grid.Column="3" Click="InputKeyPressed"/>
+        <Button Content="/" Style="{StaticResource CalculatorButton}" Tag="/"
+                Grid.Row="4" Grid.Column="4" Click="InputKeyPressed"/>
+        <Button Content="1" Style="{StaticResource CalculatorButton}" Tag="1"
+                Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
+                Grid.Row="5" Grid.Column="0" Click="InputKeyPressed"/>
+        <Button Content="2" Style="{StaticResource CalculatorButton}" Tag="2"
+                Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
+                Grid.Row="5" Grid.Column="1" Click="InputKeyPressed"/>
+        <Button Content="3" Style="{StaticResource CalculatorButton}" Tag="3"
+                Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
+                Grid.Row="5" Grid.Column="2" Click="InputKeyPressed"/>
+        <Button Content="+" Style="{StaticResource CalculatorButton}" Tag="+"
+                Grid.Row="5" Grid.Column="3" Click="InputKeyPressed"/>
+        <Button Content="-" Style="{StaticResource CalculatorButton}" Tag="-"
+                Grid.Row="5" Grid.Column="4" Click="InputKeyPressed"/>
+        <Button Content="." Style="{StaticResource CalculatorButton}" Tag="."
+                Grid.Row="6" Grid.Column="0" Click="InputKeyPressed"/>
+        <Button Content="0" Style="{StaticResource CalculatorButton}" Tag="0"
+                Background="{ThemeResource CalculatorNumberButtonBackground}" FontWeight="Black"
+                Grid.Row="6" Grid.Column="1" Click="InputKeyPressed"/>
+        <Button Content="(" Style="{StaticResource CalculatorButton}" Tag="("
+                Grid.Row="6" Grid.Column="2" Click="InputKeyPressed"/>
+        <Button Content=")" Style="{StaticResource CalculatorButton}" Tag=")"
+                Grid.Row="6" Grid.Column="3" Click="InputKeyPressed"/>
+        <Button Content="=" Style="{StaticResource CalculatorButton}"
+                Background="{ThemeResource SystemAccentColorDark1}"
+                Grid.Row="6" Grid.Column="4" Click="Simplify"/>
+    </Grid>
+</Page>

@@ -30,5 +30,7 @@ private:
 
 	unique_ptr<ExpNode> Expand(NOperNode* node);
 
+	unique_ptr<ExpNode> Expand(BOperNode* node);
+
 	unique_ptr<ExpNode> AddTensors(NOperNode* node);
 };

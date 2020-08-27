@@ -52,6 +52,10 @@ unique_ptr<ExpNode> Simplifier::Execute(const BOperNode& node) {
 	newNode->AddChild(move(simpleLeft));
 	newNode->AddChild(move(simpleRight));
 
+	if (node.GetOperator() == Operator::POWER) {
+		return Expand(newNode.get());
+	}
+
 	return newNode;
 }
 
@@ -147,7 +151,10 @@ unique_ptr<ExpNode> Simplifier::Execute(const NOperNode& node) {
 			break;
 	}
 
-	if (newNode->ChildCount() == 1) {
+	if (newNode->ChildCount() == 0) {
+		return MakeValueNode(1);
+	}
+	else if (newNode->ChildCount() == 1) {
 		// No more operations to be run, and trim child's parent node
 		return newNode->GetChild(0).Clone();
 	}
@@ -321,9 +328,33 @@ unique_ptr<ExpNode> Simplifier::Expand(NOperNode* node) {
 		}
 		return make_unique<NOperNode>(*node);
 	}
-	else {
-		return make_unique<NOperNode>(*node);
+	return make_unique<NOperNode>(*node);
+}
+
+unique_ptr<ExpNode> Simplifier::Expand(BOperNode* node) {
+	unique_ptr<NOperNode> newMNode = make_unique<NOperNode>('*');
+
+	// Check for parenthesis
+	const UOperNode* uOperNode = dynamic_cast<const UOperNode*>(&node->GetChild(0));
+	if (uOperNode != nullptr && uOperNode->GetOperator() == Operator::PARENTHESIS) {
+		// Child is parenthesis
+		// Check for multiplication
+		const NOperNode& nOperNode = dynamic_cast<const NOperNode&>(uOperNode->GetChild(0));
+		if (nOperNode.GetOperator() == Operator::MULTIPLICATION) {
+			// Grand child is multiplication
+			// Distribute
+			for (int i = 0; i < nOperNode.ChildCount(); i++)
+			{
+				unique_ptr<BOperNode> newBNode = make_unique<BOperNode>('^');
+				newBNode->AddChild(nOperNode.GetChild(i).Clone());
+				newBNode->AddChild(node->GetChild(1).Clone());
+				newMNode->AddChild(move(newBNode));
+			}
+			return newMNode->Execute(this);
+		}
+		return make_unique<BOperNode>(*node);
 	}
+	return make_unique<BOperNode>(*node);
 }
 
 unique_ptr<ExpNode> Simplifier::AddTensors(NOperNode* node) {

@@ -157,7 +157,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Addition.cpp" />
+    <ClCompile Include="IdentitiesFloat.cpp" />
+    <ClCompile Include="IdentitiesInteger.cpp" />
+    <ClCompile Include="IdentitiesVariable.cpp" />
+    <ClCompile Include="OperatorsFloat.cpp" />
+    <ClCompile Include="OperatorsInteger.cpp" />
+    <ClCompile Include="OperatorsVariable.cpp" />
+    <ClCompile Include="PropertiesVariable.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

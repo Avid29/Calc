@@ -13,10 +13,37 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Identities">
+      <UniqueIdentifier>{4999eca3-bf8e-4685-b8c3-1d3887dca3e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Operators">
+      <UniqueIdentifier>{5587ddce-57dd-45a3-bdf0-f48bb0e64459}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Properties">
+      <UniqueIdentifier>{a0082cd9-9e4d-4808-8836-6eaff535f0a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Addition.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="IdentitiesInteger.cpp">
+      <Filter>Source Files\Identities</Filter>
+    </ClCompile>
+    <ClCompile Include="OperatorsFloat.cpp">
+      <Filter>Source Files\Operators</Filter>
+    </ClCompile>
+    <ClCompile Include="OperatorsInteger.cpp">
+      <Filter>Source Files\Operators</Filter>
+    </ClCompile>
+    <ClCompile Include="IdentitiesFloat.cpp">
+      <Filter>Source Files\Identities</Filter>
+    </ClCompile>
+    <ClCompile Include="IdentitiesVariable.cpp">
+      <Filter>Source Files\Identities</Filter>
+    </ClCompile>
+    <ClCompile Include="OperatorsVariable.cpp">
+      <Filter>Source Files\Operators</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertiesVariable.cpp">
+      <Filter>Source Files\Properties</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

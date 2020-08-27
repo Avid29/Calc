@@ -10,6 +10,17 @@ namespace Calculator.Apps.UWPApp.Pages
 
         public StandardPage()
         {
+            for (char c = 'A'; c <= 'Z'; c++)
+            {
+                //Variables.Add(c.ToString()); Consider adding uppercase letters
+                Variables.Add(((char)(c + 'a' - 'A')).ToString());
+            }
+
+            Variables.Add("𝛼");
+            Variables.Add("𝛽");
+            Variables.Add("𝜃");
+            Variables.Add("𝜔");
+
             this.InitializeComponent();
         }
 

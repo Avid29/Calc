@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
 		// Gets equation as string
 		string str;
 		cout << "Enter an Equation (q to quit): ";
-		cin >> str;
+		getline(cin, str);
 
 		// Checks for quit
 		if (str == "q") {

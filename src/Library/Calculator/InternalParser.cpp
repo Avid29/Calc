@@ -34,6 +34,10 @@ Status InternalParser::ParseNextChar(const char c, bool hasFullString) {
 	}
 	position_++;
 
+	if (isspace(c)) {
+		return Status(input_, position_);
+	}
+
 	if (state_ == State::FUNCTION) {
 		return ParseFunction(c);
 	}

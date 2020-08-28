@@ -191,6 +191,13 @@ unique_ptr<ExpNode> Simplifier::Execute(const UOperNode& node) {
 		newNode->AddChild(MakeValueNode(-1));
 		return newNode->Execute(this);
 	}
+	if (node.GetOperator() == Operator::NEGATIVE) {
+		// Return the reciprical, by multiplying -1
+		unique_ptr<NOperNode> newNode = make_unique<NOperNode>(Operator::MULTIPLICATION);
+		newNode->AddChild(node.GetChild(0).Execute(this));
+		newNode->AddChild(MakeValueNode(-1));
+		return newNode->Execute(this);
+	}
 
 	unique_ptr<UOperNode> newNode = make_unique<UOperNode>(node.GetOperator());
 	newNode->AddChild(node.GetChild(0).Execute(this));

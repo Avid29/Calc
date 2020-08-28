@@ -27,8 +27,7 @@ namespace CalculatorTests {
 
 			TEST_METHOD(Subtraction)
 			{
-				// TODO: Symbolic subtraction
-				//Assert::IsTrue(Run("2x-x") == "x");
+				Assert::IsTrue(Run("2x-x") == "x");
 			}
 
 			TEST_METHOD(Multiplication)

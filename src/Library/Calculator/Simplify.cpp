@@ -226,10 +226,10 @@ unique_ptr<ExpNode> Simplifier::Execute(const UOperNode& node) {
 			return MakeValueNode(1 / tan(newNode->GetChild(0).AsDouble()));
 		}
 	}
-	else if (node.GetOperator() == Operator::PARENTHESIS &&
-		(node.GetParent() == nullptr || node.GetParent()->GetPriority() >= node.GetChild(0).GetPriority())) {
+	else if (node.GetOperator() == Operator::PARENTHESIS && 
+		(newNode->GetChild(0).IsValue() || (node.GetParent() == nullptr || node.GetParent()->GetPriority() >= node.GetChild(0).GetPriority()))) {
 		// Parenthesis are unnecessary
-		return move(newNode->GetChild(0).Clone());
+		return newNode->GetChild(0).Clone();
 	}
 	return newNode;
 }

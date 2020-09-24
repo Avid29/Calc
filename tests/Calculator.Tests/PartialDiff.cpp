@@ -22,7 +22,7 @@ namespace CalculatorTests {
 
 			TEST_METHOD(PowerRule)
 			{
-				Assert::IsTrue(Run("\\diff[x]{x^5}") == "5x^4");
+				Assert::IsTrue(Run("\\diff[x]{5x^5}") == "25x^4");
 			}
 
 			TEST_METHOD(AdditionRule)

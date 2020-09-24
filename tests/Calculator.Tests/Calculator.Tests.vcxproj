@@ -157,6 +157,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="PartialDiff.cpp" />
     <ClCompile Include="IdentitiesFloat.cpp" />
     <ClCompile Include="IdentitiesInteger.cpp" />
     <ClCompile Include="IdentitiesVariable.cpp" />

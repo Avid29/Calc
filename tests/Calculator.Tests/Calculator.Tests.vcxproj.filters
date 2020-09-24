@@ -22,6 +22,12 @@
     <Filter Include="Source Files\Properties">
       <UniqueIdentifier>{a0082cd9-9e4d-4808-8836-6eaff535f0a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Operators\Sine">
+      <UniqueIdentifier>{7b652bde-355f-4cb8-84dc-7dacbaa951f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Operators\Diff">
+      <UniqueIdentifier>{bbd27cbb-76c8-4d61-9275-d18fa248831d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IdentitiesInteger.cpp">
@@ -44,6 +50,9 @@
     </ClCompile>
     <ClCompile Include="PropertiesVariable.cpp">
       <Filter>Source Files\Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="PartialDiff.cpp">
+      <Filter>Source Files\Operators\Diff</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

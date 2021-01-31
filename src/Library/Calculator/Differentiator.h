@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+
 #include "IOperation.h"
 
 class Differentiator : public IOperation
@@ -29,6 +31,8 @@ private:
 	unique_ptr<ExpNode> ApplySumRule(const NOperNode& node);
 
 	unique_ptr<ExpNode> ApplyProductRule(const NOperNode& node);
+
+	unique_ptr<ExpNode> ApplySinusoidalTable(const UOperNode& node);
 
 	unique_ptr<VarValueNode> variable_;
 };

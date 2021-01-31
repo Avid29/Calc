@@ -23,7 +23,7 @@ enum class Operator {
 	DERIVATIVE,
 	UNRESOLVED_PARENTHESIS, // Parenthesis
 	PARENTHESIS, // Closed Parenthesis
-	Vector,
+	TENSOR,
 };
 
 class OperNode : public BranchNode {

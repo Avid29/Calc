@@ -55,12 +55,13 @@ unique_ptr<ExpNode> Differentiator::Execute(const NOperNode& node) {
 }
 
 unique_ptr<ExpNode> Differentiator::Execute(const TensorNode& node) {
-	return node.Clone();
 	// TODO: Tensor calculus
+	return node.Clone();
 }
 
 unique_ptr<ExpNode> Differentiator::Execute(const UOperNode& node) {
 	// TODO: Sinusoidal differentiation
+	
 	return node.Clone();
 }
 

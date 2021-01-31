@@ -267,7 +267,7 @@ Status InternalParser::ParseBracket(const char c) {
 			state_ = State::VALUE;
 		}
 		else if (c == '<') {
-			active_func_parser = MakeFuncParser(Operator::Vector);
+			active_func_parser = MakeFuncParser(Operator::TENSOR);
 			active_func_parser->ParseFirstChar(c);
 			state_ = State::FUNCTION;
 		}
@@ -374,7 +374,7 @@ unique_ptr<IFuncParser> MakeFuncParser(const Operator oper) {
 		return unique_ptr<IFuncParser>(new SinusoidalFuncParser(oper));
 	case Operator::DERIVATIVE:
 		return unique_ptr<IFuncParser>(new DiffFuncParser());
-	case Operator::Vector:
+	case Operator::TENSOR:
 		return unique_ptr<IFuncParser>(new VectorParser());
 	}
 }

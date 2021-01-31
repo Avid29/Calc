@@ -54,7 +54,12 @@ unique_ptr<ExpNode> Integrator::Execute(const IValueNode& node) {
 }
 
 unique_ptr<ExpNode> Integrator::Execute(const NOperNode& node) {
-	// TODO: Sum and Product rules.
+	switch (node.GetOperator())
+	{
+	case Operator::ADDITION:
+		return ApplySumRule(node);
+	}
+
 	return node.Clone();
 }
 
@@ -80,8 +85,8 @@ unique_ptr<ExpNode> Integrator::Execute(const VarValueNode& node) {
 	else {
 		unique_ptr<BOperNode> bNode = make_unique<BOperNode>(Operator::POWER);
 		bNode->AddChild(node.Clone());
-		bNode->AddChild(MakeValueNode(2));
-		return bNode;
+		bNode->AddChild(MakeValueNode(1));
+		return Execute(*bNode);
 	}
 }
 
@@ -94,8 +99,12 @@ unique_ptr<ExpNode> Integrator::ApplyConstant(const ExpNode& node)
 }
 
 unique_ptr<ExpNode> Integrator::ApplySumRule(const NOperNode& node) {
-	// TODO: Sum rule
-	return node.Clone();
+	unique_ptr<NOperNode> nNode = make_unique<NOperNode>(node.GetOperator());
+	for (int i = 0; i < node.ChildCount(); i++)
+	{
+		nNode->AddChild(node.GetChild(i).Execute(this));
+	}
+	return move(nNode);
 }
 
 unique_ptr<ExpNode> Integrator::ApplyProductRule(const NOperNode& node) {

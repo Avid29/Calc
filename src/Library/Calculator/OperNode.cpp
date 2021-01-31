@@ -53,7 +53,11 @@ const OperNode* OperNode::AsOperNode() const {
 bool IsUnary(Operator oper) {
 	return oper == Operator::POSITIVE ||
 		oper == Operator::NEGATIVE ||
-		oper == Operator::RECIPROCAL;
+		oper == Operator::RECIPROCAL ||
+		oper == Operator::DERIVATIVE ||
+		oper == Operator::UNRESOLVED_PARENTHESIS ||
+		oper == Operator::PARENTHESIS ||
+		IsSinusoidal(oper);
 }
 
 /// <summary>
@@ -86,8 +90,5 @@ bool IsSinusoidal(Operator oper) {
 		oper == Operator::TANGENT ||
 		oper == Operator::COSECANT ||
 		oper == Operator::SECANT ||
-		oper == Operator::COTANGENT ||
-		oper == Operator::DERIVATIVE ||
-		oper == Operator::UNRESOLVED_PARENTHESIS ||
-		oper == Operator::PARENTHESIS;
+		oper == Operator::COTANGENT;
 }

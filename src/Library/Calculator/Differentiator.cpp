@@ -23,7 +23,7 @@ unique_ptr<ExpNode> Differentiator::Execute(const BOperNode& node) {
 	// Multiply by exponent, decrement exponent
 	const ExpNode& coefficient = node.GetChild(1);
 	const ExpNode& base = node.GetChild(0);
-	unique_ptr<NOperNode> exponent = Add(node.GetChild(1), -1);
+	auto exponent = Add(node.GetChild(1), -1);
 	return Multiply(coefficient, *Power(base, *exponent));
 }
 
@@ -61,9 +61,9 @@ unique_ptr<ExpNode> Differentiator::Execute(const NOperNode& node) {
 
 unique_ptr<ExpNode> Differentiator::Execute(const SinusoidalOperNode& node) {
 	// Apply ChainRule
-	unique_ptr<ExpNode> coefficient = node.GetChild(0).Execute(this);
+	auto coefficient = node.GetChild(0).Execute(this);
 	// Apply derivative table
-	unique_ptr<ExpNode> sinFunc = ApplySinusoidalTable(node);
+	auto sinFunc = ApplySinusoidalTable(node);
 	return Multiply(*coefficient, *sinFunc);
 }
 

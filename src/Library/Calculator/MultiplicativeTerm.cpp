@@ -4,6 +4,7 @@
 #include "ValueNode.h"
 #include "InternalPrinter.h"
 
+#include "Helper.h"
 
 /// <summary>
 /// Finds MultiplicativeTerm to represent node

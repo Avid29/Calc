@@ -29,16 +29,3 @@ bool ValueNode::IsConstantBy(const VarValueNode& node) const {
 	// VarValueNode overwrites
 	return true;
 }
-
-/// <summary>
-/// Gets most appropiate ValueNodeType
-/// </summary>
-/// <returns>ValueNode of Value and simplest node type</returns>
-unique_ptr<ValueNode> MakeValueNode(double value) {
-	if (floor(value) == value) {
-		return make_unique<IValueNode>((int)value);
-	}
-	else {
-		return make_unique<FValueNode>(value);
-	}
-}

@@ -7,6 +7,8 @@
 
 #include "InternalParser.h"
 
+#include "Helper.h"
+
 InternalParser::InternalParser() :
 	state_(State::BEGIN),
 	tree_(make_unique<ExpTree>()),

@@ -6,6 +6,7 @@
 #include "AdditiveTerm.h"
 #include "MultiplicativeTerm.h"
 #include "Differentiator.h"
+#include "Integrator.h"
 #include "Simplify.h"
 #include "BOperNode.h"
 #include "DiffOperNode.h"
@@ -74,8 +75,11 @@ unique_ptr<ExpNode> Simplifier::Execute(const FValueNode& node) {
 }
 
 unique_ptr<ExpNode> Simplifier::Execute(const IntegralOperNode& node) {
-	// TODO: Process integration
-	return node.Clone();
+	Integrator* integrator = new Integrator(make_unique<VarValueNode>(node.GetVariable()));
+	unique_ptr<ExpNode> result = node.GetChild(0)
+		.Execute(this)->Execute(integrator)->Execute(this);
+	delete integrator;
+	return move(result);
 }
 
 unique_ptr<ExpNode> Simplifier::Execute(const IValueNode& node) {

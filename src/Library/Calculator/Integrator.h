@@ -2,10 +2,10 @@
 
 #include "IOperation.h"
 
-class Differentiator : public IOperation
+class Integrator : public IOperation
 {
 public:
-	Differentiator(unique_ptr<VarValueNode> variable) {
+	Integrator(unique_ptr<VarValueNode> variable) {
 		variable_ = move(variable);
 	}
 
@@ -38,3 +38,4 @@ private:
 
 	unique_ptr<VarValueNode> variable_;
 };
+

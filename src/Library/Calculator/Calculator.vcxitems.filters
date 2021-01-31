@@ -192,6 +192,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)IntegralFuncParser.h">
       <Filter>Headers\Parser\Internal\Functions</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Integrator.h">
+      <Filter>Headers\Operations</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpTree.cpp">
@@ -277,6 +280,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)IntegralFuncParser.cpp">
       <Filter>Source\Parser\Internal\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Integrator.cpp">
+      <Filter>Source\Operations</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

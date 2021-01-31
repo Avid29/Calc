@@ -24,6 +24,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DiffOperNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IntegralFuncParser.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IntegralOperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Integrator.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SinusoidalOperNode.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Status.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ErrorTypes.h" />
@@ -58,6 +59,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)DiffOperNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)IntegralFuncParser.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)IntegralOperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Integrator.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SinusoidalOperNode.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Status.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpNode.cpp" />

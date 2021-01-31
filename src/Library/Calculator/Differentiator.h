@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+
 #include "IOperation.h"
 
 class Differentiator : public IOperation
@@ -19,6 +21,8 @@ public:
 
 	unique_ptr<ExpNode> Execute(const NOperNode&) override;
 
+	unique_ptr<ExpNode> Execute(const SinusoidalOperNode& node) override;
+
 	unique_ptr<ExpNode> Execute(const TensorNode& node) override;
 
 	unique_ptr<ExpNode> Execute(const UOperNode&) override;
@@ -29,6 +33,8 @@ private:
 	unique_ptr<ExpNode> ApplySumRule(const NOperNode& node);
 
 	unique_ptr<ExpNode> ApplyProductRule(const NOperNode& node);
+
+	unique_ptr<ExpNode> ApplySinusoidalTable(const SinusoidalOperNode& node);
 
 	unique_ptr<VarValueNode> variable_;
 };

@@ -30,6 +30,8 @@ public:
 	unique_ptr<ExpNode> Execute(const VarValueNode&) override;
 
 private:
+	unique_ptr<ExpNode> ApplyConstant(const ExpNode& node);
+
 	unique_ptr<ExpNode> ApplySumRule(const NOperNode& node);
 
 	unique_ptr<ExpNode> ApplyProductRule(const NOperNode& node);

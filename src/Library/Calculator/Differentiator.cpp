@@ -18,7 +18,7 @@ unique_ptr<ExpNode> Differentiator::Execute(const BOperNode& node) {
 		return MakeValueNode(0);
 	}
 
-	// TODO: Multiply by exponent, decrement exponent
+	// Multiply by exponent, decrement exponent
 	unique_ptr<NOperNode> mNode = make_unique<NOperNode>(Operator::MULTIPLICATION);
 	mNode->AddChild(node.GetChild(1).Clone());
 	unique_ptr<BOperNode> bNode = make_unique<BOperNode>(Operator::POWER);

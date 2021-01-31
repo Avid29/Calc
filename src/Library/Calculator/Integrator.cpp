@@ -15,11 +15,10 @@
 
 unique_ptr<ExpNode> Integrator::Execute(const BOperNode& node) {
 	if (node.GetChild(0).IsConstantBy(*variable_)) {
-		// TODO: Constant integration.
-		return MakeValueNode(0);
+		return ApplyConstant(node);
 	}
 
-	// TODO: Increment exponent, divide by exponent
+	// Increment exponent, divide by exponent
 	unique_ptr<NOperNode> mNode = make_unique<NOperNode>(Operator::MULTIPLICATION);
 	unique_ptr<NOperNode> aNode = make_unique<NOperNode>(Operator::ADDITION);
 	aNode->AddChild(node.GetChild(1).Clone());
@@ -41,8 +40,7 @@ unique_ptr<ExpNode> Integrator::Execute(const DiffOperNode& node) {
 }
 
 unique_ptr<ExpNode> Integrator::Execute(const FValueNode& node) {
-	// TODO: Constant integration.
-	return MakeValueNode(0);
+	return ApplyConstant(node);
 }
 
 unique_ptr<ExpNode> Integrator::Execute(const IntegralOperNode& node) {
@@ -52,8 +50,7 @@ unique_ptr<ExpNode> Integrator::Execute(const IntegralOperNode& node) {
 }
 
 unique_ptr<ExpNode> Integrator::Execute(const IValueNode& node) {
-	// TODO: Constant integration.
-	return MakeValueNode(0);
+	return ApplyConstant(node);
 }
 
 unique_ptr<ExpNode> Integrator::Execute(const NOperNode& node) {
@@ -78,13 +75,22 @@ unique_ptr<ExpNode> Integrator::Execute(const UOperNode& node) {
 
 unique_ptr<ExpNode> Integrator::Execute(const VarValueNode& node) {
 	if (node.GetCharacter() != variable_->GetCharacter()) {
-		// TODO: Constant integration
-		return MakeValueNode(0);
+		return ApplyConstant(node);
 	}
 	else {
-		// TODO: Basic integration
-		return MakeValueNode(1);
+		unique_ptr<BOperNode> bNode = make_unique<BOperNode>(Operator::POWER);
+		bNode->AddChild(node.Clone());
+		bNode->AddChild(MakeValueNode(2));
+		return bNode;
 	}
+}
+
+unique_ptr<ExpNode> Integrator::ApplyConstant(const ExpNode& node)
+{
+	unique_ptr<NOperNode> mNode = make_unique<NOperNode>(Operator::MULTIPLICATION);
+	mNode->AddChild(node.Clone());
+	mNode->AddChild(variable_->Clone());
+	return mNode;
 }
 
 unique_ptr<ExpNode> Integrator::ApplySumRule(const NOperNode& node) {

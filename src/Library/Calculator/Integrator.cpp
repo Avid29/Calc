@@ -1,4 +1,5 @@
 #include "Integrator.h"
+#include "Differentiator.h"
 #include "AdditiveTerm.h"
 #include "MultiplicativeTerm.h"
 #include "Simplify.h"
@@ -58,6 +59,8 @@ unique_ptr<ExpNode> Integrator::Execute(const NOperNode& node) {
 	{
 	case Operator::ADDITION:
 		return ApplySumRule(node);
+	case Operator::MULTIPLICATION:
+		return ApplyProductRule(node);
 	}
 
 	return node.Clone();
@@ -108,8 +111,38 @@ unique_ptr<ExpNode> Integrator::ApplySumRule(const NOperNode& node) {
 }
 
 unique_ptr<ExpNode> Integrator::ApplyProductRule(const NOperNode& node) {
-	// TODO: Integration by parts
-	return node.Clone();
+	// TODO: Nary Integration by parts
+	// \int{u'vwx} = uvwx - \int{uv'wx} - \int{uvw'x} - \int{uvwx'}
+
+	Differentiator* diff = new Differentiator(make_unique<VarValueNode>(variable_->GetCharacter()));
+
+	const ExpNode& u = node.GetChild(0);
+	const ExpNode& dv = node.GetChild(1);
+	unique_ptr<ExpNode> du = u.Execute(diff);
+	unique_ptr<ExpNode> v = dv.Execute(this);
+
+	unique_ptr<NOperNode> aNode = make_unique<NOperNode>(Operator::ADDITION);
+	// u * v
+	unique_ptr<NOperNode> mNode = make_unique<NOperNode>(Operator::MULTIPLICATION);
+	mNode->AddChild(u.Clone());
+	mNode->AddChild(v->Clone());
+	aNode->AddChild(move(mNode));
+
+	// - \int{ du * v }
+	unique_ptr<UOperNode> negNode = make_unique<UOperNode>(Operator::NEGATIVE);
+	unique_ptr<IntegralOperNode> intNode = make_unique<IntegralOperNode>();
+	intNode->SetVariable(make_unique<VarValueNode>(variable_->GetCharacter()));
+	unique_ptr<NOperNode> m2Node = make_unique<NOperNode>(Operator::MULTIPLICATION);
+	m2Node->AddChild(du->Clone());
+	m2Node->AddChild(v->Clone());
+	intNode->AddChild(move(m2Node));
+	negNode->AddChild(move(intNode));
+
+	// u * v - \int{ du * v }
+	aNode->AddChild(move(negNode));
+
+	delete diff;
+	return aNode;
 }
 
 unique_ptr<ExpNode> Integrator::ApplySinusoidalTable(const SinusoidalOperNode& node) {

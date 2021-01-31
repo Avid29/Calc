@@ -7,6 +7,7 @@ using namespace std;
 class BOperNode;
 class DiffOperNode;
 class FValueNode;
+class IntegralOperNode;
 class IValueNode;
 class NOperNode;
 class TensorNode;
@@ -21,6 +22,8 @@ public:
 	virtual string Print(const DiffOperNode& node) const = 0;
 
 	virtual string Print(const FValueNode& node) const = 0;
+
+	virtual string Print(const IntegralOperNode& node) const = 0;
 
 	virtual string Print(const IValueNode& node) const = 0;
 

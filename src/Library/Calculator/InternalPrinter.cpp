@@ -4,6 +4,7 @@
 #include "BOperNode.h"
 #include "DiffOperNode.h"
 #include "FValueNode.h"
+#include "IntegralOperNode.h"
 #include "IValueNode.h"
 #include "NOperNode.h"
 #include "TensorNode.h"
@@ -38,6 +39,11 @@ string InternalPrinter::Print(const FValueNode& node) const {
 	ostringstream oss;
 	oss << node.GetValue();
 	return oss.str();
+}
+
+string InternalPrinter::Print(const IntegralOperNode& node) const {
+	// TODO: Print integrals.
+	return "";
 }
 
 string InternalPrinter::Print(const IValueNode& node) const {

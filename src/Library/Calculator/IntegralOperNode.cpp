@@ -6,7 +6,7 @@
 
 IntegralOperNode::IntegralOperNode() {
 	oper_ = Operator::INTEGRAL;
-	determinate = false;
+	is_determinate = false;
 }
 
 IntegralOperNode::IntegralOperNode(const IntegralOperNode& other) : IntegralOperNode() {
@@ -24,6 +24,7 @@ const VarValueNode& IntegralOperNode::GetVariable() const {
 
 void IntegralOperNode::SetUpperBound(unique_ptr<ExpNode> variable) {
 	upper_ = move(variable);
+	is_determinate = true;
 }
 
 const ExpNode& IntegralOperNode::GetUpperBound() const {
@@ -32,6 +33,7 @@ const ExpNode& IntegralOperNode::GetUpperBound() const {
 
 void IntegralOperNode::SetLowerBound(unique_ptr<ExpNode> variable) {
 	lower_ = move(variable);
+	is_determinate = true;
 }
 
 const ExpNode& IntegralOperNode::GetLowerBound() const {

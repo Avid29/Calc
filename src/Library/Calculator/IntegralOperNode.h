@@ -45,7 +45,7 @@ public:
 	unique_ptr<ExpNode> Clone() const override;
 
 protected:
-	bool determinate;
+	bool is_determinate;
 	unique_ptr<VarValueNode> variable_;
 	unique_ptr<ExpNode> child_;
 	unique_ptr<ExpNode> lower_;

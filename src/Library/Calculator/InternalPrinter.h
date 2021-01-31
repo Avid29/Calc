@@ -14,6 +14,8 @@ public:
 
 	string Print(const FValueNode& node) const override;
 
+	string Print(const IntegralOperNode& node) const override;
+
 	string Print(const IValueNode& node) const override;
 
 	string Print(const NOperNode& node) const override;

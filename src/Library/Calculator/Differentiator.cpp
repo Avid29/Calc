@@ -61,10 +61,10 @@ unique_ptr<ExpNode> Differentiator::Execute(const NOperNode& node) {
 
 unique_ptr<ExpNode> Differentiator::Execute(const SinusoidalOperNode& node) {
 	// Apply ChainRule
-	const ExpNode& coefficient = *node.GetChild(0).Execute(this);
+	unique_ptr<ExpNode> coefficient = node.GetChild(0).Execute(this);
 	// Apply derivative table
-	const ExpNode& sinFunc = *ApplySinusoidalTable(node);
-	return Multiply(coefficient, sinFunc);
+	unique_ptr<ExpNode> sinFunc = ApplySinusoidalTable(node);
+	return Multiply(*coefficient, *sinFunc);
 }
 
 unique_ptr<ExpNode> Differentiator::Execute(const TensorNode& node) {

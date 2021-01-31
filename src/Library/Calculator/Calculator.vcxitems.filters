@@ -195,6 +195,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Integrator.h">
       <Filter>Headers\Operations</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Helper.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpTree.cpp">
@@ -283,6 +286,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Integrator.cpp">
       <Filter>Source\Operations</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Helper.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

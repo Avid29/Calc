@@ -60,8 +60,13 @@ unique_ptr<ExpNode> Differentiator::Execute(const TensorNode& node) {
 }
 
 unique_ptr<ExpNode> Differentiator::Execute(const UOperNode& node) {
+	// Apply ChainRule
+	unique_ptr<NOperNode> mNode = make_unique<NOperNode>(Operator::MULTIPLICATION);
+	mNode->AddChild(node.GetChild(0).Execute(this));
+
 	// Apply derivative table
-	return ApplySinusoidalTable(node);
+	mNode->AddChild(ApplySinusoidalTable(node));
+	return mNode;
 }
 
 unique_ptr<ExpNode> Differentiator::Execute(const VarValueNode& node) {

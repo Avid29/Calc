@@ -22,6 +22,8 @@ public:
 
 	const ExpNode& GetLowerBound() const;
 
+	bool IsDeterminate() const;
+
 	void AddChild(unique_ptr<ExpNode> node) override;
 
 	void AddChild(unique_ptr<ExpNode> node, bool overwrite);

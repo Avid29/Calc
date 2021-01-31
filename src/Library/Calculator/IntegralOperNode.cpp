@@ -12,6 +12,12 @@ IntegralOperNode::IntegralOperNode() {
 IntegralOperNode::IntegralOperNode(const IntegralOperNode& other) : IntegralOperNode() {
 	AddChild(other.child_->Clone());
 	SetVariable(make_unique<VarValueNode>(*other.variable_));
+	is_determinate = other.is_determinate;
+	if (is_determinate)
+	{
+		SetLowerBound(other.lower_->Clone());
+		SetUpperBound(other.upper_->Clone());
+	}
 }
 
 void IntegralOperNode::SetVariable(unique_ptr<VarValueNode> variable) {
@@ -38,6 +44,10 @@ void IntegralOperNode::SetLowerBound(unique_ptr<ExpNode> variable) {
 
 const ExpNode& IntegralOperNode::GetLowerBound() const {
 	return *lower_;
+}
+
+bool IntegralOperNode::IsDeterminate() const {
+	return is_determinate;
 }
 
 void IntegralOperNode::AddChild(unique_ptr<ExpNode> node) {

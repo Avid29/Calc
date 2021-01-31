@@ -42,8 +42,12 @@ string InternalPrinter::Print(const FValueNode& node) const {
 }
 
 string InternalPrinter::Print(const IntegralOperNode& node) const {
-	// TODO: Print integrals.
-	return "";
+	ostringstream oss;
+	oss << "\\int[" << node.GetVariable().Print(*this);
+	if (node.IsDeterminate())
+		oss << "," << node.GetLowerBound().Print(*this) << "," << node.GetUpperBound().Print(*this);
+	oss << "]{" << node.GetChild(0).Print(*this) << "}";
+	return oss.str();
 }
 
 string InternalPrinter::Print(const IValueNode& node) const {

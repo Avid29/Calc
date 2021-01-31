@@ -13,11 +13,13 @@ public:
 
 	unique_ptr<ExpNode> Execute(const FValueNode& node);
 
+	unique_ptr<ExpNode> Execute(const IntegralOperNode& node);
+
 	unique_ptr<ExpNode> Execute(const IValueNode& node);
 
 	unique_ptr<ExpNode> Execute(const NOperNode& node);
 
-	unique_ptr<ExpNode> Execute(const SinusoidalOperNode& node) override;
+	unique_ptr<ExpNode> Execute(const SinusoidalOperNode& node);
 
 	unique_ptr<ExpNode> Execute(const TensorNode& node);
 

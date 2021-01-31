@@ -9,9 +9,11 @@
 #include "Status.h"
 #include "ExpNode.h"
 #include "ExpTree.h"
+#include "IntegralOperNode.h"
 #include "IFuncParser.h"
 #include "NOperNode.h"
 #include "SinusoidalFuncParser.h"
+#include "IntegralFuncParser.h"
 #include "DiffFuncParser.h"
 #include "VectorParser.h"
 #include "SinusoidalOperNode.h"
@@ -171,6 +173,7 @@ private:
 			{ "sec", Operator::SECANT },
 			{ "cot", Operator::COTANGENT, },
 			{ "diff", Operator::DERIVATIVE, },
+			{ "int", Operator::INTEGRAL, },
 	};
 };
 

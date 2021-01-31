@@ -374,6 +374,8 @@ unique_ptr<IFuncParser> MakeFuncParser(const Operator oper) {
 		return unique_ptr<IFuncParser>(new SinusoidalFuncParser(oper));
 	case Operator::DERIVATIVE:
 		return unique_ptr<IFuncParser>(new DiffFuncParser());
+	case Operator::INTEGRAL:
+		return unique_ptr<IFuncParser>(new IntegralFuncParser());
 	case Operator::TENSOR:
 		return unique_ptr<IFuncParser>(new VectorParser());
 	}

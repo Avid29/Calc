@@ -4,6 +4,7 @@
 #include "BOperNode.h"
 #include "DiffOperNode.h"
 #include "FValueNode.h"
+#include "IntegralOperNode.h"
 #include "IValueNode.h"
 #include "NOperNode.h"
 #include "TensorNode.h"
@@ -37,6 +38,15 @@ string InternalPrinter::Print(const DiffOperNode& node) const {
 string InternalPrinter::Print(const FValueNode& node) const {
 	ostringstream oss;
 	oss << node.GetValue();
+	return oss.str();
+}
+
+string InternalPrinter::Print(const IntegralOperNode& node) const {
+	ostringstream oss;
+	oss << "\\int[" << node.GetVariable().Print(*this);
+	if (node.IsDeterminate())
+		oss << "," << node.GetLowerBound().Print(*this) << "," << node.GetUpperBound().Print(*this);
+	oss << "]{" << node.GetChild(0).Print(*this) << "}";
 	return oss.str();
 }
 

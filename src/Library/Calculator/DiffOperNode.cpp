@@ -59,7 +59,6 @@ const ExpNode& DiffOperNode::GetChild(int index) const {
 	}
 }
 
-
 int DiffOperNode::ChildCount() const {
 	return child_ != nullptr ? 1 : 0;
 }

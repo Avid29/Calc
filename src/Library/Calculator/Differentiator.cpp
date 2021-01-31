@@ -5,6 +5,7 @@
 #include "BOperNode.h"
 #include "DiffOperNode.h"
 #include "FValueNode.h"
+#include "IntegralOperNode.h"
 #include "IValueNode.h"
 #include "SinusoidalOperNode.h"
 #include "TensorNode.h"
@@ -17,7 +18,7 @@ unique_ptr<ExpNode> Differentiator::Execute(const BOperNode& node) {
 		return MakeValueNode(0);
 	}
 
-	// TODO: Multiply by exponent, subtract one from exponent
+	// Multiply by exponent, decrement exponent
 	unique_ptr<NOperNode> mNode = make_unique<NOperNode>(Operator::MULTIPLICATION);
 	mNode->AddChild(node.GetChild(1).Clone());
 	unique_ptr<BOperNode> bNode = make_unique<BOperNode>(Operator::POWER);
@@ -32,11 +33,18 @@ unique_ptr<ExpNode> Differentiator::Execute(const BOperNode& node) {
 
 unique_ptr<ExpNode> Differentiator::Execute(const DiffOperNode& node) {
 	// Should not hit
+	throw;
 	return node.Clone();
 }
 
 unique_ptr<ExpNode> Differentiator::Execute(const FValueNode& node) {
 	return MakeValueNode(0);
+}
+
+unique_ptr<ExpNode> Differentiator::Execute(const IntegralOperNode& node) {
+	// Should not hit
+	throw;
+	return node.Clone();
 }
 
 unique_ptr<ExpNode> Differentiator::Execute(const IValueNode& node) {

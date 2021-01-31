@@ -21,6 +21,7 @@ enum class Operator {
 	SECANT,
 	COTANGENT,
 	DERIVATIVE,
+	INTEGRAL,
 	UNRESOLVED_PARENTHESIS, // Parenthesis
 	PARENTHESIS, // Closed Parenthesis
 	TENSOR,

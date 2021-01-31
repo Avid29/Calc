@@ -14,6 +14,8 @@
 #include "UOperNode.h"
 #include "VarValueNode.h"
 
+#include "Helper.h"
+
 unique_ptr<ExpNode> Integrator::Execute(const BOperNode& node) {
 	if (node.GetChild(0).IsConstantBy(*variable_)) {
 		return ApplyConstant(node);
@@ -121,25 +123,13 @@ unique_ptr<ExpNode> Integrator::ApplyProductRule(const NOperNode& node) {
 	unique_ptr<ExpNode> du = u.Execute(diff);
 	unique_ptr<ExpNode> v = dv.Execute(this);
 
-	unique_ptr<NOperNode> aNode = make_unique<NOperNode>(Operator::ADDITION);
-	// u * v
-	unique_ptr<NOperNode> mNode = make_unique<NOperNode>(Operator::MULTIPLICATION);
-	mNode->AddChild(u.Clone());
-	mNode->AddChild(v->Clone());
-	aNode->AddChild(move(mNode));
-
-	// - \int{ du * v }
-	unique_ptr<UOperNode> negNode = make_unique<UOperNode>(Operator::NEGATIVE);
+	// \int{ du * v }
 	unique_ptr<IntegralOperNode> intNode = make_unique<IntegralOperNode>();
 	intNode->SetVariable(make_unique<VarValueNode>(variable_->GetCharacter()));
-	unique_ptr<NOperNode> m2Node = make_unique<NOperNode>(Operator::MULTIPLICATION);
-	m2Node->AddChild(du->Clone());
-	m2Node->AddChild(v->Clone());
-	intNode->AddChild(move(m2Node));
-	negNode->AddChild(move(intNode));
+	intNode->AddChild(Multiply(*du, *v));
 
 	// u * v - \int{ du * v }
-	aNode->AddChild(move(negNode));
+	unique_ptr<NOperNode> aNode = Add(*Multiply(u, *v), *Negative(*intNode));
 
 	delete diff;
 	return aNode;

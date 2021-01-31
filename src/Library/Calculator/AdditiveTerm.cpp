@@ -3,6 +3,8 @@
 #include "ValueNode.h"
 #include "InternalPrinter.h"
 
+#include "Helper.h"
+
 /// <summary>
 /// Finds AdditiveTerm to represent node
 /// </summary>

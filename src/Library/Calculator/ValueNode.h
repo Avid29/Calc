@@ -26,9 +26,3 @@ class ValueNode : public ExpNode
 
 		virtual bool IsConstantBy(const VarValueNode& node) const override;
 };
-
-/// <summary>
-/// Gets most appropiate ValueNodeType
-/// </summary>
-/// <returns>ValueNode of Value and simplest node type</returns>
-unique_ptr<ValueNode> MakeValueNode(double value);

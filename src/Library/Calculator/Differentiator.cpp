@@ -5,6 +5,7 @@
 #include "BOperNode.h"
 #include "DiffOperNode.h"
 #include "FValueNode.h"
+#include "IntegralOperNode.h"
 #include "IValueNode.h"
 #include "SinusoidalOperNode.h"
 #include "TensorNode.h"
@@ -32,11 +33,18 @@ unique_ptr<ExpNode> Differentiator::Execute(const BOperNode& node) {
 
 unique_ptr<ExpNode> Differentiator::Execute(const DiffOperNode& node) {
 	// Should not hit
+	throw;
 	return node.Clone();
 }
 
 unique_ptr<ExpNode> Differentiator::Execute(const FValueNode& node) {
 	return MakeValueNode(0);
+}
+
+unique_ptr<ExpNode> Differentiator::Execute(const IntegralOperNode& node) {
+	// Should not hit
+	throw;
+	return node.Clone();
 }
 
 unique_ptr<ExpNode> Differentiator::Execute(const IValueNode& node) {

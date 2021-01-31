@@ -186,6 +186,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SinusoidalOperNode.h">
       <Filter>Headers\ExpTree\Nodes\Operators\Functions</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)IntegralOperNode.h">
+      <Filter>Headers\ExpTree\Nodes\Operators\Functions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpTree.cpp">
@@ -264,6 +267,9 @@
       <Filter>Source\Parser\Internal\Status</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SinusoidalOperNode.cpp">
+      <Filter>Source\ExpTree\Nodes\Operators\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)IntegralOperNode.cpp">
       <Filter>Source\ExpTree\Nodes\Operators\Functions</Filter>
     </ClCompile>
   </ItemGroup>

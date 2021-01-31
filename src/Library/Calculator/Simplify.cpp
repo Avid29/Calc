@@ -10,6 +10,7 @@
 #include "BOperNode.h"
 #include "DiffOperNode.h"
 #include "FValueNode.h"
+#include "IntegralOperNode.h"
 #include "IValueNode.h"
 #include "NOperNode.h"
 #include "SinusoidalOperNode.h"
@@ -69,6 +70,11 @@ unique_ptr<ExpNode> Simplifier::Execute(const DiffOperNode& node) {
 }
 
 unique_ptr<ExpNode> Simplifier::Execute(const FValueNode& node) {
+	return node.Clone();
+}
+
+unique_ptr<ExpNode> Simplifier::Execute(const IntegralOperNode& node) {
+	// TODO: Process integration
 	return node.Clone();
 }
 

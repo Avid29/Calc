@@ -17,6 +17,8 @@ public:
 
 	unique_ptr<ExpNode> Execute(const FValueNode&) override;
 
+	unique_ptr<ExpNode> Execute(const IntegralOperNode& node) override;
+
 	unique_ptr<ExpNode> Execute(const IValueNode&) override;
 
 	unique_ptr<ExpNode> Execute(const NOperNode&) override;

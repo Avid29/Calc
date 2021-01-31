@@ -19,6 +19,8 @@
 #include "UOperNode.h"
 #include "VarValueNode.h"
 
+#include "Helper.h"
+
 unique_ptr<ExpNode> Simplifier::Execute(const BOperNode& node) {
 	// Always returns a clone or replacement
 	unique_ptr<BOperNode> newNode = make_unique<BOperNode>(node.GetOperator());
@@ -216,21 +218,13 @@ unique_ptr<ExpNode> Simplifier::Execute(const TensorNode& node) {
 }
 
 unique_ptr<ExpNode> Simplifier::Execute(const UOperNode& node) {
-	// Always returns a clone or replacement
-	
 	if (node.GetOperator() == Operator::RECIPROCAL) {
 		// Return the reciprical, by putting to the power of -1
-		unique_ptr<BOperNode> newNode = make_unique<BOperNode>(Operator::POWER);
-		newNode->AddChild(node.GetChild(0).Execute(this));
-		newNode->AddChild(MakeValueNode(-1));
-		return newNode->Execute(this);
+		return Power(*node.GetChild(0).Execute(this), -1)->Execute(this);
 	}
 	if (node.GetOperator() == Operator::NEGATIVE) {
-		// Return the reciprical, by multiplying -1
-		unique_ptr<NOperNode> newNode = make_unique<NOperNode>(Operator::MULTIPLICATION);
-		newNode->AddChild(node.GetChild(0).Execute(this));
-		newNode->AddChild(MakeValueNode(-1));
-		return newNode->Execute(this);
+		// Return negative, by multiplying -1
+		return Multiply(*node.GetChild(0).Execute(this), -1)->Execute(this);
 	}
 
 	unique_ptr<UOperNode> newNode = make_unique<UOperNode>(node.GetOperator());

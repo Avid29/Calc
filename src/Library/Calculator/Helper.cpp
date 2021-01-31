@@ -18,11 +18,19 @@ unique_ptr<NOperNode> Multiply(const ExpNode& left, const ExpNode& right) {
 	return mNode;
 }
 
+unique_ptr<NOperNode> Multiply(const ExpNode& node, int i) {
+	return Multiply(node, *MakeValueNode(i));
+}
+
 unique_ptr<BOperNode> Power(const ExpNode& left, const ExpNode& right) {
 	unique_ptr<BOperNode> bNode = make_unique<BOperNode>(Operator::POWER);
 	bNode->AddChild(left.Clone());
 	bNode->AddChild(right.Clone());
 	return bNode;
+}
+
+unique_ptr<BOperNode> Power(const ExpNode& node, int i) {
+	return Power(node, *MakeValueNode(i));
 }
 
 unique_ptr<UOperNode> Negative(const ExpNode& child)

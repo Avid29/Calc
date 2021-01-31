@@ -32,7 +32,8 @@ namespace CalculatorTests {
 
 			TEST_METHOD(ProductRule)
 			{
-				Assert::IsTrue(Run("\\diff[x]{2xy}") == "2y + 2x\\diff[x]{y}");
+				Assert::IsTrue(Run("\\diff[x]{2x^2 * y}") == "4xy");
+				//Assert::IsTrue(Run("\\diff[x]{2xy}") == "2y + 2x\\diff[x]{y}"); // TODO: Better partial derivatives
 			}
 
 		private:

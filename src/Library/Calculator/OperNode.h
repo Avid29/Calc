@@ -68,3 +68,10 @@ bool IsBinary(Operator oper);
 /// <param name="oper">Operator to check for Nary type</param>
 /// <returns>true if oper is an Nary operator</returns>
 bool IsNary(Operator oper);
+
+/// <summary>
+/// Checks if an operator is Sinusoidal
+/// </summary>
+/// <param name="oper">Operator to check for a Sinusoidal type</param>
+/// <returns>true if oper is a Sinusoidal operator</returns>
+bool IsSinusoidal(Operator oper);

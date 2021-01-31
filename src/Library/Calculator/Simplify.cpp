@@ -12,6 +12,7 @@
 #include "FValueNode.h"
 #include "IValueNode.h"
 #include "NOperNode.h"
+#include "SinusoidalOperNode.h"
 #include "TensorNode.h"
 #include "UOperNode.h"
 #include "VarValueNode.h"
@@ -60,7 +61,6 @@ unique_ptr<ExpNode> Simplifier::Execute(const BOperNode& node) {
 }
 
 unique_ptr<ExpNode> Simplifier::Execute(const DiffOperNode& node) {
-	// TODO: Differentiate
 	Differentiator* differentiator = new Differentiator(make_unique<VarValueNode>(node.GetVariable()));
 	unique_ptr<ExpNode> result = node.GetChild(0)
 		.Execute(this)->Execute(differentiator)->Execute(this);
@@ -170,6 +170,30 @@ unique_ptr<ExpNode> Simplifier::Execute(const NOperNode& node) {
 	return newNode;
 }
 
+unique_ptr<ExpNode> Simplifier::Execute(const SinusoidalOperNode& node) {
+	unique_ptr<SinusoidalOperNode> newNode = make_unique<SinusoidalOperNode>(node.GetOperator());
+	newNode->AddChild(node.GetChild(0).Execute(this));
+
+	if (newNode->GetChild(0).IsNumericalValue()) {
+		switch (node.GetOperator())
+		{
+		case Operator::SINE:
+			return MakeValueNode(sin(newNode->GetChild(0).AsDouble()));
+		case Operator::COSINE:
+			return MakeValueNode(cos(newNode->GetChild(0).AsDouble()));
+		case Operator::TANGENT:
+			return MakeValueNode(tan(newNode->GetChild(0).AsDouble()));
+		case Operator::COSECANT:
+			return MakeValueNode(1 / sin(newNode->GetChild(0).AsDouble()));
+		case Operator::SECANT:
+			return MakeValueNode(1 / cos(newNode->GetChild(0).AsDouble()));
+		case Operator::COTANGENT:
+			return MakeValueNode(1 / tan(newNode->GetChild(0).AsDouble()));
+		}
+	}
+	return newNode;
+}
+
 unique_ptr<ExpNode> Simplifier::Execute(const TensorNode& node) {
 	unique_ptr<TensorNode> newTensor = make_unique<TensorNode>((int)node.GetDimensionCount());
 	for (int i = 0; i < node.ChildCount(); i++)
@@ -212,18 +236,6 @@ unique_ptr<ExpNode> Simplifier::Execute(const UOperNode& node) {
 			return MakeValueNode(-newNode->GetChild(0).AsDouble());
 		case Operator::RECIPROCAL:
 			return MakeValueNode(1 / newNode->GetChild(0).AsDouble());
-		case Operator::SINE:
-			return MakeValueNode(sin(newNode->GetChild(0).AsDouble()));
-		case Operator::COSINE:
-			return MakeValueNode(cos(newNode->GetChild(0).AsDouble()));
-		case Operator::TANGENT:
-			return MakeValueNode(tan(newNode->GetChild(0).AsDouble()));
-		case Operator::COSECANT:
-			return MakeValueNode(1 / sin(newNode->GetChild(0).AsDouble()));
-		case Operator::SECANT:
-			return MakeValueNode(1 / cos(newNode->GetChild(0).AsDouble()));
-		case Operator::COTANGENT:
-			return MakeValueNode(1 / tan(newNode->GetChild(0).AsDouble()));
 		}
 	}
 	else if (node.GetOperator() == Operator::PARENTHESIS && 

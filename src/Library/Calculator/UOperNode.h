@@ -92,7 +92,7 @@ class UOperNode : public OperNode {
 		/// </summary>
 		unique_ptr<ExpNode> Clone() const override;
 
-	private:
+	protected:
 		unique_ptr<ExpNode> child_;
 };
 

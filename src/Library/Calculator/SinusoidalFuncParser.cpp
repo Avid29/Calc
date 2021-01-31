@@ -25,7 +25,7 @@ PartialStatus SinusoidalFuncParser::ParseNextChar(const char c, unique_ptr<Branc
 			return PartialStatus(ErrorTypes::ErrorType::UNKNOWN);
 		}
 
-		outputNode = make_unique<UOperNode>(oper_);
+		outputNode = make_unique<SinusoidalOperNode>(oper_);
 		outputNode->AddChild(tree->GetRoot());
 		return PartialStatus();
 	}

@@ -14,6 +14,7 @@
 #include "SinusoidalFuncParser.h"
 #include "DiffFuncParser.h"
 #include "VectorParser.h"
+#include "SinusoidalOperNode.h"
 #include "UOperNode.h"
 #include "VarValueNode.h"
 

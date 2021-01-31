@@ -183,6 +183,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)InternalPrinter.h">
       <Filter>Headers\Printer\Internal</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SinusoidalOperNode.h">
+      <Filter>Headers\ExpTree\Nodes\Operators\Functions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)ExpTree.cpp">
@@ -259,6 +262,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)PartialStatus.cpp">
       <Filter>Source\Parser\Internal\Status</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SinusoidalOperNode.cpp">
+      <Filter>Source\ExpTree\Nodes\Operators\Functions</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

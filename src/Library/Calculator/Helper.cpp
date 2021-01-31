@@ -7,6 +7,10 @@ unique_ptr<NOperNode> Add(const ExpNode& left, const ExpNode& right) {
 	return aNode;
 }
 
+unique_ptr<NOperNode> Add(const ExpNode& node, int i) {
+	return Add(node, *MakeValueNode(i));
+}
+
 unique_ptr<NOperNode> Multiply(const ExpNode& left, const ExpNode& right) {
 	unique_ptr<NOperNode> mNode = make_unique<NOperNode>(Operator::MULTIPLICATION);
 	mNode->AddChild(left.Clone());

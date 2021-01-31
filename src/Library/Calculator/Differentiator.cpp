@@ -13,22 +13,18 @@
 #include "UOperNode.h"
 #include "VarValueNode.h"
 
+#include "Helper.h"
+
 unique_ptr<ExpNode> Differentiator::Execute(const BOperNode& node) {
 	if (node.GetChild(0).IsConstantBy(*variable_)) {
 		return MakeValueNode(0);
 	}
 
 	// Multiply by exponent, decrement exponent
-	unique_ptr<NOperNode> mNode = make_unique<NOperNode>(Operator::MULTIPLICATION);
-	mNode->AddChild(node.GetChild(1).Clone());
-	unique_ptr<BOperNode> bNode = make_unique<BOperNode>(Operator::POWER);
-	bNode->AddChild(node.GetChild(0).Clone());
-	unique_ptr<NOperNode> aNode = make_unique<NOperNode>(Operator::ADDITION);
-	aNode->AddChild(node.GetChild(1).Clone());
-	aNode->AddChild(MakeValueNode(-1));
-	bNode->AddChild(move(aNode));
-	mNode->AddChild(move(bNode));
-	return mNode;
+	const auto coefficient = node.GetChild(1);
+	const auto base = node.GetChild(0);
+	const auto exponent = *Add(node.GetChild(1), -1);
+	return Multiply(coefficient, *Power(base, exponent));
 }
 
 unique_ptr<ExpNode> Differentiator::Execute(const DiffOperNode& node) {

@@ -61,12 +61,10 @@ unique_ptr<ExpNode> Differentiator::Execute(const NOperNode& node) {
 
 unique_ptr<ExpNode> Differentiator::Execute(const SinusoidalOperNode& node) {
 	// Apply ChainRule
-	unique_ptr<NOperNode> mNode = make_unique<NOperNode>(Operator::MULTIPLICATION);
-	mNode->AddChild(node.GetChild(0).Execute(this));
-
+	auto coefficient = *node.GetChild(0).Execute(this);
 	// Apply derivative table
-	mNode->AddChild(ApplySinusoidalTable(node));
-	return mNode;
+	auto sinFunc = *ApplySinusoidalTable(node);
+	return Multiply(coefficient, sinFunc);
 }
 
 unique_ptr<ExpNode> Differentiator::Execute(const TensorNode& node) {
@@ -114,7 +112,6 @@ unique_ptr<ExpNode> Differentiator::ApplyProductRule(const NOperNode& node) {
 
 unique_ptr<ExpNode> Differentiator::ApplySinusoidalTable(const SinusoidalOperNode& node) {
 	unique_ptr<OperNode> newNode;
-	unique_ptr<OperNode> bufferNode;
 
 	switch (node.GetOperator())
 	{
@@ -123,11 +120,9 @@ unique_ptr<ExpNode> Differentiator::ApplySinusoidalTable(const SinusoidalOperNod
 		newNode->AddChild(node.GetChild(0).Clone());
 		return newNode;
 	case Operator::COSINE:
-		bufferNode = make_unique<SinusoidalOperNode>(Operator::SINE);
-		bufferNode->AddChild(node.GetChild(0).Clone());
-		newNode = make_unique<SinusoidalOperNode>(Operator::NEGATIVE);
-		newNode->AddChild(move(bufferNode));
-		return newNode;
+		newNode = make_unique<SinusoidalOperNode>(Operator::SINE);
+		newNode->AddChild(node.GetChild(0).Clone());
+		return Negative(move(newNode));
 	default:
 		return node.Clone();
 	}

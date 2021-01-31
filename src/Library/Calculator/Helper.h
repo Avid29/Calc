@@ -14,3 +14,5 @@ unique_ptr<NOperNode> Multiply(const ExpNode& left, const ExpNode& right);
 unique_ptr<BOperNode> Power(const ExpNode& left, const ExpNode& right);
 
 unique_ptr<UOperNode> Negative(const ExpNode& child);
+
+unique_ptr<UOperNode> Negative(unique_ptr<ExpNode> child);

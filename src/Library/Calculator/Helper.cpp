@@ -32,3 +32,10 @@ unique_ptr<UOperNode> Negative(const ExpNode& child)
 	return negNode;
 }
 
+unique_ptr<UOperNode> Negative(unique_ptr<ExpNode> child)
+{
+	unique_ptr<UOperNode> negNode = make_unique<UOperNode>(Operator::NEGATIVE);
+	negNode->AddChild(move(child));
+	return negNode;
+}
+

@@ -23,4 +23,8 @@ unique_ptr<UOperNode> Negative(const ExpNode& child);
 
 unique_ptr<UOperNode> Negative(unique_ptr<ExpNode> child);
 
+unique_ptr<UOperNode> Reciprical(const ExpNode& child);
+
+unique_ptr<UOperNode> Reciprical(unique_ptr<ExpNode> child);
+
 unique_ptr<ValueNode> MakeValueNode(double value);

@@ -14,6 +14,8 @@
 #include "UOperNode.h"
 #include "VarValueNode.h"
 
+#include "InternalPrinter.h"
+
 #include "Helper.h"
 
 unique_ptr<ExpNode> Integrator::Execute(const BOperNode& node) {
@@ -69,8 +71,13 @@ unique_ptr<ExpNode> Integrator::Execute(const NOperNode& node) {
 }
 
 unique_ptr<ExpNode> Integrator::Execute(const SinusoidalOperNode& node) {
-	// TODO: Sinusoidal integration
-	return node.Clone();
+	Differentiator* diff = new Differentiator(make_unique<VarValueNode>(variable_->GetCharacter()));
+	// Apply ChainRule
+	auto coefficient = node.GetChild(0).Execute(diff);
+	// Apply derivative table
+	auto sinFunc = ApplySinusoidalTable(node);
+	delete diff;
+	return Multiply(*Reciprical(move(coefficient)), *sinFunc);
 }
 
 unique_ptr<ExpNode> Integrator::Execute(const TensorNode& node) {
@@ -88,10 +95,7 @@ unique_ptr<ExpNode> Integrator::Execute(const VarValueNode& node) {
 		return ApplyConstant(node);
 	}
 	else {
-		unique_ptr<BOperNode> bNode = make_unique<BOperNode>(Operator::POWER);
-		bNode->AddChild(node.Clone());
-		bNode->AddChild(MakeValueNode(1));
-		return Execute(*bNode);
+		return Multiply(*Power(*node.Clone(), 2), .5);
 	}
 }
 
@@ -117,25 +121,71 @@ unique_ptr<ExpNode> Integrator::ApplyProductRule(const NOperNode& node) {
 	// \int{u'vwx} = uvwx - \int{uv'wx} - \int{uvw'x} - \int{uvwx'}
 
 	Differentiator* diff = new Differentiator(make_unique<VarValueNode>(variable_->GetCharacter()));
+	InternalPrinter printer = InternalPrinter();
 
-	const ExpNode& u = node.GetChild(0);
-	const ExpNode& dv = node.GetChild(1);
-	unique_ptr<ExpNode> du = u.Execute(diff);
-	unique_ptr<ExpNode> v = dv.Execute(this);
+	size_t partCount = node.ChildCount() - 1;
 
-	// \int{ du * v }
-	unique_ptr<IntegralOperNode> intNode = make_unique<IntegralOperNode>();
-	intNode->SetVariable(make_unique<VarValueNode>(variable_->GetCharacter()));
-	intNode->AddChild(Multiply(*du, *v));
+	// Get u and du
+	const ExpNode& du = node.GetChild(partCount);
+	unique_ptr<ExpNode> u = du.Execute(this);
 
-	// u * v - \int{ du * v }
-	unique_ptr<NOperNode> aNode = Add(*Multiply(u, *v), *Negative(*intNode));
+	// Get dvs and vs
+	unique_ptr<ExpNode>* dvs = new unique_ptr<ExpNode>[partCount];
+	const ExpNode** vs = new const ExpNode*[partCount];
+	for (int i = 0; i < partCount; i++)
+	{
+		vs[i] = &node.GetChild(i);
+		dvs[i] = vs[i]->Execute(diff);
+	}
+
+	// Sum u*vs and combinatoric integrals
+	unique_ptr<NOperNode> aNode = make_unique<NOperNode>(Operator::ADDITION);
+
+	// u*vs
+	unique_ptr<NOperNode> mNode = make_unique<NOperNode>(Operator::MULTIPLICATION);
+	mNode->AddChild(u->Clone());
+	for (int i = 0; i < partCount; i++)
+	{
+		mNode->AddChild(vs[i]->Clone());
+	}
+	aNode->AddChild(move(mNode));
+
+	// Combinatoric integrals
+	for (int i = 0; i < partCount; i++)
+	{
+		unique_ptr<IntegralOperNode> intNode = make_unique<IntegralOperNode>();
+		mNode = make_unique<NOperNode>(Operator::MULTIPLICATION);
+		intNode->SetVariable(make_unique<VarValueNode>(variable_->GetCharacter()));
+		mNode->AddChild(u->Clone());
+		for (int j = 0; j < partCount; j++)
+		{
+			if (i == j)
+				mNode->AddChild(dvs[j]->Clone());
+			else
+				mNode->AddChild(vs[j]->Clone());
+		}
+		intNode->AddChild(move(mNode));
+		aNode->AddChild(Negative(*intNode));
+	}
 
 	delete diff;
 	return aNode;
 }
 
 unique_ptr<ExpNode> Integrator::ApplySinusoidalTable(const SinusoidalOperNode& node) {
-	// TODO: Sinusoidal integration
-	return node.Clone();
+	unique_ptr<OperNode> newNode;
+
+	switch (node.GetOperator())
+	{
+	case Operator::SINE:
+		newNode = make_unique<SinusoidalOperNode>(Operator::COSINE);
+		newNode->AddChild(node.GetChild(0).Clone());
+		return Negative(move(newNode));
+	case Operator::COSINE:
+		newNode = make_unique<SinusoidalOperNode>(Operator::SINE);
+		newNode->AddChild(node.GetChild(0).Clone());
+		return move(newNode);
+	default:
+		return node.Clone();
+	}
 }

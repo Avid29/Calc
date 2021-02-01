@@ -71,8 +71,13 @@ unique_ptr<ExpNode> Integrator::Execute(const NOperNode& node) {
 }
 
 unique_ptr<ExpNode> Integrator::Execute(const SinusoidalOperNode& node) {
-	// TODO: Sinusoidal integration
-	return node.Clone();
+	Differentiator* diff = new Differentiator(make_unique<VarValueNode>(variable_->GetCharacter()));
+	// Apply ChainRule
+	auto coefficient = node.GetChild(0).Execute(diff);
+	// Apply derivative table
+	auto sinFunc = ApplySinusoidalTable(node);
+	delete diff;
+	return Multiply(*Reciprical(move(coefficient)), *sinFunc);
 }
 
 unique_ptr<ExpNode> Integrator::Execute(const TensorNode& node) {
@@ -168,6 +173,19 @@ unique_ptr<ExpNode> Integrator::ApplyProductRule(const NOperNode& node) {
 }
 
 unique_ptr<ExpNode> Integrator::ApplySinusoidalTable(const SinusoidalOperNode& node) {
-	// TODO: Sinusoidal integration
-	return node.Clone();
+	unique_ptr<OperNode> newNode;
+
+	switch (node.GetOperator())
+	{
+	case Operator::SINE:
+		newNode = make_unique<SinusoidalOperNode>(Operator::COSINE);
+		newNode->AddChild(node.GetChild(0).Clone());
+		return Negative(move(newNode));
+	case Operator::COSINE:
+		newNode = make_unique<SinusoidalOperNode>(Operator::SINE);
+		newNode->AddChild(node.GetChild(0).Clone());
+		return move(newNode);
+	default:
+		return node.Clone();
+	}
 }

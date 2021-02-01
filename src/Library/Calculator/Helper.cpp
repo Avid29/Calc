@@ -47,6 +47,18 @@ unique_ptr<UOperNode> Negative(unique_ptr<ExpNode> child)
 	return negNode;
 }
 
+unique_ptr<UOperNode> Reciprical(const ExpNode& child) {
+	unique_ptr<UOperNode> negNode = make_unique<UOperNode>(Operator::RECIPROCAL);
+	negNode->AddChild(child.Clone());
+	return negNode;
+}
+
+unique_ptr<UOperNode> Reciprical(unique_ptr<ExpNode> child) {
+	unique_ptr<UOperNode> negNode = make_unique<UOperNode>(Operator::RECIPROCAL);
+	negNode->AddChild(move(child));
+	return negNode;
+}
+
 unique_ptr<ValueNode> MakeValueNode(double value) {
 	if (floor(value) == value) {
 		return make_unique<IValueNode>((int)value);

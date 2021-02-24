@@ -68,8 +68,13 @@ unique_ptr<ExpNode> Differentiator::Execute(const SinusoidalOperNode& node) {
 }
 
 unique_ptr<ExpNode> Differentiator::Execute(const TensorNode& node) {
-	// TODO: Tensor calculus
-	return node.Clone();
+	unique_ptr<TensorNode> newTensor = make_unique<TensorNode>(node.GetDimensionCount(), node.GetTensorType());
+	for (int i = 0; i < node.ChildCount(); i++)
+	{
+		newTensor->AddChild(node.GetChild(i).Execute(this));
+	}
+	newTensor->EndDimension(1);
+	return newTensor;
 }
 
 unique_ptr<ExpNode> Differentiator::Execute(const UOperNode& node) {

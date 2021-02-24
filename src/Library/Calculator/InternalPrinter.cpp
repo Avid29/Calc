@@ -82,7 +82,7 @@ string InternalPrinter::Print(const NOperNode& node) const {
 
 string InternalPrinter::Print(const TensorNode& node) const {
 	string progress;
-	switch (node.GetDimensionCount())
+	switch (node.GetTensorType())
 	{
 		case TensorType::Vector:
 			progress += "<";

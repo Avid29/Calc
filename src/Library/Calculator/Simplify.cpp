@@ -207,7 +207,7 @@ unique_ptr<ExpNode> Simplifier::Execute(const SinusoidalOperNode& node) {
 }
 
 unique_ptr<ExpNode> Simplifier::Execute(const TensorNode& node) {
-	unique_ptr<TensorNode> newTensor = make_unique<TensorNode>((int)node.GetDimensionCount());
+	unique_ptr<TensorNode> newTensor = make_unique<TensorNode>(node.GetDimensionCount(), node.GetTensorType());
 	for (int i = 0; i < node.ChildCount(); i++)
 	{
 		newTensor->AddChild(node.GetChild(i).Execute(this));

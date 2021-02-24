@@ -15,11 +15,13 @@ class TensorNode : public EnumerableCollectionNode {
 		/// </summary>
 		TensorNode(const TensorNode& other);
 
-		TensorNode(int dimensions);
+		TensorNode(int dimensions, TensorType type);
 
 		~TensorNode();
 
-		TensorType GetDimensionCount() const;
+		int GetDimensionCount() const;
+
+		TensorType GetTensorType() const;
 
 		/// <summary>
 		/// Gets the size of a dimension
@@ -48,7 +50,8 @@ class TensorNode : public EnumerableCollectionNode {
 		unique_ptr<ExpNode> Clone() const override;
 
 	private:
-		TensorType dimensions_;
+		TensorType type_;
+		int dimensions_;
 		int *sizes_;
 };
 

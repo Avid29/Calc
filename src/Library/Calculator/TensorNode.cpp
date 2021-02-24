@@ -2,6 +2,7 @@
 
 TensorNode::TensorNode(const TensorNode& other) {
 	dimensions_ = other.dimensions_;
+	type_ = other.type_;
 	for (const unique_ptr<ExpNode>& child : other.children_)
 	{
 		AddChild(child->Clone());
@@ -13,7 +14,7 @@ TensorNode::TensorNode(const TensorNode& other) {
 	}
 }
 
-TensorNode::TensorNode(int dimensions) : dimensions_((TensorType)dimensions) {
+TensorNode::TensorNode(int dimensions, TensorType type) : dimensions_(dimensions), type_(type) {
 	sizes_ = new int[dimensions];
 }
 
@@ -21,8 +22,12 @@ TensorNode::~TensorNode() {
 	delete sizes_;
 }
 
-TensorType TensorNode::GetDimensionCount() const {
+int TensorNode::GetDimensionCount() const {
 	return dimensions_;
+}
+
+TensorType TensorNode::GetTensorType() const {
+	return type_;
 }
 
 int TensorNode::GetDimensionSize(int dimension) const {

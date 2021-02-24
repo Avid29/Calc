@@ -36,6 +36,7 @@ AdditiveTerm::AdditiveTerm(const ExpNode &node) {
 	}
 	delete printer;
 }
+
 /// <summary>
 /// Gets Term as an ExpNode
 /// </summary>

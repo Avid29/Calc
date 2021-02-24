@@ -3,7 +3,7 @@
 VectorParser::VectorParser()
 {
 	child_parser = make_unique<InternalParser>();
-	vector_ = make_unique<TensorNode>(1);
+	vector_ = make_unique<TensorNode>(1, TensorType::Vector);
 }
 
 PartialStatus VectorParser::ParseFirstChar(const char c ) {

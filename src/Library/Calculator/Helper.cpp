@@ -10,6 +10,15 @@ unique_ptr<NOperNode> Add(const ExpNode& left, const ExpNode& right) {
 unique_ptr<NOperNode> Add(const ExpNode& node, double n) {
 	return Add(node, *MakeValueNode(n));
 }
+unique_ptr<NOperNode> Subtract(const ExpNode& left, const ExpNode& right) {
+	unique_ptr<NOperNode> aNode = make_unique<NOperNode>(Operator::ADDITION);
+	aNode->AddChild(left.Clone());
+
+	unique_ptr<UOperNode> uNode = make_unique<UOperNode>(Operator::NEGATIVE);
+	uNode->AddChild(right.Clone());
+	aNode->AddChild(move(uNode));
+	return aNode;
+}
 
 unique_ptr<NOperNode> Multiply(const ExpNode& left, const ExpNode& right) {
 	unique_ptr<NOperNode> mNode = make_unique<NOperNode>(Operator::MULTIPLICATION);

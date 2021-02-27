@@ -89,6 +89,12 @@ unique_ptr<ExpNode> Simplifier::Execute(const IValueNode& node) {
 }
 
 unique_ptr<ExpNode> Simplifier::Execute(const NOperNode& node) {
+
+	if (node.GetOperator() == Operator::EQUALS)
+	{
+		return node.Clone();
+	}
+
 	// TODO: Move Simplify to operation
 
 	// Running total of value node children

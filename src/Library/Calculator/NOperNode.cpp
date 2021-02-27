@@ -13,7 +13,7 @@
 
 using namespace std;
 
-#pragma region Constrcutors
+#pragma region Constructors
 
 /// <summary>
 /// Copy constructor

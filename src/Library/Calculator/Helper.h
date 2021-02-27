@@ -11,6 +11,8 @@ unique_ptr<NOperNode> Add(const ExpNode& left, const ExpNode& right);
 
 unique_ptr<NOperNode> Add(const ExpNode& node, double n);
 
+unique_ptr<NOperNode> Subtract(const ExpNode& left, const ExpNode& right);
+
 unique_ptr<NOperNode> Multiply(const ExpNode& left, const ExpNode& right);
 
 unique_ptr<NOperNode> Multiply(const ExpNode& node, double n);

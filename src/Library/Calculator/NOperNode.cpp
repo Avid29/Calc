@@ -13,7 +13,7 @@
 
 using namespace std;
 
-#pragma region Constrcutors
+#pragma region Constructors
 
 /// <summary>
 /// Copy constructor
@@ -39,6 +39,9 @@ NOperNode::NOperNode(char c) {
 		case '*':
 		case '/':
 			oper_ = Operator::MULTIPLICATION;
+			break;
+		case '=':
+			oper_ = Operator::EQUALS;
 			break;
 	}
 }

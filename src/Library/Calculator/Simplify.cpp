@@ -89,6 +89,22 @@ unique_ptr<ExpNode> Simplifier::Execute(const IValueNode& node) {
 }
 
 unique_ptr<ExpNode> Simplifier::Execute(const NOperNode& node) {
+
+	if (node.GetOperator() == Operator::EQUALS)
+	{
+		if (node.ChildCount() > 2)
+		{
+			// TODO: Handle more equality children
+			return node.Clone();
+		}
+
+		// Move the subtract the right-hand side from the left. Then simplify the new left-hand side.
+		unique_ptr<NOperNode> newEquals = make_unique<NOperNode>(Operator::EQUALS);
+		newEquals->AddChild(Subtract(node.GetChild(0), node.GetChild(1))->Execute(this));
+		newEquals->AddChild(MakeValueNode(0));
+		return newEquals;
+	}
+
 	// TODO: Move Simplify to operation
 
 	// Running total of value node children

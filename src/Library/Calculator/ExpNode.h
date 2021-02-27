@@ -17,7 +17,8 @@ enum class Priority {
 	UNARY,
 	POWER,
 	MULTIPLICATION,
-	ADDITION
+	ADDITION,
+	EQUALS
 };
 
 class BranchNode;

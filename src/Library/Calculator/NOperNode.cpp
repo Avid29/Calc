@@ -40,6 +40,9 @@ NOperNode::NOperNode(char c) {
 		case '/':
 			oper_ = Operator::MULTIPLICATION;
 			break;
+		case '=':
+			oper_ = Operator::EQUALS;
+			break;
 	}
 }
 

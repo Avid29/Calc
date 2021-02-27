@@ -25,6 +25,9 @@ Priority OperNode::GetPriority() const {
 			// VALUE has locked children, this prevents the OVERRIDE special case
 		case Operator::PARENTHESIS:
 			return Priority::VALUE;
+
+		case Operator::EQUALS:
+			return Priority::EQUALS;
 	}
 	return Priority::VALUE;
 }

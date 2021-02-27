@@ -25,6 +25,7 @@ enum class Operator {
 	UNRESOLVED_PARENTHESIS, // Parenthesis
 	PARENTHESIS, // Closed Parenthesis
 	TENSOR,
+	EQUALS,
 };
 
 class OperNode : public BranchNode {

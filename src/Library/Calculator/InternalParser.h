@@ -26,7 +26,7 @@ class InternalParser
 {
 public:
 	enum class State {
-		BEGIN,
+		BEGIN, // The beginning of an expression
 		OPEN_PARENTHESIS,
 		// Nary (or binary) Operator
 		NOPER,
@@ -134,6 +134,11 @@ private:
 	/// Parses a '\'.
 	/// </summary>
 	Status ParseEscape();
+
+	/// <summary>
+	/// Parses a '='.
+	/// </summary>
+	Status ParseEquals();
 
 	/// <summary>
 	/// Parses any character in the PARTIAL_FUNCTION state.

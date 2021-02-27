@@ -74,6 +74,8 @@ Status InternalParser::ParseNextChar(const char c, bool hasFullString) {
 			return ParseDecimal();
 		case '\\':
 			return ParseEscape();
+		case '=':
+			return ParseEquals();
 		default:
 			return EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
 		}
@@ -318,6 +320,33 @@ Status InternalParser::ParseEscape() {
 		return EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
 	default:
 		return EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
+	}
+}
+
+Status InternalParser::ParseEquals() {
+
+	// If in function parser or parenthesis have depth
+	// Return error
+	if (active_func_parser || parenthesis_depth)
+	{
+		return EnterErrorState(ErrorTypes::ErrorType::EQUALS_CANNOT_BE_MID_EXPRESSION);
+	}
+
+	switch (state_)
+	{
+		case State::INT:
+		case State::FLOAT:
+			CompleteValue();
+		case State::VALUE:
+		case State::VARIABLE:
+			tree_->AddNode(make_unique<NOperNode>('='));
+			cache_ = "";
+			state_ = State::BEGIN;
+			return Status(input_, position_);
+		case State::BEGIN:
+			return EnterErrorState(ErrorTypes::ErrorType::CANNOT_BEGIN);
+		default:
+			return EnterErrorState(ErrorTypes::ErrorType::CANNOT_PROCEED);
 	}
 }
 

@@ -70,8 +70,12 @@ string InternalPrinter::Print(const NOperNode& node) const {
 				}
 				break;
 			}
-			case Operator::MULTIPLICATION:
-				// All remaining multiplication will be implied
+			case Operator::MULTIPLICATION: {
+				// All multiplication operators after simplification can be implied
+				break;
+			}
+			case Operator::EQUALS:
+				cache_ += "=";
 				break;
 			}
 		}

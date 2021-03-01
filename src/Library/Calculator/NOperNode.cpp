@@ -170,7 +170,7 @@ unique_ptr<ExpNode> NOperNode::Execute(IOperation* operation) const {
 /// <summary>
 /// Check if node can inhert node from children and insert if possible
 /// </summary>
-/// <returns>-1 for failure</returns>
+/// <returns>NAN on failure.</returns>
 double NOperNode::TryInheritChildren(ExpNode *node) {
 	NOperNode *nOperNode = dynamic_cast<NOperNode *>(node);
 	if (nOperNode != nullptr && nOperNode->GetOperator() == GetOperator()) {
@@ -179,7 +179,8 @@ double NOperNode::TryInheritChildren(ExpNode *node) {
 		// Returns values
 		return InheritChildren(nOperNode);
 	}
-	return -1;
+	
+	return NAN;
 }
 
 #pragma endregion

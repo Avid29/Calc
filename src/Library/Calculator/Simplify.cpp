@@ -135,7 +135,7 @@ unique_ptr<ExpNode> Simplifier::Execute(const NOperNode& node) {
 		}
 		else {
 			double childValues = newNode->TryInheritChildren(simplified_child.get());
-			if (childValues != -1) {
+			if (!isnan(childValues)) {
 				switch (node.GetOperator())
 				{
 				case Operator::ADDITION:

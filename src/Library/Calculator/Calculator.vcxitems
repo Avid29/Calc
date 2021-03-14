@@ -22,6 +22,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Differentiator.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DiffFuncParser.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DiffOperNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Evaluator.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Helper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IntegralFuncParser.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IntegralOperNode.h" />
@@ -58,6 +59,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Differentiator.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DiffFuncParser.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DiffOperNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Evaluator.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Helper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)IntegralFuncParser.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)IntegralOperNode.cpp" />

@@ -36,8 +36,8 @@ public:
 		FLOAT, // Or decimal
 		VALUE,
 		VARIABLE,
-		PARTIAL_FUNCTION,
-		FUNCTION,
+		PARTIAL_FUNCTION, // Parsing the function name
+		FUNCTION, // Parsing is being handled by a function parser
 
 		// Status states
 		DONE,

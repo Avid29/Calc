@@ -327,7 +327,7 @@ Status InternalParser::ParseEquals() {
 
 	// If in function parser or parenthesis have depth
 	// Return error
-	if (active_func_parser || parenthesis_depth)
+	if (state_ == State::FUNCTION || parenthesis_depth)
 	{
 		return EnterErrorState(ErrorTypes::ErrorType::EQUALS_CANNOT_BE_MID_EXPRESSION);
 	}

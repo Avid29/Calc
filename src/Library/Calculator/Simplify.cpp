@@ -19,6 +19,8 @@
 #include "UOperNode.h"
 #include "VarValueNode.h"
 
+#include "Evaluator.h"
+
 #include "Helper.h"
 
 unique_ptr<ExpNode> Simplifier::Execute(const BOperNode& node) {
@@ -80,6 +82,19 @@ unique_ptr<ExpNode> Simplifier::Execute(const IntegralOperNode& node) {
 	Integrator* integrator = new Integrator(make_unique<VarValueNode>(node.GetVariable()));
 	unique_ptr<ExpNode> result = node.GetChild(0)
 		.Execute(this)->Execute(integrator)->Execute(this);
+
+	if (node.IsDeterminate())
+	{
+		unique_ptr<NOperNode> diffNode = make_unique<NOperNode>(Operator::ADDITION);
+		Evaluator* evaluator = new Evaluator(make_unique<VarValueNode>(node.GetVariable()), node.GetUpperBound().Clone());
+		diffNode->AddChild(result->Execute(evaluator));
+		delete evaluator;
+		evaluator = new Evaluator(make_unique<VarValueNode>(node.GetVariable()), node.GetLowerBound().Clone());
+		diffNode->AddChild(Negative(result->Execute(evaluator)));
+		delete evaluator;
+		return diffNode->Execute(this);
+	}
+
 	delete integrator;
 	return move(result);
 }

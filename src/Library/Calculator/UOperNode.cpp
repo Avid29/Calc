@@ -169,5 +169,7 @@ unique_ptr<ExpNode> UOperNode::Clone() const {
 /// Checks if the operation is a suffix or prefix
 /// </summary>
 bool IsSuffix(Operator oper) {
-	return oper == Operator::DERIVATIVE;
+	return false;
+	// Derivates are no longer a suffix
+	// return oper == Operator::DERIVATIVE;
 }

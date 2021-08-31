@@ -49,6 +49,7 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		src\Library\Calculator\Calculator.vcxitems*{29217993-68c7-45c8-a1e5-c07d27778dc3}*SharedItemsImports = 4
 		src\Library\Calculator\Calculator.vcxitems*{322cd08f-a6be-472d-b32a-55d51d684bf8}*SharedItemsImports = 4
+		src\Clients\Apps\UnoApp\Calculator.Apps.UnoApp.Shared\Calculator.Apps.UnoApp.Shared.projitems*{573cf162-8e18-40c4-a815-8dccb665f814}*SharedItemsImports = 4
 		src\Clients\Apps\UnoApp\Calculator.Apps.UnoApp.Shared\Calculator.Apps.UnoApp.Shared.projitems*{6279c845-92f8-4333-ab99-3d213163593c}*SharedItemsImports = 13
 		src\Library\Calculator\Calculator.vcxitems*{7648adb7-9ba3-4af5-a934-e8aafc636af4}*SharedItemsImports = 4
 		src\Library\Calculator\Calculator.vcxitems*{8040748e-1f86-4da6-8058-4ff02a92e0ae}*SharedItemsImports = 4
@@ -115,6 +116,7 @@ Global
 		{8040748E-1F86-4DA6-8058-4FF02A92E0AE}.AppStore|x86.ActiveCfg = Release|Win32
 		{8040748E-1F86-4DA6-8058-4FF02A92E0AE}.AppStore|x86.Build.0 = Release|Win32
 		{8040748E-1F86-4DA6-8058-4FF02A92E0AE}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{8040748E-1F86-4DA6-8058-4FF02A92E0AE}.Debug|Any CPU.Build.0 = Debug|Win32
 		{8040748E-1F86-4DA6-8058-4FF02A92E0AE}.Debug|ARM.ActiveCfg = Debug|Win32
 		{8040748E-1F86-4DA6-8058-4FF02A92E0AE}.Debug|ARM64.ActiveCfg = Debug|Win32
 		{8040748E-1F86-4DA6-8058-4FF02A92E0AE}.Debug|iPhone.ActiveCfg = Debug|Win32

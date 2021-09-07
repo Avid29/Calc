@@ -1,6 +1,6 @@
 ﻿namespace Calculator.ExpTree.Nodes.Operators.Functions
 {
-    class DiffOperNode : OperNode
+    public class DiffOperNode : OperNode
     {
     }
 }

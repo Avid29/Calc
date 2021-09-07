@@ -9,8 +9,6 @@
     <Import_RootNamespace>Calculator</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\BOpers\" />
-    <Folder Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\NOpers\" />
     <Folder Include="$(MSBuildThisFileDirectory)Operations\" />
     <Folder Include="$(MSBuildThisFileDirectory)Printer\Abstract\" />
   </ItemGroup>
@@ -21,11 +19,19 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Collections\TensorNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\ExpNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\BOpers\BOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\BOpers\PowOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\Functions\DiffOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\Functions\IntegralOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\NOpers\AdditionOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\NOpers\MultiplicationOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\NOpers\NOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\OperNode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\UOpers\SineOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\UOpers\SignNode\Sign.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\UOpers\SignNode\SignOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\UOpers\ParenthesisOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\UOpers\RecipricalOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\UOpers\SineNode\SineFunc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\UOpers\SineNode\SineOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\UOpers\UOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Values\FloatValueNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Values\IntValueNode.cs" />

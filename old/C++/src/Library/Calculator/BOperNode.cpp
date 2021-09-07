@@ -60,7 +60,7 @@ void BOperNode::AddChild(unique_ptr<ExpNode> node) {
 /// Inserts child between this and its last child
 /// </summary>
 /// <param name="node">this's new child node</param>
-void BOperNode:: InsertChild(unique_ptr<BranchNode> node) {
+void BOperNode::InsertChild(unique_ptr<BranchNode> node) {
 	unique_ptr<ExpNode> newGrandChild;
 	if (right_child != nullptr) {
 		newGrandChild = move(right_child);

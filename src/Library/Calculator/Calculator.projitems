@@ -10,9 +10,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Operations\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Printer\Abstract\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ExpNodeException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ExpTree\BOperNodeAlreadyHasChildrenException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ExpTree\UOperNodeAlreadyHasChildException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\ExpTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\BranchNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Collections\EnumerableCollectionNode.cs" />
@@ -26,6 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\NOpers\MultiplicationOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\NOpers\NOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\OperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Priority.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\UOpers\SignNode\Sign.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\UOpers\SignNode\SignOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\UOpers\ParenthesisOperNode.cs" />
@@ -52,7 +55,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\VectorParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Status\ParseError.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Status\Status.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Printer\Default\DefaultPrinter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Printer\Abstract\Printer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Printers\Abstract\Printer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Printers\Default\DefaultPrinter.cs" />
   </ItemGroup>
 </Project>

@@ -9,7 +9,6 @@
     <Import_RootNamespace>Calculator</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Collections\" />
     <Folder Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\BOpers\" />
     <Folder Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\NOpers\" />
     <Folder Include="$(MSBuildThisFileDirectory)Operations\" />
@@ -18,6 +17,8 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\ExpTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\BranchNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Collections\EnumerableCollectionNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Collections\TensorNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\ExpNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\BOpers\BOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\Functions\DiffOperNode.cs" />

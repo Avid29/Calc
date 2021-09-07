@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Calculator.ExpTree.Nodes
+﻿namespace Calculator.ExpTree.Nodes
 {
-    class BranchNode
+    public abstract class BranchNode : ExpNode
     {
     }
 }

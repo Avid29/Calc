@@ -25,6 +25,7 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		src\Library\Calculator\Calculator.projitems*{2daeb565-911a-4226-b0de-20f769416be2}*SharedItemsImports = 13
 		old\C++\src\Library\Calculator\Calculator.vcxitems*{8040748e-1f86-4da6-8058-4ff02a92e0ae}*SharedItemsImports = 4
+		src\Library\Calculator\Calculator.projitems*{813ea9e8-30e9-4c04-938d-359015bd8ed5}*SharedItemsImports = 5
 		old\C++\src\Library\Calculator\Calculator.vcxitems*{fea44308-338d-4ff7-b3b7-efd2960278d2}*SharedItemsImports = 9
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

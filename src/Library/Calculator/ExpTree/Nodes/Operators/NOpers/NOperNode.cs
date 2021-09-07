@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Calculator.ExpTree.Nodes.Operators
+﻿namespace Calculator.ExpTree.Nodes.Operators
 {
-    class NOperNode
+    public abstract class NOperNode : OperNode
     {
     }
 }

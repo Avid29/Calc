@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>2daeb565-911a-4226-b0de-20f769416be2</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Calculator</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Collections\" />
+    <Folder Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\BOpers\" />
+    <Folder Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\NOpers\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Operations\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Printer\Abstract\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\ExpTree.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\BranchNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\ExpNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\BOpers\BOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\Functions\DiffOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\Functions\IntegralOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\NOpers\NOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\OperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\UOpers\SineOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Operators\UOpers\UOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Values\FloatValueNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Values\IntValueNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Values\ValueNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Nodes\Values\VarValueNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Terms\AdditiveTerm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpTree\Terms\MultiplicativeTerm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operations\Differentiator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operations\Evaluator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operations\Integrator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operations\Abstract\Operation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operations\Simplifier.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\DefaultParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\DiffFuncParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\IntegralFuncParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\SinusoidalFuncParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\VectorParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Status\ParseError.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Status\Status.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Printer\Default\DefaultPrinter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Printer\Abstract\Printer.cs" />
+  </ItemGroup>
+</Project>

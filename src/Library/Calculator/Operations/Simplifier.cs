@@ -89,6 +89,9 @@ namespace Calculator.Operations
                     mNode.TransferChildren(node);
                     node.RemoveChild(i);
                     i--;
+                } else
+                {
+                    node.ReplaceChild(simpleChild, i);
                 }
             }
 
@@ -164,7 +167,7 @@ namespace Calculator.Operations
                 return Helpers.MakeValueNode(1 / nvNode.DoubleValue);
             }
 
-            return node;
+            return Helpers.Pow(node.Child, -1).Execute(this);
         }
 
         public override ExpNode Execute(SignOperNode node)

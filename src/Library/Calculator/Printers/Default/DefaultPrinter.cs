@@ -3,6 +3,7 @@ using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
+using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
 using Calculator.ExpressionTree.Nodes.Values;
@@ -67,6 +68,11 @@ namespace Calculator.Printers.Default
                 cache += node.GetChild(i).Print(this);
             }
             return cache;
+        }
+
+        public override string Print(ParenthesisOperNode node)
+        {
+            return $"({node.Child.Print(this)})";
         }
 
         public override string Print(PowOperNode node)

@@ -20,6 +20,8 @@ namespace Calculator.Parser.Default.Functions
                 case "sec": SineFunc = SineFunc.SECANT; break;
                 case "cot": SineFunc = SineFunc.COTANGENT; break;
             }
+
+            _childParser = new DefaultParser();
         }
 
         public override ParseError ParseFirstChar(char c)

@@ -370,10 +370,10 @@ unique_ptr<ExpNode> Simplifier::Expand(NOperNode* node) {
 			{
 				unique_ptr<NOperNode> newMNode = make_unique<NOperNode>('*');
 				newMNode->AddChild(nOperNode.GetChild(i).Clone());
-				for (int i = 0; i < node->ChildCount(); i++)
+				for (int j = 0; j < node->ChildCount(); j++)
 				{
-					if (&node->GetChild(i) != uOperNode) {
-						newMNode->AddChild(node->GetChild(i).Clone());
+					if (&node->GetChild(j) != uOperNode) {
+						newMNode->AddChild(node->GetChild(j).Clone());
 					}
 				}
 				newANode->AddChild(move(newMNode));

@@ -1,4 +1,5 @@
 ﻿using Calculator.ExpressionTree.Nodes;
+using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Values;
 
@@ -17,6 +18,16 @@ namespace Calculator
             return new FloatValueNode(value);
         }
 
+        public static AdditionOperNode Add(params ExpNode[] nodes)
+        {
+            AdditionOperNode aNode = new AdditionOperNode();
+            foreach (var node in nodes)
+            {
+                aNode.AddChild(node);
+            }
+            return aNode;
+        }
+
         public static MultiplicationOperNode Multiply(params ExpNode[] nodes)
         {
             MultiplicationOperNode mNode = new MultiplicationOperNode();
@@ -30,6 +41,14 @@ namespace Calculator
         public static MultiplicationOperNode Multiply(double value, ExpNode node)
         {
             return Multiply(MakeValueNode(value), node);
+        }
+
+        public static PowOperNode Pow(ExpNode left, ExpNode right)
+        {
+            PowOperNode powNode = new PowOperNode();
+            powNode.LeftChild = left;
+            powNode.RightChild = right;
+            return powNode;
         }
     }
 }

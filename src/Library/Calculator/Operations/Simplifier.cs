@@ -52,6 +52,41 @@ namespace Calculator.Operations
             return node;
         }
 
+        public override ExpNode Execute(MultiplicationOperNode node)
+        {
+            double valueProg = 1;
+                
+            for (int i = 0; i < node.ChildCount; i++)
+            {
+                ExpNode simpleChild = node.GetChild(i).Execute(this);
+
+                if (simpleChild is NumericalValueNode nvNode)
+                {
+                    valueProg *= nvNode.DoubleValue;
+                    node.RemoveChild(i);
+                    i--;
+                }
+            }
+
+            // Anything multiplied by 0, is zero
+            if (valueProg == 0) return Helpers.MakeValueNode(0);
+
+            if (node.ChildCount == 0 || valueProg != 1) node.AddChild(Helpers.MakeValueNode(valueProg));
+
+            SimplfiyMTerms(node);
+
+            if (node.ChildCount == 0)
+            {
+                return Helpers.MakeValueNode(0);
+            }
+            else if (node.ChildCount == 1)
+            {
+                return node.GetChild(0);
+            }
+
+            return Distribute(node);
+        }
+
         public override ExpNode Execute(PowOperNode node)
         {
             node.LeftChild = node.LeftChild.Execute(this);
@@ -124,6 +159,60 @@ namespace Calculator.Operations
             foreach (var term in aTerms)
             {
                 node.AddChild(term.AsExpNode());
+            }
+
+            return node;
+        }
+
+        private MultiplicationOperNode SimplfiyMTerms(MultiplicationOperNode node)
+        {
+            SortedSet<MultiplicativeTerm> mTerms = new SortedSet<MultiplicativeTerm>();
+
+            for (int i = 0; i < node.ChildCount; i++)
+            {
+                MultiplicativeTerm mTerm = new MultiplicativeTerm(node.GetChild(i));
+                MultiplicativeTerm existingMTerm;
+
+                if (mTerms.TryGetValue(mTerm, out existingMTerm))
+                {
+                    existingMTerm.AddToExponent(mTerm, this);
+                } else
+                {
+                    mTerms.Add(mTerm);
+                }
+            }
+
+            node.ClearChildren();
+            foreach (var term in mTerms)
+            {
+                node.AddChild(term.AsExpNode());
+            }
+
+            return node;
+        }
+
+        private ExpNode Distribute(MultiplicationOperNode node)
+        {
+            if (node.GetChild(node.ChildCount-1) is ParenthesisOperNode parNode)
+            {
+                // Last child is parenthesis
+                if (parNode.Child is AdditionOperNode aNode)
+                {
+                    // Last grandchild is addition
+                    for (int i = 0; i < aNode.ChildCount; i++)
+                    {
+                        MultiplicationOperNode mNode = new MultiplicationOperNode();
+                        mNode.AddChild(aNode.GetChild(i));
+                        for (int j = 0; j < node.ChildCount-1; j++)
+                        {
+                            mNode.AddChild(node.GetChild(j).Clone());
+                        }
+
+                        aNode.ReplaceChild(mNode, i);
+                    }
+
+                    return aNode.Execute(this);
+                }
             }
 
             return node;

@@ -246,10 +246,10 @@ namespace Calculator.Parser.Default
                 case State.INT:
                 case State.FLOAT:
                     CompleteValue();
-                    goto case State.UOPER;
+                    goto case State.VALUE;
                 case State.VALUE:
                 case State.VARIABLE:
-                    _tree.AddNode(new MultiplicationOperNode());
+                    if (c == '(') _tree.AddNode(new MultiplicationOperNode());
                     goto case State.UOPER;
                 case State.UOPER:
                 case State.NOPER:

@@ -18,6 +18,20 @@ namespace Calculator.ExpressionTree.Nodes.Collections
 
         public TensorNode(TensorNode node) : base(node) { }
 
+        public string SizeIdentity
+        {
+            get
+            {
+                string cache = "";
+                for (int i = 0; i < _dimensionCount; i++)
+                {
+                    cache += _sizes[i];
+                    if (i != _dimensionCount-1) cache += ',';
+                }
+                return cache;
+            }
+        }
+
         public TensorType TensorType => (TensorType)_dimensionCount;
 
         public int DimensionCount => _dimensionCount;

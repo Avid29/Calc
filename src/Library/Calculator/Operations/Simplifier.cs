@@ -51,9 +51,7 @@ namespace Calculator.Operations
                 return node.GetChild(0);
             }
 
-            // TODO: Tensor addition
-
-            return node;
+            return SumTensors(node);
         }
 
         public override ExpNode Execute(DiffOperNode node)
@@ -335,6 +333,41 @@ namespace Calculator.Operations
                 }
             }
             return node;
+        }
+
+        private ExpNode SumTensors(AdditionOperNode node)
+        {
+            Dictionary<string, TensorNode> nodeMap = new Dictionary<string, TensorNode>();
+            AdditionOperNode aNode = new AdditionOperNode();
+            for (int i = 0; i < node.ChildCount; i++)
+            {
+                if (node.GetChild(i) is TensorNode tensorNode)
+                {
+                    string identity = tensorNode.SizeIdentity;
+                    if (nodeMap.ContainsKey(identity))
+                    {
+                        for (int j = 0; j < tensorNode.ChildCount; j++)
+                        {
+                            TensorNode mapTensor = nodeMap[identity];
+                            ExpNode addedChild = Helpers.Add(mapTensor.GetChild(i), tensorNode.GetChild(i));
+                            mapTensor.ReplaceChild(addedChild.Execute(this), j);
+                        }
+                    } else
+                    {
+                        nodeMap.Add(identity, tensorNode);
+                    }
+                } else
+                {
+                    aNode.AddChild(node.GetChild(i));
+                }
+            }
+
+            foreach (TensorNode tensor in nodeMap.Values)
+            {
+                aNode.AddChild(tensor);
+            }
+
+            return aNode;
         }
     }
 }

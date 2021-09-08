@@ -4,6 +4,7 @@ using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
+using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
 using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Printers.Abstract;
 
@@ -83,6 +84,27 @@ namespace Calculator.Printers.Default
                     return $"-{node.Child.Print(this)}";
                 default:
                     return node.Child.Print(this);
+            }
+        }
+
+        public override string Print(SineOperNode node)
+        {
+            switch (node.SineFunc)
+            {
+                case SineFunc.SINE:
+                    return $"\\sin{{{node.Child.Print(this)}}}";
+                case SineFunc.COSINE:
+                    return $"\\cos{{{node.Child.Print(this)}}}";
+                case SineFunc.TANGENT:
+                    return $"\\tan{{{node.Child.Print(this)}}}";
+                case SineFunc.COSECANT:
+                    return $"\\csc{{{node.Child.Print(this)}}}";
+                case SineFunc.SECANT:
+                    return $"\\sec{{{node.Child.Print(this)}}}";
+                case SineFunc.COTANGENT:
+                    return $"\\cot{{{node.Child.Print(this)}}}";
+                default:
+                    return null;
             }
         }
 

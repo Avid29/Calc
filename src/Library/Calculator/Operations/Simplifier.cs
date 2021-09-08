@@ -36,6 +36,10 @@ namespace Calculator.Operations
                     node.RemoveChild(i);
                     i--;
                 }
+                else
+                {
+                    node.ReplaceChild(simpleChild, i);
+                }
             }
 
             if (node.ChildCount == 0 || valueProg != 0) node.AddChild(Helpers.MakeValueNode(valueProg));
@@ -184,7 +188,7 @@ namespace Calculator.Operations
                             return Helpers.MakeValueNode(nvNode.DoubleValue * -1);
                         }
 
-                        goto default;
+                        return Helpers.Multiply(-1, node.Child);
                     }
                 default:
                     return node;

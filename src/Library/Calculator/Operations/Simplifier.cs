@@ -3,6 +3,7 @@ using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers;
+using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
 using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.ExpressionTree.Terms;
 using Calculator.Operations.Abstract;
@@ -124,6 +125,41 @@ namespace Calculator.Operations
         public override ExpNode Execute(ParenthesisOperNode node)
         {
             return node.Child;
+        }
+
+        public override ExpNode Execute(SineOperNode node)
+        {
+            node.Child = node.Child.Execute(this);
+            
+            if (node.Child is NumericalValueNode nvNode)
+            {
+                double value = 0;
+                switch (node.SineFunc)
+                {
+                    case SineFunc.SINE:
+                        value = Math.Sin(nvNode.DoubleValue);
+                        break;
+                    case SineFunc.COSINE:
+                        value = Math.Cos(nvNode.DoubleValue);
+                        break;
+                    case SineFunc.TANGENT:
+                        value = Math.Tan(nvNode.DoubleValue);
+                        break;
+                    case SineFunc.COSECANT:
+                        value = 1 / Math.Sin(nvNode.DoubleValue);
+                        break;
+                    case SineFunc.SECANT:
+                        value = 1/ Math.Cos(nvNode.DoubleValue);
+                        break;
+                    case SineFunc.COTANGENT:
+                        value = 1/ Math.Tan(nvNode.DoubleValue);
+                        break;
+                }
+
+                return Helpers.MakeValueNode(value);
+            }
+
+            return node;
         }
 
         public override ExpNode Execute(TensorNode node)

@@ -14,7 +14,7 @@ namespace Calculator.ExpressionTree.Nodes.Operators
             Child = node.Child;
         }
 
-        public ExpNode Child { get; protected set; }
+        public ExpNode Child { get; set; }
 
         public override int ChildCount => Child == null ? 0 : 1;
 

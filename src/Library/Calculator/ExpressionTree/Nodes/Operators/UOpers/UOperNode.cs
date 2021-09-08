@@ -1,4 +1,6 @@
 ﻿using Calculator.Exceptions.ExpressionTree;
+using Calculator.ExpressionTree.Nodes.Operators.UOpers;
+using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
 using System;
 
 namespace Calculator.ExpressionTree.Nodes.Operators
@@ -15,6 +17,20 @@ namespace Calculator.ExpressionTree.Nodes.Operators
         public ExpNode Child { get; protected set; }
 
         public override int ChildCount => Child == null ? 0 : 1;
+
+        public static UOperNode MakeUOperNode(char c)
+        {
+            switch (c)
+            {
+                case '+':
+                case '-':
+                    return new SignOperNode(c);
+                case '/':
+                    return new RecipricalOperNode();
+                default:
+                    return null;
+            }
+        }
 
         public override void AddChild(ExpNode node)
         {

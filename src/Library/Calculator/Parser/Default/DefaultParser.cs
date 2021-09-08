@@ -50,7 +50,7 @@ namespace Calculator.Parser.Default
 
             Finalize();
 
-            return new  ParserStatus(_input, _position);
+            return new ParserStatus(_input, _position);
         }
 
         public ParserStatus ParseNextChar(char c, bool hasFullString = false)
@@ -218,6 +218,7 @@ namespace Calculator.Parser.Default
 
             if (c == '-' || c == '/')
             {
+                _tree.AddNode(UOperNode.MakeUOperNode(c));
                 _state = State.UOPER;
             }
 

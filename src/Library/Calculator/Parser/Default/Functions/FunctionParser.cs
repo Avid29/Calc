@@ -31,6 +31,8 @@ namespace Calculator.Parser.Default.Functions
                 case "sec":
                 case "cot":
                     return new SinusoidalFuncParser(functionName);
+                case "diff":
+                    return new DiffFuncParser();
                 default:
                     return null;
             }

@@ -1,6 +1,7 @@
 ﻿using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Operators;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers;
+using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
 using Calculator.ExpressionTree.Nodes.Values;
 
 namespace Calculator.ExpressionTree
@@ -42,7 +43,7 @@ namespace Calculator.ExpressionTree
 
         public void AddNode(OperNode node)
         {
-            bool insert = !(node is UOperNode);
+            bool insert = !(node is SignOperNode);
 
             if (_activeNode == null)
             {
@@ -62,7 +63,6 @@ namespace Calculator.ExpressionTree
             }
 
             FindInsertionNode(node);
-
 
             if (node.Priority > _activeNode.Priority)
             {

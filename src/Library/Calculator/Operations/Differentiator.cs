@@ -76,7 +76,7 @@ namespace Calculator.Operations
         {
             // Apply chain rule
             var coefficient = node.Child.Clone().Execute(this);
-            // Apply derivative tabl
+            // Apply table
             var sinFunc = SineTable(node);
             return Helpers.Multiply(coefficient, sinFunc);
         }

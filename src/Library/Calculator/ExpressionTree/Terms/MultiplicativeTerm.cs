@@ -61,12 +61,12 @@ namespace Calculator.ExpressionTree.Terms
                 // Numbers first
                 return 1;
             }
-            else if (_baseString[0] == '(')
+            else if (!string.IsNullOrEmpty(_baseString) && _baseString[0] == '(')
             {
                 // Parenthesis last
                 return 1;
             }
-            else if (other._baseString[0] == '(')
+            else if (!string.IsNullOrEmpty(other._baseString) && other._baseString[0] == '(')
             {
                 // Parenthesis last
                 return -1;

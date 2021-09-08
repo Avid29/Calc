@@ -21,7 +21,7 @@ namespace Calculator.ExpressionTree.Nodes.Values
 
         public override ExpNode Clone()
         {
-            throw new System.NotImplementedException();
+            return new FloatValueNode(this);
         }
 
         public override ExpNode Execute(Operation operation)

@@ -67,6 +67,12 @@ namespace Calculator.Operations
             return node;
         }
 
+        public override ExpNode Execute(IntegralOperNode node)
+        {
+            Integrator integrator = new Integrator(node.Variable);
+            return node.Child.Execute(this).Execute(integrator).Execute(this);
+        }
+
         public override ExpNode Execute(MultiplicationOperNode node)
         {
             double valueProg = 1;
@@ -143,11 +149,26 @@ namespace Calculator.Operations
 
         public override ExpNode Execute(ParenthesisOperNode node)
         {
-            return node.Child;
+            // Remove Parenthesis if unnecessary
+            if (node.Child is ValueNode || node.IsRoot || node.Priority >= node.Child.Priority) return node.Child;
+            return node;
+        }
+
+        public override ExpNode Execute(RecipricalOperNode node)
+        {
+            node.Child = node.Child.Execute(this);
+
+            if (node.Child is NumericalValueNode nvNode)
+            {
+                return Helpers.MakeValueNode(1 / nvNode.DoubleValue);
+            }
+
+            return node;
         }
 
         public override ExpNode Execute(SignOperNode node)
         {
+            node.Child = node.Child.Execute(this);
             switch (node.Sign)
             {
                 case Sign.POSITIVE:

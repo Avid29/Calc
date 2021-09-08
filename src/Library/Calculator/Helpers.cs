@@ -1,6 +1,7 @@
 ﻿using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
+using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
 using Calculator.ExpressionTree.Nodes.Values;
 
@@ -54,12 +55,22 @@ namespace Calculator
             return new SignOperNode(Sign.NEGATIVE) { Child = node };
         }
 
-        public static PowOperNode Pow(ExpNode left, ExpNode right)
+        public static PowOperNode Pow(ExpNode @base, ExpNode expnonent)
         {
             PowOperNode powNode = new PowOperNode();
-            powNode.LeftChild = left;
-            powNode.RightChild = right;
+            powNode.LeftChild = @base;
+            powNode.RightChild = expnonent;
             return powNode;
+        }
+
+        public static PowOperNode Pow(ExpNode @base, double exponent)
+        {
+            return Pow(@base, MakeValueNode(exponent));
+        }
+
+        public static RecipricalOperNode Reciprical(ExpNode node)
+        {
+            return new RecipricalOperNode() { Child = node };
         }
     }
 }

@@ -43,6 +43,8 @@ namespace Calculator.Operations.Abstract
 
         public virtual ExpNode Execute(PowOperNode node) => Execute((BOperNode)node);
 
+        public virtual ExpNode Execute(RecipricalOperNode node) => Execute((UOperNode)node);
+
         public virtual ExpNode Execute(SineOperNode node) => Execute((UOperNode)node);
 
         public virtual ExpNode Execute(SignOperNode node) => Execute((UOperNode)node);

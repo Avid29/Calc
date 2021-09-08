@@ -151,7 +151,7 @@ namespace Calculator.Operations
         public override ExpNode Execute(ParenthesisOperNode node)
         {
             // Remove Parenthesis if unnecessary
-            if (node.Child is ValueNode || node.IsRoot || node.Priority >= node.Child.Priority) return node.Child;
+            if (node.Child is ValueNode || node.IsRoot || node.Parent.Priority >= node.Child.Priority) return node.Child;
             return node;
         }
 

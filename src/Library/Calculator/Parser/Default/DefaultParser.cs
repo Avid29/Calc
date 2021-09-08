@@ -245,7 +245,7 @@ namespace Calculator.Parser.Default
                 case State.INT:
                 case State.FLOAT:
                     CompleteValue();
-                    goto case State.VALUE;
+                    goto case State.UOPER;
                 case State.VALUE:
                 case State.VARIABLE:
                     _tree.AddNode(new MultiplicationOperNode());

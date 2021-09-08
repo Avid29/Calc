@@ -1,4 +1,5 @@
 ﻿using Calculator.ExpressionTree.Nodes;
+using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
@@ -71,6 +72,17 @@ namespace Calculator.Operations
             // Apply derivative tabl
             var sinFunc = SineTable(node);
             return Helpers.Multiply(coefficient, sinFunc);
+        }
+
+        public override ExpNode Execute(TensorNode node)
+        {
+            for (int i = 0; i < node.ChildCount; i++)
+            {
+                ExpNode diffChild = node.GetChild(i).Execute(this);
+                node.ReplaceChild(diffChild, i);
+            }
+
+            return node;
         }
 
         public override ExpNode Execute(VarValueNode node)

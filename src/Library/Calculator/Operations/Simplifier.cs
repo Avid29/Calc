@@ -4,13 +4,49 @@ using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Values;
+using Calculator.ExpressionTree.Terms;
 using Calculator.Operations.Abstract;
 using System;
+using System.Collections.Generic;
 
 namespace Calculator.Operations
 {
     public class Simplifier : Operation
     {
+        public override ExpNode Execute(AdditionOperNode node)
+        {
+            double valueProg = 0;
+
+            for (int i = 0; i < node.ChildCount; i++)
+            {
+                ExpNode simpleChild = node.GetChild(i).Execute(this);
+
+                if (simpleChild is NumericalValueNode nvNode)
+                {
+                    valueProg += nvNode.DoubleValue;
+                    node.RemoveChild(i);
+                    i--;
+                }
+            }
+
+            if (node.ChildCount == 0 || valueProg != 0) node.AddChild(Helpers.MakeValueNode(valueProg));
+
+            SimplfiyATerms(node);
+            
+            if (node.ChildCount == 0)
+            {
+                return Helpers.MakeValueNode(0);
+            }
+            else if (node.ChildCount == 1)
+            {
+                return node.GetChild(0);
+            }
+
+            // TODO: Tensor addition
+
+            return node;
+        }
+
         public override ExpNode Execute(ExpNode node)
         {
             return node;
@@ -61,6 +97,33 @@ namespace Calculator.Operations
             {
                 ExpNode simpleChild = node.GetChild(i).Execute(this);
                 node.ReplaceChild(simpleChild, i);
+            }
+
+            return node;
+        }
+
+        private AdditionOperNode SimplfiyATerms(AdditionOperNode node)
+        {
+            SortedSet<AdditiveTerm> aTerms = new SortedSet<AdditiveTerm>();
+
+            for (int i = 0; i < node.ChildCount; i++)
+            {
+                AdditiveTerm aTerm = new AdditiveTerm(node.GetChild(i));
+                AdditiveTerm existingATerm;
+
+                if (aTerms.TryGetValue(aTerm, out existingATerm))
+                {
+                    existingATerm.AddToCoefficient(aTerm);
+                } else
+                {
+                    aTerms.Add(aTerm);
+                }
+            }
+
+            node.ClearChildren();
+            foreach (var term in aTerms)
+            {
+                node.AddChild(term.AsExpNode());
             }
 
             return node;

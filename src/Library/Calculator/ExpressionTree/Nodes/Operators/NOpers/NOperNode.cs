@@ -62,6 +62,11 @@ namespace Calculator.ExpressionTree.Nodes.Operators
             AddChild(node);
         }
 
+        public void RemoveChild(int index)
+        {
+            Children.RemoveAt(index);
+        }
+
         public override ExpNode GetChild(int index)
         {
             return Children[index];

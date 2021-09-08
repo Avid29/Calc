@@ -4,6 +4,11 @@ namespace Calculator.ExpressionTree.Nodes.Collections
 {
     public abstract class EnumerableCollectionNode : BranchNode
     {
+        public EnumerableCollectionNode()
+        {
+            Children = new List<ExpNode>();
+        }
+
         public EnumerableCollectionNode(EnumerableCollectionNode node)
         {
             Children = new List<ExpNode>();

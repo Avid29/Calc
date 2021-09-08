@@ -5,7 +5,7 @@ namespace Calculator.Parser.Default.Functions
 {
     public class SinusoidalFuncParser : FunctionParser
     {
-        protected DefaultParser _childParser;
+        private DefaultParser _childParser;
 
         public SineFunc SineFunc { get; }
 

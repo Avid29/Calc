@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\BranchNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Collections\EnumerableCollectionNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Collections\TensorNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Collections\TensorType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\ExpNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\BOpers\BOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\BOpers\PowOperNode.cs" />

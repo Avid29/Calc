@@ -9,6 +9,17 @@ namespace Calculator.Parser.Default.Functions
 
         public BranchNode Output { get; protected set; }
 
+        public static FunctionParser MakeFunctionParser(char c)
+        {
+            switch (c)
+            {
+                case '<':
+                    return new VectorParser();
+                default:
+                    return null;
+            }
+        }
+
         public static FunctionParser MakeFunctionParser(string functionName)
         {
             switch (functionName)

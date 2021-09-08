@@ -274,7 +274,14 @@ namespace Calculator.Parser.Default
                             _parenthesisDepth--;
                             _tree.CloseParenthesis();
                             _state = State.VALUE;
-                        } else
+                        }
+                        else if (c == '<')
+                        {
+                            _activeFunctionParser = FunctionParser.MakeFunctionParser(c);
+                            _activeFunctionParser.ParseFirstChar(c);
+                            _state = State.FUNCTION;
+                        }
+                        else
                         {
                             return EnterErrorState(ErrorType.UNPAIRED_PARENTHESIS);
                         }

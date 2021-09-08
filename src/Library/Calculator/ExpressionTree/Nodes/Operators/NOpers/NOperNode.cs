@@ -76,5 +76,13 @@ namespace Calculator.ExpressionTree.Nodes.Operators
         {
             Children.Clear();
         }
+
+        public void TransferChildren(NOperNode node)
+        {
+            foreach (var child in Children)
+            {
+                node.AddChild(child);
+            }
+        }
     }
 }

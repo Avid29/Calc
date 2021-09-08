@@ -25,15 +25,17 @@ namespace Calculator.Operations.Abstract
 
         public abstract ExpNode Execute(ExpNode node);
 
-        public virtual ExpNode Execute(FloatValueNode node) => Execute((ValueNode)node);
+        public virtual ExpNode Execute(FloatValueNode node) => Execute((NumericalValueNode)node);
 
         public virtual ExpNode Execute(IntegralOperNode node) => Execute((OperNode)node);
 
-        public virtual ExpNode Execute(IntValueNode node) => Execute((ValueNode)node);
+        public virtual ExpNode Execute(IntValueNode node) => Execute((NumericalValueNode)node);
 
         public virtual ExpNode Execute(MultiplicationOperNode node) => Execute((NOperNode)node);
 
         public virtual ExpNode Execute(NOperNode node) => Execute((OperNode)node);
+
+        public virtual ExpNode Execute(NumericalValueNode node) => Execute((ValueNode)node);
 
         public virtual ExpNode Execute(OperNode node) => Execute((BranchNode)node);
 

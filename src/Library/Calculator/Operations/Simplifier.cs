@@ -1,6 +1,7 @@
 ﻿using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
+using Calculator.ExpressionTree.Nodes.Operators.Functions;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
@@ -29,6 +30,12 @@ namespace Calculator.Operations
                     node.RemoveChild(i);
                     i--;
                 }
+                else if (simpleChild is AdditionOperNode aNode)
+                {
+                    aNode.TransferChildren(node);
+                    node.RemoveChild(i);
+                    i--;
+                }
             }
 
             if (node.ChildCount == 0 || valueProg != 0) node.AddChild(Helpers.MakeValueNode(valueProg));
@@ -49,6 +56,12 @@ namespace Calculator.Operations
             return node;
         }
 
+        public override ExpNode Execute(DiffOperNode node)
+        {
+            Differentiator differentiator = new Differentiator(node.Variable);
+            return node.Child.Execute(this).Execute(differentiator).Execute(this);
+        }
+
         public override ExpNode Execute(ExpNode node)
         {
             return node;
@@ -65,6 +78,11 @@ namespace Calculator.Operations
                 if (simpleChild is NumericalValueNode nvNode)
                 {
                     valueProg *= nvNode.DoubleValue;
+                    node.RemoveChild(i);
+                    i--;
+                } else if (simpleChild is MultiplicationOperNode mNode)
+                {
+                    mNode.TransferChildren(node);
                     node.RemoveChild(i);
                     i--;
                 }

@@ -28,6 +28,11 @@ namespace Calculator
             return aNode;
         }
 
+        public static AdditionOperNode Add(double value, ExpNode node)
+        {
+            return Add(MakeValueNode(value), node);
+        }
+
         public static MultiplicationOperNode Multiply(params ExpNode[] nodes)
         {
             MultiplicationOperNode mNode = new MultiplicationOperNode();

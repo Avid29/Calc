@@ -1,10 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Calculator.ExpressionTree.Nodes;
+using Calculator.ExpressionTree.Nodes.Operators.BOpers;
+using Calculator.ExpressionTree.Nodes.Operators.NOpers;
+using Calculator.ExpressionTree.Nodes.Values;
+using Calculator.Operations.Abstract;
 
 namespace Calculator.Operations
 {
-    class Differentiator
+    public class Differentiator : Operation
     {
+        private VarValueNode _variable;
+
+        public Differentiator(VarValueNode variable)
+        {
+            _variable = variable;
+        }
+
+        public override ExpNode Execute(AdditionOperNode node)
+        {
+            // Sum rule
+            for (int i = 0; i < node.ChildCount; i++)
+            {
+                ExpNode diffChild = node.GetChild(i).Execute(this);
+                node.ReplaceChild(diffChild, i);
+            }
+
+            return node;
+        }
+
+        public override ExpNode Execute(ExpNode node)
+        {
+            return node;
+        }
+
+        public override ExpNode Execute(MultiplicationOperNode node)
+        {
+            // Product rule
+            AdditionOperNode aNode = new AdditionOperNode();
+            for (int i = 0; i < node.ChildCount; i++)
+            {
+                MultiplicationOperNode mNode = new MultiplicationOperNode();
+                mNode.AddChild(node.GetChild(i).Clone().Execute(this));
+                for (int j = 0; j < node.ChildCount; j++)
+                {
+                    if (j != i) mNode.AddChild(node.GetChild(j).Clone());
+                }
+
+                aNode.AddChild(mNode);
+            }
+            return aNode;
+        }
+
+        public override ExpNode Execute(NumericalValueNode node)
+        {
+            return Helpers.MakeValueNode(0);
+        }
+
+        public override ExpNode Execute(PowOperNode node)
+        {
+            var coefficient = node.RightChild;
+            var @base = node.LeftChild;
+            var exponent = Helpers.Add(-1, node.RightChild);
+            return Helpers.Multiply(coefficient, Helpers.Pow(@base, exponent));
+        }
+
+        public override ExpNode Execute(VarValueNode node)
+        {
+            return Helpers.MakeValueNode(node.Character == _variable.Character ? 1 : 0);
+        }
     }
 }

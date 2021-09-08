@@ -8,16 +8,15 @@ namespace Calculator.ExpressionTree
     public class ExpTree
     {
         private BranchNode _activeNode;
-        private ExpNode _rootNode;
 
-        public ExpNode Root => _rootNode;
+        public ExpNode Root { get; private set; }
 
         public void AddNode(ValueNode node)
         {
             if (_activeNode == null)
             {
                 // If first node
-                _rootNode = node;
+                Root = node;
             }
             else
             {
@@ -33,7 +32,7 @@ namespace Calculator.ExpressionTree
             }
             else if (_activeNode == null)
             {
-                _rootNode = node;
+                Root = node;
             }
             else
             {
@@ -43,21 +42,21 @@ namespace Calculator.ExpressionTree
 
         public void AddNode(OperNode node)
         {
-            bool insert = node is UOperNode;
+            bool insert = !(node is UOperNode);
 
             if (_activeNode == null)
             {
                 // This is the first Branch Node
-                if (_rootNode != null)
+                if (Root != null)
                 {
                     // The first node is often a ValueNode
                     // That is the only time a ValueNode will be the active or root node
 
                     // Makes node the new active_node
-                    node.AddChild(_rootNode);
+                    node.AddChild(Root);
                 }
 
-                _rootNode = node;
+                Root = node;
                 _activeNode = node;
                 return;
             }
@@ -74,7 +73,14 @@ namespace Calculator.ExpressionTree
                 {
                     InsertOperNode(node, insert);
                 }
-            } else if (node.Priority == _activeNode.Priority && (node is NOperNode))
+                else if (Root == _activeNode)
+                {
+                    // node is new root
+                    node.AddChild(Root);
+                    Root = node;
+                }
+            }
+            else if (node.Priority == _activeNode.Priority && (node is NOperNode))
             {
                 for (int i = 0; i < node.ChildCount; i++)
                 {
@@ -82,7 +88,8 @@ namespace Calculator.ExpressionTree
                 }
 
                 return;
-            } else
+            }
+            else
             {
                 InsertOperNode(node, insert);
             }

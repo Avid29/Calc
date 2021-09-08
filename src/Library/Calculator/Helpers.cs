@@ -1,6 +1,7 @@
 ﻿using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
+using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
 using Calculator.ExpressionTree.Nodes.Values;
 
 namespace Calculator
@@ -46,6 +47,11 @@ namespace Calculator
         public static MultiplicationOperNode Multiply(double value, ExpNode node)
         {
             return Multiply(MakeValueNode(value), node);
+        }
+
+        public static SignOperNode Negative(ExpNode node)
+        {
+            return new SignOperNode(Sign.NEGATIVE) { Child = node };
         }
 
         public static PowOperNode Pow(ExpNode left, ExpNode right)

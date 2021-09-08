@@ -10,6 +10,11 @@ namespace Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode
             Sign = node.Sign;
         }
 
+        public SignOperNode(Sign sign)
+        {
+            Sign = sign;
+        }
+
         public SignOperNode(char c)
         {
             switch (c)

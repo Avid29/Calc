@@ -1,6 +1,7 @@
 ﻿using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
+using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
 using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Operations.Abstract;
 
@@ -63,9 +64,31 @@ namespace Calculator.Operations
             return Helpers.Multiply(coefficient, Helpers.Pow(@base, exponent));
         }
 
+        public override ExpNode Execute(SineOperNode node)
+        {
+            // Apply chain rule
+            var coefficient = node.Child.Clone().Execute(this);
+            // Apply derivative tabl
+            var sinFunc = SineTable(node);
+            return Helpers.Multiply(coefficient, sinFunc);
+        }
+
         public override ExpNode Execute(VarValueNode node)
         {
             return Helpers.MakeValueNode(node.Character == _variable.Character ? 1 : 0);
+        }
+
+        private ExpNode SineTable(SineOperNode node)
+        {
+            switch (node.SineFunc)
+            {
+                case SineFunc.SINE:
+                    return new SineOperNode(SineFunc.COSINE) { Child = node.Child };
+                case SineFunc.COSINE:
+                    return Helpers.Negative(new SineOperNode(SineFunc.SINE) { Child = node.Child });
+                default:
+                    return node;
+            }
         }
     }
 }

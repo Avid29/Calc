@@ -59,6 +59,7 @@ namespace Calculator.ExpressionTree
 
                 _rootNode = node;
                 _activeNode = node;
+                return;
             }
 
             FindInsertionNode(node);

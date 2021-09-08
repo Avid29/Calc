@@ -43,7 +43,7 @@ namespace Calculator.ExpressionTree
 
         public void AddNode(OperNode node)
         {
-            bool insert = !(node is SignOperNode);
+            bool insert = !(node is UOperNode);
 
             if (_activeNode == null)
             {

@@ -2,6 +2,7 @@
 using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
+using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
 using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Operations.Abstract;
@@ -63,6 +64,12 @@ namespace Calculator.Operations
             var @base = node.LeftChild;
             var exponent = Helpers.Add(-1, node.RightChild);
             return Helpers.Multiply(coefficient, Helpers.Pow(@base, exponent));
+        }
+
+        public override ExpNode Execute(ParenthesisOperNode node)
+        {
+            node.Child = node.Child.Execute(this);
+            return node;
         }
 
         public override ExpNode Execute(SineOperNode node)

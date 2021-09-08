@@ -1,5 +1,4 @@
 ﻿using Calculator.ExpressionTree;
-using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Operators;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
@@ -34,6 +33,16 @@ namespace Calculator.Parser.Default
         }
 
         public ExpTree Tree => _state == State.DONE ? _tree : null;
+
+        public static ParserStatus Parse(string equation, out ExpTree tree)
+        {
+            DefaultParser parser = new DefaultParser();
+            ParserStatus result = parser.ParseString(equation);
+
+            // Errors are automatically handled like this
+            tree = parser.Tree;
+            return result;
+        }
 
         public ParserStatus ParseString(string expression)
         {

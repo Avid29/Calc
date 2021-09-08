@@ -3,6 +3,7 @@ using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers;
+using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
 using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.ExpressionTree.Terms;
@@ -125,6 +126,26 @@ namespace Calculator.Operations
         public override ExpNode Execute(ParenthesisOperNode node)
         {
             return node.Child;
+        }
+
+        public override ExpNode Execute(SignOperNode node)
+        {
+            switch (node.Sign)
+            {
+                case Sign.POSITIVE:
+                    return node.Child;
+                case Sign.NEGATIVE:
+                    {
+                        if (node.Child is NumericalValueNode nvNode)
+                        {
+                            return Helpers.MakeValueNode(nvNode.DoubleValue * -1);
+                        }
+
+                        goto default;
+                    }
+                default:
+                    return node;
+            }
         }
 
         public override ExpNode Execute(SineOperNode node)

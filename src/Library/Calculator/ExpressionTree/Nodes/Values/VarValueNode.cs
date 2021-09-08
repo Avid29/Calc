@@ -27,6 +27,14 @@ namespace Calculator.ExpressionTree.Nodes.Values
             return operation.Execute(this);
         }
 
+        public override bool IsConstant() => false;
+
+        public override bool IsConstantBy(VarValueNode variable)
+        {
+            if (variable.Character == this.Character) return false;
+            return true;
+        }
+
         public override string Print(Printer printer)
         {
             return printer.Print(this);

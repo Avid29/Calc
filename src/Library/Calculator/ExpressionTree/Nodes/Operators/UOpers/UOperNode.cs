@@ -1,6 +1,7 @@
 ﻿using Calculator.Exceptions.ExpressionTree;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
+using Calculator.ExpressionTree.Nodes.Values;
 using System;
 
 namespace Calculator.ExpressionTree.Nodes.Operators
@@ -91,6 +92,16 @@ namespace Calculator.ExpressionTree.Nodes.Operators
         public bool HasChild()
         {
             return Child != null;
+        }
+
+        public override bool IsConstant()
+        {
+            return Child.IsConstant();
+        }
+
+        public override bool IsConstantBy(VarValueNode variable)
+        {
+            return Child.IsConstantBy(variable);
         }
     }
 }

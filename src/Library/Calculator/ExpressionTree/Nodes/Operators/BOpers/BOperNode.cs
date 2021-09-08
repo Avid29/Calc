@@ -1,4 +1,5 @@
 ﻿using Calculator.Exceptions.ExpressionTree;
+using Calculator.ExpressionTree.Nodes.Values;
 using System;
 
 namespace Calculator.ExpressionTree.Nodes.Operators
@@ -97,6 +98,16 @@ namespace Calculator.ExpressionTree.Nodes.Operators
         {
             LeftChild = null;
             RightChild = null;
+        }
+
+        public override bool IsConstant()
+        {
+            return LeftChild.IsConstant() && RightChild.IsConstant();
+        }
+
+        public override bool IsConstantBy(VarValueNode variable)
+        {
+            return LeftChild.IsConstantBy(variable) && RightChild.IsConstantBy(variable);
         }
     }
 }

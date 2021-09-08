@@ -1,4 +1,5 @@
 ﻿using Calculator.ExpressionTree.Nodes.Operators.NOpers;
+using Calculator.ExpressionTree.Nodes.Values;
 using System.Collections.Generic;
 
 namespace Calculator.ExpressionTree.Nodes.Operators
@@ -83,6 +84,24 @@ namespace Calculator.ExpressionTree.Nodes.Operators
             {
                 node.AddChild(child);
             }
+        }
+
+        public override bool IsConstant()
+        {
+            foreach (var child in Children)
+            {
+                if (!child.IsConstant()) return false;
+            }
+            return true;
+        }
+
+        public override bool IsConstantBy(VarValueNode variable)
+        {
+            foreach (var child in Children)
+            {
+                if (!child.IsConstantBy(variable)) return false;
+            }
+            return true;
         }
     }
 }

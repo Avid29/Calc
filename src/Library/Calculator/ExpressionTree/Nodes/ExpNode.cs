@@ -1,4 +1,5 @@
-﻿using Calculator.Operations.Abstract;
+﻿using Calculator.ExpressionTree.Nodes.Values;
+using Calculator.Operations.Abstract;
 using Calculator.Printers.Abstract;
 
 namespace Calculator.ExpressionTree.Nodes
@@ -11,10 +12,14 @@ namespace Calculator.ExpressionTree.Nodes
 
         public bool IsRoot => Parent == null;
 
+        public abstract ExpNode Clone();
+
         public abstract ExpNode Execute(Operation operation);
 
         public abstract string Print(Printer printer);
 
-        public abstract ExpNode Clone();
+        public abstract bool IsConstant();
+
+        public abstract bool IsConstantBy(VarValueNode variable);
     }
 }

@@ -195,7 +195,7 @@ unique_ptr<ExpNode> Simplifier::Execute(const NOperNode& node) {
 	}
 
 	if (newNode->ChildCount() == 0) {
-		return MakeValueNode(node.GetOperator() == Operator::MULTIPLICATION ? 1 : 0);
+		return MakeValueNode(0);
 	}
 	else if (newNode->ChildCount() == 1) {
 		// No more operations to be run, and trim child's parent node

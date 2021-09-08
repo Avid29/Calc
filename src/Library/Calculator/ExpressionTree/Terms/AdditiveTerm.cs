@@ -54,10 +54,10 @@ namespace Calculator.ExpressionTree.Terms
         {
             if (_base is NumericalValueNode)
             {
-                return -1;
+                return 1;
             } else if (other._base is NumericalValueNode)
             {
-                return 1;
+                return -1;
             } else
             {
                 return _baseString.CompareTo(other._baseString);

@@ -1,4 +1,5 @@
 ﻿using Calculator.ExpressionTree.Nodes;
+using Calculator.ExpressionTree.Nodes.Operators.Functions;
 using Calculator.Parser.Default.Status;
 
 namespace Calculator.Parser.Default.Functions
@@ -33,6 +34,8 @@ namespace Calculator.Parser.Default.Functions
                     return new SinusoidalFuncParser(functionName);
                 case "diff":
                     return new DiffFuncParser();
+                case "int":
+                    return new IntegralFuncParser();
                 default:
                     return null;
             }

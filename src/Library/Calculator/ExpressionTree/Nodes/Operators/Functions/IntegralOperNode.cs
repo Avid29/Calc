@@ -20,7 +20,7 @@ namespace Calculator.ExpressionTree.Nodes.Operators.Functions
 
         public bool IsDeterminate { get; set; }
 
-        public VarValueNode Variable { get; }
+        public VarValueNode Variable { get; set; }
 
         public ExpNode UpperBound { get; set; }
 

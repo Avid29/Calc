@@ -1,4 +1,4 @@
-﻿using Calculator.ExpTree.Nodes;
+﻿using Calculator.ExpressionTree.Nodes;
 using System;
 
 namespace Calculator.Exceptions

@@ -1,13 +1,13 @@
-﻿using Calculator.ExpTree.Nodes;
-using Calculator.ExpTree.Nodes.Collections;
-using Calculator.ExpTree.Nodes.Operators;
-using Calculator.ExpTree.Nodes.Operators.BOpers;
-using Calculator.ExpTree.Nodes.Operators.Functions;
-using Calculator.ExpTree.Nodes.Operators.NOpers;
-using Calculator.ExpTree.Nodes.Operators.UOpers;
-using Calculator.ExpTree.Nodes.Operators.UOpers.SignNode;
-using Calculator.ExpTree.Nodes.Operators.UOpers.SineNode;
-using Calculator.ExpTree.Nodes.Values;
+﻿using Calculator.ExpressionTree.Nodes;
+using Calculator.ExpressionTree.Nodes.Collections;
+using Calculator.ExpressionTree.Nodes.Operators;
+using Calculator.ExpressionTree.Nodes.Operators.BOpers;
+using Calculator.ExpressionTree.Nodes.Operators.Functions;
+using Calculator.ExpressionTree.Nodes.Operators.NOpers;
+using Calculator.ExpressionTree.Nodes.Operators.UOpers;
+using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
+using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
+using Calculator.ExpressionTree.Nodes.Values;
 
 namespace Calculator.Operations.Abstract
 {

@@ -1,10 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Calculator.Parser.Default.Status
+﻿namespace Calculator.Parser.Default.Status
 {
-    class ParseError
+    public class ParseError
     {
+        public ParseError() :
+            this(ErrorType.NONE)
+        { }
+
+        public ParseError(ParserStatus status)
+        {
+            ErrorType = status.ErrorType;
+            ExpectedCharacter = status.ExpectedCharacter;
+        }
+
+        public ParseError(ErrorType error, char expected = '\0')
+        {
+            ErrorType = error;
+            ExpectedCharacter = expected;
+        }
+
+        public ErrorType ErrorType { get; protected set; }
+
+        public char ExpectedCharacter { get; protected set; }
+
+        public bool Failed => ErrorType != ErrorType.NONE;
     }
 }

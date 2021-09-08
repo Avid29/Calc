@@ -6,6 +6,16 @@ namespace Calculator.ExpressionTree.Nodes.Operators.Functions
 {
     public class IntegralOperNode : UOperNode
     {
+        public IntegralOperNode() { }
+
+        public IntegralOperNode(IntegralOperNode node) : base(node)
+        {
+            IsDeterminate = node.IsDeterminate;
+            Variable = node.Variable;
+            UpperBound = node.UpperBound;
+            LowerBound = node.LowerBound;
+        }
+
         public override Priority Priority => Priority.OVERRIDE;
 
         public bool IsDeterminate { get; set; }
@@ -15,6 +25,11 @@ namespace Calculator.ExpressionTree.Nodes.Operators.Functions
         public ExpNode UpperBound { get; set; }
 
         public ExpNode LowerBound { get; set; }
+
+        public override ExpNode Clone()
+        {
+            return new IntegralOperNode(this);
+        }
 
         public override ExpNode Execute(Operation operation)
         {

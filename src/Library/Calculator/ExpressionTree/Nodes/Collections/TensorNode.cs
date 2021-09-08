@@ -5,6 +5,15 @@ namespace Calculator.ExpressionTree.Nodes.Collections
 {
     public class TensorNode : EnumerableCollectionNode
     {
+        public TensorNode(TensorNode node) : base(node)
+        {
+        }
+
+        public override ExpNode Clone()
+        {
+            return new TensorNode(this);
+        }
+
         public override ExpNode Execute(Operation operation)
         {
             return operation.Execute(this);

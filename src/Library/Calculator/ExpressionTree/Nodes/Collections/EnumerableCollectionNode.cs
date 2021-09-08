@@ -4,6 +4,15 @@ namespace Calculator.ExpressionTree.Nodes.Collections
 {
     public abstract class EnumerableCollectionNode : BranchNode
     {
+        public EnumerableCollectionNode(EnumerableCollectionNode node)
+        {
+            Children = new List<ExpNode>();
+            foreach (var child in node.Children)
+            {
+                Children.Add(child.Clone());
+            }
+        }
+
         protected List<ExpNode> Children { get; }
 
         public override int ChildCount => Children.Count;

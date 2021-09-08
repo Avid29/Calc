@@ -5,6 +5,11 @@ namespace Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode
 {
     public class SignOperNode : UOperNode
     {
+        public SignOperNode(SignOperNode node) : base(node)
+        {
+            Sign = node.Sign;
+        }
+
         public SignOperNode(char c)
         {
             switch (c)
@@ -25,6 +30,10 @@ namespace Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode
 
         public Sign Sign { get; }
 
+        public override ExpNode Clone()
+        {
+            return new SignOperNode(this);
+        }
 
         public override ExpNode Execute(Operation operation)
         {

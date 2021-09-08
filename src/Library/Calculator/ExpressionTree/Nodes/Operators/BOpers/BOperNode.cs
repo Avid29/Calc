@@ -5,6 +5,14 @@ namespace Calculator.ExpressionTree.Nodes.Operators
 {
     public abstract class BOperNode : OperNode
     {
+        public BOperNode() { }
+
+        protected BOperNode(BOperNode node)
+        {
+            LeftChild = node.LeftChild.Clone();
+            RightChild = node.RightChild.Clone();
+        }
+
         public ExpNode LeftChild { get; set; }
 
         public ExpNode RightChild { get; set; }

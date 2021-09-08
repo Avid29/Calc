@@ -99,8 +99,9 @@ namespace Calculator.ExpressionTree
 
             if (_activeNode is ParenthesisOperNode pNode)
             {
-                pNode.IsOpen = false;
-            } else
+                pNode.IsClosed = true;
+            }
+            else
             {
                 throw new System.Exception("No parenthesis to close in the Expression Tree");
             }

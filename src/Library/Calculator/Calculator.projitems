@@ -38,6 +38,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\UOpers\UOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Values\FloatValueNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Values\IntValueNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Values\NumericalValueNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Values\ValueNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Values\VarValueNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Terms\AdditiveTerm.cs" />

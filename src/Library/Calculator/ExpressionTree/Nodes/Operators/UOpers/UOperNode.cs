@@ -5,6 +5,13 @@ namespace Calculator.ExpressionTree.Nodes.Operators
 {
     public abstract class UOperNode : OperNode
     {
+        public UOperNode() { }
+
+        protected UOperNode(UOperNode node)
+        {
+            Child = node.Child;
+        }
+
         public ExpNode Child { get; protected set; }
 
         public override int ChildCount => Child == null ? 0 : 1;

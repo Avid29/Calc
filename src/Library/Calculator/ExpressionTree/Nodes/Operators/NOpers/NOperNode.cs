@@ -10,6 +10,15 @@ namespace Calculator.ExpressionTree.Nodes.Operators
             Children = new List<ExpNode>();
         }
 
+        protected NOperNode(NOperNode node)
+        {
+            Children = new List<ExpNode>();
+            foreach (var child in node.Children)
+            {
+                Children.Add(child.Clone());
+            }
+        }
+
         protected List<ExpNode> Children { get; }
 
         public override int ChildCount => Children.Count;
@@ -37,6 +46,12 @@ namespace Calculator.ExpressionTree.Nodes.Operators
 
         public void AddChildAt(ExpNode node, int index)
         {
+            Children.Insert(index, node);
+        }
+
+        public void ReplaceChildAt(ExpNode node, int index)
+        {
+            Children.RemoveAt(index);
             Children.Insert(index, node);
         }
 

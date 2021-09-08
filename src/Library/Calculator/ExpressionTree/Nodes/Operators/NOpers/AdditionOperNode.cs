@@ -5,7 +5,16 @@ namespace Calculator.ExpressionTree.Nodes.Operators.NOpers
 {
     public class AdditionOperNode : NOperNode
     {
+        public AdditionOperNode() { }
+
+        public AdditionOperNode(AdditionOperNode node) : base(node) { }
+
         public override Priority Priority => Priority.ADDITION;
+
+        public override ExpNode Clone()
+        {
+            return new AdditionOperNode(this);
+        }
 
         public override ExpNode Execute(Operation operation)
         {

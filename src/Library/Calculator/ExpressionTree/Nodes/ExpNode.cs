@@ -14,5 +14,7 @@ namespace Calculator.ExpressionTree.Nodes
         public abstract ExpNode Execute(Operation operation);
 
         public abstract string Print(Printer printer);
+
+        public abstract ExpNode Clone();
     }
 }

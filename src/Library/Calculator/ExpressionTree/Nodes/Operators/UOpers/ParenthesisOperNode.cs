@@ -7,12 +7,22 @@ namespace Calculator.ExpressionTree.Nodes.Operators.UOpers
     {
         public ParenthesisOperNode()
         {
-            IsOpen = true;
+            IsClosed = false;
         }
 
-        public override Priority Priority => IsOpen ? Priority.OVERRIDE : Priority.VALUE;
+        public ParenthesisOperNode(ParenthesisOperNode node) : base(node)
+        {
+            IsClosed = node.IsClosed;
+        }
 
-        public bool IsOpen { get; set; }
+        public override Priority Priority => IsClosed ? Priority.VALUE : Priority.OVERRIDE;
+
+        public bool IsClosed { get; set; }
+
+        public override ExpNode Clone()
+        {
+            return new ParenthesisOperNode(this);
+        }
 
         public override ExpNode Execute(Operation operation)
         {

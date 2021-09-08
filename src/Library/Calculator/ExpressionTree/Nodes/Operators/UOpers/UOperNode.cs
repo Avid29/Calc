@@ -41,7 +41,7 @@ namespace Calculator.ExpressionTree.Nodes.Operators
                 node.AddChild(Child);
             }
 
-            AddChild(node);
+            AddChild(node, true);
         }
 
         public override ExpNode GetChild(int index = 0)

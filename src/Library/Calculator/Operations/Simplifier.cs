@@ -123,6 +123,9 @@ namespace Calculator.Operations
 
             if (node.RightChild is IntValueNode ivNode)
             {
+                if (ivNode.DoubleValue == 0) return Helpers.MakeValueNode(1);
+                if (ivNode.DoubleValue == 1) return node.LeftChild;
+
                 if (node.LeftChild is ValueNode)
                 {
                     // No good expanding

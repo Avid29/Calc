@@ -8,6 +8,8 @@
 
         public abstract void InsertChild(BranchNode node);
 
+        public abstract void ReplaceChild(ExpNode node, int index);
+
         public abstract ExpNode GetChild(int index);
 
         public abstract void ClearChildren();

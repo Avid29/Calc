@@ -49,10 +49,9 @@ namespace Calculator.ExpressionTree.Nodes.Operators
             Children.Insert(index, node);
         }
 
-        public void ReplaceChildAt(ExpNode node, int index)
+        public override void ReplaceChild(ExpNode node, int index)
         {
-            Children.RemoveAt(index);
-            Children.Insert(index, node);
+            Children[index] = node;
         }
 
         public override void InsertChild(BranchNode node)

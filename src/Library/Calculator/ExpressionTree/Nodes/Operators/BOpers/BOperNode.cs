@@ -65,6 +65,21 @@ namespace Calculator.ExpressionTree.Nodes.Operators
             AddChild(node);
         }
 
+        public override void ReplaceChild(ExpNode node, int index)
+        {
+            switch (index)
+            {
+                case 0:
+                    LeftChild = node;
+                    break;
+                case 1:
+                    RightChild = node;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException($"{nameof(BOperNode)} only contains two (2) children. Zero (0) and one (1) are the only indicies.");
+            }
+        }
+
         public override ExpNode GetChild(int index)
         {
             switch (index)

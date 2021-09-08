@@ -37,6 +37,11 @@ namespace Calculator.ExpressionTree.Nodes.Collections
             AddChild(node);
         }
 
+        public override void ReplaceChild(ExpNode node, int index)
+        {
+            Children[index] = node;
+        }
+
         public override ExpNode GetChild(int index)
         {
             return Children[index];

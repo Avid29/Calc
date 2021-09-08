@@ -1,5 +1,5 @@
 ﻿using Calculator.ExpressionTree.Nodes;
-using Calculator.ExpressionTree.Nodes.Operators;
+using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers;
@@ -55,6 +55,17 @@ namespace Calculator.Operations
             return node.Child;
         }
 
+        public override ExpNode Execute(TensorNode node)
+        {
+            for (int i = 0; i < node.ChildCount; i++)
+            {
+                ExpNode simpleChild = node.GetChild(i).Execute(this);
+                node.ReplaceChild(simpleChild, i);
+            }
+
+            return node;
+        }
+
         private ExpNode Distribute(PowOperNode node)
         {
             if (node.LeftChild is ParenthesisOperNode parNode)
@@ -70,7 +81,7 @@ namespace Calculator.Operations
                         PowOperNode pow = new PowOperNode();
                         pow.LeftChild = mNode.GetChild(i);
                         pow.RightChild = node.RightChild.Clone();
-                        mNode.ReplaceChildAt(pow, i);
+                        mNode.ReplaceChild(pow, i);
                     }
                     return mNode;
                 }

@@ -60,6 +60,18 @@ namespace Calculator.ExpressionTree.Nodes.Operators
             AddChild(node, true);
         }
 
+        public override void ReplaceChild(ExpNode node, int index)
+        {
+            if (index == 0)
+            {
+                Child = node;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException($"{nameof(UOperNode)} only contains one (1) child. Zero (0) is the only index.");
+            }
+        }
+
         public override ExpNode GetChild(int index = 0)
         {
             if (index == 0)

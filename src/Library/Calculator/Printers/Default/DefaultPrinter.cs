@@ -1,4 +1,5 @@
 ﻿using Calculator.ExpressionTree.Nodes;
+using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
@@ -82,6 +83,29 @@ namespace Calculator.Printers.Default
                     return $"-{node.Child.Print(this)}";
                 default:
                     return node.Child.Print(this);
+            }
+        }
+
+        public override string Print(TensorNode node)
+        {
+            string cache = "";
+            switch (node.TensorType)
+            {
+                case TensorType.Vector:
+                    cache += "<";
+                    for (int i = 0; i < node.ChildCount; i++)
+                    {
+                        cache += node.GetChild(i).Print(this);
+                        if (i < node.ChildCount - 1)
+                        {
+                            cache += ",";
+                        }
+                    }
+                    cache += ">";
+                    return cache;
+                default:
+                    // TODO: Print matricies and tensors
+                    return "";
             }
         }
 

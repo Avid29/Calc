@@ -5,6 +5,11 @@ namespace Calculator.ExpressionTree.Nodes.Operators
 {
     public abstract class NOperNode : OperNode
     {
+        public NOperNode()
+        {
+            Children = new List<ExpNode>();
+        }
+
         protected List<ExpNode> Children { get; }
 
         public override int ChildCount => Children.Count;

@@ -22,6 +22,17 @@ namespace Calculator.Parser.Default
         private int _parenthesisDepth;
         private int _position;
 
+        public DefaultParser()
+        {
+            _state = State.BEGIN;
+            _input = "";
+            _tree = new ExpTree();
+            _activeFunctionParser = null;
+            _cache = "";
+            _parenthesisDepth = 0;
+            _position = 0;
+        }
+
         public ExpTree Tree => _state == State.DONE ? _tree : null;
 
         public ParserStatus ParseString(string expression)
@@ -36,6 +47,8 @@ namespace Calculator.Parser.Default
                     return status;
                 }
             }
+
+            Finalize();
 
             return new  ParserStatus(_input, _position);
         }

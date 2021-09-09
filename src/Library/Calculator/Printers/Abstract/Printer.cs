@@ -14,7 +14,7 @@ using Calculator.ExpressionTree.Nodes.Values;
 namespace Calculator.Printers.Abstract
 {
     /// <summary>
-    /// A base class for printers.
+    /// A base class for printers using <see cref="ExpNode.Print(Printer)"/> with visitor pattern.
     /// </summary>
     public abstract class Printer
     {
@@ -22,7 +22,7 @@ namespace Calculator.Printers.Abstract
         // As a result, types only need to be overriden if they can't be handled by a parent type.
 
         /// <summary>
-        /// Prints a <see cref="AdditionOperNode"/>.
+        /// Prints an <see cref="AdditionOperNode"/>.
         /// </summary>
         /// <param name="node">The <see cref="AdditionOperNode"/> to print.</param>
         /// <returns>The <see cref="AdditionOperNode"/> printed to a string.</returns>
@@ -57,7 +57,7 @@ namespace Calculator.Printers.Abstract
         public virtual string Print(EnumerableCollectionNode node) => Print((BranchNode)node);
 
         /// <summary>
-        /// Prints a <see cref="ExpNode"/>.
+        /// Prints an <see cref="ExpNode"/>.
         /// </summary>
         /// <param name="node">The <see cref="ExpNode"/> to print.</param>
         /// <returns>The <see cref="ExpNode"/> printed to a string.</returns>
@@ -71,17 +71,17 @@ namespace Calculator.Printers.Abstract
         public virtual string Print(FloatValueNode node) => Print((ValueNode)node);
 
         /// <summary>
-        /// Prints a <see cref="IntegralOperNode"/>.
+        /// Prints an <see cref="IntegralOperNode"/>.
         /// </summary>
         /// <param name="node">The <see cref="IntegralOperNode"/> to print.</param>
         /// <returns>The <see cref="IntegralOperNode"/> printed to a string.</returns>
         public virtual string Print(IntegralOperNode node) => Print((OperNode)node);
 
         /// <summary>
-        /// Prints a <see cref="AdditionOperNode"/>.
+        /// Prints an <see cref="IntValueNode"/>.
         /// </summary>
-        /// <param name="node">The <see cref="AdditionOperNode"/> to print.</param>
-        /// <returns>The <see cref="AdditionOperNode"/> printed to a string.</returns>
+        /// <param name="node">The <see cref="IntValueNode"/> to print.</param>
+        /// <returns>The <see cref="IntValueNode"/> printed to a string.</returns>
         public virtual string Print(IntValueNode node) => Print((ValueNode)node);
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Calculator.Printers.Abstract
         public virtual string Print(NOperNode node) => Print((OperNode)node);
 
         /// <summary>
-        /// Prints a <see cref="OperNode"/>.
+        /// Prints an <see cref="OperNode"/>.
         /// </summary>
         /// <param name="node">The <see cref="OperNode"/> to print.</param>
         /// <returns>The <see cref="OperNode"/> printed to a string.</returns>

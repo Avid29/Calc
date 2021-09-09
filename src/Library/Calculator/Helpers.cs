@@ -40,7 +40,7 @@ namespace Calculator
         public static AdditionOperNode Sum(params ExpNode[] nodes)
         {
             // Create an addition node with all nodes as children
-            AdditionOperNode aNode = new AdditionOperNode();
+            AdditionOperNode aNode = new();
             foreach (var node in nodes) aNode.AddChild(node);
             return aNode;
         }
@@ -64,7 +64,7 @@ namespace Calculator
         public static MultiplicationOperNode Multiply(params ExpNode[] nodes)
         {
             // Create a multiplication node with all nodes as children
-            MultiplicationOperNode mNode = new MultiplicationOperNode();
+            MultiplicationOperNode mNode = new();
             foreach (var node in nodes) mNode.AddChild(node);
             return mNode;
         }
@@ -98,7 +98,7 @@ namespace Calculator
         /// <returns>A new <see cref="PowOperNode"/> as <paramref name="base"/>^<paramref name="exponent"/>.</returns>
         public static PowOperNode Pow(ExpNode @base, ExpNode exponent)
         {
-            PowOperNode powNode = new PowOperNode();
+            PowOperNode powNode = new();
             powNode.LeftChild = @base;
             powNode.RightChild = exponent;
             return powNode;

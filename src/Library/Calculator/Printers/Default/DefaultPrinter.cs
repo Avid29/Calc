@@ -116,19 +116,19 @@ namespace Calculator.Printers.Default
         /// <inheritdoc/>
         public override string Print(SineOperNode node)
         {
-            switch (node.SineFunc)
+            switch (node.SineFunction)
             {
-                case SineFunc.SINE:
+                case SineFunction.SINE:
                     return $"\\sin{{{node.Child.Print(this)}}}";
-                case SineFunc.COSINE:
+                case SineFunction.COSINE:
                     return $"\\cos{{{node.Child.Print(this)}}}";
-                case SineFunc.TANGENT:
+                case SineFunction.TANGENT:
                     return $"\\tan{{{node.Child.Print(this)}}}";
-                case SineFunc.COSECANT:
+                case SineFunction.COSECANT:
                     return $"\\csc{{{node.Child.Print(this)}}}";
-                case SineFunc.SECANT:
+                case SineFunction.SECANT:
                     return $"\\sec{{{node.Child.Print(this)}}}";
-                case SineFunc.COTANGENT:
+                case SineFunction.COTANGENT:
                     return $"\\cot{{{node.Child.Print(this)}}}";
                 default:
                     return null;

@@ -3,8 +3,9 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Calculator</RootNamespace>
-	  <AssemblyName>CalculatorNET5</AssemblyName>
+	<AssemblyName>CalculatorNET5</AssemblyName>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<LangVersion>9</LangVersion>
   </PropertyGroup>
 
   <Import Project="..\..\..\Calculator\Calculator.projitems" Label="Shared" />

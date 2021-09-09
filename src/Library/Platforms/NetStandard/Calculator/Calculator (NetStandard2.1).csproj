@@ -5,6 +5,7 @@
     <RootNamespace>Calculator</RootNamespace>
     <AssemblyName>CalculatorNetStandard2.1</AssemblyName>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<LangVersion>9</LangVersion>
   </PropertyGroup>
 
   <Import Project="..\..\..\Calculator\Calculator.projitems" Label="Shared" />

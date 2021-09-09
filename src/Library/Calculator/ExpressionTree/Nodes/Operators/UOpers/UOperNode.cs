@@ -8,38 +8,55 @@ using System;
 
 namespace Calculator.ExpressionTree.Nodes.Operators
 {
+    /// <summary>
+    /// A base class for <see cref="OperNode"/>s that have only a single child.
+    /// </summary>
     public abstract class UOperNode : OperNode
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UOperNode"/> class.
+        /// </summary>
         public UOperNode() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UOperNode"/> class as a clone of <paramref name="node"/>.
+        /// </summary>
+        /// <param name="node">The <see cref="UOperNode"/> to clone.</param>
         protected UOperNode(UOperNode node)
         {
             Child = node.Child;
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="UOperNode"/>'s child.
+        /// </summary>
         public ExpNode Child { get; set; }
 
+        /// <inheritdoc/>
         public override int ChildCount => Child == null ? 0 : 1;
 
+        /// <summary>
+        /// Makes a new <see cref="UOperNode"/> with the appropiate operator for <see cref="char"/> <paramref name="c"/>.
+        /// </summary>
+        /// <param name="c">The <see cref="char"/> of the operator to create.</param>
+        /// <returns>A new <see cref="UOperNode"/> of the appropiate operator for <see cref="char"/> <paramref name="c"/>.</returns>
         public static UOperNode MakeUOperNode(char c)
         {
-            switch (c)
+            return c switch
             {
-                case '+':
-                case '-':
-                    return new SignOperNode(c);
-                case '/':
-                    return new RecipricalOperNode();
-                default:
-                    return null;
-            }
+                '+' or '-' => new SignOperNode(c),
+                '/' => new RecipricalOperNode(),
+                _ => null,
+            };
         }
 
+        /// <inheritdoc/>
         public override void AddChild(ExpNode node)
         {
             AddChild(node);
         }
 
+        /// <inheritdoc cref="BranchNode.AddChild(ExpNode)"/>
         public void AddChild(ExpNode node, bool overwrite = false)
         {
             if (Child == null || overwrite)
@@ -53,6 +70,7 @@ namespace Calculator.ExpressionTree.Nodes.Operators
             node.Parent = this;
         }
 
+        /// <inheritdoc/>
         public override void InsertChild(BranchNode node)
         {
             if (Child != null)
@@ -63,6 +81,7 @@ namespace Calculator.ExpressionTree.Nodes.Operators
             AddChild(node, true);
         }
 
+        /// <inheritdoc/>
         public override void ReplaceChild(ExpNode node, int index)
         {
             if (index == 0)
@@ -75,6 +94,7 @@ namespace Calculator.ExpressionTree.Nodes.Operators
             }
         }
 
+        /// <inheritdoc/>
         public override ExpNode GetChild(int index = 0)
         {
             if (index == 0)
@@ -86,21 +106,19 @@ namespace Calculator.ExpressionTree.Nodes.Operators
             }
         }
 
+        /// <inheritdoc/>
         public override void ClearChildren()
         {
             Child = null;
         }
 
-        public bool HasChild()
-        {
-            return Child != null;
-        }
-
+        /// <inheritdoc/>
         public override bool IsConstant()
         {
             return Child.IsConstant();
         }
 
+        /// <inheritdoc/>
         public override bool IsConstantBy(VarValueNode variable)
         {
             return Child.IsConstantBy(variable);

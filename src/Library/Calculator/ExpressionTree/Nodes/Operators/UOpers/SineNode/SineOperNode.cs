@@ -5,36 +5,45 @@ using Calculator.Printers.Abstract;
 
 namespace Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode
 {
+    /// <summary>
+    /// An <see cref="ExpNode"/> that represents a sine function.
+    /// </summary>
     public class SineOperNode : UOperNode
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SineOperNode"/> class.
+        /// </summary>
+        /// <param name="func">The sine function of the <see cref="SineOperNode"/>.</param>
+        public SineOperNode(SineFunction func)
+        {
+            SineFunction = func;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SineOperNode"/> class as a clone of <paramref name="node"/>.
+        /// </summary>
+        /// <param name="node">The <see cref="SineOperNode"/> to clone.</param>
         public SineOperNode(SineOperNode node)
             : base(node)
         {
-            SineFunc = node.SineFunc;
+            SineFunction = node.SineFunction;
         }
 
-        public SineOperNode(SineFunc func)
-        {
-            SineFunc = func;
-        }
+        /// <summary>
+        /// Gets the <see cref="SineNode.SineFunction"/> of the <see cref="SineOperNode"/>.
+        /// </summary>
+        public SineFunction SineFunction { get; }
 
-        public SineFunc SineFunc { get; }
-
+        /// <inheritdoc/>
         public override Priority Priority => Priority.OVERRIDE;
 
-        public override ExpNode Clone()
-        {
-            return new SineOperNode(this);
-        }
+        /// <inheritdoc/>
+        public override ExpNode Clone() => new SineOperNode(this);
 
-        public override ExpNode Execute(Operation operation)
-        {
-            return operation.Execute(this);
-        }
+        /// <inheritdoc/>
+        public override ExpNode Execute(Operation operation) => operation.Execute(this);
 
-        public override string Print(Printer printer)
-        {
-            return printer.Print(this);
-        }
+        /// <inheritdoc/>
+        public override string Print(Printer printer) => printer.Print(this);
     }
 }

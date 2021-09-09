@@ -5,28 +5,33 @@ using Calculator.Printers.Abstract;
 
 namespace Calculator.ExpressionTree.Nodes.Operators.NOpers
 {
+    /// <summary>
+    /// An <see cref="ExpNode"/> representing a multiplication operation.
+    /// </summary>
     public class MultiplicationOperNode : NOperNode
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MultiplicationOperNode"/> class.
+        /// </summary>
         public MultiplicationOperNode() { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MultiplicationOperNode"/> class as clone of <paramref name="node"/>.
+        /// </summary>
+        /// <param name="node">The <see cref="MultiplicationOperNode"/> to clone.</param>
         public MultiplicationOperNode(NOperNode node)
             : base(node) { }
 
+        /// <inheritdoc/>
         public override Priority Priority => Priority.MULTIPLICATION;
 
-        public override ExpNode Clone()
-        {
-            return new MultiplicationOperNode(this);
-        }
+        /// <inheritdoc/>
+        public override ExpNode Clone() => new MultiplicationOperNode(this);
 
-        public override ExpNode Execute(Operation operation)
-        {
-            return operation.Execute(this);
-        }
+        /// <inheritdoc/>
+        public override ExpNode Execute(Operation operation) => operation.Execute(this);
 
-        public override string Print(Printer printer)
-        {
-            return printer.Print(this);
-        }
+        /// <inheritdoc/>
+        public override string Print(Printer printer) => printer.Print(this);
     }
 }

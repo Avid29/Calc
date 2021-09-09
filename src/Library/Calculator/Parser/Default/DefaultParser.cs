@@ -316,6 +316,7 @@ namespace Calculator.Parser.Default
                     _cache += ".";
                     _state = ParserState.DECIMAL;
                     return GetSuccessState();
+                case ParserState.DECIMAL:
                 case ParserState.FLOAT:
                     return EnterErrorState(ErrorType.ALREADY_FLOAT);
                 case ParserState.BEGIN:

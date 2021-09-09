@@ -8,15 +8,22 @@ using System;
 
 namespace Calculator.ExpressionTree.Terms
 {
+    /// <summary>
+    /// Represents a term of an addition operation.
+    /// </summary>
     public class AdditiveTerm : IEquatable<AdditiveTerm>, IComparable<AdditiveTerm>
     {
+        private readonly ExpNode _base;
+        private readonly string _baseString;
         private double _coefficient;
-        private ExpNode _base;
-        private string _baseString;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AdditiveTerm"/> class.
+        /// </summary>
+        /// <param name="node">The node to create as a term.</param>
         public AdditiveTerm(ExpNode node)
         {
-            DefaultPrinter printer = new DefaultPrinter();
+            DefaultPrinter printer = new();
             if (node is MultiplicationOperNode mNode && mNode.GetChild(0) is NumericalValueNode nvNode)
             {
                 // Node is a multiply and it's first child is a numerical value
@@ -35,6 +42,10 @@ namespace Calculator.ExpressionTree.Terms
             _baseString = _base.Print(printer);
         }
 
+        /// <summary>
+        /// Converts the <see cref="AdditiveTerm"/> back to an <see cref="ExpNode"/>.
+        /// </summary>
+        /// <returns>The <see cref="AdditiveTerm"/> as an <see cref="ExpNode"/>.</returns>
         public ExpNode AsExpNode()
         {
             if (_coefficient == 0) return Helpers.MakeNumericalNode(0);
@@ -42,11 +53,16 @@ namespace Calculator.ExpressionTree.Terms
             return Helpers.Multiply(_coefficient, _base);
         }
 
+        /// <summary>
+        /// Adds the coefficient of another <see cref="AdditiveTerm"/>.
+        /// </summary>
+        /// <param name="other">The other <see cref="AdditiveTerm"/>.</param>
         public void AddToCoefficient(AdditiveTerm other)
         {
             _coefficient += other._coefficient;
         }
 
+        /// <inheritdoc/>
         public int CompareTo(AdditiveTerm other)
         {
             if (_base is NumericalValueNode)
@@ -61,9 +77,7 @@ namespace Calculator.ExpressionTree.Terms
             }
         }
 
-        public bool Equals(AdditiveTerm other)
-        {
-            return _baseString == other._baseString;
-        }
+        /// <inheritdoc/>
+        public bool Equals(AdditiveTerm other) => _baseString == other._baseString;
     }
 }

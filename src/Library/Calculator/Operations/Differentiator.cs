@@ -11,15 +11,26 @@ using Calculator.Operations.Abstract;
 
 namespace Calculator.Operations
 {
+    /// <summary>
+    /// An <see cref="Operation"/> that takes the derivate of <see cref="ExpNode"/>s.
+    /// </summary>
+    /// <remarks>
+    /// Currently only partial derivatives.
+    /// </remarks>
     public class Differentiator : Operation
     {
-        private VarValueNode _variable;
+        private readonly VarValueNode _variable;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Differentiator"/> class.
+        /// </summary>
+        /// <param name="variable">The variable to take the derivative over.</param>
         public Differentiator(VarValueNode variable)
         {
             _variable = variable;
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(AdditionOperNode node)
         {
             // Sum rule
@@ -32,18 +43,17 @@ namespace Calculator.Operations
             return node;
         }
 
-        public override ExpNode Execute(ExpNode node)
-        {
-            return node;
-        }
+        /// <inheritdoc/>
+        public override ExpNode Execute(ExpNode node) => node;
 
+        /// <inheritdoc/>
         public override ExpNode Execute(MultiplicationOperNode node)
         {
             // Product rule
-            AdditionOperNode aNode = new AdditionOperNode();
+            AdditionOperNode aNode = new();
             for (int i = 0; i < node.ChildCount; i++)
             {
-                MultiplicationOperNode mNode = new MultiplicationOperNode();
+                MultiplicationOperNode mNode = new();
                 mNode.AddChild(node.GetChild(i).Clone().Execute(this));
                 for (int j = 0; j < node.ChildCount; j++)
                 {
@@ -55,11 +65,13 @@ namespace Calculator.Operations
             return aNode;
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(NumericalValueNode node)
         {
             return Helpers.MakeNumericalNode(0);
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(PowOperNode node)
         {
             // TODO: Handle variable in exponent
@@ -67,16 +79,18 @@ namespace Calculator.Operations
 
             var coefficient = node.RightChild;
             var @base = node.LeftChild;
-            var exponent = Helpers.Add(-1, node.RightChild);
+            var exponent = Helpers.Add(-1, coefficient);
             return Helpers.Multiply(coefficient, Helpers.Pow(@base, exponent));
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(ParenthesisOperNode node)
         {
             node.Child = node.Child.Execute(this);
             return node;
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(SineOperNode node)
         {
             if (node.IsConstantBy(_variable)) return Helpers.MakeNumericalNode(0);
@@ -88,6 +102,7 @@ namespace Calculator.Operations
             return Helpers.Multiply(coefficient, sinFunc);
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(TensorNode node)
         {
             for (int i = 0; i < node.ChildCount; i++)
@@ -99,22 +114,20 @@ namespace Calculator.Operations
             return node;
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(VarValueNode node)
         {
             return Helpers.MakeNumericalNode(node.Character == _variable.Character ? 1 : 0);
         }
 
-        private ExpNode SineTable(SineOperNode node)
+        private static ExpNode SineTable(SineOperNode node)
         {
-            switch (node.SineFunc)
+            return node.SineFunction switch
             {
-                case SineFunc.SINE:
-                    return new SineOperNode(SineFunc.COSINE) { Child = node.Child };
-                case SineFunc.COSINE:
-                    return Helpers.Negative(new SineOperNode(SineFunc.SINE) { Child = node.Child });
-                default:
-                    return node;
-            }
+                SineFunction.SINE => new SineOperNode(SineFunction.COSINE) { Child = node.Child },
+                SineFunction.COSINE => Helpers.Negative(new SineOperNode(SineFunction.SINE) { Child = node.Child }),
+                _ => node,
+            };
         }
     }
 }

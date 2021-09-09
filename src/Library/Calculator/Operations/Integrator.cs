@@ -44,6 +44,8 @@ namespace Calculator.Operations
 
         public override ExpNode Execute(MultiplicationOperNode node)
         {
+            // TODO: Sinusoidal u substitutions
+            // TODO: Constants recognitions for v
             Differentiator differentiator = new Differentiator(_variable);
 
             // \int{u'vwx} = uvwx - \int{uv'wx} - \int{uvw'x} - \int{uvwx'}
@@ -94,7 +96,8 @@ namespace Calculator.Operations
 
         public override ExpNode Execute(PowOperNode node)
         {
-            // TODO: IsConstant by
+            // TODO: Handle variable in exponent
+            if (node.IsConstantBy(_variable)) return ConstantRule(node);
 
             // Increment exponent, divide by exponent
             AdditionOperNode exponent = Helpers.Add(1, node.RightChild);
@@ -111,6 +114,8 @@ namespace Calculator.Operations
 
         public override ExpNode Execute(SineOperNode node)
         {
+            if (node.IsConstantBy(_variable)) return ConstantRule(node);
+
             Differentiator diff = new Differentiator(_variable);
             // Apply ChainRule
             var coefficient = node.Child.Execute(diff);
@@ -121,7 +126,7 @@ namespace Calculator.Operations
 
         public override ExpNode Execute(VarValueNode node)
         {
-            // TODO: ConstantBy
+            if (node.Character != _variable.Character) return ConstantRule(node);
             return Helpers.Multiply(.5, Helpers.Pow(node, 2));
         }
 

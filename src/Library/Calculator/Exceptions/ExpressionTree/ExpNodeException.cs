@@ -1,7 +1,7 @@
 ﻿using Calculator.ExpressionTree.Nodes;
 using System;
 
-namespace Calculator.Exceptions
+namespace Calculator.Exceptions.ExpressionTree
 {
     public class ExpNodeException : Exception
     {

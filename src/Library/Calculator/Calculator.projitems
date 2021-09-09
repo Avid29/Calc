@@ -12,9 +12,11 @@
     <Folder Include="$(MSBuildThisFileDirectory)Operations\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ExpNodeException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ExpressionTree\ExpNodeException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ExpressionTree\BOperNodeAlreadyHasChildrenException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ExpressionTree\UOperNodeAlreadyHasChildException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Simplification\CannotAddTensors.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Simplification\SimplificationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\ExpTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\BranchNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Collections\EnumerableCollectionNode.cs" />

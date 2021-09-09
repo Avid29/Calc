@@ -22,12 +22,13 @@ namespace Calculator.ExpressionTree.Nodes.Collections
         {
             get
             {
-                string cache = "";
+                string cache = "(";
                 for (int i = 0; i < _dimensionCount; i++)
                 {
                     cache += _sizes[i];
                     if (i != _dimensionCount-1) cache += ',';
                 }
+                cache += ")";
                 return cache;
             }
         }

@@ -1,4 +1,5 @@
-﻿using Calculator.ExpressionTree.Nodes;
+﻿using Calculator.Exceptions.Simplification;
+using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
@@ -16,6 +17,16 @@ namespace Calculator.Operations
 {
     public class Simplifier : Operation
     {
+        private bool _safe;
+
+        public Simplifier(bool safe = true)
+        {
+            Error = null;
+            _safe = safe;
+        }
+
+        public SimplificationException Error { get; private set; }
+
         public override ExpNode Execute(AdditionOperNode node)
         {
             double valueProg = 0;
@@ -347,37 +358,47 @@ namespace Calculator.Operations
 
         private ExpNode SumTensors(AdditionOperNode node)
         {
-            Dictionary<string, TensorNode> nodeMap = new Dictionary<string, TensorNode>();
-            AdditionOperNode aNode = new AdditionOperNode();
-            for (int i = 0; i < node.ChildCount; i++)
+            if (node.GetChild(0) is TensorNode tensorNode)
             {
-                if (node.GetChild(i) is TensorNode tensorNode)
+                for (int i = 1; i < node.ChildCount; i++)
                 {
-                    string identity = tensorNode.SizeIdentity;
-                    if (nodeMap.ContainsKey(identity))
+                    if (node.GetChild(i) is TensorNode otherTensorNode)
                     {
-                        for (int j = 0; j < tensorNode.ChildCount; j++)
+                        if (otherTensorNode.SizeIdentity == tensorNode.SizeIdentity)
                         {
-                            TensorNode mapTensor = nodeMap[identity];
-                            ExpNode addedChild = Helpers.Add(mapTensor.GetChild(i), tensorNode.GetChild(i));
-                            mapTensor.ReplaceChild(addedChild.Execute(this), j);
+                            for (int j = 0; j < tensorNode.ChildCount; j++)
+                            {
+                                ExpNode addedNode = Helpers
+                                    .Add(tensorNode.GetChild(j), otherTensorNode.GetChild(j))
+                                    .Execute(this);
+                                tensorNode.ReplaceChild(addedNode, j);
+                            }
                         }
-                    } else
-                    {
-                        nodeMap.Add(identity, tensorNode);
+                        else return HandleError(new CannotAddTensors(this, node, $"Cannot add tensor of shape {otherTensorNode.SizeIdentity} and tensor of shape {tensorNode.SizeIdentity}."));
                     }
-                } else
+                    else return HandleError(new CannotAddTensors(this, node, "Cannot add scalar and tensor."));
+                }
+
+                return tensorNode;
+            }
+            else
+            {
+                // There is a scalar.
+                // There cannot be any tensors
+                for (int i = 1; i < node.ChildCount; i++)
                 {
-                    aNode.AddChild(node.GetChild(i));
+                    if (node.GetChild(i) is TensorNode) return HandleError(new CannotAddTensors(this, node, "Cannot add tensor and scalar."));
                 }
             }
 
-            foreach (TensorNode tensor in nodeMap.Values)
-            {
-                aNode.AddChild(tensor);
-            }
+            return node;
+        }
 
-            return aNode;
+        private ExpNode HandleError(SimplificationException exception)
+        {
+            Error = exception;
+            if (!_safe) throw exception;
+            return null;
         }
     }
 }

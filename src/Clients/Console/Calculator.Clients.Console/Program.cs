@@ -33,7 +33,14 @@ namespace Calculator.Clients.Console
                     ExpNode root = parser.Tree.Root;
                     Simplifier simplifier = new Simplifier();
                     root = root.Execute(simplifier);
-                    SysCon.WriteLine("\n" + root.Print(printer) + "\n");
+                    
+                    if (root == null)
+                    {
+                        SysCon.WriteLine($"\n{simplifier.Error.Message}\n");
+                    } else
+                    {
+                        SysCon.WriteLine($"\n{root.Print(printer)}\n");
+                    }
                 }
             }
         }

@@ -19,7 +19,7 @@ steps:
     displayName: 'nuget restore'
     inputs:
       command: restore
-      projects: '$(Solution)'
+      projects: '**/*.csproj'
       configuration: $(BuildConfiguration)
 
       
@@ -27,11 +27,11 @@ steps:
     displayName: 'dotnet build'
     inputs:
       command: build
-      projects: '$(Solution)'
+      projects: '**/*.csproj'
       configuration: $(BuildConfiguration)
       
   - task: DotNetCoreCLI@2
     displayName: 'dotnet test'
     inputs:
       command: 'test'
-      projects: '$(Solution)'
+      projects: '**/*.csproj'

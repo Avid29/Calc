@@ -60,6 +60,9 @@ namespace Calculator.Operations
 
         public override ExpNode Execute(PowOperNode node)
         {
+            // TODO: Handle variable in exponent
+            if (node.IsConstantBy(_variable)) return Helpers.MakeValueNode(0);
+
             var coefficient = node.RightChild;
             var @base = node.LeftChild;
             var exponent = Helpers.Add(-1, node.RightChild);
@@ -74,6 +77,8 @@ namespace Calculator.Operations
 
         public override ExpNode Execute(SineOperNode node)
         {
+            if (node.IsConstantBy(_variable)) return Helpers.MakeValueNode(0);
+
             // Apply chain rule
             var coefficient = node.Child.Clone().Execute(this);
             // Apply table

@@ -1,4 +1,6 @@
-﻿using Calculator.ExpressionTree.Nodes;
+﻿// Adam Dernis © 2021
+
+using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
@@ -7,19 +9,26 @@ using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
 using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Operations.Abstract;
-using Calculator.Printers.Default;
 
 namespace Calculator.Operations
 {
+    /// <summary>
+    /// An <see cref="Operation"/> that finds the integral of <see cref="ExpNode"/>s.
+    /// </summary>
     public class Integrator : Operation
     {
-        private VarValueNode _variable;
+        private readonly VarValueNode _variable;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Integrator"/> class.
+        /// </summary>
+        /// <param name="variable">The variable to find the integral for.</param>
         public Integrator(VarValueNode variable)
         {
             _variable = variable;
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(AdditionOperNode node)
         {
             // Sum rule
@@ -32,21 +41,18 @@ namespace Calculator.Operations
             return node;
         }
 
-        public override ExpNode Execute(ExpNode node)
-        {
-            return node;
-        }
+        /// <inheritdoc/>
+        public override ExpNode Execute(ExpNode node) => node;
 
-        public override ExpNode Execute(NumericalValueNode node)
-        {
-            return ConstantRule(node);
-        }
+        /// <inheritdoc/>
+        public override ExpNode Execute(NumericalValueNode node) => ConstantRule(node);
 
+        /// <inheritdoc/>
         public override ExpNode Execute(MultiplicationOperNode node)
         {
             // TODO: Sinusoidal u substitutions
             // TODO: Constants recognitions for v
-            Differentiator differentiator = new Differentiator(_variable);
+            Differentiator differentiator = new(_variable);
 
             // \int{u'vwx} = uvwx - \int{uv'wx} - \int{uvw'x} - \int{uvwx'}
             int partCount = node.ChildCount - 1;
@@ -64,10 +70,10 @@ namespace Calculator.Operations
                 dvs[i] = vs[i].Clone().Execute(differentiator);
             }
 
-            AdditionOperNode aNode = new AdditionOperNode();
+            AdditionOperNode aNode = new();
 
             // u*vs
-            MultiplicationOperNode mNode = new MultiplicationOperNode();
+            MultiplicationOperNode mNode = new();
             mNode.AddChild(u.Clone());
             for (int i = 0; i < partCount; i++)
             {
@@ -78,7 +84,7 @@ namespace Calculator.Operations
             // Combinatoric integrals
             for (int i = 0; i < partCount; i++)
             {
-                IntegralOperNode intNode = new IntegralOperNode();
+                IntegralOperNode intNode = new();
                 mNode = new MultiplicationOperNode();
                 intNode.Variable = new VarValueNode(_variable);
                 mNode.AddChild(u.Clone());
@@ -94,6 +100,7 @@ namespace Calculator.Operations
             return aNode;
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(PowOperNode node)
         {
             // TODO: Handle variable in exponent
@@ -106,17 +113,19 @@ namespace Calculator.Operations
             return Helpers.Multiply(coefficient, @base);
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(SignOperNode node)
         {
             node.Child = node.Child.Execute(this);
             return node;
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(SineOperNode node)
         {
             if (node.IsConstantBy(_variable)) return ConstantRule(node);
 
-            Differentiator diff = new Differentiator(_variable);
+            Differentiator diff = new(_variable);
             // Apply ChainRule
             var coefficient = node.Child.Execute(diff);
             // Apply table
@@ -124,28 +133,23 @@ namespace Calculator.Operations
             return Helpers.Multiply(Helpers.Reciprical(coefficient), sinFunc);
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(VarValueNode node)
         {
             if (node.Character != _variable.Character) return ConstantRule(node);
             return Helpers.Multiply(.5, Helpers.Pow(node, 2));
         }
 
-        private ExpNode ConstantRule(ExpNode node)
+        private static ExpNode SineTable(SineOperNode node)
         {
-            return Helpers.Multiply(node, _variable.Clone());
+            return node.SineFunction switch
+            {
+                SineFunction.SINE => Helpers.Negative(new SineOperNode(SineFunction.COSINE) { Child = node.Child }),
+                SineFunction.COSINE => new SineOperNode(SineFunction.SINE) { Child = node.Child },
+                _ => node.Clone(),
+            };
         }
 
-        private ExpNode SineTable(SineOperNode node)
-        {
-            switch (node.SineFunc)
-            {
-                case SineFunc.SINE:
-                    return Helpers.Negative(new SineOperNode(SineFunc.COSINE) { Child = node.Child });
-                case SineFunc.COSINE:
-                    return new SineOperNode(SineFunc.SINE) { Child = node.Child };
-                default:
-                    return node.Clone();
-            }
-        }
+        private ExpNode ConstantRule(ExpNode node) => Helpers.Multiply(node, _variable.Clone());
     }
 }

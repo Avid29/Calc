@@ -1,4 +1,6 @@
-﻿using Calculator.Exceptions.Simplification;
+﻿// Adam Dernis © 2021
+
+using Calculator.Exceptions.Simplification;
 using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
@@ -15,18 +17,32 @@ using System.Collections.Generic;
 
 namespace Calculator.Operations
 {
+    /// <summary>
+    /// An <see cref="Operation"/> that simplifies expressions.
+    /// </summary>
     public class Simplifier : Operation
     {
-        private bool _safe;
+        private readonly bool _safe;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Simplifier"/> class.
+        /// </summary>
+        /// <param name="safe">False if errors should be thrown.</param>
         public Simplifier(bool safe = true)
         {
             Error = null;
             _safe = safe;
         }
 
+        /// <summary>
+        /// Gets an error that occured during simplification.
+        /// </summary>
+        /// <remarks>
+        /// Null if no errors occured.
+        /// </remarks>
         public SimplificationException Error { get; private set; }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(AdditionOperNode node)
         {
             double valueProg = 0;
@@ -53,13 +69,13 @@ namespace Calculator.Operations
                 }
             }
 
-            if (node.ChildCount == 0 || valueProg != 0) node.AddChild(Helpers.MakeValueNode(valueProg));
+            if (node.ChildCount == 0 || valueProg != 0) node.AddChild(Helpers.MakeNumericalNode(valueProg));
 
             SimplfiyATerms(node);
-            
+
             if (node.ChildCount == 0)
             {
-                return Helpers.MakeValueNode(0);
+                return Helpers.MakeNumericalNode(0);
             }
             else if (node.ChildCount == 1)
             {
@@ -69,27 +85,28 @@ namespace Calculator.Operations
             return SumTensors(node);
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(DiffOperNode node)
         {
-            Differentiator differentiator = new Differentiator(node.Variable);
+            Differentiator differentiator = new(node.Variable);
             return node.Child.Execute(this).Execute(differentiator).Execute(this);
         }
 
-        public override ExpNode Execute(ExpNode node)
-        {
-            return node;
-        }
+        /// <inheritdoc/>
+        public override ExpNode Execute(ExpNode node) => node;
 
+        /// <inheritdoc/>
         public override ExpNode Execute(IntegralOperNode node)
         {
-            Integrator integrator = new Integrator(node.Variable);
+            Integrator integrator = new(node.Variable);
             return node.Child.Execute(this).Execute(integrator).Execute(this);
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(MultiplicationOperNode node)
         {
             double valueProg = 1;
-                
+
             for (int i = 0; i < node.ChildCount; i++)
             {
                 ExpNode simpleChild = node.GetChild(i).Execute(this);
@@ -111,15 +128,15 @@ namespace Calculator.Operations
             }
 
             // Anything multiplied by 0, is zero
-            if (valueProg == 0) return Helpers.MakeValueNode(0);
+            if (valueProg == 0) return Helpers.MakeNumericalNode(0);
 
-            if (node.ChildCount == 0 || valueProg != 1) node.AddChild(Helpers.MakeValueNode(valueProg));
+            if (node.ChildCount == 0 || valueProg != 1) node.AddChild(Helpers.MakeNumericalNode(valueProg));
 
             SimplfiyMTerms(node);
 
             if (node.ChildCount == 0)
             {
-                return Helpers.MakeValueNode(0);
+                return Helpers.MakeNumericalNode(0);
             }
             else if (node.ChildCount == 1)
             {
@@ -129,6 +146,7 @@ namespace Calculator.Operations
             return Distribute(node);
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(PowOperNode node)
         {
             node.LeftChild = node.LeftChild.Execute(this);
@@ -136,12 +154,12 @@ namespace Calculator.Operations
 
             if (node.LeftChild is NumericalValueNode lnvNode && node.RightChild is NumericalValueNode rnvNode)
             {
-                return Helpers.MakeValueNode(Math.Pow(lnvNode.DoubleValue, rnvNode.DoubleValue));
+                return Helpers.MakeNumericalNode(Math.Pow(lnvNode.DoubleValue, rnvNode.DoubleValue));
             }
 
             if (node.RightChild is IntValueNode ivNode)
             {
-                if (ivNode.DoubleValue == 0) return Helpers.MakeValueNode(1);
+                if (ivNode.DoubleValue == 0) return Helpers.MakeNumericalNode(1);
                 if (ivNode.DoubleValue == 1) return node.LeftChild;
 
                 if (node.LeftChild is ValueNode)
@@ -149,10 +167,10 @@ namespace Calculator.Operations
                     // No good expanding
                     return node;
                 }
-                
+
                 int n = ivNode.Value;
                 // Expand n times
-                MultiplicationOperNode mNode = new MultiplicationOperNode();
+                MultiplicationOperNode mNode = new();
 
                 mNode.AddChild(node.LeftChild);
                 for (int i = 1; i < n; i++)
@@ -166,6 +184,7 @@ namespace Calculator.Operations
             return Distribute(node);
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(ParenthesisOperNode node)
         {
             // Remove Parenthesis if unnecessary
@@ -173,18 +192,20 @@ namespace Calculator.Operations
             return node;
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(RecipricalOperNode node)
         {
             node.Child = node.Child.Execute(this);
 
             if (node.Child is NumericalValueNode nvNode)
             {
-                return Helpers.MakeValueNode(1 / nvNode.DoubleValue);
+                return Helpers.MakeNumericalNode(1 / nvNode.DoubleValue);
             }
 
             return Helpers.Pow(node.Child, -1).Execute(this);
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(SignOperNode node)
         {
             node.Child = node.Child.Execute(this);
@@ -196,7 +217,7 @@ namespace Calculator.Operations
                     {
                         if (node.Child is NumericalValueNode nvNode)
                         {
-                            return Helpers.MakeValueNode(nvNode.DoubleValue * -1);
+                            return Helpers.MakeNumericalNode(nvNode.DoubleValue * -1);
                         }
 
                         return Helpers.Multiply(-1, node.Child);
@@ -206,41 +227,43 @@ namespace Calculator.Operations
             }
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(SineOperNode node)
         {
             node.Child = node.Child.Execute(this);
-            
+
             if (node.Child is NumericalValueNode nvNode)
             {
                 double value = 0;
-                switch (node.SineFunc)
+                switch (node.SineFunction)
                 {
-                    case SineFunc.SINE:
+                    case SineFunction.SINE:
                         value = Math.Sin(nvNode.DoubleValue);
                         break;
-                    case SineFunc.COSINE:
+                    case SineFunction.COSINE:
                         value = Math.Cos(nvNode.DoubleValue);
                         break;
-                    case SineFunc.TANGENT:
+                    case SineFunction.TANGENT:
                         value = Math.Tan(nvNode.DoubleValue);
                         break;
-                    case SineFunc.COSECANT:
+                    case SineFunction.COSECANT:
                         value = 1 / Math.Sin(nvNode.DoubleValue);
                         break;
-                    case SineFunc.SECANT:
-                        value = 1/ Math.Cos(nvNode.DoubleValue);
+                    case SineFunction.SECANT:
+                        value = 1 / Math.Cos(nvNode.DoubleValue);
                         break;
-                    case SineFunc.COTANGENT:
-                        value = 1/ Math.Tan(nvNode.DoubleValue);
+                    case SineFunction.COTANGENT:
+                        value = 1 / Math.Tan(nvNode.DoubleValue);
                         break;
                 }
 
-                return Helpers.MakeValueNode(value);
+                return Helpers.MakeNumericalNode(value);
             }
 
             return node;
         }
 
+        /// <inheritdoc/>
         public override ExpNode Execute(TensorNode node)
         {
             for (int i = 0; i < node.ChildCount; i++)
@@ -254,17 +277,17 @@ namespace Calculator.Operations
 
         private AdditionOperNode SimplfiyATerms(AdditionOperNode node)
         {
-            SortedSet<AdditiveTerm> aTerms = new SortedSet<AdditiveTerm>();
+            SortedSet<AdditiveTerm> aTerms = new();
 
             for (int i = 0; i < node.ChildCount; i++)
             {
-                AdditiveTerm aTerm = new AdditiveTerm(node.GetChild(i));
-                AdditiveTerm existingATerm;
+                AdditiveTerm aTerm = new(node.GetChild(i));
 
-                if (aTerms.TryGetValue(aTerm, out existingATerm))
+                if (aTerms.TryGetValue(aTerm, out AdditiveTerm existingATerm))
                 {
                     existingATerm.AddToCoefficient(aTerm);
-                } else
+                }
+                else
                 {
                     aTerms.Add(aTerm);
                 }
@@ -281,17 +304,17 @@ namespace Calculator.Operations
 
         private MultiplicationOperNode SimplfiyMTerms(MultiplicationOperNode node)
         {
-            SortedSet<MultiplicativeTerm> mTerms = new SortedSet<MultiplicativeTerm>();
+            SortedSet<MultiplicativeTerm> mTerms = new();
 
             for (int i = 0; i < node.ChildCount; i++)
             {
-                MultiplicativeTerm mTerm = new MultiplicativeTerm(node.GetChild(i));
-                MultiplicativeTerm existingMTerm;
+                MultiplicativeTerm mTerm = new(node.GetChild(i));
 
-                if (mTerms.TryGetValue(mTerm, out existingMTerm))
+                if (mTerms.TryGetValue(mTerm, out MultiplicativeTerm existingMTerm))
                 {
                     existingMTerm.AddToExponent(mTerm, this);
-                } else
+                }
+                else
                 {
                     mTerms.Add(mTerm);
                 }
@@ -308,7 +331,7 @@ namespace Calculator.Operations
 
         private ExpNode Distribute(MultiplicationOperNode node)
         {
-            if (node.GetChild(node.ChildCount-1) is ParenthesisOperNode parNode)
+            if (node.GetChild(node.ChildCount - 1) is ParenthesisOperNode parNode)
             {
                 // Last child is parenthesis
                 if (parNode.Child is AdditionOperNode aNode)
@@ -316,9 +339,9 @@ namespace Calculator.Operations
                     // Last grandchild is addition
                     for (int i = 0; i < aNode.ChildCount; i++)
                     {
-                        MultiplicationOperNode mNode = new MultiplicationOperNode();
+                        MultiplicationOperNode mNode = new();
                         mNode.AddChild(aNode.GetChild(i));
-                        for (int j = 0; j < node.ChildCount-1; j++)
+                        for (int j = 0; j < node.ChildCount - 1; j++)
                         {
                             mNode.AddChild(node.GetChild(j).Clone());
                         }
@@ -345,9 +368,7 @@ namespace Calculator.Operations
                     // Distribute
                     for (int i = 0; i < mNode.ChildCount; i++)
                     {
-                        PowOperNode pow = new PowOperNode();
-                        pow.LeftChild = mNode.GetChild(i);
-                        pow.RightChild = node.RightChild.Clone();
+                        PowOperNode pow = Helpers.Pow(mNode.GetChild(i), node.RightChild.Clone());
                         mNode.ReplaceChild(pow, i);
                     }
                     return mNode;
@@ -369,7 +390,7 @@ namespace Calculator.Operations
                             for (int j = 0; j < tensorNode.ChildCount; j++)
                             {
                                 ExpNode addedNode = Helpers
-                                    .Add(tensorNode.GetChild(j), otherTensorNode.GetChild(j))
+                                    .Sum(tensorNode.GetChild(j), otherTensorNode.GetChild(j))
                                     .Execute(this);
                                 tensorNode.ReplaceChild(addedNode, j);
                             }

@@ -1,4 +1,6 @@
-﻿using Calculator.ExpressionTree.Nodes;
+﻿// Adam Dernis © 2021
+
+using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Operators;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
@@ -6,12 +8,22 @@ using Calculator.ExpressionTree.Nodes.Values;
 
 namespace Calculator.ExpressionTree
 {
+    /// <summary>
+    /// An expression.
+    /// </summary>
     public class ExpTree
     {
         private BranchNode _activeNode;
 
+        /// <summary>
+        /// Gets the root node of the expression tree.
+        /// </summary>
         public ExpNode Root { get; private set; }
 
+        /// <summary>
+        /// Adds a <see cref="ValueNode"/> to the expression tree.
+        /// </summary>
+        /// <param name="node">The <see cref="ValueNode"/> to add to the expression tree.</param>
         public void AddNode(ValueNode node)
         {
             if (_activeNode == null)
@@ -25,6 +37,10 @@ namespace Calculator.ExpressionTree
             }
         }
 
+        /// <summary>
+        /// Adds a <see cref="BranchNode"/> to the expression tree.
+        /// </summary>
+        /// <param name="node">The <see cref="BranchNode"/> to add to the expression tree.</param>
         public void AddNode(BranchNode node)
         {
             if (node is OperNode oNode)
@@ -41,6 +57,10 @@ namespace Calculator.ExpressionTree
             }
         }
 
+        /// <summary>
+        /// Adds a <see cref="OperNode"/> to the expression tree.
+        /// </summary>
+        /// <param name="node">The <see cref="OperNode"/> to add to the expression tree.</param>
         public void AddNode(OperNode node)
         {
             bool insert = !(node is UOperNode);
@@ -97,6 +117,9 @@ namespace Calculator.ExpressionTree
             _activeNode = node;
         }
 
+        /// <summary>
+        /// Closes the nearest parenthesis on the tree.
+        /// </summary>
         public void CloseParenthesis()
         {
             while (!(_activeNode is ParenthesisOperNode) && !_activeNode.IsRoot)

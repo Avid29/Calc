@@ -1,10 +1,23 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>Calculato</RootNamespace>
+    <RootNamespace>Calculator</RootNamespace>
+	<AssemblyName>CalculatorNET5</AssemblyName>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<LangVersion>9</LangVersion>
   </PropertyGroup>
 
   <Import Project="..\..\..\Calculator\Calculator.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+	<ItemGroup>
+		<AdditionalFiles Include="$(SolutionDir)stylecop.json" Label="Shared" />
+	</ItemGroup>
 
 </Project>

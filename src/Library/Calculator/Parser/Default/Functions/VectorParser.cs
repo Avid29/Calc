@@ -1,20 +1,32 @@
-﻿using Calculator.ExpressionTree;
+﻿// Adam Dernis © 2021
+
+using Calculator.ExpressionTree;
 using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.Parser.Default.Status;
 
 namespace Calculator.Parser.Default.Functions
 {
+    /// <summary>
+    /// A <see cref="FunctionParser"/> that parses a <see cref="TensorNode"/> for a vector.
+    /// </summary>
+    /// <remarks>
+    /// Vector is represented in form &lt;x1,x2,x3&gt;.
+    /// </remarks>
     public class VectorParser : FunctionParser
     {
+        private readonly TensorNode _vector;
         private DefaultParser _childParser;
-        private TensorNode _vector;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VectorParser"/> class.
+        /// </summary>
         public VectorParser()
         {
             _childParser = new DefaultParser();
             _vector = new TensorNode(TensorType.Vector);
         }
 
+        /// <inheritdoc/>
         public override ParseError ParseFirstChar(char c)
         {
             if (c == '<')
@@ -25,6 +37,7 @@ namespace Calculator.Parser.Default.Functions
             return new ParseError(ErrorType.MUST_BE, '<');
         }
 
+        /// <inheritdoc/>
         public override ParseError ParseNextChar(char c)
         {
             if ((c == ',' || c == '>') && _depth == 0)

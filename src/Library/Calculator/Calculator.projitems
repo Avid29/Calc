@@ -31,12 +31,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\NOpers\MultiplicationOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\NOpers\NOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\OperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\UOpers\SineNode\SineFunction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Priority.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\UOpers\SignNode\Sign.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\UOpers\SignNode\SignOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\UOpers\ParenthesisOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\UOpers\RecipricalOperNode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\UOpers\SineNode\SineFunc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\UOpers\SineNode\SineOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\UOpers\UOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Values\FloatValueNode.cs" />
@@ -48,7 +48,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Terms\MultiplicativeTerm.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operations\Differentiator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Operations\Evaluator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operations\Integrator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operations\Abstract\Operation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operations\Simplifier.cs" />
@@ -58,7 +57,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\IntegralFuncParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\SinusoidalFuncParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\VectorParser.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\State.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\ParserState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Status\ErrorType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Status\ParseError.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Status\ParserStatus.cs" />

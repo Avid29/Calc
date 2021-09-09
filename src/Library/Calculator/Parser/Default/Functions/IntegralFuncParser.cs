@@ -1,25 +1,45 @@
-﻿using Calculator.ExpressionTree;
+﻿// Adam Dernis © 2021
+
+using Calculator.ExpressionTree;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
 using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Parser.Default.Status;
 
 namespace Calculator.Parser.Default.Functions
 {
+    /// <summary>
+    /// A <see cref="FunctionParser"/> for parsing a <see cref="IntegralOperNode"/>.
+    /// </summary>
     public class IntegralFuncParser : FunctionParser
     {
+        private readonly IntegralOperNode _node;
         private State _state;
-        private IntegralOperNode _node;
         private DefaultParser _childParser;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IntegralFuncParser"/> class.
+        /// </summary>
         public IntegralFuncParser()
         {
             _state = State.OPEN_VAR;
             _depth = 0;
-            _node = new IntegralOperNode();
-            _node.IsDeterminate = false;
+            _node = new IntegralOperNode { IsDeterminate = false };
             _childParser = new DefaultParser();
         }
 
+        private enum State
+        {
+            OPEN_VAR,
+            VAR,
+            CLOSING_VAR,
+            LOWER,
+            UPPER,
+            OPEN_EXPRESSION,
+            EXPRESSION,
+            DONE,
+        }
+
+        /// <inheritdoc/>
         public override ParseError ParseFirstChar(char c)
         {
             if (c == '[' && _state == State.OPEN_VAR)
@@ -31,6 +51,7 @@ namespace Calculator.Parser.Default.Functions
             return new ParseError(ErrorType.MUST_BE, '[');
         }
 
+        /// <inheritdoc/>
         public override ParseError ParseNextChar(char c)
         {
             switch (_state)
@@ -139,17 +160,5 @@ namespace Calculator.Parser.Default.Functions
                     return new ParseError(ErrorType.UNKNOWN);
             }
         }
-
-        private enum State
-		{
-			OPEN_VAR,
-			VAR,
-			CLOSING_VAR,
-			LOWER,
-			UPPER,
-			OPEN_EXPRESSION,
-			EXPRESSION,
-			DONE,
-		}
     }
 }

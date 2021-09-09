@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>2daeb565-911a-4226-b0de-20f769416be2</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Calculator</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Operations\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ExpressionTree\ExpNodeException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ExpressionTree\BOperNodeAlreadyHasChildrenException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ExpressionTree\UOperNodeAlreadyHasChildException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Simplification\CannotAddTensors.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Simplification\SimplificationException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\ExpTree.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\BranchNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Collections\EnumerableCollectionNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Collections\TensorNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Collections\TensorType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\ExpNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\BOpers\BOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\BOpers\PowOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\Functions\DiffOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\Functions\IntegralOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\NOpers\AdditionOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\NOpers\MultiplicationOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\NOpers\NOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\OperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Priority.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\UOpers\SignNode\Sign.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\UOpers\SignNode\SignOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\UOpers\ParenthesisOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\UOpers\RecipricalOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\UOpers\SineNode\SineFunc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\UOpers\SineNode\SineOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\UOpers\UOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Values\FloatValueNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Values\IntValueNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Values\NumericalValueNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Values\ValueNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Values\VarValueNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Terms\AdditiveTerm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Terms\MultiplicativeTerm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operations\Differentiator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operations\Evaluator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operations\Integrator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operations\Abstract\Operation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operations\Simplifier.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\DefaultParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\DiffFuncParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\FunctionParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\IntegralFuncParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\SinusoidalFuncParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\VectorParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\State.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Status\ErrorType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Status\ParseError.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Status\ParserStatus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Printers\Abstract\Printer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Printers\Default\DefaultPrinter.cs" />
+  </ItemGroup>
+</Project>

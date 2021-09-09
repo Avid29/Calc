@@ -57,3 +57,12 @@
 /src/Clients/Apps/UWP/CalculatorInterface/Generated Files
 /src/Clients/Apps/UWP/Calculator.Apps.UWPApp/obj
 /src/Clients/Apps/UWP/Calculator.Apps.UWPApp/bin/x86/Debug
+/src/Clients/Console/Calculator.Clients.Console/obj
+/src/Clients/Console/Calculator.Clients.Console/bin
+/old/C++/src/Clients/Consoles/Calculator.GenericConsole/Debug
+/src/Library/Platforms/NET5/Calculator/obj
+/src/Library/Platforms/NET5/Calculator/bin
+/src/Library/Platforms/NetStandard/Calculator/bin
+/src/Library/Platforms/NetStandard/Calculator/obj
+/test/Calculator.Tests/obj
+/test/Calculator.Tests/bin

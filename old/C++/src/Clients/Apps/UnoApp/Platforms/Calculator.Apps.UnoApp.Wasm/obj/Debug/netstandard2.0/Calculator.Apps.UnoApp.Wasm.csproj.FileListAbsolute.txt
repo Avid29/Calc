@@ -1,0 +1,4 @@
+C:\Users\avid2\source\repos\Personal\Calc\src\Clients\Apps\UnoApp\Platforms\Calculator.Apps.UnoApp.Wasm\obj\Debug\netstandard2.0\Calculator.Apps.UnoApp.Wasm.csproj.AssemblyReference.cache
+C:\Users\avid2\source\repos\Personal\Calc\src\Clients\Apps\UnoApp\Platforms\Calculator.Apps.UnoApp.Wasm\obj\Debug\netstandard2.0\Calculator.Apps.UnoApp.Wasm.AssemblyInfoInputs.cache
+C:\Users\avid2\source\repos\Personal\Calc\src\Clients\Apps\UnoApp\Platforms\Calculator.Apps.UnoApp.Wasm\obj\Debug\netstandard2.0\Calculator.Apps.UnoApp.Wasm.AssemblyInfo.cs
+C:\Users\avid2\source\repos\Personal\Calc\src\Clients\Apps\UnoApp\Platforms\Calculator.Apps.UnoApp.Wasm\obj\Debug\netstandard2.0\Calculator.Apps.UnoApp.Wasm.csproj.CoreCompileInputs.cache

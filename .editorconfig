@@ -24,3 +24,6 @@ dotnet_diagnostic.SA1310.severity = none
 
 # SA1636: File header copyright text should match
 dotnet_diagnostic.SA1636.severity = none
+
+# Default severity for analyzer diagnostics with category 'StyleCop.CSharp.LayoutRules'
+dotnet_analyzer_diagnostic.category-StyleCop.CSharp.LayoutRules.severity = none

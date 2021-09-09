@@ -1,4 +1,6 @@
-﻿using Calculator.ExpressionTree;
+﻿// Adam Dernis © 2021
+
+using Calculator.ExpressionTree;
 using Calculator.ExpressionTree.Nodes.Operators;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
@@ -11,9 +13,12 @@ using System;
 
 namespace Calculator.Parser.Default
 {
+    /// <summary>
+    /// The default parser for creating <see cref="ExpTree"/>s.
+    /// </summary>
     public class DefaultParser
     {
-        private State _state;
+        private ParserState _state;
         private string _input;
         private ExpTree _tree;
         private FunctionParser _activeFunctionParser;
@@ -21,19 +26,31 @@ namespace Calculator.Parser.Default
         private int _parenthesisDepth;
         private int _position;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultParser"/> class.
+        /// </summary>
         public DefaultParser()
         {
-            _state = State.BEGIN;
-            _input = "";
+            _state = ParserState.BEGIN;
+            _input = string.Empty;
             _tree = new ExpTree();
             _activeFunctionParser = null;
-            _cache = "";
+            _cache = string.Empty;
             _parenthesisDepth = 0;
             _position = 0;
         }
 
-        public ExpTree Tree => _state == State.DONE ? _tree : null;
+        /// <summary>
+        /// Gets the created tree if done.
+        /// </summary>
+        public ExpTree Tree => _state == ParserState.DONE ? _tree : null;
 
+        /// <summary>
+        /// Parses a complete string and returns the resulting tree and status.
+        /// </summary>
+        /// <param name="equation">The equation to parse.</param>
+        /// <param name="tree">The resulting tree.</param>
+        /// <returns>The resulting parsing status.</returns>
         public static ParserStatus Parse(string equation, out ExpTree tree)
         {
             DefaultParser parser = new DefaultParser();
@@ -44,86 +61,78 @@ namespace Calculator.Parser.Default
             return result;
         }
 
+        /// <summary>
+        /// Parses a complete string and returns the resulting status.
+        /// </summary>
+        /// <param name="expression">The expression to parse.</param>
+        /// <returns>The resulting parsing status.</returns>
         public ParserStatus ParseString(string expression)
         {
             _input = expression;
 
+            // Parse each character one at a time
             foreach (char c in expression)
             {
                 ParserStatus status = ParseNextChar(c, true);
-                if (status.Failed)
-                {
-                    return status;
-                }
+                if (status.Failed) return status;
             }
 
+            // Finalize after all characters are parsed.
             Finalize();
 
             return new ParserStatus(_input, _position);
         }
 
+        /// <summary>
+        /// Parses the next <see cref="char"/> in the parsing state-machine.
+        /// </summary>
+        /// <param name="c">The <see cref="char"/> to parse.</param>
+        /// <param name="hasFullString">True if the input is already full, not step by step.</param>
+        /// <returns>The resulting parser state.</returns>
         public ParserStatus ParseNextChar(char c, bool hasFullString = false)
         {
-            if (!hasFullString)
-            {
-                _input += c;
-            }
+            // If input isn't known
+            if (!hasFullString) _input += c;
             _position++;
 
-            if (char.IsWhiteSpace(c))
+            // Ignore whitespace
+            if (char.IsWhiteSpace(c)) return GetSuccessState();
+
+            // All cases return and cannot fall-through
+            if (_state == ParserState.FUNCTION) return ParseFunction(c);
+            if (_state == ParserState.PARTIAL_FUNCTION) return ParsePartialFunction(c);
+            if (char.IsDigit(c)) return ParseDigit(c);
+            if (char.IsLetter(c)) return ParseLetter(c);
+
+            switch (c)
             {
-                return GetSuccessState();
-            }
-            
-            if (_state == State.FUNCTION)
-            {
-                return ParseFunction(c);
-            }
-            else if (_state == State.PARTIAL_FUNCTION)
-            {
-                return ParsePartialFunction(c);
-            }
-            else if (char.IsDigit(c))
-            {
-                return ParseDigit(c);
-            }
-            else if (char.IsLetter(c))
-            {
-                return ParseLetter(c);
-            }
-            else
-            {
-                switch (c)
-                {
-                    case '[':
-                    case '{':
-                    case '(':
-                    case '<':
-                    case '>':
-                    case ')':
-                    case '}':
-                    case ']':
-                        return ParseBracket(c);
-                    case '+':
-                    case '-':
-                    case '*':
-                    case '/':
-                    case '^':
-                        return ParseOper(c);
-                    case '.':
-                        return ParseDecimal();
-                    case '\\':
-                        return ParseEscape();
-                    default:
-                        return EnterErrorState(ErrorType.CANNOT_PROCEED);
-                }
+                // Brackets
+                case '[': case '{': case '(': case '<':
+                case '>': case ')': case '}': case ']':
+                    return ParseBracket(c);
+
+                // Operators
+                case '+': case '-':
+                case '*': case '/':
+                case '^': return ParseOper(c);
+
+                // Other
+                case '.': return ParseDecimal();
+                case '\\': return ParseEscape();
+
+                // Error by default
+                default: return EnterErrorState(ErrorType.CANNOT_PROCEED);
             }
         }
 
+        /// <summary>
+        /// Finalizes the tree after all characters are parsed.
+        /// </summary>
+        /// <returns>The resulting status of finalizing.</returns>
         public ParserStatus Finalize()
         {
-            if (_state == State.DONE) return GetSuccessState();
-            if (_state == State.ERROR) return EnterErrorState(ErrorType.UNKNOWN);
+            if (_state == ParserState.DONE) return GetSuccessState();
+            if (_state == ParserState.ERROR) return EnterErrorState(ErrorType.UNKNOWN);
 
             CompleteValue();
 
@@ -131,13 +140,15 @@ namespace Calculator.Parser.Default
 
             switch (_state)
             {
-                case State.INT:
-                case State.FLOAT:
-                case State.VARIABLE:
-                case State.VALUE:
-                    _state = State.DONE;
+                // Valid states
+                case ParserState.INT:
+                case ParserState.FLOAT:
+                case ParserState.VARIABLE:
+                case ParserState.VALUE:
+                    _state = ParserState.DONE;
                     return GetSuccessState();
 
+                // Throw error by default
                 default:
                     return EnterErrorState(ErrorType.UNKNOWN);
             }
@@ -147,22 +158,22 @@ namespace Calculator.Parser.Default
         {
             switch (_state)
             {
-                case State.VALUE:
+                case ParserState.VALUE:
                     _tree.AddNode(new MultiplicationOperNode());
-                    goto case State.BEGIN;
-                case State.BEGIN:
-                case State.OPEN_PARENTHESIS:
-                case State.UOPER:
-                case State.NOPER:
-                case State.INT:
-                    _state = State.INT;
-                    goto case State.FLOAT;
-                case State.FLOAT:
+                    goto case ParserState.BEGIN;
+                case ParserState.BEGIN:
+                case ParserState.OPEN_PARENTHESIS:
+                case ParserState.UOPER:
+                case ParserState.NOPER:
+                case ParserState.INT:
+                    _state = ParserState.INT;
+                    goto case ParserState.FLOAT;
+                case ParserState.FLOAT:
                     _cache += c;
                     return GetSuccessState();
-                case State.DECIMAL:
-                    _state = State.FLOAT;
-                    goto case State.FLOAT;
+                case ParserState.DECIMAL:
+                    _state = ParserState.FLOAT;
+                    goto case ParserState.FLOAT;
                 default:
                     return EnterErrorState(ErrorType.CANNOT_PROCEED);
             }
@@ -172,22 +183,22 @@ namespace Calculator.Parser.Default
         {
             switch (_state)
             {
-                case State.BEGIN:
-                case State.OPEN_PARENTHESIS:
-                case State.UOPER:
-                case State.NOPER:
+                case ParserState.BEGIN:
+                case ParserState.OPEN_PARENTHESIS:
+                case ParserState.UOPER:
+                case ParserState.NOPER:
                     _tree.AddNode(new VarValueNode(c));
-                    _state = State.VARIABLE;
+                    _state = ParserState.VARIABLE;
                     return GetSuccessState();
-                case State.INT:
-                case State.FLOAT:
+                case ParserState.INT:
+                case ParserState.FLOAT:
                     CompleteValue();
-                    goto case State.VARIABLE;
-                case State.VALUE:
-                case State.VARIABLE:
+                    goto case ParserState.VARIABLE;
+                case ParserState.VALUE:
+                case ParserState.VARIABLE:
                     _tree.AddNode(new MultiplicationOperNode());
                     _tree.AddNode(new VarValueNode(c));
-                    _state = State.VARIABLE;
+                    _state = ParserState.VARIABLE;
                     return GetSuccessState();
                 default:
                     return EnterErrorState(ErrorType.CANNOT_PROCEED);
@@ -198,14 +209,14 @@ namespace Calculator.Parser.Default
         {
             switch (_state)
             {
-                case State.BEGIN:
-                case State.OPEN_PARENTHESIS:
-                case State.NOPER:
+                case ParserState.BEGIN:
+                case ParserState.OPEN_PARENTHESIS:
+                case ParserState.NOPER:
                     return ParseUOper(c);
-                case State.INT:
-                case State.FLOAT:
-                case State.VALUE:
-                case State.VARIABLE:
+                case ParserState.INT:
+                case ParserState.FLOAT:
+                case ParserState.VALUE:
+                case ParserState.VARIABLE:
                     CompleteValue();
                     return ParseNOper(c);
                 default:
@@ -215,20 +226,16 @@ namespace Calculator.Parser.Default
 
         private ParserStatus ParseNOper(char c)
         {
-            if (c == '^')
-            {
-                _tree.AddNode(new PowOperNode());
-            }
-            else
-            {
-                _tree.AddNode(NOperNode.MakeNOperNode(c));
-            }
-            _state = State.NOPER;
+            if (c == '^') _tree.AddNode(new PowOperNode());
+            else _tree.AddNode(NOperNode.MakeNOperNode(c));
+            _state = ParserState.NOPER;
 
+            // '-' and '/' as NOPER nodes are parsed as '+' or '*', but need to be followed
+            // by the aligning UOPER node.
             if (c == '-' || c == '/')
             {
                 _tree.AddNode(UOperNode.MakeUOperNode(c));
-                _state = State.UOPER;
+                _state = ParserState.UOPER;
             }
 
             return GetSuccessState();
@@ -241,7 +248,7 @@ namespace Calculator.Parser.Default
                 case '+':
                 case '-':
                     _tree.AddNode(new SignOperNode(c));
-                    _state = State.UOPER;
+                    _state = ParserState.UOPER;
                     return GetSuccessState();
                 default:
                     return EnterErrorState(ErrorType.CANNOT_PROCEED);
@@ -252,43 +259,43 @@ namespace Calculator.Parser.Default
         {
             switch (_state)
             {
-                case State.INT:
-                case State.FLOAT:
+                case ParserState.INT:
+                case ParserState.FLOAT:
                     CompleteValue();
-                    goto case State.VALUE;
-                case State.VALUE:
-                case State.VARIABLE:
+                    goto case ParserState.VALUE;
+                case ParserState.VALUE:
+                case ParserState.VARIABLE:
                     if (c == '(') _tree.AddNode(new MultiplicationOperNode());
-                    goto case State.UOPER;
-                case State.UOPER:
-                case State.NOPER:
-                case State.BEGIN:
-                case State.OPEN_PARENTHESIS:
+                    goto case ParserState.UOPER;
+                case ParserState.UOPER:
+                case ParserState.NOPER:
+                case ParserState.BEGIN:
+                case ParserState.OPEN_PARENTHESIS:
                 {
                         if (c == '(')
                         {
                             _tree.AddNode(new ParenthesisOperNode());
                             _parenthesisDepth++;
-                            _state = State.OPEN_PARENTHESIS;
+                            _state = ParserState.OPEN_PARENTHESIS;
                         } else if (c == ')')
                         {
                             if (_parenthesisDepth == 0)
                             {
                                 return EnterErrorState(ErrorType.UNPAIRED_PARENTHESIS);
-                            } else if (_state == State.OPEN_PARENTHESIS)
+                            } else if (_state == ParserState.OPEN_PARENTHESIS)
                             {
                                 return EnterErrorState(ErrorType.CANNOT_PROCEED);
                             }
 
                             _parenthesisDepth--;
                             _tree.CloseParenthesis();
-                            _state = State.VALUE;
+                            _state = ParserState.VALUE;
                         }
                         else if (c == '<')
                         {
                             _activeFunctionParser = FunctionParser.MakeFunctionParser(c);
                             _activeFunctionParser.ParseFirstChar(c);
-                            _state = State.FUNCTION;
+                            _state = ParserState.FUNCTION;
                         }
                         else
                         {
@@ -305,13 +312,13 @@ namespace Calculator.Parser.Default
         {
             switch (_state)
             {
-                case State.INT:
+                case ParserState.INT:
                     _cache += ".";
-                    _state = State.DECIMAL;
+                    _state = ParserState.DECIMAL;
                     return GetSuccessState();
-                case State.FLOAT:
+                case ParserState.FLOAT:
                     return EnterErrorState(ErrorType.ALREADY_FLOAT);
-                case State.BEGIN:
+                case ParserState.BEGIN:
                     return EnterErrorState(ErrorType.CANNOT_BEGIN);
                 default:
                     return EnterErrorState(ErrorType.CANNOT_PROCEED);
@@ -322,22 +329,22 @@ namespace Calculator.Parser.Default
         {
             switch (_state)
             {
-                case State.INT:
-                case State.FLOAT:
+                case ParserState.INT:
+                case ParserState.FLOAT:
                     CompleteValue();
-                    goto case State.VALUE;
-                case State.VALUE:
-                case State.VARIABLE:
+                    goto case ParserState.VALUE;
+                case ParserState.VALUE:
+                case ParserState.VARIABLE:
                     _tree.AddNode(new MultiplicationOperNode());
-                    goto case State.NOPER;
-                case State.NOPER:
-                case State.UOPER:
-                case State.BEGIN:
-                case State.OPEN_PARENTHESIS:
-                    _cache = "";
-                    _state = State.PARTIAL_FUNCTION;
+                    goto case ParserState.NOPER;
+                case ParserState.NOPER:
+                case ParserState.UOPER:
+                case ParserState.BEGIN:
+                case ParserState.OPEN_PARENTHESIS:
+                    _cache = string.Empty;
+                    _state = ParserState.PARTIAL_FUNCTION;
                     return GetSuccessState();
-                case State.PARTIAL_FUNCTION:
+                case ParserState.PARTIAL_FUNCTION:
                     // TODO: handle new line
                     return EnterErrorState(ErrorType.CANNOT_PROCEED);
                 default:
@@ -359,8 +366,8 @@ namespace Calculator.Parser.Default
                 return EnterErrorState(ErrorType.INVALID_FUNCTION);
             }
 
-            _state = State.FUNCTION;
-            _cache = "";
+            _state = ParserState.FUNCTION;
+            _cache = string.Empty;
             ParseError parseError = _activeFunctionParser.ParseFirstChar(c);
             return GetSuccessState(parseError);
         }
@@ -371,7 +378,7 @@ namespace Calculator.Parser.Default
             if (_activeFunctionParser.Output != null)
             {
                 _tree.AddNode(_activeFunctionParser.Output);
-                _state = State.VALUE;
+                _state = ParserState.VALUE;
             }
 
             return GetSuccessState(status);
@@ -389,17 +396,17 @@ namespace Calculator.Parser.Default
 
         private ParserStatus EnterErrorState(ErrorType errorType, char expectedChar = '\0')
         {
-            _state = State.ERROR;
+            _state = ParserState.ERROR;
             return new ParserStatus(errorType, _input, _position, expectedChar);
         }
 
         private void CompleteValue()
         {
-            if (_state != State.INT && _state != State.FLOAT) return;
+            if (_state != ParserState.INT && _state != ParserState.FLOAT) return;
 
             double value = Convert.ToDouble(_cache);
             _tree.AddNode(Helpers.MakeNumericalNode(value));
-            _cache = "";
+            _cache = string.Empty;
         }
     }
 }

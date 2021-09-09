@@ -1,4 +1,6 @@
-﻿using Calculator.ExpressionTree.Nodes.Values;
+﻿// Adam Dernis © 2021
+
+using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Operations.Abstract;
 using Calculator.Printers.Abstract;
 

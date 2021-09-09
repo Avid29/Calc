@@ -1,4 +1,6 @@
-﻿using Calculator.ExpressionTree.Nodes.Values;
+﻿// Adam Dernis © 2021
+
+using Calculator.ExpressionTree.Nodes.Values;
 using System.Collections.Generic;
 
 namespace Calculator.ExpressionTree.Nodes.Collections
@@ -19,11 +21,11 @@ namespace Calculator.ExpressionTree.Nodes.Collections
             }
         }
 
-        protected List<ExpNode> Children { get; }
-
         public override int ChildCount => Children.Count;
 
         public override Priority Priority => Priority.OVERRIDE;
+
+        protected List<ExpNode> Children { get; }
 
         public override void AddChild(ExpNode node)
         {

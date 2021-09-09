@@ -1,4 +1,6 @@
-﻿using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
+﻿// Adam Dernis © 2021
+
+using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
 using Calculator.Parser.Default.Status;
 
 namespace Calculator.Parser.Default.Functions
@@ -6,8 +8,6 @@ namespace Calculator.Parser.Default.Functions
     public class SinusoidalFuncParser : FunctionParser
     {
         private DefaultParser _childParser;
-
-        public SineFunc SineFunc { get; }
 
         public SinusoidalFuncParser(string type)
         {
@@ -23,6 +23,8 @@ namespace Calculator.Parser.Default.Functions
 
             _childParser = new DefaultParser();
         }
+
+        public SineFunc SineFunc { get; }
 
         public override ParseError ParseFirstChar(char c)
         {

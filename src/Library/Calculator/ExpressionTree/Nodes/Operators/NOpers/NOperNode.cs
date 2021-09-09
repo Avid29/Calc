@@ -1,4 +1,6 @@
-﻿using Calculator.ExpressionTree.Nodes.Operators.NOpers;
+﻿// Adam Dernis © 2021
+
+using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Values;
 using System.Collections.Generic;
 
@@ -20,9 +22,9 @@ namespace Calculator.ExpressionTree.Nodes.Operators
             }
         }
 
-        protected List<ExpNode> Children { get; }
-
         public override int ChildCount => Children.Count;
+
+        protected List<ExpNode> Children { get; }
 
         public static NOperNode MakeNOperNode(char c)
         {

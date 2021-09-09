@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>Calculator</RootNamespace>
     <AssemblyName>CalculatorNetStandard2.1</AssemblyName>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <Import Project="..\..\..\Calculator\Calculator.projitems" Label="Shared" />

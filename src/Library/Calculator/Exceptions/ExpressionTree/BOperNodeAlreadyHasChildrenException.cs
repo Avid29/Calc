@@ -1,4 +1,6 @@
-﻿using Calculator.ExpressionTree.Nodes.Operators;
+﻿// Adam Dernis © 2021
+
+using Calculator.ExpressionTree.Nodes.Operators;
 
 namespace Calculator.Exceptions.ExpressionTree
 {
@@ -6,6 +8,7 @@ namespace Calculator.Exceptions.ExpressionTree
     {
         private const string MESSAGE = "Cannot add child to BOperNode because it already contains a two (2) children";
 
-        public BOperNodeAlreadyHasChildrenException(BOperNode node) : base(node, MESSAGE) { }
+        public BOperNodeAlreadyHasChildrenException(BOperNode node)
+            : base(node, MESSAGE) { }
     }
 }

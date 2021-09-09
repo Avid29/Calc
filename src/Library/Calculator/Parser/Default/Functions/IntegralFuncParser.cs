@@ -1,4 +1,6 @@
-﻿using Calculator.ExpressionTree;
+﻿// Adam Dernis © 2021
+
+using Calculator.ExpressionTree;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
 using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Parser.Default.Status;
@@ -18,6 +20,18 @@ namespace Calculator.Parser.Default.Functions
             _node = new IntegralOperNode();
             _node.IsDeterminate = false;
             _childParser = new DefaultParser();
+        }
+
+        private enum State
+        {
+            OPEN_VAR,
+            VAR,
+            CLOSING_VAR,
+            LOWER,
+            UPPER,
+            OPEN_EXPRESSION,
+            EXPRESSION,
+            DONE,
         }
 
         public override ParseError ParseFirstChar(char c)
@@ -139,17 +153,5 @@ namespace Calculator.Parser.Default.Functions
                     return new ParseError(ErrorType.UNKNOWN);
             }
         }
-
-        private enum State
-		{
-			OPEN_VAR,
-			VAR,
-			CLOSING_VAR,
-			LOWER,
-			UPPER,
-			OPEN_EXPRESSION,
-			EXPRESSION,
-			DONE,
-		}
     }
 }

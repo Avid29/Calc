@@ -1,4 +1,6 @@
-﻿using Calculator.Exceptions.Simplification;
+﻿// Adam Dernis © 2021
+
+using Calculator.Exceptions.Simplification;
 using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
@@ -56,7 +58,7 @@ namespace Calculator.Operations
             if (node.ChildCount == 0 || valueProg != 0) node.AddChild(Helpers.MakeNumericalNode(valueProg));
 
             SimplfiyATerms(node);
-            
+
             if (node.ChildCount == 0)
             {
                 return Helpers.MakeNumericalNode(0);
@@ -89,7 +91,7 @@ namespace Calculator.Operations
         public override ExpNode Execute(MultiplicationOperNode node)
         {
             double valueProg = 1;
-                
+
             for (int i = 0; i < node.ChildCount; i++)
             {
                 ExpNode simpleChild = node.GetChild(i).Execute(this);
@@ -149,7 +151,7 @@ namespace Calculator.Operations
                     // No good expanding
                     return node;
                 }
-                
+
                 int n = ivNode.Value;
                 // Expand n times
                 MultiplicationOperNode mNode = new MultiplicationOperNode();
@@ -209,7 +211,7 @@ namespace Calculator.Operations
         public override ExpNode Execute(SineOperNode node)
         {
             node.Child = node.Child.Execute(this);
-            
+
             if (node.Child is NumericalValueNode nvNode)
             {
                 double value = 0;
@@ -228,10 +230,10 @@ namespace Calculator.Operations
                         value = 1 / Math.Sin(nvNode.DoubleValue);
                         break;
                     case SineFunc.SECANT:
-                        value = 1/ Math.Cos(nvNode.DoubleValue);
+                        value = 1 / Math.Cos(nvNode.DoubleValue);
                         break;
                     case SineFunc.COTANGENT:
-                        value = 1/ Math.Tan(nvNode.DoubleValue);
+                        value = 1 / Math.Tan(nvNode.DoubleValue);
                         break;
                 }
 
@@ -308,7 +310,7 @@ namespace Calculator.Operations
 
         private ExpNode Distribute(MultiplicationOperNode node)
         {
-            if (node.GetChild(node.ChildCount-1) is ParenthesisOperNode parNode)
+            if (node.GetChild(node.ChildCount - 1) is ParenthesisOperNode parNode)
             {
                 // Last child is parenthesis
                 if (parNode.Child is AdditionOperNode aNode)
@@ -318,7 +320,7 @@ namespace Calculator.Operations
                     {
                         MultiplicationOperNode mNode = new MultiplicationOperNode();
                         mNode.AddChild(aNode.GetChild(i));
-                        for (int j = 0; j < node.ChildCount-1; j++)
+                        for (int j = 0; j < node.ChildCount - 1; j++)
                         {
                             mNode.AddChild(node.GetChild(j).Clone());
                         }

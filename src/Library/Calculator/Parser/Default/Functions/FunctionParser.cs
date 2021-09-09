@@ -1,5 +1,6 @@
-﻿using Calculator.ExpressionTree.Nodes;
-using Calculator.ExpressionTree.Nodes.Operators.Functions;
+﻿// Adam Dernis © 2021
+
+using Calculator.ExpressionTree.Nodes;
 using Calculator.Parser.Default.Status;
 
 namespace Calculator.Parser.Default.Functions

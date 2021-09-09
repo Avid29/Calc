@@ -1,4 +1,6 @@
-﻿using Calculator.ExpressionTree;
+﻿// Adam Dernis © 2021
+
+using Calculator.ExpressionTree;
 using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.Parser.Default.Status;
 

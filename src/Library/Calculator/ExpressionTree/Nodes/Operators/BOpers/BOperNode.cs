@@ -1,4 +1,6 @@
-﻿using Calculator.Exceptions.ExpressionTree;
+﻿// Adam Dernis © 2021
+
+using Calculator.Exceptions.ExpressionTree;
 using Calculator.ExpressionTree.Nodes.Values;
 using System;
 

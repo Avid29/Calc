@@ -1,11 +1,14 @@
-﻿using Calculator.Operations.Abstract;
+﻿// Adam Dernis © 2021
+
+using Calculator.Operations.Abstract;
 using Calculator.Printers.Abstract;
 
 namespace Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode
 {
     public class SignOperNode : UOperNode
     {
-        public SignOperNode(SignOperNode node) : base(node)
+        public SignOperNode(SignOperNode node)
+            : base(node)
         {
             Sign = node.Sign;
         }

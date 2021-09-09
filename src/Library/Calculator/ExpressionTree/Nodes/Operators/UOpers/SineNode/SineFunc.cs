@@ -1,4 +1,6 @@
-﻿namespace Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode
+﻿// Adam Dernis © 2021
+
+namespace Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode
 {
     public enum SineFunc
     {

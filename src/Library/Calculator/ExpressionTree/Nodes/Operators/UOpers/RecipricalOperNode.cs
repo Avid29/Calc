@@ -1,4 +1,6 @@
-﻿using Calculator.Operations.Abstract;
+﻿// Adam Dernis © 2021
+
+using Calculator.Operations.Abstract;
 using Calculator.Printers.Abstract;
 
 namespace Calculator.ExpressionTree.Nodes.Operators.UOpers
@@ -7,7 +9,8 @@ namespace Calculator.ExpressionTree.Nodes.Operators.UOpers
     {
         public RecipricalOperNode() { }
 
-        public RecipricalOperNode(RecipricalOperNode node) : base(node) { }
+        public RecipricalOperNode(RecipricalOperNode node)
+            : base(node) { }
 
         public override Priority Priority => Priority.SIGN;
 

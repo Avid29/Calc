@@ -1,4 +1,6 @@
-﻿namespace Calculator.Parser.Default.Status
+﻿// Adam Dernis © 2021
+
+namespace Calculator.Parser.Default.Status
 {
     public enum ErrorType : int
 	{

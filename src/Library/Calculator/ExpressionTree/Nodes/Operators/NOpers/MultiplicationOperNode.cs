@@ -1,4 +1,6 @@
-﻿using Calculator.Operations.Abstract;
+﻿// Adam Dernis © 2021
+
+using Calculator.Operations.Abstract;
 using Calculator.Printers.Abstract;
 
 namespace Calculator.ExpressionTree.Nodes.Operators.NOpers
@@ -7,7 +9,8 @@ namespace Calculator.ExpressionTree.Nodes.Operators.NOpers
     {
         public MultiplicationOperNode() { }
 
-        public MultiplicationOperNode(NOperNode node) : base(node) { }
+        public MultiplicationOperNode(NOperNode node)
+            : base(node) { }
 
         public override Priority Priority => Priority.MULTIPLICATION;
 

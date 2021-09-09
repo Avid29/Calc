@@ -1,9 +1,11 @@
-﻿namespace Calculator.Parser.Default.Status
+﻿// Adam Dernis © 2021
+
+namespace Calculator.Parser.Default.Status
 {
     public class ParseError
     {
-        public ParseError() :
-            this(ErrorType.NONE)
+        public ParseError()
+            : this(ErrorType.NONE)
         { }
 
         public ParseError(ParserStatus status)

@@ -1,4 +1,6 @@
-﻿using Calculator.ExpressionTree;
+﻿// Adam Dernis © 2021
+
+using Calculator.ExpressionTree;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
 using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Parser.Default.Status;
@@ -7,6 +9,7 @@ namespace Calculator.Parser.Default.Functions
 {
     public class DiffFuncParser : FunctionParser
     {
+
         private State _state;
         private DiffOperNode _node;
         private DefaultParser _childParser;
@@ -17,6 +20,16 @@ namespace Calculator.Parser.Default.Functions
             _depth = 0;
             _node = new DiffOperNode();
             _childParser = new DefaultParser();
+        }
+
+        private enum State
+        {
+            OPEN_VAR,
+            VAR,
+            CLOSING_VAR,
+            OPEN_EXPRESSION,
+            EXPRESSION,
+            DONE,
         }
 
         public override ParseError ParseFirstChar(char c)
@@ -86,16 +99,6 @@ namespace Calculator.Parser.Default.Functions
                 default:
                     return new ParseError(ErrorType.UNKNOWN);
             }
-        }
-
-        private enum State
-        {
-            OPEN_VAR,
-            VAR,
-            CLOSING_VAR,
-            OPEN_EXPRESSION,
-            EXPRESSION,
-            DONE,
         }
     }
 }

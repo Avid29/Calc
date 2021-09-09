@@ -1,11 +1,14 @@
-﻿using Calculator.Operations.Abstract;
+﻿// Adam Dernis © 2021
+
+using Calculator.Operations.Abstract;
 using Calculator.Printers.Abstract;
 
 namespace Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode
 {
     public class SineOperNode : UOperNode
     {
-        public SineOperNode(SineOperNode node) : base(node)
+        public SineOperNode(SineOperNode node)
+            : base(node)
         {
             SineFunc = node.SineFunc;
         }

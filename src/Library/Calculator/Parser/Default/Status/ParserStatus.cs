@@ -1,4 +1,6 @@
-﻿namespace Calculator.Parser.Default.Status
+﻿// Adam Dernis © 2021
+
+namespace Calculator.Parser.Default.Status
 {
     public class ParserStatus : ParseError
     {
@@ -9,8 +11,8 @@
             ErrorType = ErrorType.NONE;
         }
 
-        public ParserStatus(ParseError error, string input, int position) :
-            this(error.ErrorType, input, position, error.ExpectedCharacter)
+        public ParserStatus(ParseError error, string input, int position)
+            : this(error.ErrorType, input, position, error.ExpectedCharacter)
         { }
 
         public ParserStatus(ErrorType errorType, string input, int position, char expectedChar = '\0')

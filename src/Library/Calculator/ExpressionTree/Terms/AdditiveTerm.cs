@@ -1,4 +1,6 @@
-﻿using Calculator.ExpressionTree.Nodes;
+﻿// Adam Dernis © 2021
+
+using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Printers.Default;
@@ -9,8 +11,8 @@ namespace Calculator.ExpressionTree.Terms
     public class AdditiveTerm : IEquatable<AdditiveTerm>, IComparable<AdditiveTerm>
     {
         private double _coefficient;
-        ExpNode _base;
-        string _baseString;
+        private ExpNode _base;
+        private string _baseString;
 
         public AdditiveTerm(ExpNode node)
         {

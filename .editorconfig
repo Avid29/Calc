@@ -27,3 +27,9 @@ dotnet_diagnostic.SA1636.severity = none
 
 # Default severity for analyzer diagnostics with category 'StyleCop.CSharp.LayoutRules'
 dotnet_analyzer_diagnostic.category-StyleCop.CSharp.LayoutRules.severity = none
+
+# SA1027: Use tabs correctly
+dotnet_diagnostic.SA1027.severity = none
+
+# Default severity for analyzer diagnostics with category 'StyleCop.CSharp.ReadabilityRules'
+dotnet_analyzer_diagnostic.category-StyleCop.CSharp.ReadabilityRules.severity = none

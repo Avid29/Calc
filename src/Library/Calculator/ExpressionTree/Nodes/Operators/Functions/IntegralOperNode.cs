@@ -1,4 +1,6 @@
-﻿using Calculator.ExpressionTree.Nodes.Values;
+﻿// Adam Dernis © 2021
+
+using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Operations.Abstract;
 using Calculator.Printers.Abstract;
 
@@ -8,7 +10,8 @@ namespace Calculator.ExpressionTree.Nodes.Operators.Functions
     {
         public IntegralOperNode() { }
 
-        public IntegralOperNode(IntegralOperNode node) : base(node)
+        public IntegralOperNode(IntegralOperNode node)
+            : base(node)
         {
             IsDeterminate = node.IsDeterminate;
             Variable = node.Variable;

@@ -1,4 +1,6 @@
-﻿namespace Calculator.ExpressionTree.Nodes
+﻿// Adam Dernis © 2021
+
+namespace Calculator.ExpressionTree.Nodes
 {
     public abstract class BranchNode : ExpNode
     {

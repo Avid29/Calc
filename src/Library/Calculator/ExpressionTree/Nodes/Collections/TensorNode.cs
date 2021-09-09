@@ -1,4 +1,6 @@
-﻿using Calculator.Operations.Abstract;
+﻿// Adam Dernis © 2021
+
+using Calculator.Operations.Abstract;
 using Calculator.Printers.Abstract;
 
 namespace Calculator.ExpressionTree.Nodes.Collections
@@ -8,7 +10,8 @@ namespace Calculator.ExpressionTree.Nodes.Collections
         private int _dimensionCount;
         private int[] _sizes;
 
-        public TensorNode(TensorType tensorType) : this((int)tensorType) { }
+        public TensorNode(TensorType tensorType)
+            : this((int)tensorType) { }
 
         public TensorNode(int dimensionCount)
         {
@@ -16,7 +19,8 @@ namespace Calculator.ExpressionTree.Nodes.Collections
             _sizes = new int[dimensionCount];
         }
 
-        public TensorNode(TensorNode node) : base(node) { }
+        public TensorNode(TensorNode node)
+            : base(node) { }
 
         public string SizeIdentity
         {
@@ -26,7 +30,7 @@ namespace Calculator.ExpressionTree.Nodes.Collections
                 for (int i = 0; i < _dimensionCount; i++)
                 {
                     cache += _sizes[i];
-                    if (i != _dimensionCount-1) cache += ',';
+                    if (i != _dimensionCount - 1) cache += ',';
                 }
                 cache += ")";
                 return cache;

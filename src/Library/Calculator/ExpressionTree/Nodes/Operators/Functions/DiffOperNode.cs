@@ -1,4 +1,6 @@
-﻿using Calculator.ExpressionTree.Nodes.Values;
+﻿// Adam Dernis © 2021
+
+using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Operations.Abstract;
 using Calculator.Printers.Abstract;
 
@@ -8,7 +10,8 @@ namespace Calculator.ExpressionTree.Nodes.Operators.Functions
     {
         public DiffOperNode() { }
 
-        public DiffOperNode(DiffOperNode node) : base(node)
+        public DiffOperNode(DiffOperNode node)
+            : base(node)
         {
             Variable = node.Variable;
         }

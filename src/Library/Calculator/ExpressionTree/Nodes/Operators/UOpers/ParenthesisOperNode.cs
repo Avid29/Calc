@@ -1,4 +1,6 @@
-﻿using Calculator.Operations.Abstract;
+﻿// Adam Dernis © 2021
+
+using Calculator.Operations.Abstract;
 using Calculator.Printers.Abstract;
 
 namespace Calculator.ExpressionTree.Nodes.Operators.UOpers
@@ -10,7 +12,8 @@ namespace Calculator.ExpressionTree.Nodes.Operators.UOpers
             IsClosed = false;
         }
 
-        public ParenthesisOperNode(ParenthesisOperNode node) : base(node)
+        public ParenthesisOperNode(ParenthesisOperNode node)
+            : base(node)
         {
             IsClosed = node.IsClosed;
         }

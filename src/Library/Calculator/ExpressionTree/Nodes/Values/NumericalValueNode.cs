@@ -1,4 +1,6 @@
-﻿namespace Calculator.ExpressionTree.Nodes.Values
+﻿// Adam Dernis © 2021
+
+namespace Calculator.ExpressionTree.Nodes.Values
 {
     public abstract class NumericalValueNode : ValueNode
     {

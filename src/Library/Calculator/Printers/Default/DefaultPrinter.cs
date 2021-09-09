@@ -61,7 +61,7 @@ namespace Calculator.Printers.Default
         /// <inheritdoc/>
         public override string Print(IntegralOperNode node)
         {
-            if (node.IsDeterminate) 
+            if (node.IsDeterminate)
                 return $"\\int[{node.Variable.Print(this)}, {node.LowerBound.Print(this)}, {node.UpperBound.Print(this)}]{{{node.Child.Print(this)}}}";
             else
                 return $"\\int[{node.Variable.Print(this)}]{{{node.Child.Print(this)}}}";

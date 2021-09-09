@@ -55,13 +55,13 @@ namespace Calculator.Operations
 
         public override ExpNode Execute(NumericalValueNode node)
         {
-            return Helpers.MakeValueNode(0);
+            return Helpers.MakeNumericalNode(0);
         }
 
         public override ExpNode Execute(PowOperNode node)
         {
             // TODO: Handle variable in exponent
-            if (node.IsConstantBy(_variable)) return Helpers.MakeValueNode(0);
+            if (node.IsConstantBy(_variable)) return Helpers.MakeNumericalNode(0);
 
             var coefficient = node.RightChild;
             var @base = node.LeftChild;
@@ -77,7 +77,7 @@ namespace Calculator.Operations
 
         public override ExpNode Execute(SineOperNode node)
         {
-            if (node.IsConstantBy(_variable)) return Helpers.MakeValueNode(0);
+            if (node.IsConstantBy(_variable)) return Helpers.MakeNumericalNode(0);
 
             // Apply chain rule
             var coefficient = node.Child.Clone().Execute(this);
@@ -99,7 +99,7 @@ namespace Calculator.Operations
 
         public override ExpNode Execute(VarValueNode node)
         {
-            return Helpers.MakeValueNode(node.Character == _variable.Character ? 1 : 0);
+            return Helpers.MakeNumericalNode(node.Character == _variable.Character ? 1 : 0);
         }
 
         private ExpNode SineTable(SineOperNode node)

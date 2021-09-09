@@ -23,7 +23,7 @@ namespace Calculator.ExpressionTree.Terms
             } else
             {
                 _base = node;
-                _exponent = Helpers.MakeValueNode(1);
+                _exponent = Helpers.MakeNumericalNode(1);
             }
             _baseString = _base.Print(printer);
         }
@@ -34,7 +34,7 @@ namespace Calculator.ExpressionTree.Terms
             {
                 if (nvNode.DoubleValue == 0)
                 {
-                    return Helpers.MakeValueNode(1);
+                    return Helpers.MakeNumericalNode(1);
                 } else if (nvNode.DoubleValue == 1)
                 {
                     return _base;
@@ -46,7 +46,7 @@ namespace Calculator.ExpressionTree.Terms
 
         public void AddToExponent(MultiplicativeTerm other, Operation operation)
         {
-            _exponent = Helpers.Add(_exponent, other._exponent).Execute(operation);
+            _exponent = Helpers.Sum(_exponent, other._exponent).Execute(operation);
         }
 
         public int CompareTo(MultiplicativeTerm other)

@@ -35,7 +35,7 @@ namespace Calculator.ExpressionTree.Terms
 
         public ExpNode AsExpNode()
         {
-            if (_coefficient == 0) return Helpers.MakeValueNode(0);
+            if (_coefficient == 0) return Helpers.MakeNumericalNode(0);
             if (_coefficient == 1) return _base;
             return Helpers.Multiply(_coefficient, _base);
         }

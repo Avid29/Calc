@@ -398,7 +398,7 @@ namespace Calculator.Parser.Default
             if (_state != State.INT && _state != State.FLOAT) return;
 
             double value = Convert.ToDouble(_cache);
-            _tree.AddNode(Helpers.MakeValueNode(value));
+            _tree.AddNode(Helpers.MakeNumericalNode(value));
             _cache = "";
         }
     }

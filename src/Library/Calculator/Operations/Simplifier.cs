@@ -53,13 +53,13 @@ namespace Calculator.Operations
                 }
             }
 
-            if (node.ChildCount == 0 || valueProg != 0) node.AddChild(Helpers.MakeValueNode(valueProg));
+            if (node.ChildCount == 0 || valueProg != 0) node.AddChild(Helpers.MakeNumericalNode(valueProg));
 
             SimplfiyATerms(node);
             
             if (node.ChildCount == 0)
             {
-                return Helpers.MakeValueNode(0);
+                return Helpers.MakeNumericalNode(0);
             }
             else if (node.ChildCount == 1)
             {
@@ -111,15 +111,15 @@ namespace Calculator.Operations
             }
 
             // Anything multiplied by 0, is zero
-            if (valueProg == 0) return Helpers.MakeValueNode(0);
+            if (valueProg == 0) return Helpers.MakeNumericalNode(0);
 
-            if (node.ChildCount == 0 || valueProg != 1) node.AddChild(Helpers.MakeValueNode(valueProg));
+            if (node.ChildCount == 0 || valueProg != 1) node.AddChild(Helpers.MakeNumericalNode(valueProg));
 
             SimplfiyMTerms(node);
 
             if (node.ChildCount == 0)
             {
-                return Helpers.MakeValueNode(0);
+                return Helpers.MakeNumericalNode(0);
             }
             else if (node.ChildCount == 1)
             {
@@ -136,12 +136,12 @@ namespace Calculator.Operations
 
             if (node.LeftChild is NumericalValueNode lnvNode && node.RightChild is NumericalValueNode rnvNode)
             {
-                return Helpers.MakeValueNode(Math.Pow(lnvNode.DoubleValue, rnvNode.DoubleValue));
+                return Helpers.MakeNumericalNode(Math.Pow(lnvNode.DoubleValue, rnvNode.DoubleValue));
             }
 
             if (node.RightChild is IntValueNode ivNode)
             {
-                if (ivNode.DoubleValue == 0) return Helpers.MakeValueNode(1);
+                if (ivNode.DoubleValue == 0) return Helpers.MakeNumericalNode(1);
                 if (ivNode.DoubleValue == 1) return node.LeftChild;
 
                 if (node.LeftChild is ValueNode)
@@ -179,7 +179,7 @@ namespace Calculator.Operations
 
             if (node.Child is NumericalValueNode nvNode)
             {
-                return Helpers.MakeValueNode(1 / nvNode.DoubleValue);
+                return Helpers.MakeNumericalNode(1 / nvNode.DoubleValue);
             }
 
             return Helpers.Pow(node.Child, -1).Execute(this);
@@ -196,7 +196,7 @@ namespace Calculator.Operations
                     {
                         if (node.Child is NumericalValueNode nvNode)
                         {
-                            return Helpers.MakeValueNode(nvNode.DoubleValue * -1);
+                            return Helpers.MakeNumericalNode(nvNode.DoubleValue * -1);
                         }
 
                         return Helpers.Multiply(-1, node.Child);
@@ -235,7 +235,7 @@ namespace Calculator.Operations
                         break;
                 }
 
-                return Helpers.MakeValueNode(value);
+                return Helpers.MakeNumericalNode(value);
             }
 
             return node;
@@ -369,7 +369,7 @@ namespace Calculator.Operations
                             for (int j = 0; j < tensorNode.ChildCount; j++)
                             {
                                 ExpNode addedNode = Helpers
-                                    .Add(tensorNode.GetChild(j), otherTensorNode.GetChild(j))
+                                    .Sum(tensorNode.GetChild(j), otherTensorNode.GetChild(j))
                                     .Execute(this);
                                 tensorNode.ReplaceChild(addedNode, j);
                             }

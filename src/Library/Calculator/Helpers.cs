@@ -21,9 +21,11 @@ namespace Calculator
         /// <returns>A new <see cref="NumericalValueNode"/> with <paramref name="value"/>.</returns>
         public static NumericalValueNode MakeNumericalNode(double value)
         {
+            // Check if value is an int
             int intValue = (int)value;
             if (value == intValue)
             {
+                // value is an int
                 return new IntValueNode(intValue);
             }
 
@@ -37,11 +39,9 @@ namespace Calculator
         /// <returns>A new <see cref="AdditionOperNode"/> summing <paramref name="nodes"/>.</returns>
         public static AdditionOperNode Sum(params ExpNode[] nodes)
         {
+            // Create an addition node with all nodes as children
             AdditionOperNode aNode = new AdditionOperNode();
-            foreach (var node in nodes)
-            {
-                aNode.AddChild(node);
-            }
+            foreach (var node in nodes) aNode.AddChild(node);
             return aNode;
         }
 
@@ -63,11 +63,9 @@ namespace Calculator
         /// <returns>A new <see cref="MultiplicationOperNode"/> multiplying <paramref name="nodes"/>.</returns>
         public static MultiplicationOperNode Multiply(params ExpNode[] nodes)
         {
+            // Create a multiplication node with all nodes as children
             MultiplicationOperNode mNode = new MultiplicationOperNode();
-            foreach (var node in nodes)
-            {
-                mNode.AddChild(node);
-            }
+            foreach (var node in nodes) mNode.AddChild(node);
             return mNode;
         }
 

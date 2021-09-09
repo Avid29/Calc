@@ -16,7 +16,7 @@ steps:
       version: '5.0.x'
 
   - task: DotNetCoreCLI@2
-    displayName: 'dotnet restore'
+    displayName: 'nuget restore'
     inputs:
       command: restore
       projects: $(solution)

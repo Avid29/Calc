@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Calculator</RootNamespace>
-    <AssemblyName>CalculatorNetStandard2.1</AssemblyName>
+    <AssemblyName>CalculatorNetStandard2.0</AssemblyName>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<LangVersion>9</LangVersion>
   </PropertyGroup>

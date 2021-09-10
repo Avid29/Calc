@@ -277,7 +277,7 @@ namespace Calculator.Operations
 
         private AdditionOperNode SimplfiyATerms(AdditionOperNode node)
         {
-            SortedSet<AdditiveTerm> aTerms = new();
+            SortedDictionary<AdditiveTerm, AdditiveTerm> aTerms = new();
 
             for (int i = 0; i < node.ChildCount; i++)
             {
@@ -289,12 +289,12 @@ namespace Calculator.Operations
                 }
                 else
                 {
-                    aTerms.Add(aTerm);
+                    aTerms.Add(aTerm, aTerm);
                 }
             }
 
             node.ClearChildren();
-            foreach (var term in aTerms)
+            foreach (var term in aTerms.Values)
             {
                 node.AddChild(term.AsExpNode());
             }
@@ -304,7 +304,7 @@ namespace Calculator.Operations
 
         private MultiplicationOperNode SimplfiyMTerms(MultiplicationOperNode node)
         {
-            SortedSet<MultiplicativeTerm> mTerms = new();
+            SortedDictionary<MultiplicativeTerm, MultiplicativeTerm> mTerms = new();
 
             for (int i = 0; i < node.ChildCount; i++)
             {
@@ -316,12 +316,12 @@ namespace Calculator.Operations
                 }
                 else
                 {
-                    mTerms.Add(mTerm);
+                    mTerms.Add(mTerm, mTerm);
                 }
             }
 
             node.ClearChildren();
-            foreach (var term in mTerms)
+            foreach (var term in mTerms.Values)
             {
                 node.AddChild(term.AsExpNode());
             }

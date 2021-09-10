@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ExpressionTree\BOperNodeAlreadyHasChildrenException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ExpressionTree\UOperNodeAlreadyHasChildException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Simplification\CannotAddTensors.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Simplification\CannotMultiplyTensors.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Simplification\SimplificationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\ExpTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\BranchNode.cs" />
@@ -46,6 +47,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Values\VarValueNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Terms\AdditiveTerm.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Terms\MultiplicativeTerm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\NodeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operations\Differentiator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operations\Integrator.cs" />

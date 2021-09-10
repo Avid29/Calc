@@ -143,6 +143,8 @@ namespace Calculator.Operations
                 return node.GetChild(0);
             }
 
+            node = MultiplyScalarTensor(node);
+
             return Distribute(node);
         }
 
@@ -409,6 +411,57 @@ namespace Calculator.Operations
                 for (int i = 1; i < node.ChildCount; i++)
                 {
                     if (node.GetChild(i) is TensorNode) return HandleError(new CannotAddTensors(this, node, "Cannot add tensor and scalar."));
+                }
+            }
+
+            return node;
+        }
+
+        /// <remarks>
+        /// Multiplies a tensor by scalars.
+        /// </remarks>
+        private MultiplicationOperNode MultiplyScalarTensor(MultiplicationOperNode node)
+        {
+            TensorNode tensor1 = null;
+            int ti = -1;
+
+            for (int i = 0; i < node.ChildCount; i++)
+            {
+                if (i == ti) continue;
+
+                if (node.GetChild(i) is TensorNode tensor2)
+                {
+                    if (tensor1 != null)
+                    {
+                        if (i < ti)
+                        {
+                            TensorNode swap = tensor1;
+                            tensor1 = tensor2;
+                            tensor2 = swap;
+                        }
+
+                        if (!tensor1.CanMatrixMultiply(tensor2)) return (MultiplicationOperNode)HandleError(new CannotMultiplyTensors(this, node, $"Tensor nodes of size {tensor1.SizeIdentity} and {tensor2.SizeIdentity} could not be multiplied."));
+                    } else
+                    {
+                        tensor1 = tensor2;
+                        ti = i;
+                        i = -1;
+                    }
+                }
+                else
+                {
+                    if (tensor1 != null)
+                    {
+                        for (int j = 0; j < tensor1.ChildCount; j++)
+                        {
+                            ExpNode simpleChild = Helpers.Multiply(tensor1.GetChild(j), node.GetChild(i)).Execute(this);
+                            tensor1.ReplaceChild(simpleChild, j);
+                        }
+
+                        node.RemoveChild(i);
+                        if (i < ti) ti--;
+                        i--;
+                    }
                 }
             }
 

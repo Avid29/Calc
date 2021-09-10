@@ -9,17 +9,17 @@ using System;
 namespace Calculator.Exceptions.Simplification
 {
     /// <summary>
-    /// A <see cref="SimplificationException"/> for when adding mismatched <see cref="TensorNode"/>s and <see cref="ValueNode"/>s.
+    /// A <see cref="CannotMultiplyTensors"/> for when adding mismatched <see cref="TensorNode"/>s and <see cref="ValueNode"/>s.
     /// </summary>
-    public class CannotAddTensors : SimplificationException
+    public class CannotMultiplyTensors : SimplificationException
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CannotAddTensors"/> class.
+        /// Initializes a new instance of the <see cref="CannotMultiplyTensors"/> class.
         /// </summary>
         /// <param name="simplifier">The simplified that threw.</param>
-        /// <param name="context">The <see cref="AdditionOperNode"/> that it threw simplifying.</param>
+        /// <param name="context">The <see cref="MultiplicationOperNode"/> that it threw simplifying.</param>
         /// <param name="message">The <see cref="Exception"/> message.</param>
-        public CannotAddTensors(Simplifier simplifier, AdditionOperNode context, string message = "")
+        public CannotMultiplyTensors(Simplifier simplifier, MultiplicationOperNode context, string message = "")
             : base(simplifier, context, message) { }
     }
 }

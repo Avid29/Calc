@@ -265,7 +265,7 @@ namespace Calculator.Parser.Default
                     goto case ParserState.VALUE;
                 case ParserState.VALUE:
                 case ParserState.VARIABLE:
-                    if (c == '(') _tree.AddNode(new MultiplicationOperNode());
+                    if (c == '(' || c == '<') _tree.AddNode(new MultiplicationOperNode());
                     goto case ParserState.UOPER;
                 case ParserState.UOPER:
                 case ParserState.NOPER:

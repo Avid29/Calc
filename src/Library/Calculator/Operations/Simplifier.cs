@@ -145,6 +145,8 @@ namespace Calculator.Operations
 
             node = MultiplyScalarTensor(node);
 
+            if (node == null) return node;
+
             return Distribute(node);
         }
 

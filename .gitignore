@@ -66,3 +66,5 @@
 /src/Library/Platforms/NetStandard/Calculator/obj
 /test/Calculator.Tests/obj
 /test/Calculator.Tests/bin
+/src/Clients/App/UWP/Calculator.App.UWP/obj
+/src/Clients/App/UWP/Calculator.App.UWP/bin

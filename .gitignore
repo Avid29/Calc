@@ -68,3 +68,5 @@
 /test/Calculator.Tests/bin
 /src/Clients/App/UWP/Calculator.App.UWP/obj
 /src/Clients/App/UWP/Calculator.App.UWP/bin
+/src/Clients/App/Calculator.App.ViewModel/bin
+/src/Clients/App/Calculator.App.ViewModel/obj

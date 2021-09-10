@@ -1,0 +1,187 @@
+﻿<UserControl
+    x:Class="Calculator.App.UWP.Views.StandardView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Calculator.App.UWP.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,7)"
+    xmlns:contract8NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,8)"
+    xmlns:contract8Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,8)"
+    Loaded="OnLoaded"
+    mc:Ignorable="d"
+    d:DesignHeight="450"
+    d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <!-- Flyout Styles -->
+
+        <Style x:Key="MemoryFlyoutBaseStyle" TargetType="FlyoutPresenter">
+            <Setter Property="MinWidth" Value="200"/>
+            <Setter Property="MaxHeight" Value="2400"/>
+            <Setter Property="MaxWidth" Value="2400"/>
+            <Setter Property="ContentTransitions">
+                <Setter.Value>
+                    <TransitionCollection>
+                        <EdgeUIThemeTransition Edge="Bottom"/>
+                    </TransitionCollection>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="FlyoutPresenter">
+                        <Grid Margin="0"
+                              Background="{ThemeResource BackgroundSmokeFillColorBrush}"
+                              Tapped="OnMemoryFlyOutTapped">
+                            <ContentPresenter HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              ContentTransitions="{TemplateBinding ContentTransitions}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <contract8Present:Style x:Key="MemoryFlyoutStyle"
+                                BasedOn="{StaticResource MemoryFlyoutBaseStyle}"
+                                TargetType="FlyoutPresenter">
+            <Setter Property="IsDefaultShadowEnabled" Value="False"/>
+        </contract8Present:Style>
+        <contract8NotPresent:Style x:Key="MemoryFlyoutStyle"
+                                   BasedOn="{StaticResource MemoryFlyoutBaseStyle}"
+                                   TargetType="FlyoutPresenter"/>
+
+        <Style x:Key="HistoryFlyoutBaseStyle" TargetType="FlyoutPresenter">
+            <Setter Property="MinWidth" Value="200"/>
+            <Setter Property="MaxHeight" Value="2400"/>
+            <Setter Property="MaxWidth" Value="2400"/>
+            <Setter Property="ContentTransitions">
+                <Setter.Value>
+                    <TransitionCollection>
+                        <EdgeUIThemeTransition Edge="Bottom"/>
+                    </TransitionCollection>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="FlyoutPresenter">
+                        <Grid Margin="0"
+                              Background="{ThemeResource BackgroundSmokeFillColorBrush}"
+                              Tapped="OnHistoryFlyOutTapped">
+                            <ContentPresenter HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              ContentTransitions="{TemplateBinding ContentTransitions}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <contract8Present:Style x:Key="HistoryFlyoutStyle"
+                                BasedOn="{StaticResource HistoryFlyoutBaseStyle}"
+                                TargetType="FlyoutPresenter">
+            <Setter Property="IsDefaultShadowEnabled" Value="False"/>
+        </contract8Present:Style>
+        <contract8NotPresent:Style x:Key="HistoryFlyoutStyle"
+                                   BasedOn="{StaticResource HistoryFlyoutBaseStyle}"
+                                   TargetType="FlyoutPresenter"/>
+        
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="ColumnMain"/>
+            <ColumnDefinition x:Name="ColumnHistory"
+                              Width="0" MaxWidth="320"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid FlowDirection="LeftToRight">
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="RowHamburger" Height="{StaticResource HamburgerHeightGridLength}"/>
+                <RowDefinition x:Name="RowExpression"
+                               Height="22*" MinHeight="0"/>
+                <RowDefinition x:Name="RowResult"
+                               Height="72*" MinHeight="20"/>
+                <RowDefinition x:Name="RowDisplayControls" Height="0"/>
+                <RowDefinition x:Name="RowMemoryControls"
+                               Height="32*" MinHeight="0"/>
+                <RowDefinition x:Name="RowNumPad"
+                               Height="308*" MinHeight="0"/>
+            </Grid.RowDefinitions>
+
+            <Button x:Name="HistoryButton"
+                    x:Uid="HistoryButton"
+                    Grid.Row="0"
+                    Style="{StaticResource HistoryButtonStyle}"
+                    AutomationProperties.AutomationId="HistoryButton"
+                    Command="{x:Bind HistoryButtonPressedCommand, Mode=OneTime}"
+                    Content="&#xe81c;"
+                    ExitDisplayModeOnAccessKeyInvoked="False"
+                    TabIndex="2">
+                <FlyoutBase.AttachedFlyout>
+                    <Flyout x:Name="HistoryFlyout"
+                            AutomationProperties.AutomationId="HistoryFlyout"
+                            Closed="HistoryFlyout_Closed"
+                            FlyoutPresenterStyle="{StaticResource HistoryFlyoutStyle}"
+                            Opened="HistoryFlyout_Opened"
+                            Placement="Full"/>
+                </FlyoutBase.AttachedFlyout>
+            </Button>
+
+            <!-- Memory panel controls -->
+            <Grid x:Name="MemoryPanel"
+                  x:Uid="MemoryPanel"
+                  Grid.Row="4"
+                  Margin="3,0,3,0"
+                  AutomationProperties.HeadingLevel="Level1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" MaxWidth="80"/>
+                    <ColumnDefinition Width="1*" MaxWidth="80"/>
+                    <ColumnDefinition Width="1*" MaxWidth="80"/>
+                    <ColumnDefinition Width="1*" MaxWidth="80"/>
+                    <ColumnDefinition x:Name="M4"
+                                      Width="1*"
+                                      MaxWidth="80"/>
+                    <ColumnDefinition x:Name="M5" Width="0.01*"/>
+                    <ColumnDefinition x:Name="M6"
+                                      Width="1*"
+                                      MaxWidth="80"/>
+                </Grid.ColumnDefinitions>
+                
+                <Button x:Name="MemoryButton"
+                        x:Uid="MemoryButton"
+                        Grid.Column="6"
+                        MinWidth="15.5"
+                        MinHeight="8.402"
+                        Style="{StaticResource CaptionButtonStyle}"
+                        AutomationProperties.AutomationId="MemoryButton"
+                        Content="&#xE61D;"
+                        ExitDisplayModeOnAccessKeyInvoked="False"
+                        TabIndex="15">
+                    <FlyoutBase.AttachedFlyout>
+                        <Flyout x:Name="MemoryFlyout"
+                                x:Uid="MemoryFlyout"
+                                AutomationProperties.AutomationId="MemoryFlyout"
+                                FlyoutPresenterStyle="{StaticResource MemoryFlyoutStyle}"
+                                Placement="Full"/>
+                    </FlyoutBase.AttachedFlyout>
+                </Button>
+            </Grid>
+
+            <Grid x:Name="NumpadPanel"
+                  Grid.Row="5"
+                  Margin="3,0,3,3"
+                  RenderTransformOrigin="0.5,0.5">
+                <Grid.RenderTransform>
+                    <CompositeTransform/>
+                </Grid.RenderTransform>
+
+                <local:OperatorsPanel x:Name="OpsPanel"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

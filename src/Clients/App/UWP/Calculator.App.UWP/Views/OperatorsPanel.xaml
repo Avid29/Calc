@@ -5,11 +5,13 @@
     xmlns:local="using:Calculator.App.UWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:panels="using:Calculator.App.UWP.Views.Panels"
     mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignHeight="315"
+    d:DesignWidth="235"
+    UseLayoutRounding="False">
 
     <Grid>
-
+        <panels:StandardPanel x:Name="StandardPanel" TabIndex="17"/>
     </Grid>
 </UserControl>

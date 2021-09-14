@@ -1,0 +1,191 @@
+﻿<UserControl
+    x:Class="Calculator.App.UWP.Views.Panels.StandardPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Calculator.App.UWP.Views.Panels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Calculator.App.UWP.Controls"
+    mc:Ignorable="d"
+    x:Name="ControlRoot"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+
+    <Grid x:Name="Root">
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="R0" Height="1*"/>
+            <RowDefinition x:Name="R1" Height="1*"/>
+            <RowDefinition x:Name="R2" Height="1*"/>
+            <RowDefinition x:Name="R3" Height="1*"/>
+            <RowDefinition x:Name="R4" Height="1*"/>
+            <RowDefinition x:Name="R5" Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="GutterLeft" Width="0"/>
+            <ColumnDefinition x:Name="C0" Width="0"/>
+            <ColumnDefinition x:Name="C1" Width="1*"/>
+            <ColumnDefinition x:Name="C2" Width="1*"/>
+            <ColumnDefinition x:Name="C3" Width="1*"/>
+            <ColumnDefinition x:Name="C4" Width="1*"/>
+            <ColumnDefinition x:Name="GutterRight" Width="0"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid x:Name="DisplayControls"
+              x:Uid="DisplayControls"
+              Grid.Row="0"
+              Grid.Column="2"
+              Grid.ColumnSpan="4"
+              AutomationProperties.HeadingLevel="Level1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="PercentColumn"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <controls:CalculatorButton x:Name="PercentButton"
+                                       x:Uid="percentButton"
+                                       Grid.Column="0"
+                                       Style="{StaticResource SymbolOperatorButtonStyle}"
+                                       AutomationProperties.AutomationId="percentButton"
+                                       ButtonId="Percent"
+                                       Content="&#xE94C;"/>
+            <controls:CalculatorButton x:Name="ClearEntryButton"
+                                       x:Uid="clearEntryButton"
+                                       Grid.Column="1"
+                                       Style="{StaticResource OperatorButtonStyle}"
+                                       FontSize="16"
+                                       AutomationProperties.AutomationId="clearEntryButton"
+                                       ButtonId="ClearEntry"
+                                       Content="CE"/>
+            <controls:CalculatorButton x:Name="ClearButton"
+                                       x:Uid="clearButton"
+                                       Grid.Column="2"
+                                       Style="{StaticResource OperatorButtonStyle}"
+                                       FontSize="16"
+                                       AutomationProperties.AutomationId="clearButton"
+                                       ButtonId="Clear"
+                                       Content="C"/>
+            <controls:CalculatorButton x:Name="BackSpaceButton"
+                                       x:Uid="backSpaceButton"
+                                       Grid.Column="3"
+                                       Style="{StaticResource SymbolOperatorButtonStyle}"
+                                       FontSize="16"
+                                       AutomationProperties.AutomationId="backSpaceButton"
+                                       ButtonId="Backspace"
+                                       Content="&#xE94F;"/>
+        </Grid>
+
+        <Grid x:Name="StandardFunctions"
+              x:Uid="StandardFunctions"
+              Grid.Row="1"
+              Grid.Column="2"
+              Grid.ColumnSpan="4"
+              AutomationProperties.HeadingLevel="Level1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition x:Name="FnR1" Height="0"/>
+                <RowDefinition x:Name="FnR2" Height="0"/>
+                <RowDefinition x:Name="FnR3" Height="0"/>
+                <RowDefinition x:Name="FnR4" Height="0"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition x:Name="FnC1" Width="1*"/>
+                <ColumnDefinition x:Name="FnC2" Width="1*"/>
+                <ColumnDefinition x:Name="FnC3" Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <controls:CalculatorButton x:Name="InvertButton"
+                                       x:Uid="invertButton"
+                                       Style="{StaticResource SymbolOperatorButtonStyle}"
+                                       FontSize="18"
+                                       AutomationProperties.AutomationId="invertButton"
+                                       ButtonId="Invert"
+                                       Content="&#xf7c9;"/>
+            <controls:CalculatorButton x:Name="XPower2Button"
+                                       x:Uid="xpower2Button"
+                                       Grid.Column="1"
+                                       Style="{StaticResource SymbolOperatorButtonStyle}"
+                                       FontSize="18"
+                                       AutomationProperties.AutomationId="xpower2Button"
+                                       ButtonId="XPower2"
+                                       Content="&#xf7c8;"/>
+            <controls:CalculatorButton x:Name="SquareRootButton"
+                                       x:Uid="squareRootButton"
+                                       Grid.Column="2"
+                                       Style="{StaticResource SymbolOperatorButtonStyle}"
+                                       AutomationProperties.AutomationId="squareRootButton"
+                                       ButtonId="Sqrt"
+                                       Content="&#xF899;"/>
+        </Grid>
+
+        <Grid x:Name="StandardOperators"
+              x:Uid="StandardOperators"
+              Grid.Row="1"
+              Grid.RowSpan="5"
+              Grid.Column="5"
+              AutomationProperties.HeadingLevel="Level1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <controls:CalculatorButton x:Name="DivideButton"
+                                       x:Uid="divideButton"
+                                       Grid.Row="0"
+                                       Style="{StaticResource SymbolOperatorButtonStyle}"
+                                       AutomationProperties.AutomationId="divideButton"
+                                       ButtonId="Divide"
+                                       Content="&#xE94A;"/>
+            <controls:CalculatorButton x:Name="MultiplyButton"
+                                       x:Uid="multiplyButton"
+                                       Grid.Row="1"
+                                       Style="{StaticResource SymbolOperatorButtonStyle}"
+                                       AutomationProperties.AutomationId="multiplyButton"
+                                       ButtonId="Multiply"
+                                       Content="&#xE947;"/>
+            <controls:CalculatorButton x:Name="MinusButton"
+                                       x:Uid="minusButton"
+                                       Grid.Row="2"
+                                       Style="{StaticResource SymbolOperatorButtonStyle}"
+                                       AutomationProperties.AutomationId="minusButton"
+                                       ButtonId="Subtract"
+                                       Content="&#xE949;"/>
+            <controls:CalculatorButton x:Name="PlusButton"
+                                       x:Uid="plusButton"
+                                       Grid.Row="3"
+                                       Style="{StaticResource SymbolOperatorButtonStyle}"
+                                       AutomationProperties.AutomationId="plusButton"
+                                       ButtonId="Add"
+                                       Content="&#xE948;"/>
+            <controls:CalculatorButton x:Name="EqualButton"
+                                       x:Uid="equalButton"
+                                       Grid.Row="4"
+                                       Style="{StaticResource AccentEmphasizedCalcButtonStyle}"
+                                       AutomationProperties.AutomationId="equalButton"
+                                       ButtonId="Equals"
+                                       Content="&#xE94E;"/>
+        </Grid>
+
+        <local:NumberPad x:Name="NumberPad"
+                         x:Uid="NumberPad"
+                         Grid.Row="2"
+                         Grid.RowSpan="4"
+                         Grid.Column="2"
+                         Grid.ColumnSpan="3"
+                         AutomationProperties.HeadingLevel="Level1"
+                         ButtonStyle="{StaticResource NumericButtonStyle24}"/>
+
+        <controls:CalculatorButton x:Name="NegateButton"
+                                   x:Uid="negateButton"
+                                   Grid.Row="5"
+                                   Grid.Column="2"
+                                   Style="{StaticResource SymbolOperatorKeypadButtonStyle}"
+                                   FontWeight="Normal"
+                                   AutomationProperties.AutomationId="negateButton"
+                                   ButtonId="Negate"
+                                   Content="&#xF898;"/>
+    </Grid>
+</UserControl>

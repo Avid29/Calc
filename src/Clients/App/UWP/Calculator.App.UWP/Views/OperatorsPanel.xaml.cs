@@ -1,4 +1,6 @@
-﻿// Adam Dernis © 2021
+﻿// Inspired by the Microsoft Calculator
+// Code pulled from https://github.com/microsoft/calculator
+// Adam Dernis © 2021
 
 using Windows.UI.Xaml.Controls;
 

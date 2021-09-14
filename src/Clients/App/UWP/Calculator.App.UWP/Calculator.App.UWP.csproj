@@ -127,6 +127,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CalculatorButton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AppResourceProvider.cs" />
     <Compile Include="Views\HistoryList.xaml.cs">
@@ -137,6 +138,12 @@
     </Compile>
     <Compile Include="Views\OperatorsPanel.xaml.cs">
       <DependentUpon>OperatorsPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Panels\NumberPad.xaml.cs">
+      <DependentUpon>NumberPad.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Panels\StandardPanel.xaml.cs">
+      <DependentUpon>StandardPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StandardView.xaml.cs">
       <DependentUpon>StandardView.xaml</DependentUpon>
@@ -164,6 +171,14 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Themes\FluentTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\MicaTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\HistoryList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -176,13 +191,21 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Panels\NumberPad.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Panels\StandardPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\StandardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Include="$(SolutionDir)stylecop.json" />
+    <AdditionalFiles Include="C:\Users\avid2\source\repos\Personal\Calc\stylecop.json" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
@@ -194,17 +217,12 @@
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.6.2</Version>
     </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers">
-      <Version>1.1.118</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\CalculatorIcons.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Panels\" />
+    <Content Include="Assets\CalcMDL2.ttf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Calculator.App.ViewModel\Calculator.App.ViewModel.csproj">

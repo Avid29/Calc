@@ -4,7 +4,6 @@
 
 using Calculator.App.UWP.Services;
 using Calculator.App.ViewModel;
-using Calculator.App.ViewModel.ViewModels;
 using Microsoft.Toolkit.Mvvm.Input;
 using System.Windows.Input;
 using Windows.Foundation;

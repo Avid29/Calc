@@ -2,10 +2,10 @@
 // Code pulled from https://github.com/microsoft/calculator
 // Adam Dernis © 2021
 
-using Calculator.App.ViewModel.Servies;
+using Calculator.App.ViewModel.Servies.Localization;
 using Windows.ApplicationModel.Resources;
 
-namespace Calculator.App.UWP.Services
+namespace Calculator.App.UWP.Services.Localization
 {
     /// <summary>
     /// A resource provider that loads localized string.

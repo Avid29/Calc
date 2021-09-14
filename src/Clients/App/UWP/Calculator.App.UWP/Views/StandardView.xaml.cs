@@ -2,7 +2,7 @@
 // Code pulled from https://github.com/microsoft/calculator
 // Adam Dernis © 2021
 
-using Calculator.App.UWP.Services;
+using Calculator.App.UWP.Services.Localization;
 using Calculator.App.ViewModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System.Windows.Input;

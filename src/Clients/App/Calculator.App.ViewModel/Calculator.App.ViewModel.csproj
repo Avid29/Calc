@@ -5,11 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Toolkit.Diagnostics" Version="7.0.2" />
+    <PackageReference Include="Microsoft.Toolkit.HighPerformance" Version="7.0.2" />
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.0.2" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -17,7 +15,15 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <AdditionalFiles Include="$(SolutionDir)stylecop.json" />
+    <AdditionalFiles Remove="C:\Users\avid2\source\repos\Personal\Calc\stylecop.json" />
   </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Remove="C:\Users\avid2\source\repos\Personal\Calc\stylecop.json" />
+  </ItemGroup>
+
+  <!--<ItemGroup>
+	  <AdditionalFiles Include="$(SolutionDir)stylecop.json" />
+  </ItemGroup>-->
 
 </Project>

@@ -129,7 +129,8 @@
     </Compile>
     <Compile Include="Controls\CalculatorButton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\AppResourceProvider.cs" />
+    <Compile Include="Services\Localization\AppResourceProvider.cs" />
+    <Compile Include="Services\Localization\LocalizationSettings.cs" />
     <Compile Include="Views\HistoryList.xaml.cs">
       <DependentUpon>HistoryList.xaml</DependentUpon>
     </Compile>
@@ -204,12 +205,15 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
+  <!--<ItemGroup>
     <AdditionalFiles Include="C:\Users\avid2\source\repos\Personal\Calc\stylecop.json" />
-  </ItemGroup>
+  </ItemGroup>-->
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.12</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Diagnostics">
+      <Version>7.0.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Mvvm">
       <Version>7.0.2</Version>

@@ -1,6 +1,6 @@
 ﻿// Adam Dernis © 2021
 
-namespace Calculator.App.ViewModel.Servies
+namespace Calculator.App.ViewModel.Servies.Localization
 {
     /// <summary>
     /// An interface for a resource provider.

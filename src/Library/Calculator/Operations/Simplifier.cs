@@ -224,7 +224,7 @@ namespace Calculator.Operations
                             return Helpers.MakeNumericalNode(nvNode.DoubleValue * -1);
                         }
 
-                        return Helpers.Multiply(-1, node.Child);
+                        return Helpers.Multiply(-1, node.Child).Execute(this);
                     }
                 default:
                     return node;

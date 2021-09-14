@@ -27,10 +27,12 @@ namespace Calculator.Printers.Default
             for (int i = 0; i < node.ChildCount; i++)
             {
                 var child = node.GetChild(i);
-                bool isSignChild = child is SignOperNode;
-                if (!(i == 0 || isSignChild))
+                bool implicitSign = child is SignOperNode ||
+                    ((child is NumericalValueNode nvChild) && nvChild.DoubleValue < 0);
+                if (!(i == 0 || implicitSign))
                 {
-                    // Don't add if isSignChild
+                    // Don't add if is a negative sign operator,
+                    // a negative numerical value
                     // or if first iteration
                     cache += "+";
                 }

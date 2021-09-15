@@ -71,6 +71,13 @@ namespace Calculator.Operations.Abstract
         public virtual ExpNode Execute(FloatValueNode node) => Execute((NumericalValueNode)node);
 
         /// <summary>
+        /// Executes operation on a <see cref="GaussJordElimOperNode"/>.
+        /// </summary>
+        /// <param name="node">The <see cref="GaussJordElimOperNode"/> to execute operation on.</param>
+        /// <returns>The result of the operation on a <see cref="GaussJordElimOperNode"/>.</returns>
+        public virtual ExpNode Execute(GaussJordElimOperNode node) => Execute((UOperNode)node);
+
+        /// <summary>
         /// Executes operation on an <see cref="IntegralOperNode"/>.
         /// </summary>
         /// <param name="node">The <see cref="IntegralOperNode"/> to execute operation on.</param>

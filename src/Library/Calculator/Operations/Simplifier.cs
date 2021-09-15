@@ -12,6 +12,7 @@ using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
 using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.ExpressionTree.Terms;
 using Calculator.Operations.Abstract;
+using Microsoft.Toolkit.HighPerformance;
 using System;
 using System.Collections.Generic;
 
@@ -94,6 +95,17 @@ namespace Calculator.Operations
 
         /// <inheritdoc/>
         public override ExpNode Execute(ExpNode node) => node;
+
+        /// <inheritdoc/>
+        public override ExpNode Execute(GaussJordElimOperNode node)
+        {
+            if (node.Child is TensorNode matrix && matrix.TensorType == TensorType.Matrix)
+            {
+                return GaussJordanElimination(matrix);
+            }
+
+            return HandleError(new CannotReduceNonMatrix(this, node.Child));
+        }
 
         /// <inheritdoc/>
         public override ExpNode Execute(IntegralOperNode node)
@@ -475,6 +487,18 @@ namespace Calculator.Operations
             Error = exception;
             if (!_safe) throw exception;
             return null;
+        }
+
+        private TensorNode GaussJordanElimination(TensorNode tensorNode)
+        {
+            ExpNode[,] matrix = new ExpNode[tensorNode.GetDimensionSize(0), tensorNode.GetDimensionSize(1)];
+            Span<ExpNode> flatMatrix = matrix.AsSpan();
+            for (int i = 0; i < tensorNode.ChildCount; i++)
+            {
+                flatMatrix[i] = tensorNode.GetChild(i);
+            }
+
+            return tensorNode;
         }
     }
 }

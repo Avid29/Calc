@@ -57,6 +57,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\DiffFuncParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\FunctionParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\IntegralFuncParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\MatrixParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\SinusoidalFuncParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\VectorParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\ParserState.cs" />

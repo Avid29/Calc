@@ -46,6 +46,7 @@ namespace Calculator.ExpressionTree.Nodes.Collections
         /// <inheritdoc/>
         public override void AddChild(ExpNode node)
         {
+            node.Parent = this;
             Children.Add(node);
         }
 

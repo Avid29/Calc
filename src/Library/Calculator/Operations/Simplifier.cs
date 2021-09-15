@@ -492,13 +492,7 @@ namespace Calculator.Operations
 
         private TensorNode GaussJordanElimination(TensorNode tensorNode)
         {
-            ExpNode[,] matrix = new ExpNode[tensorNode.GetDimensionSize(0), tensorNode.GetDimensionSize(1)];
-            Span<ExpNode> flatMatrix = matrix.AsSpan();
-            for (int i = 0; i < tensorNode.ChildCount; i++)
-            {
-                flatMatrix[i] = tensorNode.GetChild(i);
-            }
-
+            MatrixByRows matrix = new MatrixByRows(tensorNode);
             return tensorNode;
         }
     }

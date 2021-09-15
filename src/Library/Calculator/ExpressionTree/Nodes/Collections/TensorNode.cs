@@ -2,6 +2,7 @@
 
 using Calculator.Operations.Abstract;
 using Calculator.Printers.Abstract;
+using System;
 using System.Collections.Generic;
 
 namespace Calculator.ExpressionTree.Nodes.Collections
@@ -85,6 +86,27 @@ namespace Calculator.ExpressionTree.Nodes.Collections
         public int GetDimensionSize(int n)
         {
             return _sizes[n - 1];
+        }
+
+        /// <summary>
+        /// Gets a the child at an index with n dimensions.
+        /// </summary>
+        /// <param name="index">The index in the dimension</param>
+        /// <returns>The child at the n dimensional index.</returns>
+        public ExpNode GetChild(params int[] index)
+        {
+            if (index.Length != _dimensionCount)
+                throw new ArgumentOutOfRangeException(nameof(index), $"{index.Length} must match the dimensions of the {nameof(TensorNode)}.");
+
+            int realIndex = 0; // The index for the flat tensor.
+            int realSize = 1; // The number of indecies to increment for the current dimension.
+            for (int dim = _dimensionCount-1; dim >= 0; dim--)
+            {
+                realIndex += index[dim] * realSize;
+                realSize *= _sizes[dim];
+            }
+
+            return base.GetChild(realIndex);
         }
 
         /// <inheritdoc/>

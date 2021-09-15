@@ -6,7 +6,7 @@ using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Printers.Default;
 using System;
 
-namespace Calculator.ExpressionTree.Terms
+namespace Calculator.Operations.Groups.Terms
 {
     /// <summary>
     /// Represents a term of an addition operation.

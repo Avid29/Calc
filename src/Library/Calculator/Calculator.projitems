@@ -9,9 +9,6 @@
     <Import_RootNamespace>Calculator</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Operations\" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ExpressionTree\ExpNodeException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ExpressionTree\BOperNodeAlreadyHasChildrenException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ExpressionTree\UOperNodeAlreadyHasChildException.cs" />
@@ -47,8 +44,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Values\NumericalValueNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Values\ValueNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Values\VarValueNode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Terms\AdditiveTerm.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Terms\MultiplicativeTerm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operations\Groups\Tensors\MatrixByRows.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operations\Groups\Tensors\MatrixRow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operations\Groups\Terms\AdditiveTerm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operations\Groups\Terms\MultiplicativeTerm.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\NodeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operations\Differentiator.cs" />

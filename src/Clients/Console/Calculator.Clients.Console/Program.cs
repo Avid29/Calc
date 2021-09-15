@@ -27,7 +27,7 @@ namespace Calculator.Clients.Console
                 ParserStatus status = parser.ParseString(str);
                 if (status.Failed)
                 {
-                    // TODO: Print error
+                    SysCon.WriteLine($"\nError: {status.ErrorType}\n");
                 } else
                 {
                     ExpNode root = parser.Tree.Root;

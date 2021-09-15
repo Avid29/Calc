@@ -1,6 +1,9 @@
 ﻿// Adam Dernis © 2021
 
 using Calculator.ExpressionTree.Nodes;
+using Calculator.ExpressionTree.Nodes.Operators;
+using Calculator.ExpressionTree.Nodes.Operators.Functions;
+using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
 using Calculator.Parser.Default.Status;
 
 namespace Calculator.Parser.Default.Functions
@@ -51,7 +54,9 @@ namespace Calculator.Parser.Default.Functions
                 case "csc":
                 case "sec":
                 case "cot":
-                    return new SinusoidalFuncParser(functionName);
+                    return new UnaryFuncParser(new SineOperNode(functionName));
+                case "rref":
+                    return new UnaryFuncParser(new GaussJordElimOperNode());
                 case "diff":
                     return new DiffFuncParser();
                 case "int":

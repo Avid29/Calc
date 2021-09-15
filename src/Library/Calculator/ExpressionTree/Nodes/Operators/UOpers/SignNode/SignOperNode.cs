@@ -10,7 +10,6 @@ namespace Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode
     /// </summary>
     public class SignOperNode : UOperNode
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SignOperNode"/> class.
         /// </summary>

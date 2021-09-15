@@ -20,6 +20,23 @@ namespace Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SineOperNode"/> class.
+        /// </summary>
+        /// <param name="type">The sine function of the <see cref="SineOperNode"/>.</param>
+        public SineOperNode(string type)
+        {
+            switch (type)
+            {
+                case "sin": SineFunction = SineFunction.SINE; break;
+                case "cos": SineFunction = SineFunction.COSINE; break;
+                case "tan": SineFunction = SineFunction.TANGENT; break;
+                case "csc": SineFunction = SineFunction.COSECANT; break;
+                case "sec": SineFunction = SineFunction.SECANT; break;
+                case "cot": SineFunction = SineFunction.COTANGENT; break;
+            }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SineOperNode"/> class as a clone of <paramref name="node"/>.
         /// </summary>
         /// <param name="node">The <see cref="SineOperNode"/> to clone.</param>

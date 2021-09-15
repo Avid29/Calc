@@ -2,6 +2,7 @@
 
 using Calculator.Operations.Abstract;
 using Calculator.Printers.Abstract;
+using System.Collections.Generic;
 
 namespace Calculator.ExpressionTree.Nodes.Collections
 {
@@ -16,21 +17,25 @@ namespace Calculator.ExpressionTree.Nodes.Collections
         /// <summary>
         /// Initializes a new instance of the <see cref="TensorNode"/> class.
         /// </summary>
-        /// <remarks>
-        /// Casts <see cref="Collections.TensorType"/> to an <see cref="int"/> and uses that as dimension count.
-        /// </remarks>
-        /// <param name="tensorType">The type of <see cref="TensorNode"/> to create.</param>
-        public TensorNode(TensorType tensorType)
-            : this((int)tensorType) { }
+        /// <param name="sizes">The size of each dimension in the <see cref="TensorNode"/>.</param>
+        public TensorNode(int[] sizes)
+        {
+            _dimensionCount = sizes.Length;
+            _sizes = sizes;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TensorNode"/> class.
         /// </summary>
-        /// <param name="dimensionCount">The number of dimensions to the tensor.</param>
-        public TensorNode(int dimensionCount)
+        /// <param name="sizes">The size of each dimension in the <see cref="TensorNode"/>.</param>
+        /// <param name="children">The children of the <see cref="TensorNode"/>.</param>
+        public TensorNode(int[] sizes, List<ExpNode> children)
+            : this(sizes)
         {
-            _dimensionCount = dimensionCount;
-            _sizes = new int[dimensionCount];
+            foreach (var child in children)
+            {
+                this.AddChild(child);
+            }
         }
 
         /// <summary>
@@ -47,14 +52,14 @@ namespace Calculator.ExpressionTree.Nodes.Collections
         {
             get
             {
-                // The size of each dimension seperated by ',' wrapped in "()"
-                string cache = "(";
+                // The size of each dimension seperated by ',' wrapped in "[]"
+                string cache = "[";
                 for (int i = 0; i < _dimensionCount; i++)
                 {
                     cache += _sizes[i];
                     if (i != _dimensionCount - 1) cache += ',';
                 }
-                cache += ")";
+                cache += "]";
                 return cache;
             }
         }
@@ -79,18 +84,6 @@ namespace Calculator.ExpressionTree.Nodes.Collections
         /// <returns>The size of the <paramref name="n"/>th dimension.</returns>
         public int GetDimensionSize(int n)
         {
-            return _sizes[n - 1];
-        }
-
-        /// <summary>
-        /// Ends the nth dimension and begins parsing the next dimension for input.
-        /// </summary>
-        /// <param name="n">The dimension to end.</param>
-        /// <returns>The size of <paramref name="n"/>th dimension.</returns>
-        public int EndDimension(int n)
-        {
-            // TODO: Tensors and Matricies
-            _sizes[n - 1] = Children.Count;
             return _sizes[n - 1];
         }
 

@@ -1,8 +1,10 @@
 ﻿// Adam Dernis © 2021
 
 using Calculator.ExpressionTree;
+using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.Parser.Default.Status;
+using System.Collections.Generic;
 
 namespace Calculator.Parser.Default.Functions
 {
@@ -14,7 +16,7 @@ namespace Calculator.Parser.Default.Functions
     /// </remarks>
     public class VectorParser : FunctionParser
     {
-        private readonly TensorNode _vector;
+        private List<ExpNode> _children;
         private DefaultParser _childParser;
 
         /// <summary>
@@ -23,7 +25,7 @@ namespace Calculator.Parser.Default.Functions
         public VectorParser()
         {
             _childParser = new DefaultParser();
-            _vector = new TensorNode(TensorType.Vector);
+            _children = new List<ExpNode>();
         }
 
         /// <inheritdoc/>
@@ -52,12 +54,10 @@ namespace Calculator.Parser.Default.Functions
                     return new ParseError(ErrorType.UNKNOWN);
                 }
 
-                _vector.AddChild(tree.Root);
-
+                _children.Add(tree.Root);
                 if (c == '>')
                 {
-                    _vector.EndDimension((int)TensorType.Vector);
-                    Output = _vector;
+                    Output = new TensorNode(new int[] { _children.Count}, _children);
                 }
 
                 return new ParseError();

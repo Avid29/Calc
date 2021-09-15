@@ -61,6 +61,12 @@ namespace Calculator.Printers.Default
         }
 
         /// <inheritdoc/>
+        public override string Print(GaussJordElimOperNode node)
+        {
+            return $"\\rref{{{node.Child.Print(this)}}}";
+        }
+
+        /// <inheritdoc/>
         public override string Print(IntegralOperNode node)
         {
             if (node.IsDeterminate)

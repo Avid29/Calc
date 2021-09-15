@@ -144,18 +144,34 @@ namespace Calculator.Printers.Default
             switch (node.TensorType)
             {
                 case TensorType.Vector:
-                    // Print each child seperated by ',' wrapped in "<>";
-                    cache += "<";
-                    for (int i = 0; i < node.ChildCount; i++)
                     {
-                        cache += node.GetChild(i).Print(this);
-                        if (i < node.ChildCount - 1)
+                        // Print each child seperated by ',' wrapped in "<>";
+                        cache += "<";
+                        for (int i = 0; i < node.ChildCount; i++)
                         {
-                            cache += ",";
+                            cache += node.GetChild(i).Print(this);
+                            if (i < node.ChildCount - 1)
+                            {
+                                cache += ",";
+                            }
                         }
+                        cache += ">";
+                        return cache;
                     }
-                    cache += ">";
-                    return cache;
+                case TensorType.Matrix:
+                    {
+                        cache = $"\\matrix[{node.SizeIdentity}{{";
+                        for (int i = 0; i < node.ChildCount; i++)
+                        {
+                            cache += node.GetChild(i).Print(this);
+                            if (i < node.ChildCount - 1)
+                            {
+                                cache += ",";
+                            }
+                        }
+                        cache += "}";
+                        return cache;
+                    }
                 default:
                     // TODO: Print matricies and tensors
                     return string.Empty;

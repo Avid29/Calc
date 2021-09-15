@@ -85,11 +85,13 @@ namespace Calculator.Parser.Default.Functions
                             {
                                 return new ParseError(ErrorType.UNKNOWN);
                             }
+
                             _node.AddChild(tree.Root);
                             _state = State.DONE;
                             Output = _node;
                             return new ParseError();
-                        } else
+                        }
+                        else
                         {
                             if (c == '{')
                             {

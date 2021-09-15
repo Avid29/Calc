@@ -56,6 +56,8 @@ namespace Calculator.Parser.Default.Functions
                     return new DiffFuncParser();
                 case "int":
                     return new IntegralFuncParser();
+                case "matrix":
+                    return new MatrixParser();
                 default:
                     return null;
             }

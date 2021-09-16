@@ -500,13 +500,13 @@ namespace Calculator.Operations
                 int leftMostCol = GetLeftMostColumn(leadingPositions, i);
                 matrix.SwapRows(i, leftMostCol);
                 SwapRows(leadingPositions, i, leftMostCol);
-                leftMostCol = i;
-                matrix[i].MultiplyRow(Helpers.Reciprical(matrix[i][leadingPositions[leftMostCol]]));
+                matrix[i].MultiplyRow(Helpers.Reciprical(matrix[i][leadingPositions[i]]));
                 for (int j = 0; j < matrix.Height; j++)
                 {
                     if (i != j)
                     {
-                        matrix[j].AddRowToRow(matrix[i], Helpers.Negative(matrix[j][leadingPositions[leftMostCol]]));
+                        matrix[j].AddRowToRow(matrix[i], Helpers.Negative(matrix[j][leadingPositions[i]]));
+                        if (leadingPositions[j] == i) leadingPositions[j] = GetLeadingColumn(matrix, j);
                     }
                 }
             }
@@ -526,13 +526,19 @@ namespace Calculator.Operations
             int[] leadingPositions = new int[matrix.Height];
             for (int i = 0; i < matrix.Height; i++)
             {
-                int j = 0;
-                while (j < matrix.Width && !(matrix[i][j] is NumericalValueNode node && node.DoubleValue != 0))
-                { j++; }
-
-                leadingPositions[i] = j;
+                int pos = GetLeadingColumn(matrix, i);
+                leadingPositions[i] = pos;
             }
+
             return leadingPositions;
+        }
+
+        private int GetLeadingColumn(MatrixByRow matrix, int row)
+        {
+            int col = 0;
+            while (col < matrix.Width && !(matrix[row][col] is NumericalValueNode node && node.DoubleValue != 0))
+            { col++; }
+            return col;
         }
 
         private int GetLeftMostColumn(int[] leadingPositions, int startRow = 0)

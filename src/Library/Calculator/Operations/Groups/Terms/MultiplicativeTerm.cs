@@ -3,12 +3,10 @@
 using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Values;
-using Calculator.Operations;
-using Calculator.Operations.Abstract;
 using Calculator.Printers.Default;
 using System;
 
-namespace Calculator.ExpressionTree.Terms
+namespace Calculator.Operations.Groups.Terms
 {
     /// <summary>
     /// Represents a term of an multiplication operation.

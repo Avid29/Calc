@@ -10,8 +10,10 @@ using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
 using Calculator.ExpressionTree.Nodes.Values;
-using Calculator.ExpressionTree.Terms;
 using Calculator.Operations.Abstract;
+using Calculator.Operations.Groups.Tensors;
+using Calculator.Operations.Groups.Terms;
+using Microsoft.Toolkit.HighPerformance;
 using System;
 using System.Collections.Generic;
 
@@ -94,6 +96,17 @@ namespace Calculator.Operations
 
         /// <inheritdoc/>
         public override ExpNode Execute(ExpNode node) => node;
+
+        /// <inheritdoc/>
+        public override ExpNode Execute(GaussJordElimOperNode node)
+        {
+            if (node.Child is TensorNode matrix && matrix.TensorType == TensorType.Matrix)
+            {
+                return GaussJordanElimination(matrix);
+            }
+
+            return HandleError(new CannotReduceNonMatrix(this, node.Child));
+        }
 
         /// <inheritdoc/>
         public override ExpNode Execute(IntegralOperNode node)
@@ -475,6 +488,74 @@ namespace Calculator.Operations
             Error = exception;
             if (!_safe) throw exception;
             return null;
+        }
+
+        private TensorNode GaussJordanElimination(TensorNode tensorNode)
+        {
+            MatrixByRow matrix = new MatrixByRow(tensorNode);
+            int[] leadingPositions = GetLeadingColumns(matrix);
+
+            for (int i = 0; i < matrix.Height; i++)
+            {
+                int leftMostCol = GetLeftMostColumn(leadingPositions, i);
+                matrix.SwapRows(i, leftMostCol);
+                SwapRows(leadingPositions, i, leftMostCol);
+                matrix[i].MultiplyRow(Helpers.Reciprical(matrix[i][leadingPositions[i]]));
+                for (int j = 0; j < matrix.Height; j++)
+                {
+                    if (i != j)
+                    {
+                        matrix[j].AddRowToRow(matrix[i], Helpers.Negative(matrix[j][leadingPositions[i]]));
+                        if (leadingPositions[j] == i) leadingPositions[j] = GetLeadingColumn(matrix, j);
+                    }
+                }
+            }
+
+            return matrix.AsExpNode();
+        }
+
+        private void SwapRows(int[] row, int index1, int index2)
+        {
+            int swap = row[index1];
+            row[index1] = row[index2];
+            row[index2] = swap;
+        }
+
+        private int[] GetLeadingColumns(MatrixByRow matrix)
+        {
+            int[] leadingPositions = new int[matrix.Height];
+            for (int i = 0; i < matrix.Height; i++)
+            {
+                int pos = GetLeadingColumn(matrix, i);
+                leadingPositions[i] = pos;
+            }
+
+            return leadingPositions;
+        }
+
+        private int GetLeadingColumn(MatrixByRow matrix, int row)
+        {
+            int col = 0;
+            while (col < matrix.Width && !(matrix[row][col] is NumericalValueNode node && node.DoubleValue != 0))
+            { col++; }
+            return col;
+        }
+
+        private int GetLeftMostColumn(int[] leadingPositions, int startRow = 0)
+        {
+            int lowestValue = int.MaxValue;
+            int lowestValueRow = 0;
+
+            for (int i = startRow; i < leadingPositions.Length; i++)
+            {
+                if (leadingPositions[i] < lowestValue)
+                {
+                    lowestValue = leadingPositions[i];
+                    lowestValueRow = i;
+                }
+            }
+
+            return lowestValueRow;
         }
     }
 }

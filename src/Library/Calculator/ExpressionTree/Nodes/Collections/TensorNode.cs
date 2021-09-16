@@ -2,6 +2,7 @@
 
 using Calculator.Operations.Abstract;
 using Calculator.Printers.Abstract;
+using System;
 using System.Collections.Generic;
 
 namespace Calculator.ExpressionTree.Nodes.Collections
@@ -18,7 +19,7 @@ namespace Calculator.ExpressionTree.Nodes.Collections
         /// Initializes a new instance of the <see cref="TensorNode"/> class.
         /// </summary>
         /// <param name="sizes">The size of each dimension in the <see cref="TensorNode"/>.</param>
-        public TensorNode(int[] sizes)
+        public TensorNode(params int[] sizes)
         {
             _dimensionCount = sizes.Length;
             _sizes = sizes;
@@ -85,6 +86,27 @@ namespace Calculator.ExpressionTree.Nodes.Collections
         public int GetDimensionSize(int n)
         {
             return _sizes[n - 1];
+        }
+
+        /// <summary>
+        /// Gets a the child at an index with n dimensions.
+        /// </summary>
+        /// <param name="index">The index in the dimension</param>
+        /// <returns>The child at the n dimensional index.</returns>
+        public ExpNode GetChildD(params int[] index)
+        {
+            if (index.Length != _dimensionCount)
+                throw new ArgumentOutOfRangeException(nameof(index), $"{index.Length} must match the dimensions of the {nameof(TensorNode)}.");
+
+            int realIndex = 0; // The index for the flat tensor.
+            int realSize = 1; // The number of indices to increment for the current dimension.
+            for (int dim = DimensionCount - 1; dim >= 0; dim--)
+            {
+                realIndex += index[dim] * realSize;
+                realSize *= _sizes[DimensionCount - dim - 1];
+            }
+
+            return GetChild(realIndex);
         }
 
         /// <inheritdoc/>

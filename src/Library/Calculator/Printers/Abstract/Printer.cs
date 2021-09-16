@@ -71,6 +71,13 @@ namespace Calculator.Printers.Abstract
         public virtual string Print(FloatValueNode node) => Print((ValueNode)node);
 
         /// <summary>
+        /// Prints a <see cref="GaussJordElimOperNode"/>.
+        /// </summary>
+        /// <param name="node">The <see cref="GaussJordElimOperNode"/> to print.</param>
+        /// <returns>The <see cref="GaussJordElimOperNode"/> printed to a string.</returns>
+        public virtual string Print(GaussJordElimOperNode node) => Print((UOperNode)node);
+
+        /// <summary>
         /// Prints an <see cref="IntegralOperNode"/>.
         /// </summary>
         /// <param name="node">The <see cref="IntegralOperNode"/> to print.</param>

@@ -22,7 +22,7 @@ namespace Calculator.ExpressionTree.Nodes
             if (other.TensorType != TensorType.Matrix) return false;
 
             // Ensure node's last dimension is the size of other's first dimension
-            return node.GetDimensionSize(1) == other.GetDimensionSize(0);
+            return node.GetDimensionSize(2) == other.GetDimensionSize(1);
         }
     }
 }

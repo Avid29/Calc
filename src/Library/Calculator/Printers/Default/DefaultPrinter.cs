@@ -61,6 +61,12 @@ namespace Calculator.Printers.Default
         }
 
         /// <inheritdoc/>
+        public override string Print(GaussJordElimOperNode node)
+        {
+            return $"\\rref{{{node.Child.Print(this)}}}";
+        }
+
+        /// <inheritdoc/>
         public override string Print(IntegralOperNode node)
         {
             if (node.IsDeterminate)
@@ -160,7 +166,7 @@ namespace Calculator.Printers.Default
                     }
                 case TensorType.Matrix:
                     {
-                        cache = $"\\matrix[{node.SizeIdentity}{{";
+                        cache = $"\\matrix{node.SizeIdentity}{{";
                         for (int i = 0; i < node.ChildCount; i++)
                         {
                             cache += node.GetChild(i).Print(this);

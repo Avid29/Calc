@@ -109,13 +109,17 @@ namespace Calculator.Operations
                     int leftMostCol = RefHelpers.GetLeftMostColumn(leadingPositions, i);
                     matrix.SwapRows(i, leftMostCol);
                     Common.Swap(ref leadingPositions[i], ref leadingPositions[leftMostCol]);
+
+                    if (leadingPositions[i] == -1)
+                        continue;
+
                     matrix[i].MultiplyRow(QuickOpers.Reciprical(matrix[i][leadingPositions[i]]));
                     for (int j = 0; j < matrix.Height; j++)
                     {
                         if (i != j)
                         {
                             matrix[j].AddRowToRow(matrix[i], QuickOpers.Negative(matrix[j][leadingPositions[i]]));
-                            if (leadingPositions[j] == i) leadingPositions[j] = RefHelpers.GetLeadingColumn(matrix[j]);
+                            leadingPositions[j] = RefHelpers.GetLeadingColumn(matrix[j]);
                         }
                     }
                 }

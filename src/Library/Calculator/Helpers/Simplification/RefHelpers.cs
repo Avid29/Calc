@@ -35,7 +35,12 @@ namespace Calculator.Helpers.Simplification
         public static int GetLeadingColumn(MatrixRow row)
         {
             int col = 0;
-            while (col < row.Width && !(row[col] is NumericalValueNode node && node.DoubleValue != 0)) col++;
+            while (!(row[col] is NumericalValueNode node && node.DoubleValue != 0))
+            {
+                col++;
+                if (col == row.Width) return -1;
+            }
+
             return col;
         }
 

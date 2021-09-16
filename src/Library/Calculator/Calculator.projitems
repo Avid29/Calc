@@ -25,7 +25,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\BOpers\BOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\BOpers\PowOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\Functions\DiffOperNode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\Functions\GaussJordElimOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\Functions\RowElim\RowElimMethod.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\Functions\RowElim\RowElimOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\Functions\IntegralOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\NOpers\AdditionOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\NOpers\MultiplicationOperNode.cs" />

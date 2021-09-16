@@ -4,6 +4,7 @@ using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
+using Calculator.ExpressionTree.Nodes.Operators.Functions.RowElim;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
@@ -61,9 +62,16 @@ namespace Calculator.Printers.Default
         }
 
         /// <inheritdoc/>
-        public override string Print(GaussJordElimOperNode node)
+        public override string Print(RowElimOperNode node)
         {
-            return $"\\rref{{{node.Child.Print(this)}}}";
+            string cache;
+            switch (node.EliminationMethod)
+            {
+                case RowElimMethod.Gauss: cache = @"\\ref"; break;
+                case RowElimMethod.GaussJordan: cache = @"\\ref"; break;
+                default: cache = string.Empty; break;
+            }
+            return $"{cache}{{{node.Child.Print(this)}}}";
         }
 
         /// <inheritdoc/>

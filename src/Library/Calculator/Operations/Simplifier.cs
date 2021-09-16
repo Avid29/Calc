@@ -165,7 +165,7 @@ namespace Calculator.Operations
 
             if (node.ChildCount == 0 || valueProg != 1) node.AddChild(QuickOpers.MakeNumericalNode(valueProg));
 
-            SimplfiyMTerms(node);
+            MultiplicationHelpers.SimplfiyMTerms(node, this);
 
             if (node.ChildCount == 0)
             {
@@ -176,11 +176,11 @@ namespace Calculator.Operations
                 return node.GetChild(0);
             }
 
-            node = MultiplyScalarTensor(node);
+            node = MultiplicationHelpers.MultiplyScalarTensor(node, this);
 
             if (node == null) return node;
 
-            return Distribute(node);
+            return MultiplicationHelpers.Distribute(node, this);
         }
 
         /// <inheritdoc/>
@@ -324,60 +324,6 @@ namespace Calculator.Operations
             return null;
         }
 
-        private MultiplicationOperNode SimplfiyMTerms(MultiplicationOperNode node)
-        {
-            SortedSet<MultiplicativeTerm> mTerms = new();
-
-            for (int i = 0; i < node.ChildCount; i++)
-            {
-                MultiplicativeTerm mTerm = new(node.GetChild(i));
-
-                if (mTerms.TryGetValue(mTerm, out MultiplicativeTerm existingMTerm))
-                {
-                    existingMTerm.AddToExponent(mTerm, this);
-                }
-                else
-                {
-                    mTerms.Add(mTerm);
-                }
-            }
-
-            node.ClearChildren();
-            foreach (var term in mTerms)
-            {
-                node.AddChild(term.AsExpNode());
-            }
-
-            return node;
-        }
-
-        private ExpNode Distribute(MultiplicationOperNode node)
-        {
-            if (node.GetChild(node.ChildCount - 1) is ParenthesisOperNode parNode)
-            {
-                // Last child is parenthesis
-                if (parNode.Child is AdditionOperNode aNode)
-                {
-                    // Last grandchild is addition
-                    for (int i = 0; i < aNode.ChildCount; i++)
-                    {
-                        MultiplicationOperNode mNode = new();
-                        mNode.AddChild(aNode.GetChild(i));
-                        for (int j = 0; j < node.ChildCount - 1; j++)
-                        {
-                            mNode.AddChild(node.GetChild(j).Clone());
-                        }
-
-                        aNode.ReplaceChild(mNode, i);
-                    }
-
-                    return aNode.Execute(this);
-                }
-            }
-
-            return node;
-        }
-
         private ExpNode Distribute(PowOperNode node)
         {
             if (node.LeftChild is ParenthesisOperNode parNode)
@@ -396,57 +342,6 @@ namespace Calculator.Operations
                     return mNode;
                 }
             }
-            return node;
-        }
-
-        /// <remarks>
-        /// Multiplies a tensor by scalars.
-        /// </remarks>
-        private MultiplicationOperNode MultiplyScalarTensor(MultiplicationOperNode node)
-        {
-            TensorNode tensor1 = null;
-            int ti = -1;
-
-            for (int i = 0; i < node.ChildCount; i++)
-            {
-                if (i == ti) continue;
-
-                if (node.GetChild(i) is TensorNode tensor2)
-                {
-                    if (tensor1 != null)
-                    {
-                        if (i < ti)
-                        {
-                            TensorNode swap = tensor1;
-                            tensor1 = tensor2;
-                            tensor2 = swap;
-                        }
-
-                        if (!tensor1.CanMatrixMultiply(tensor2)) return (MultiplicationOperNode)HandleError(new CannotMultiplyTensors(this, node, $"Tensor nodes of size {tensor1.SizeIdentity} and {tensor2.SizeIdentity} could not be multiplied."));
-                    } else
-                    {
-                        tensor1 = tensor2;
-                        ti = i;
-                        i = -1;
-                    }
-                }
-                else
-                {
-                    if (tensor1 != null)
-                    {
-                        for (int j = 0; j < tensor1.ChildCount; j++)
-                        {
-                            ExpNode simpleChild = QuickOpers.Multiply(tensor1.GetChild(j), node.GetChild(i)).Execute(this);
-                            tensor1.ReplaceChild(simpleChild, j);
-                        }
-
-                        node.RemoveChild(i);
-                        if (i < ti) ti--;
-                        i--;
-                    }
-                }
-            }
-
             return node;
         }
 

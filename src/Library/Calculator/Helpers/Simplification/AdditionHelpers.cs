@@ -16,10 +16,42 @@ namespace Calculator.Helpers.Simplification
     public static class AdditionHelpers
     {
         /// <summary>
+        /// Splits an <see cref="AdditionOperNode"/> into terms and simplifies by common terms.
+        /// </summary>
+        /// <param name="node">The <see cref="AdditionOperNode"/> to simplify.</param>
+        /// <returns>The resulting <see cref="ExpNode"/>.</returns>
+        public static AdditionOperNode SimplfiyATerms(AdditionOperNode node)
+        {
+            SortedSet<AdditiveTerm> aTerms = new();
+
+            for (int i = 0; i < node.ChildCount; i++)
+            {
+                AdditiveTerm aTerm = new(node.GetChild(i));
+
+                if (aTerms.TryGetValue(aTerm, out AdditiveTerm existingATerm))
+                {
+                    existingATerm.AddToCoefficient(aTerm);
+                }
+                else
+                {
+                    aTerms.Add(aTerm);
+                }
+            }
+
+            node.ClearChildren();
+            foreach (var term in aTerms)
+            {
+                node.AddChild(term.AsExpNode());
+            }
+
+            return node;
+        }
+
+        /// <summary>
         /// Adds tensors.
         /// </summary>
         /// <param name="node">The <see cref="AdditionOperNode"/> containing tensors.</param>
-        /// <param name="simplifier">The simplifier calling.</param>
+        /// <param name="simplifier">The <see cref="Simplifier"/> calling.</param>
         /// <returns>The resuling <see cref="ExpNode"/>.</returns>
         public static ExpNode SumTensors(AdditionOperNode node, Simplifier simplifier)
         {
@@ -54,38 +86,6 @@ namespace Calculator.Helpers.Simplification
                 {
                     if (node.GetChild(i) is TensorNode) return simplifier.HandleError(new CannotAddTensors(simplifier, node, "Cannot add tensor and scalar."));
                 }
-            }
-
-            return node;
-        }
-
-        /// <summary>
-        /// Splits an <see cref="AdditionOperNode"/> into terms and simplifies by common terms.
-        /// </summary>
-        /// <param name="node">The <see cref="AdditionOperNode"/> to simplify.</param>
-        /// <returns>The resulting <see cref="ExpNode"/>.</returns>
-        public static AdditionOperNode SimplfiyATerms(AdditionOperNode node)
-        {
-            SortedSet<AdditiveTerm> aTerms = new();
-
-            for (int i = 0; i < node.ChildCount; i++)
-            {
-                AdditiveTerm aTerm = new(node.GetChild(i));
-
-                if (aTerms.TryGetValue(aTerm, out AdditiveTerm existingATerm))
-                {
-                    existingATerm.AddToCoefficient(aTerm);
-                }
-                else
-                {
-                    aTerms.Add(aTerm);
-                }
-            }
-
-            node.ClearChildren();
-            foreach (var term in aTerms)
-            {
-                node.AddChild(term.AsExpNode());
             }
 
             return node;

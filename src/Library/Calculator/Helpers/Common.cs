@@ -1,4 +1,6 @@
-﻿namespace Calculator.Helpers
+﻿// Adam Dernis © 2021
+
+namespace Calculator.Helpers
 {
     /// <summary>
     /// General operations.

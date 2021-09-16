@@ -47,6 +47,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Common.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\QuickOpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Simplification\AdditionHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Simplification\MultiplicationHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operations\Groups\Tensors\MatrixByRow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operations\Groups\Tensors\MatrixRow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operations\Groups\Terms\AdditiveTerm.cs" />

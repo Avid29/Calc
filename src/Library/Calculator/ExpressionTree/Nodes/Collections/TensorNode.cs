@@ -99,7 +99,7 @@ namespace Calculator.ExpressionTree.Nodes.Collections
                 throw new ArgumentOutOfRangeException(nameof(index), $"{index.Length} must match the dimensions of the {nameof(TensorNode)}.");
 
             int realIndex = 0; // The index for the flat tensor.
-            int realSize = 1; // The number of indecies to increment for the current dimension.
+            int realSize = 1; // The number of indices to increment for the current dimension.
             for (int dim = DimensionCount - 1; dim >= 0; dim--)
             {
                 realIndex += index[dim] * realSize;

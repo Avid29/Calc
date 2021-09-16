@@ -61,7 +61,7 @@ namespace Calculator.Operations.Groups.Tensors
         /// <returns>The <see cref="MatrixByRow"/> as a <see cref="TensorNode"/>.</returns>
         public TensorNode AsExpNode()
         {
-            TensorNode matrix = new TensorNode(Height, Width);
+            TensorNode matrix = new TensorNode(Width, Height);
             for (int i = 0; i < Height; i++)
             {
                 for (int j = 0; j < Width; j++)

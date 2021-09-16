@@ -68,4 +68,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Printers\Abstract\Printer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Printers\Default\DefaultPrinter.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Extensions\Nodes\" />
+  </ItemGroup>
 </Project>

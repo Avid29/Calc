@@ -113,8 +113,7 @@ namespace Calculator.Operations
                     matrix.SwapRows(i, leftMostCol);
                     Common.Swap(ref leadingPositions[i], ref leadingPositions[leftMostCol]);
 
-                    if (leadingPositions[i] == -1)
-                        continue;
+                    if (leadingPositions[i] == -1) continue;
 
                     matrix[i].MultiplyRow(QuickOpers.Reciprical(matrix[i][leadingPositions[i]]));
                     for (int j = i+1; j < matrix.Height; j++)

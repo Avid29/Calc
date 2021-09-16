@@ -29,6 +29,11 @@ namespace Calculator.Operations.Groups.Tensors
         }
 
         /// <summary>
+        /// Gets the width of the row.
+        /// </summary>
+        public int Width => _values.Length;
+
+        /// <summary>
         /// Gets the item at <paramref name="index"/> in the <see cref="MatrixRow"/>.
         /// </summary>
         /// <param name="index">The index to read from the matrix.</param>

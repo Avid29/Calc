@@ -104,11 +104,11 @@ namespace Calculator.Operations
             if (node.Child is TensorNode tensorNode && tensorNode.TensorType == TensorType.Matrix)
             {
                 MatrixByRow matrix = new MatrixByRow(tensorNode);
-                int[] leadingPositions = GetLeadingColumns(matrix);
+                int[] leadingPositions = RefHelpers.GetLeadingColumns(matrix);
 
                 for (int i = 0; i < matrix.Height; i++)
                 {
-                    int leftMostCol = GetLeftMostColumn(leadingPositions, i);
+                    int leftMostCol = RefHelpers.GetLeftMostColumn(leadingPositions, i);
                     matrix.SwapRows(i, leftMostCol);
                     Common.Swap(ref leadingPositions[i], ref leadingPositions[leftMostCol]);
                     matrix[i].MultiplyRow(QuickOpers.Reciprical(matrix[i][leadingPositions[i]]));
@@ -117,7 +117,7 @@ namespace Calculator.Operations
                         if (i != j)
                         {
                             matrix[j].AddRowToRow(matrix[i], QuickOpers.Negative(matrix[j][leadingPositions[i]]));
-                            if (leadingPositions[j] == i) leadingPositions[j] = GetLeadingColumn(matrix, j);
+                            if (leadingPositions[j] == i) leadingPositions[j] = RefHelpers.GetLeadingColumn(matrix[j]);
                         }
                     }
                 }
@@ -343,43 +343,6 @@ namespace Calculator.Operations
                 }
             }
             return node;
-        }
-
-        private int[] GetLeadingColumns(MatrixByRow matrix)
-        {
-            int[] leadingPositions = new int[matrix.Height];
-            for (int i = 0; i < matrix.Height; i++)
-            {
-                int pos = GetLeadingColumn(matrix, i);
-                leadingPositions[i] = pos;
-            }
-
-            return leadingPositions;
-        }
-
-        private int GetLeadingColumn(MatrixByRow matrix, int row)
-        {
-            int col = 0;
-            while (col < matrix.Width && !(matrix[row][col] is NumericalValueNode node && node.DoubleValue != 0))
-            { col++; }
-            return col;
-        }
-
-        private int GetLeftMostColumn(int[] leadingPositions, int startRow = 0)
-        {
-            int lowestValue = int.MaxValue;
-            int lowestValueRow = 0;
-
-            for (int i = startRow; i < leadingPositions.Length; i++)
-            {
-                if (leadingPositions[i] < lowestValue)
-                {
-                    lowestValue = leadingPositions[i];
-                    lowestValueRow = i;
-                }
-            }
-
-            return lowestValueRow;
         }
     }
 }

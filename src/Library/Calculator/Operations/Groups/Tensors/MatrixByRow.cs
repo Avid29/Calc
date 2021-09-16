@@ -1,6 +1,7 @@
 ﻿// Adam Dernis © 2021
 
 using Calculator.ExpressionTree.Nodes.Collections;
+using Calculator.Helpers;
 
 namespace Calculator.Operations.Groups.Tensors
 {
@@ -50,9 +51,7 @@ namespace Calculator.Operations.Groups.Tensors
         /// <param name="rIndex2">The index of the second row to swap.</param>
         public void SwapRows(int rIndex1, int rIndex2)
         {
-            MatrixRow swap = _rows[rIndex1];
-            _rows[rIndex1] = _rows[rIndex2];
-            _rows[rIndex2] = swap;
+            Common.Swap(ref _rows[rIndex1], ref _rows[rIndex2]);
         }
 
         /// <summary>

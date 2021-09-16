@@ -91,7 +91,7 @@ namespace Calculator.ExpressionTree.Nodes.Collections
         /// <summary>
         /// Gets a the child at an index with n dimensions.
         /// </summary>
-        /// <param name="index">The index in the dimension</param>
+        /// <param name="index">The index in the dimension.</param>
         /// <returns>The child at the n dimensional index.</returns>
         public ExpNode GetChildD(params int[] index)
         {

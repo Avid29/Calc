@@ -1,18 +1,19 @@
 ﻿// Adam Dernis © 2021
 
 using Calculator.ExpressionTree.Nodes;
+using Calculator.ExpressionTree.Nodes.Operators;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
 using Calculator.ExpressionTree.Nodes.Values;
 
-namespace Calculator
+namespace Calculator.Helpers
 {
     /// <summary>
-    /// A class containing methods in place of common actions.
+    /// A class containing methods that quickly applys <see cref="OperNode"/>s to <see cref="ExpNode"/>s.
     /// </summary>
-    public static class Helpers
+    public static class QuickOpers
     {
         /// <summary>
         /// Creates a new <see cref="NumericalValueNode"/> for a value.

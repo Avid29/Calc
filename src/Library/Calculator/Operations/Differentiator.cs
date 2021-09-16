@@ -7,6 +7,7 @@ using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
 using Calculator.ExpressionTree.Nodes.Values;
+using Calculator.Helpers;
 using Calculator.Operations.Abstract;
 
 namespace Calculator.Operations
@@ -68,19 +69,19 @@ namespace Calculator.Operations
         /// <inheritdoc/>
         public override ExpNode Execute(NumericalValueNode node)
         {
-            return Helpers.MakeNumericalNode(0);
+            return QuickOpers.MakeNumericalNode(0);
         }
 
         /// <inheritdoc/>
         public override ExpNode Execute(PowOperNode node)
         {
             // TODO: Handle variable in exponent
-            if (node.IsConstantBy(_variable)) return Helpers.MakeNumericalNode(0);
+            if (node.IsConstantBy(_variable)) return QuickOpers.MakeNumericalNode(0);
 
             var coefficient = node.RightChild;
             var @base = node.LeftChild;
-            var exponent = Helpers.Add(-1, coefficient);
-            return Helpers.Multiply(coefficient, Helpers.Pow(@base, exponent));
+            var exponent = QuickOpers.Add(-1, coefficient);
+            return QuickOpers.Multiply(coefficient, QuickOpers.Pow(@base, exponent));
         }
 
         /// <inheritdoc/>
@@ -93,13 +94,13 @@ namespace Calculator.Operations
         /// <inheritdoc/>
         public override ExpNode Execute(SineOperNode node)
         {
-            if (node.IsConstantBy(_variable)) return Helpers.MakeNumericalNode(0);
+            if (node.IsConstantBy(_variable)) return QuickOpers.MakeNumericalNode(0);
 
             // Apply chain rule
             var coefficient = node.Child.Clone().Execute(this);
             // Apply table
             var sinFunc = SineTable(node);
-            return Helpers.Multiply(coefficient, sinFunc);
+            return QuickOpers.Multiply(coefficient, sinFunc);
         }
 
         /// <inheritdoc/>
@@ -117,7 +118,7 @@ namespace Calculator.Operations
         /// <inheritdoc/>
         public override ExpNode Execute(VarValueNode node)
         {
-            return Helpers.MakeNumericalNode(node.Character == _variable.Character ? 1 : 0);
+            return QuickOpers.MakeNumericalNode(node.Character == _variable.Character ? 1 : 0);
         }
 
         private static ExpNode SineTable(SineOperNode node)
@@ -125,7 +126,7 @@ namespace Calculator.Operations
             return node.SineFunction switch
             {
                 SineFunction.SINE => new SineOperNode(SineFunction.COSINE) { Child = node.Child },
-                SineFunction.COSINE => Helpers.Negative(new SineOperNode(SineFunction.SINE) { Child = node.Child }),
+                SineFunction.COSINE => QuickOpers.Negative(new SineOperNode(SineFunction.SINE) { Child = node.Child }),
                 _ => node,
             };
         }

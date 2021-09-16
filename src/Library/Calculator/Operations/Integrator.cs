@@ -8,6 +8,7 @@ using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
 using Calculator.ExpressionTree.Nodes.Values;
+using Calculator.Helpers;
 using Calculator.Operations.Abstract;
 
 namespace Calculator.Operations
@@ -94,7 +95,7 @@ namespace Calculator.Operations
                     else mNode.AddChild(vs[j].Clone());
                 }
                 intNode.AddChild(mNode);
-                aNode.AddChild(Helpers.Negative(intNode));
+                aNode.AddChild(QuickOpers.Negative(intNode));
             }
 
             return aNode;
@@ -107,10 +108,10 @@ namespace Calculator.Operations
             if (node.IsConstantBy(_variable)) return ConstantRule(node);
 
             // Increment exponent, divide by exponent
-            AdditionOperNode exponent = Helpers.Add(1, node.RightChild);
-            RecipricalOperNode coefficient = Helpers.Reciprical(exponent.Clone());
-            PowOperNode @base = Helpers.Pow(node.LeftChild, exponent);
-            return Helpers.Multiply(coefficient, @base);
+            AdditionOperNode exponent = QuickOpers.Add(1, node.RightChild);
+            RecipricalOperNode coefficient = QuickOpers.Reciprical(exponent.Clone());
+            PowOperNode @base = QuickOpers.Pow(node.LeftChild, exponent);
+            return QuickOpers.Multiply(coefficient, @base);
         }
 
         /// <inheritdoc/>
@@ -130,26 +131,26 @@ namespace Calculator.Operations
             var coefficient = node.Child.Execute(diff);
             // Apply table
             var sinFunc = SineTable(node);
-            return Helpers.Multiply(Helpers.Reciprical(coefficient), sinFunc);
+            return QuickOpers.Multiply(QuickOpers.Reciprical(coefficient), sinFunc);
         }
 
         /// <inheritdoc/>
         public override ExpNode Execute(VarValueNode node)
         {
             if (node.Character != _variable.Character) return ConstantRule(node);
-            return Helpers.Multiply(.5, Helpers.Pow(node, 2));
+            return QuickOpers.Multiply(.5, QuickOpers.Pow(node, 2));
         }
 
         private static ExpNode SineTable(SineOperNode node)
         {
             return node.SineFunction switch
             {
-                SineFunction.SINE => Helpers.Negative(new SineOperNode(SineFunction.COSINE) { Child = node.Child }),
+                SineFunction.SINE => QuickOpers.Negative(new SineOperNode(SineFunction.COSINE) { Child = node.Child }),
                 SineFunction.COSINE => new SineOperNode(SineFunction.SINE) { Child = node.Child },
                 _ => node.Clone(),
             };
         }
 
-        private ExpNode ConstantRule(ExpNode node) => Helpers.Multiply(node, _variable.Clone());
+        private ExpNode ConstantRule(ExpNode node) => QuickOpers.Multiply(node, _variable.Clone());
     }
 }

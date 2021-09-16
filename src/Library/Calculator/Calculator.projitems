@@ -48,6 +48,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\QuickOpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Simplification\AdditionHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Simplification\MultiplicationHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Simplification\PowerHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Simplification\RefHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operations\Groups\Tensors\MatrixByRow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operations\Groups\Tensors\MatrixRow.cs" />

@@ -14,9 +14,7 @@ using Calculator.Helpers;
 using Calculator.Helpers.Simplification;
 using Calculator.Operations.Abstract;
 using Calculator.Operations.Groups.Tensors;
-using Calculator.Operations.Groups.Terms;
 using System;
-using System.Collections.Generic;
 
 namespace Calculator.Operations
 {
@@ -218,7 +216,7 @@ namespace Calculator.Operations
                 return mNode.Execute(this);
             }
 
-            return Distribute(node);
+            return PowerHelpers.Distribute(node);
         }
 
         /// <inheritdoc/>
@@ -322,27 +320,6 @@ namespace Calculator.Operations
             Error = exception;
             if (!_safe) throw exception;
             return null;
-        }
-
-        private ExpNode Distribute(PowOperNode node)
-        {
-            if (node.LeftChild is ParenthesisOperNode parNode)
-            {
-                // Child is parenthesis
-                // Check for multiplication
-                if (parNode.Child is MultiplicationOperNode mNode)
-                {
-                    // Grand child is multiplication
-                    // Distribute
-                    for (int i = 0; i < mNode.ChildCount; i++)
-                    {
-                        PowOperNode pow = QuickOpers.Pow(mNode.GetChild(i), node.RightChild.Clone());
-                        mNode.ReplaceChild(pow, i);
-                    }
-                    return mNode;
-                }
-            }
-            return node;
         }
     }
 }

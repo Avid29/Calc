@@ -44,7 +44,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Values\NumericalValueNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Values\ValueNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Values\VarValueNode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Operations\Groups\Tensors\MatrixByRows.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operations\Groups\Tensors\MatrixByRow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operations\Groups\Tensors\MatrixRow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operations\Groups\Terms\AdditiveTerm.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operations\Groups\Terms\MultiplicativeTerm.cs" />

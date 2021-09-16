@@ -492,8 +492,64 @@ namespace Calculator.Operations
 
         private TensorNode GaussJordanElimination(TensorNode tensorNode)
         {
-            MatrixByRows matrix = new MatrixByRows(tensorNode);
-            return tensorNode;
+            MatrixByRow matrix = new MatrixByRow(tensorNode);
+            int[] leadingPositions = GetLeadingColumns(matrix);
+
+            for (int i = 0; i < matrix.Height; i++)
+            {
+                int leftMostCol = GetLeftMostColumn(leadingPositions, i);
+                matrix.SwapRows(i, leftMostCol);
+                SwapRows(leadingPositions, i, leftMostCol);
+                leftMostCol = i;
+                matrix[i].MultiplyRow(Helpers.Reciprical(matrix[i][leadingPositions[leftMostCol]]));
+                for (int j = 0; j < matrix.Height; j++)
+                {
+                    if (i != j)
+                    {
+                        matrix[j].AddRowToRow(matrix[i], Helpers.Negative(matrix[j][leadingPositions[leftMostCol]]));
+                    }
+                }
+            }
+
+            return matrix.AsExpNode();
+        }
+
+        private void SwapRows(int[] row, int index1, int index2)
+        {
+            int swap = row[index1];
+            row[index1] = row[index2];
+            row[index2] = swap;
+        }
+
+        private int[] GetLeadingColumns(MatrixByRow matrix)
+        {
+            int[] leadingPositions = new int[matrix.Height];
+            for (int i = 0; i < matrix.Height; i++)
+            {
+                int j = 0;
+                while (j < matrix.Width && !(matrix[i][j] is NumericalValueNode node && node.DoubleValue != 0))
+                { j++; }
+
+                leadingPositions[i] = j;
+            }
+            return leadingPositions;
+        }
+
+        private int GetLeftMostColumn(int[] leadingPositions, int startRow = 0)
+        {
+            int lowestValue = int.MaxValue;
+            int lowestValueRow = 0;
+
+            for (int i = startRow; i < leadingPositions.Length; i++)
+            {
+                if (leadingPositions[i] < lowestValue)
+                {
+                    lowestValue = leadingPositions[i];
+                    lowestValueRow = i;
+                }
+            }
+
+            return lowestValueRow;
         }
     }
 }

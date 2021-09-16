@@ -166,7 +166,7 @@ namespace Calculator.Printers.Default
                     }
                 case TensorType.Matrix:
                     {
-                        cache = $"\\matrix[{node.SizeIdentity}{{";
+                        cache = $"\\matrix{node.SizeIdentity}{{";
                         for (int i = 0; i < node.ChildCount; i++)
                         {
                             cache += node.GetChild(i).Print(this);

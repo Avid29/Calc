@@ -11,6 +11,7 @@ using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
 using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Helpers;
+using Calculator.Helpers.Simplification;
 using Calculator.Operations.Abstract;
 using Calculator.Operations.Groups.Tensors;
 using Calculator.Operations.Groups.Terms;
@@ -73,7 +74,7 @@ namespace Calculator.Operations
 
             if (node.ChildCount == 0 || valueProg != 0) node.AddChild(QuickOpers.MakeNumericalNode(valueProg));
 
-            SimplfiyATerms(node);
+            AdditionHelpers.SimplfiyATerms(node);
 
             if (node.ChildCount == 0)
             {
@@ -84,7 +85,7 @@ namespace Calculator.Operations
                 return node.GetChild(0);
             }
 
-            return SumTensors(node);
+            return AdditionHelpers.SumTensors(node, this);
         }
 
         /// <inheritdoc/>
@@ -311,31 +312,16 @@ namespace Calculator.Operations
             return node;
         }
 
-        private AdditionOperNode SimplfiyATerms(AdditionOperNode node)
+        /// <summary>
+        /// Puts the simplifier in an error state and returns <see langword="null"/>.
+        /// </summary>
+        /// <param name="exception">The exception type.</param>
+        /// <returns><see langword="null"/>.</returns>
+        public ExpNode HandleError(SimplificationException exception)
         {
-            SortedSet<AdditiveTerm> aTerms = new();
-
-            for (int i = 0; i < node.ChildCount; i++)
-            {
-                AdditiveTerm aTerm = new(node.GetChild(i));
-
-                if (aTerms.TryGetValue(aTerm, out AdditiveTerm existingATerm))
-                {
-                    existingATerm.AddToCoefficient(aTerm);
-                }
-                else
-                {
-                    aTerms.Add(aTerm);
-                }
-            }
-
-            node.ClearChildren();
-            foreach (var term in aTerms)
-            {
-                node.AddChild(term.AsExpNode());
-            }
-
-            return node;
+            Error = exception;
+            if (!_safe) throw exception;
+            return null;
         }
 
         private MultiplicationOperNode SimplfiyMTerms(MultiplicationOperNode node)
@@ -413,44 +399,6 @@ namespace Calculator.Operations
             return node;
         }
 
-        private ExpNode SumTensors(AdditionOperNode node)
-        {
-            if (node.GetChild(0) is TensorNode tensorNode)
-            {
-                for (int i = 1; i < node.ChildCount; i++)
-                {
-                    if (node.GetChild(i) is TensorNode otherTensorNode)
-                    {
-                        if (otherTensorNode.SizeIdentity == tensorNode.SizeIdentity)
-                        {
-                            for (int j = 0; j < tensorNode.ChildCount; j++)
-                            {
-                                ExpNode addedNode = QuickOpers
-                                    .Sum(tensorNode.GetChild(j), otherTensorNode.GetChild(j))
-                                    .Execute(this);
-                                tensorNode.ReplaceChild(addedNode, j);
-                            }
-                        }
-                        else return HandleError(new CannotAddTensors(this, node, $"Cannot add tensor of shape {otherTensorNode.SizeIdentity} and tensor of shape {tensorNode.SizeIdentity}."));
-                    }
-                    else return HandleError(new CannotAddTensors(this, node, "Cannot add scalar and tensor."));
-                }
-
-                return tensorNode;
-            }
-            else
-            {
-                // There is a scalar.
-                // There cannot be any tensors
-                for (int i = 1; i < node.ChildCount; i++)
-                {
-                    if (node.GetChild(i) is TensorNode) return HandleError(new CannotAddTensors(this, node, "Cannot add tensor and scalar."));
-                }
-            }
-
-            return node;
-        }
-
         /// <remarks>
         /// Multiplies a tensor by scalars.
         /// </remarks>
@@ -500,20 +448,6 @@ namespace Calculator.Operations
             }
 
             return node;
-        }
-
-        private ExpNode HandleError(SimplificationException exception)
-        {
-            Error = exception;
-            if (!_safe) throw exception;
-            return null;
-        }
-
-        private void SwapRows(int[] row, int index1, int index2)
-        {
-            int swap = row[index1];
-            row[index1] = row[index2];
-            row[index2] = swap;
         }
 
         private int[] GetLeadingColumns(MatrixByRow matrix)

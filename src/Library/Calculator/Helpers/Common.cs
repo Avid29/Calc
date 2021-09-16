@@ -9,8 +9,8 @@
         /// Swaps two variables.
         /// </summary>
         /// <typeparam name="T">The type of the variables swapped.</typeparam>
-        /// <param name="value1">The first value.</param>
-        /// <param name="value2">The second value</param>
+        /// <param name="value1">A reference to the first value to swap.</param>
+        /// <param name="value2">A reference to the second value to swap.</param>
         public static void Swap<T>(ref T value1, ref T value2)
         {
             T swap = value1;

@@ -5,6 +5,7 @@ using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
+using Calculator.ExpressionTree.Nodes.Operators.Functions.RowElim;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
@@ -97,13 +98,15 @@ namespace Calculator.Operations
         public override ExpNode Execute(ExpNode node) => node;
 
         /// <inheritdoc/>
-        public override ExpNode Execute(GaussJordElimOperNode node)
+        public override ExpNode Execute(RowElimOperNode node)
         {
+            // Ensure matrix.
             if (node.Child is TensorNode tensorNode && tensorNode.TensorType == TensorType.Matrix)
             {
                 MatrixByRow matrix = new MatrixByRow(tensorNode);
                 int[] leadingPositions = RefHelpers.GetLeadingColumns(matrix);
 
+                // Put in row-echelon form
                 for (int i = 0; i < matrix.Height; i++)
                 {
                     int leftMostCol = RefHelpers.GetLeftMostColumn(leadingPositions, i);
@@ -114,9 +117,19 @@ namespace Calculator.Operations
                         continue;
 
                     matrix[i].MultiplyRow(QuickOpers.Reciprical(matrix[i][leadingPositions[i]]));
-                    for (int j = 0; j < matrix.Height; j++)
+                    for (int j = i+1; j < matrix.Height; j++)
                     {
-                        if (i != j)
+                        matrix[j].AddRowToRow(matrix[i], QuickOpers.Negative(matrix[j][leadingPositions[i]]));
+                        leadingPositions[j] = RefHelpers.GetLeadingColumn(matrix[j]);
+                    }
+                }
+
+                if (node.EliminationMethod == RowElimMethod.GaussJordan)
+                {
+                    // Put in reduced row-echelon form
+                    for (int i = matrix.Height-1; i > 0; i--)
+                    {
+                        for (int j = i-1; j >= 0; j--)
                         {
                             matrix[j].AddRowToRow(matrix[i], QuickOpers.Negative(matrix[j][leadingPositions[i]]));
                             leadingPositions[j] = RefHelpers.GetLeadingColumn(matrix[j]);

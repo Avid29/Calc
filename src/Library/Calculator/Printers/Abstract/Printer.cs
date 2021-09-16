@@ -5,6 +5,7 @@ using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.ExpressionTree.Nodes.Operators;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
+using Calculator.ExpressionTree.Nodes.Operators.Functions.RowElim;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
@@ -71,11 +72,11 @@ namespace Calculator.Printers.Abstract
         public virtual string Print(FloatValueNode node) => Print((ValueNode)node);
 
         /// <summary>
-        /// Prints a <see cref="GaussJordElimOperNode"/>.
+        /// Prints a <see cref="RowElimOperNode"/>.
         /// </summary>
-        /// <param name="node">The <see cref="GaussJordElimOperNode"/> to print.</param>
-        /// <returns>The <see cref="GaussJordElimOperNode"/> printed to a string.</returns>
-        public virtual string Print(GaussJordElimOperNode node) => Print((UOperNode)node);
+        /// <param name="node">The <see cref="RowElimOperNode"/> to print.</param>
+        /// <returns>The <see cref="RowElimOperNode"/> printed to a string.</returns>
+        public virtual string Print(RowElimOperNode node) => Print((UOperNode)node);
 
         /// <summary>
         /// Prints an <see cref="IntegralOperNode"/>.

@@ -5,6 +5,7 @@ using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.ExpressionTree.Nodes.Operators;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
+using Calculator.ExpressionTree.Nodes.Operators.Functions.RowElim;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
@@ -71,11 +72,11 @@ namespace Calculator.Operations.Abstract
         public virtual ExpNode Execute(FloatValueNode node) => Execute((NumericalValueNode)node);
 
         /// <summary>
-        /// Executes operation on a <see cref="GaussJordElimOperNode"/>.
+        /// Executes operation on a <see cref="RowElimOperNode"/>.
         /// </summary>
-        /// <param name="node">The <see cref="GaussJordElimOperNode"/> to execute operation on.</param>
-        /// <returns>The result of the operation on a <see cref="GaussJordElimOperNode"/>.</returns>
-        public virtual ExpNode Execute(GaussJordElimOperNode node) => Execute((UOperNode)node);
+        /// <param name="node">The <see cref="RowElimOperNode"/> to execute operation on.</param>
+        /// <returns>The result of the operation on a <see cref="RowElimOperNode"/>.</returns>
+        public virtual ExpNode Execute(RowElimOperNode node) => Execute((UOperNode)node);
 
         /// <summary>
         /// Executes operation on an <see cref="IntegralOperNode"/>.

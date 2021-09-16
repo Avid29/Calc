@@ -3,6 +3,7 @@
 using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Values;
+using Calculator.Helpers;
 using Calculator.Printers.Default;
 using System;
 
@@ -31,7 +32,7 @@ namespace Calculator.Operations.Groups.Terms
             } else
             {
                 _base = node;
-                _exponent = Helpers.MakeNumericalNode(1);
+                _exponent = QuickOpers.MakeNumericalNode(1);
             }
             _baseString = _base.Print(printer);
         }
@@ -46,14 +47,14 @@ namespace Calculator.Operations.Groups.Terms
             {
                 if (nvNode.DoubleValue == 0)
                 {
-                    return Helpers.MakeNumericalNode(1);
+                    return QuickOpers.MakeNumericalNode(1);
                 } else if (nvNode.DoubleValue == 1)
                 {
                     return _base;
                 }
             }
 
-            return Helpers.Pow(_base, _exponent);
+            return QuickOpers.Pow(_base, _exponent);
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace Calculator.Operations.Groups.Terms
         /// <param name="simplifier">The <see cref="Simplifier"/> to simplify with after adding.</param>
         public void AddToExponent(MultiplicativeTerm other, Simplifier simplifier)
         {
-            _exponent = Helpers.Sum(_exponent, other._exponent).Execute(simplifier);
+            _exponent = QuickOpers.Sum(_exponent, other._exponent).Execute(simplifier);
         }
 
         /// <inheritdoc/>

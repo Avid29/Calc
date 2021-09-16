@@ -2,9 +2,13 @@
 
 using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Collections;
+using Calculator.Helpers;
 
 namespace Calculator.Operations.Groups.Tensors
 {
+    /// <summary>
+    /// A row of a matrix in a <see cref="MatrixByRow"/>.
+    /// </summary>
     public class MatrixRow
     {
         private ExpNode[] _values;
@@ -34,24 +38,33 @@ namespace Calculator.Operations.Groups.Tensors
             get => _values[index];
         }
 
+        /// <summary>
+        /// Adds a row to this row <paramref name="coefficient"/> times.
+        /// </summary>
+        /// <param name="row">The row to add to this row.</param>
+        /// <param name="coefficient">The number of times to add the row.</param>
         public void AddRowToRow(MatrixRow row, ExpNode coefficient = null)
         {
             Simplifier simplifier = new Simplifier();
             for (int i = 0; i < _values.Length; i++)
             {
                 ExpNode newValue;
-                if (coefficient == null) newValue = Helpers.Sum(row[i].Clone(), this[i]);
-                else newValue = Helpers.Sum(Helpers.Multiply(row[i].Clone(), coefficient.Clone()), this[i]);
+                if (coefficient == null) newValue = QuickOpers.Sum(row[i].Clone(), this[i]);
+                else newValue = QuickOpers.Sum(QuickOpers.Multiply(row[i].Clone(), coefficient.Clone()), this[i]);
                 _values[i] = newValue.Execute(simplifier);
             }
         }
 
+        /// <summary>
+        /// Multiplies this row by a consistent <paramref name="product"/>.
+        /// </summary>
+        /// <param name="product">The product to multiply the row by.</param>
         public void MultiplyRow(ExpNode product)
         {
             Simplifier simplifier = new Simplifier();
             for (int i = 0; i < _values.Length; i++)
             {
-                ExpNode newValue = Helpers.Multiply(_values[i], product.Clone());
+                ExpNode newValue = QuickOpers.Multiply(_values[i], product.Clone());
                 _values[i] = newValue.Execute(simplifier);
             }
         }

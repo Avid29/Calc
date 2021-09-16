@@ -1,13 +1,11 @@
 ﻿// Adam Dernis © 2021
 
-using Calculator.ExpressionTree.Nodes.Collections;
-
-namespace Calculator.ExpressionTree.Nodes
+namespace Calculator.ExpressionTree.Nodes.Collections
 {
     /// <summary>
     /// A class for node extension methods.
     /// </summary>
-    public static class NodeExtensions
+    public static class TensorNodeExtensions
     {
         /// <summary>
         /// Checks if two <see cref="TensorNode"/>s can matrix multiply.

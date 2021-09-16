@@ -7,6 +7,7 @@ using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
 using Calculator.ExpressionTree.Nodes.Values;
+using Calculator.Helpers;
 using Calculator.Parser.Default.Functions;
 using Calculator.Parser.Default.Status;
 using System;
@@ -406,7 +407,7 @@ namespace Calculator.Parser.Default
             if (_state != ParserState.INT && _state != ParserState.FLOAT) return;
 
             double value = Convert.ToDouble(_cache);
-            _tree.AddNode(Helpers.MakeNumericalNode(value));
+            _tree.AddNode(QuickOpers.MakeNumericalNode(value));
             _cache = string.Empty;
         }
     }

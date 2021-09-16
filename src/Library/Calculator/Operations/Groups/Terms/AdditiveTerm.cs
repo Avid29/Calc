@@ -3,6 +3,7 @@
 using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Values;
+using Calculator.Helpers;
 using Calculator.Printers.Default;
 using System;
 
@@ -48,9 +49,9 @@ namespace Calculator.Operations.Groups.Terms
         /// <returns>The <see cref="AdditiveTerm"/> as an <see cref="ExpNode"/>.</returns>
         public ExpNode AsExpNode()
         {
-            if (_coefficient == 0) return Helpers.MakeNumericalNode(0);
+            if (_coefficient == 0) return QuickOpers.MakeNumericalNode(0);
             if (_coefficient == 1) return _base;
-            return Helpers.Multiply(_coefficient, _base);
+            return QuickOpers.Multiply(_coefficient, _base);
         }
 
         /// <summary>

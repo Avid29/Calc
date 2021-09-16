@@ -10,10 +10,10 @@ using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
 using Calculator.ExpressionTree.Nodes.Values;
+using Calculator.Helpers;
 using Calculator.Operations.Abstract;
 using Calculator.Operations.Groups.Tensors;
 using Calculator.Operations.Groups.Terms;
-using Microsoft.Toolkit.HighPerformance;
 using System;
 using System.Collections.Generic;
 
@@ -71,13 +71,13 @@ namespace Calculator.Operations
                 }
             }
 
-            if (node.ChildCount == 0 || valueProg != 0) node.AddChild(Helpers.MakeNumericalNode(valueProg));
+            if (node.ChildCount == 0 || valueProg != 0) node.AddChild(QuickOpers.MakeNumericalNode(valueProg));
 
             SimplfiyATerms(node);
 
             if (node.ChildCount == 0)
             {
-                return Helpers.MakeNumericalNode(0);
+                return QuickOpers.MakeNumericalNode(0);
             }
             else if (node.ChildCount == 1)
             {
@@ -100,9 +100,28 @@ namespace Calculator.Operations
         /// <inheritdoc/>
         public override ExpNode Execute(GaussJordElimOperNode node)
         {
-            if (node.Child is TensorNode matrix && matrix.TensorType == TensorType.Matrix)
+            if (node.Child is TensorNode tensorNode && tensorNode.TensorType == TensorType.Matrix)
             {
-                return GaussJordanElimination(matrix);
+                MatrixByRow matrix = new MatrixByRow(tensorNode);
+                int[] leadingPositions = GetLeadingColumns(matrix);
+
+                for (int i = 0; i < matrix.Height; i++)
+                {
+                    int leftMostCol = GetLeftMostColumn(leadingPositions, i);
+                    matrix.SwapRows(i, leftMostCol);
+                    Common.Swap(ref leadingPositions[i], ref leadingPositions[leftMostCol]);
+                    matrix[i].MultiplyRow(QuickOpers.Reciprical(matrix[i][leadingPositions[i]]));
+                    for (int j = 0; j < matrix.Height; j++)
+                    {
+                        if (i != j)
+                        {
+                            matrix[j].AddRowToRow(matrix[i], QuickOpers.Negative(matrix[j][leadingPositions[i]]));
+                            if (leadingPositions[j] == i) leadingPositions[j] = GetLeadingColumn(matrix, j);
+                        }
+                    }
+                }
+
+                return matrix.AsExpNode();
             }
 
             return HandleError(new CannotReduceNonMatrix(this, node.Child));
@@ -141,15 +160,15 @@ namespace Calculator.Operations
             }
 
             // Anything multiplied by 0, is zero
-            if (valueProg == 0) return Helpers.MakeNumericalNode(0);
+            if (valueProg == 0) return QuickOpers.MakeNumericalNode(0);
 
-            if (node.ChildCount == 0 || valueProg != 1) node.AddChild(Helpers.MakeNumericalNode(valueProg));
+            if (node.ChildCount == 0 || valueProg != 1) node.AddChild(QuickOpers.MakeNumericalNode(valueProg));
 
             SimplfiyMTerms(node);
 
             if (node.ChildCount == 0)
             {
-                return Helpers.MakeNumericalNode(0);
+                return QuickOpers.MakeNumericalNode(0);
             }
             else if (node.ChildCount == 1)
             {
@@ -171,12 +190,12 @@ namespace Calculator.Operations
 
             if (node.LeftChild is NumericalValueNode lnvNode && node.RightChild is NumericalValueNode rnvNode)
             {
-                return Helpers.MakeNumericalNode(Math.Pow(lnvNode.DoubleValue, rnvNode.DoubleValue));
+                return QuickOpers.MakeNumericalNode(Math.Pow(lnvNode.DoubleValue, rnvNode.DoubleValue));
             }
 
             if (node.RightChild is IntValueNode ivNode)
             {
-                if (ivNode.DoubleValue == 0) return Helpers.MakeNumericalNode(1);
+                if (ivNode.DoubleValue == 0) return QuickOpers.MakeNumericalNode(1);
                 if (ivNode.DoubleValue == 1) return node.LeftChild;
 
                 if (node.LeftChild is ValueNode)
@@ -216,10 +235,10 @@ namespace Calculator.Operations
 
             if (node.Child is NumericalValueNode nvNode)
             {
-                return Helpers.MakeNumericalNode(1 / nvNode.DoubleValue);
+                return QuickOpers.MakeNumericalNode(1 / nvNode.DoubleValue);
             }
 
-            return Helpers.Pow(node.Child, -1).Execute(this);
+            return QuickOpers.Pow(node.Child, -1).Execute(this);
         }
 
         /// <inheritdoc/>
@@ -234,10 +253,10 @@ namespace Calculator.Operations
                     {
                         if (node.Child is NumericalValueNode nvNode)
                         {
-                            return Helpers.MakeNumericalNode(nvNode.DoubleValue * -1);
+                            return QuickOpers.MakeNumericalNode(nvNode.DoubleValue * -1);
                         }
 
-                        return Helpers.Multiply(-1, node.Child).Execute(this);
+                        return QuickOpers.Multiply(-1, node.Child).Execute(this);
                     }
                 default:
                     return node;
@@ -274,7 +293,7 @@ namespace Calculator.Operations
                         break;
                 }
 
-                return Helpers.MakeNumericalNode(value);
+                return QuickOpers.MakeNumericalNode(value);
             }
 
             return node;
@@ -385,7 +404,7 @@ namespace Calculator.Operations
                     // Distribute
                     for (int i = 0; i < mNode.ChildCount; i++)
                     {
-                        PowOperNode pow = Helpers.Pow(mNode.GetChild(i), node.RightChild.Clone());
+                        PowOperNode pow = QuickOpers.Pow(mNode.GetChild(i), node.RightChild.Clone());
                         mNode.ReplaceChild(pow, i);
                     }
                     return mNode;
@@ -406,7 +425,7 @@ namespace Calculator.Operations
                         {
                             for (int j = 0; j < tensorNode.ChildCount; j++)
                             {
-                                ExpNode addedNode = Helpers
+                                ExpNode addedNode = QuickOpers
                                     .Sum(tensorNode.GetChild(j), otherTensorNode.GetChild(j))
                                     .Execute(this);
                                 tensorNode.ReplaceChild(addedNode, j);
@@ -469,7 +488,7 @@ namespace Calculator.Operations
                     {
                         for (int j = 0; j < tensor1.ChildCount; j++)
                         {
-                            ExpNode simpleChild = Helpers.Multiply(tensor1.GetChild(j), node.GetChild(i)).Execute(this);
+                            ExpNode simpleChild = QuickOpers.Multiply(tensor1.GetChild(j), node.GetChild(i)).Execute(this);
                             tensor1.ReplaceChild(simpleChild, j);
                         }
 
@@ -488,30 +507,6 @@ namespace Calculator.Operations
             Error = exception;
             if (!_safe) throw exception;
             return null;
-        }
-
-        private TensorNode GaussJordanElimination(TensorNode tensorNode)
-        {
-            MatrixByRow matrix = new MatrixByRow(tensorNode);
-            int[] leadingPositions = GetLeadingColumns(matrix);
-
-            for (int i = 0; i < matrix.Height; i++)
-            {
-                int leftMostCol = GetLeftMostColumn(leadingPositions, i);
-                matrix.SwapRows(i, leftMostCol);
-                SwapRows(leadingPositions, i, leftMostCol);
-                matrix[i].MultiplyRow(Helpers.Reciprical(matrix[i][leadingPositions[i]]));
-                for (int j = 0; j < matrix.Height; j++)
-                {
-                    if (i != j)
-                    {
-                        matrix[j].AddRowToRow(matrix[i], Helpers.Negative(matrix[j][leadingPositions[i]]));
-                        if (leadingPositions[j] == i) leadingPositions[j] = GetLeadingColumn(matrix, j);
-                    }
-                }
-            }
-
-            return matrix.AsExpNode();
         }
 
         private void SwapRows(int[] row, int index1, int index2)

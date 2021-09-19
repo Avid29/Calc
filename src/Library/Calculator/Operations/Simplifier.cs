@@ -343,6 +343,7 @@ namespace Calculator.Operations
                         for (int i = 0; i < size; i++)
                             terms[i] = QuickOpers.Multiply(vector1.GetChild(i), vector2.GetChild(i));
                         return QuickOpers.Sum(terms).Execute(this);
+                    case VectorProductMethod.CROSS: // TODO: Convert to matrix notation for determinant
                     default:
                         return node;
                 }

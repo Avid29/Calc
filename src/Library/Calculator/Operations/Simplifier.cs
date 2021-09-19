@@ -6,6 +6,7 @@ using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
 using Calculator.ExpressionTree.Nodes.Operators.Functions.RowElim;
+using Calculator.ExpressionTree.Nodes.Operators.Functions.VectorProduct;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
@@ -324,6 +325,30 @@ namespace Calculator.Operations
             }
 
             return node;
+        }
+
+        /// <inheritdoc/>
+        public override ExpNode Execute(VectorProductOperNode node)
+        {
+            // Verify left and right child are two multiplyable vectors. 
+            if (node.LeftChild is TensorNode vector1 && vector1.DimensionCount == 1 &&
+                node.RightChild is TensorNode vector2 && vector2.DimensionCount == 1 &&
+                vector1.SizeIdentity == vector2.SizeIdentity)
+            {
+                int size = vector1.GetDimensionSize(1);
+                switch (node.ProductMethod)
+                {
+                    case VectorProductMethod.DOT:
+                        ExpNode[] terms = new ExpNode[size];
+                        for (int i = 0; i < size; i++)
+                            terms[i] = QuickOpers.Multiply(vector1.GetChild(i), vector2.GetChild(i));
+                        return QuickOpers.Sum(terms).Execute(this);
+                    default:
+                        return node;
+                }
+            }
+
+            return HandleError(new CannotMultiplyTensors(this, node));
         }
 
         /// <summary>

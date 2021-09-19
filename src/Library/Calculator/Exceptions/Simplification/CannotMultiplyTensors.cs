@@ -1,7 +1,7 @@
 ﻿// Adam Dernis © 2021
 
 using Calculator.ExpressionTree.Nodes.Collections;
-using Calculator.ExpressionTree.Nodes.Operators.NOpers;
+using Calculator.ExpressionTree.Nodes.Operators;
 using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Operations;
 using System;
@@ -17,9 +17,9 @@ namespace Calculator.Exceptions.Simplification
         /// Initializes a new instance of the <see cref="CannotMultiplyTensors"/> class.
         /// </summary>
         /// <param name="simplifier">The simplified that threw.</param>
-        /// <param name="context">The <see cref="MultiplicationOperNode"/> that it threw simplifying.</param>
+        /// <param name="context">The <see cref="OperNode"/> that it threw simplifying.</param>
         /// <param name="message">The <see cref="Exception"/> message.</param>
-        public CannotMultiplyTensors(Simplifier simplifier, MultiplicationOperNode context, string message = "")
+        public CannotMultiplyTensors(Simplifier simplifier, OperNode context, string message = "")
             : base(simplifier, context, message) { }
     }
 }

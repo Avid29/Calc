@@ -6,6 +6,7 @@ using Calculator.ExpressionTree.Nodes.Operators;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
 using Calculator.ExpressionTree.Nodes.Operators.Functions.RowElim;
+using Calculator.ExpressionTree.Nodes.Operators.Functions.VectorProduct;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
@@ -182,5 +183,12 @@ namespace Calculator.Operations.Abstract
         /// <param name="node">The <see cref="ValueNode"/> to execute operation on.</param>
         /// <returns>The result of the operation on a <see cref="ValueNode"/>.</returns>
         public virtual ExpNode Execute(ValueNode node) => Execute((ExpNode)node);
+
+        /// <summary>
+        /// Executes operation on a <see cref="VectorProductOperNode"/>.
+        /// </summary>
+        /// <param name="node">The <see cref="VectorProductOperNode"/> to execute operation on.</param>
+        /// <returns>The result of the operation on a <see cref="VectorProductOperNode"/>.</returns>
+        public virtual ExpNode Execute(VectorProductOperNode node) => Execute((BOperNode)node);
     }
 }

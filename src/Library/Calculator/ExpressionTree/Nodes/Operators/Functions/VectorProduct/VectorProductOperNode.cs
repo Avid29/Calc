@@ -31,6 +31,11 @@ namespace Calculator.ExpressionTree.Nodes.Operators.Functions.VectorProduct
             _productMethod = node._productMethod;
         }
 
+        /// <summary>
+        /// Gets the product method.
+        /// </summary>
+        public VectorProductMethod ProductMethod => _productMethod;
+
         /// <inheritdoc/>
         public override Priority Priority => Priority.MULTIPLICATION;
 

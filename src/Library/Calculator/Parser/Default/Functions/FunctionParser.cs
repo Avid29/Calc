@@ -3,6 +3,7 @@
 using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Operators;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
+using Calculator.ExpressionTree.Nodes.Operators.Functions.RowElim;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
 using Calculator.Parser.Default.Status;
 
@@ -55,8 +56,10 @@ namespace Calculator.Parser.Default.Functions
                 case "sec":
                 case "cot":
                     return new UnaryFuncParser(new SineOperNode(functionName));
+                case "ref":
+                    return new UnaryFuncParser(new RowElimOperNode(RowElimMethod.Gauss));
                 case "rref":
-                    return new UnaryFuncParser(new GaussJordElimOperNode());
+                    return new UnaryFuncParser(new RowElimOperNode(RowElimMethod.GaussJordan));
                 case "diff":
                     return new DiffFuncParser();
                 case "int":

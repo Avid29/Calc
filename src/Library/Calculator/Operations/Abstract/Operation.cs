@@ -190,5 +190,12 @@ namespace Calculator.Operations.Abstract
         /// <param name="node">The <see cref="VectorProductOperNode"/> to execute operation on.</param>
         /// <returns>The result of the operation on a <see cref="VectorProductOperNode"/>.</returns>
         public virtual ExpNode Execute(VectorProductOperNode node) => Execute((BOperNode)node);
+
+        /// <summary>
+        /// Executes operation on a <see cref="VectorProjOperNode"/>.
+        /// </summary>
+        /// <param name="node">The <see cref="VectorProjOperNode"/> to execute operation on.</param>
+        /// <returns>The result of the operation on a <see cref="VectorProjOperNode"/>.</returns>
+        public virtual ExpNode Execute(VectorProjOperNode node) => Execute((BOperNode)node);
     }
 }

@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Simplification\CannotAddTensors.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Simplification\CannotMultiplyTensors.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Simplification\CannotReduceNonMatrix.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Simplification\CannotVectorProject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Simplification\SimplificationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\ExpTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\BranchNode.cs" />

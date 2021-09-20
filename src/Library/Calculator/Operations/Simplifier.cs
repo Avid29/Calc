@@ -3,6 +3,7 @@
 using Calculator.Exceptions.Simplification;
 using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Collections;
+using Calculator.ExpressionTree.Nodes.Operators;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
 using Calculator.ExpressionTree.Nodes.Operators.Functions.RowElim;
@@ -350,6 +351,20 @@ namespace Calculator.Operations
             }
 
             return HandleError(new CannotMultiplyTensors(this, node));
+        }
+
+        /// <inheritdoc/>
+        public override ExpNode Execute(VectorProjOperNode node)
+        {
+            if (node.LeftChild.AreEqualSizeVectors(node.RightChild, out TensorNode a, out TensorNode b))
+            {
+                VectorProductOperNode adotb = QuickOpers.DotProduct(a, (TensorNode)b.Clone());
+                BOperNode bdotb = QuickOpers.DotProduct((TensorNode)b.Clone(), (TensorNode)b.Clone());
+
+                return QuickOpers.Multiply(b, adotb, QuickOpers.Reciprical(bdotb)).Execute(this);
+            }
+
+            return HandleError(new CannotVectorProject(this, node));
         }
 
         /// <summary>

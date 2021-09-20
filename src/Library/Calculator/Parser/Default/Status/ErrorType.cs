@@ -51,5 +51,15 @@ namespace Calculator.Parser.Default.Status
 		/// Specific expected character not found.
 		/// </summary>
 		MUST_BE,
+
+		/// <summary>
+		/// When a function declares too few arguments.
+		/// </summary>
+		INADEQUATE_ARGUMENTS,
+
+		/// <summary>
+		/// When a function declares too many arguments.
+		/// </summary>
+		TOO_MANY_ARGUMENTS,
 	}
 }

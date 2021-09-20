@@ -71,6 +71,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\MatrixParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\UnaryFuncParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\VectorParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\BinaryFuncParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\ParserState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Status\ErrorType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Status\ParseError.cs" />

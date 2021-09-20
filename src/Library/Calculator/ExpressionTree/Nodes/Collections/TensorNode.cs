@@ -44,7 +44,11 @@ namespace Calculator.ExpressionTree.Nodes.Collections
         /// </summary>
         /// <param name="node">The <see cref="TensorNode"/> to clone.</param>
         public TensorNode(TensorNode node)
-            : base(node) { }
+            : base(node) 
+        {
+            _dimensionCount = node._dimensionCount;
+            _sizes = (int[])node._sizes.Clone();
+        }
 
         /// <summary>
         /// Gets a string representing the size of the vector/matrix/tensor.

@@ -66,6 +66,8 @@ namespace Calculator.Parser.Default.Functions
                     return new IntegralFuncParser();
                 case "matrix":
                     return new MatrixParser();
+                case "proj":
+                    return new BinaryFuncParser(new VectorProjOperNode());
                 default:
                     return null;
             }

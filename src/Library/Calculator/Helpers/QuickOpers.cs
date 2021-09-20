@@ -1,8 +1,11 @@
 ﻿// Adam Dernis © 2021
 
 using Calculator.ExpressionTree.Nodes;
+using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.ExpressionTree.Nodes.Operators;
 using Calculator.ExpressionTree.Nodes.Operators.BOpers;
+using Calculator.ExpressionTree.Nodes.Operators.Functions;
+using Calculator.ExpressionTree.Nodes.Operators.Functions.VectorProduct;
 using Calculator.ExpressionTree.Nodes.Operators.NOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
@@ -124,6 +127,20 @@ namespace Calculator.Helpers
         public static RecipricalOperNode Reciprical(ExpNode node)
         {
             return new RecipricalOperNode() { Child = node };
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="VectorProjOperNode"/> projecting <paramref name="a"/> onto <paramref name="b"/>.
+        /// </summary>
+        /// <param name="a">The <see cref="TensorNode"/> to project from.</param>
+        /// <param name="b">The <see cref="TensorNode"/> to project onto.</param>
+        /// <returns>A new <see cref="VectorProjOperNode"/> as <paramref name="a"/> projected onto <paramref name="b"/>.</returns>
+        public static VectorProductOperNode DotProduct(TensorNode a, TensorNode b)
+        {
+            VectorProductOperNode node = new VectorProductOperNode(VectorProductMethod.DOT);
+            node.AddChild(a);
+            node.AddChild(b);
+            return node;
         }
     }
 }

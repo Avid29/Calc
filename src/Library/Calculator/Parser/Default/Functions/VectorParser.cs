@@ -12,7 +12,7 @@ namespace Calculator.Parser.Default.Functions
     /// A <see cref="FunctionParser"/> that parses a <see cref="TensorNode"/> for a vector.
     /// </summary>
     /// <remarks>
-    /// Vector is represented in form &lt;x1,x2,x3&gt;.
+    /// Vector is represented in form &lt;x1,x2,x3,...&gt;.
     /// </remarks>
     public class VectorParser : FunctionParser
     {

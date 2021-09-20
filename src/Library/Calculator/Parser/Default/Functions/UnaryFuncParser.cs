@@ -8,6 +8,9 @@ namespace Calculator.Parser.Default.Functions
     /// <summary>
     /// A <see cref="FunctionParser"/> that for parsing functions that are <see cref="UOperNode"/>s.
     /// </summary>
+    /// <remarks>
+    /// Represented as \uoper{x}.
+    /// </remarks>
     public class UnaryFuncParser : FunctionParser
     {
         private readonly DefaultParser _childParser;

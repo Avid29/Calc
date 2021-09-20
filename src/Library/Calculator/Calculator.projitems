@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Simplification\CannotAddTensors.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Simplification\CannotMultiplyTensors.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Simplification\CannotReduceNonMatrix.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Simplification\CannotVectorProject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Simplification\SimplificationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\ExpTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\BranchNode.cs" />
@@ -28,6 +29,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\Functions\RowElim\RowElimMethod.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\Functions\RowElim\RowElimOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\Functions\IntegralOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\Functions\VectorProduct\VectorProductMethod.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\Functions\VectorProduct\VectorProductOperNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\Functions\VectorProjOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\NOpers\AdditionOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\NOpers\MultiplicationOperNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionTree\Nodes\Operators\NOpers\NOperNode.cs" />
@@ -67,6 +71,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\MatrixParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\UnaryFuncParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\VectorParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Functions\BinaryFuncParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\ParserState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Status\ErrorType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Status\ParseError.cs" />

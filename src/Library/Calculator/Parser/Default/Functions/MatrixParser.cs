@@ -8,10 +8,10 @@ using System;
 namespace Calculator.Parser.Default.Functions
 {
     /// <summary>
-    /// A <see cref="FunctionParser"/> that parses a <see cref="TensorNode"/> for a vector.
+    /// A <see cref="FunctionParser"/> that parses a <see cref="TensorNode"/> for a matrix.
     /// </summary>
     /// <remarks>
-    /// Vector is represented in form &lt;x1,x2,x3&gt;.
+    /// Matrix is represented in form \matrix[i,j]{x1,x2,x3,...,x(ij)}.
     /// </remarks>
     public class MatrixParser : FunctionParser
     {

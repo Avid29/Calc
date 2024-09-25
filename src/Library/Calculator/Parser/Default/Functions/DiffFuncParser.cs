@@ -1,113 +1,113 @@
-﻿// Adam Dernis © 2021
+﻿// Adam Dernis 2024
 
 using Calculator.ExpressionTree;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
 using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Parser.Default.Status;
 
-namespace Calculator.Parser.Default.Functions
+namespace Calculator.Parser.Default.Functions;
+
+/// <summary>
+/// A <see cref="FunctionParser"/> for parsing a <see cref="DiffOperNode"/>.
+/// </summary>
+public class DiffFuncParser : FunctionParser
 {
+    private readonly DiffOperNode _node;
+    private readonly DefaultParser _childParser;
+    private State _state;
+
     /// <summary>
-    /// A <see cref="FunctionParser"/> for parsing a <see cref="DiffOperNode"/>.
+    /// Initializes a new instance of the <see cref="DiffFuncParser"/> class.
     /// </summary>
-    public class DiffFuncParser : FunctionParser
+    public DiffFuncParser()
     {
-        private readonly DiffOperNode _node;
-        private readonly DefaultParser _childParser;
-        private State _state;
+        _state = State.OPEN_VAR;
+        _depth = 0;
+        _node = new DiffOperNode();
+        _childParser = new DefaultParser();
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DiffFuncParser"/> class.
-        /// </summary>
-        public DiffFuncParser()
+    private enum State
+    {
+        OPEN_VAR,
+        VAR,
+        CLOSING_VAR,
+        OPEN_EXPRESSION,
+        EXPRESSION,
+        DONE,
+    }
+
+    /// <inheritdoc/>
+    public override ParseError ParseFirstChar(char c)
+    {
+        if (c == '[' && _state == State.OPEN_VAR)
         {
-            _state = State.OPEN_VAR;
-            _depth = 0;
-            _node = new DiffOperNode();
-            _childParser = new DefaultParser();
+            _state = State.VAR;
+            return new ParseError();
         }
 
-        private enum State
-        {
-            OPEN_VAR,
-            VAR,
-            CLOSING_VAR,
-            OPEN_EXPRESSION,
-            EXPRESSION,
-            DONE,
-        }
+        return new ParseError(ErrorType.MustBe, '[');
+    }
 
-        /// <inheritdoc/>
-        public override ParseError ParseFirstChar(char c)
+    /// <inheritdoc/>
+    public override ParseError ParseNextChar(char c)
+    {
+        switch (_state)
         {
-            if (c == '[' && _state == State.OPEN_VAR)
-            {
-                _state = State.VAR;
+            case State.VAR:
+                if (!char.IsLetter(c)) return new ParseError(ErrorType.DerivativeMustBeVariable);
+                _node.Variable = new VarValueNode(c);
+                _state = State.CLOSING_VAR;
                 return new ParseError();
-            }
 
-            return new ParseError(ErrorType.MUST_BE, '[');
-        }
+            case State.CLOSING_VAR:
+                if (c != ']') return new ParseError(ErrorType.MustBe, ']');
+                _state = State.OPEN_EXPRESSION;
+                return new ParseError();
 
-        /// <inheritdoc/>
-        public override ParseError ParseNextChar(char c)
-        {
-            switch (_state)
-            {
-                case State.VAR:
-                    if (!char.IsLetter(c)) return new ParseError(ErrorType.DERIVATIVE_MUST_BE_VARIABLE);
-                    _node.Variable = new VarValueNode(c);
-                    _state = State.CLOSING_VAR;
-                    return new ParseError();
+            case State.OPEN_EXPRESSION:
+                if (c != '{') return new ParseError(ErrorType.MustBe, '{');
+                _state = State.EXPRESSION;
+                return new ParseError();
 
-                case State.CLOSING_VAR:
-                    if (c != ']') return new ParseError(ErrorType.MUST_BE, ']');
-                    _state = State.OPEN_EXPRESSION;
-                    return new ParseError();
-
-                case State.OPEN_EXPRESSION:
-                    if (c != '{') return new ParseError(ErrorType.MUST_BE, '{');
-                    _state = State.EXPRESSION;
-                    return new ParseError();
-
-                case State.EXPRESSION:
+            case State.EXPRESSION:
+                {
+                    if (c == '}' && _depth == 0)
                     {
-                        if (c == '}' && _depth == 0)
+                        ParserStatus status = _childParser.Finalize();
+                        if (status.Failed)
                         {
-                            ParserStatus status = _childParser.Finalize();
-                            if (status.Failed)
-                            {
-                                return new ParseError(status);
-                            }
-
-                            ExpTree tree = _childParser.Tree;
-                            if (tree == null)
-                            {
-                                return new ParseError(ErrorType.UNKNOWN);
-                            }
-
-                            _node.AddChild(tree.Root);
-                            _state = State.DONE;
-                            Output = _node;
-                            return new ParseError();
+                            return new ParseError(status);
                         }
-                        else
+
+                        ExpTree tree = _childParser.Tree;
+                        if (tree == null)
                         {
-                            if (c == '{')
-                            {
-                                _depth++;
-                            } else if (c == '}')
-                            {
-                                _depth--;
-                            }
-                            ParserStatus result = _childParser.ParseNextChar(c);
-                            return new ParseError(result);
+                            return new ParseError(ErrorType.Unknown);
                         }
+
+                        _node.AddChild(tree.Root);
+                        _state = State.DONE;
+                        Output = _node;
+                        return new ParseError();
                     }
+                    else
+                    {
+                        if (c == '{')
+                        {
+                            _depth++;
+                        }
+                        else if (c == '}')
+                        {
+                            _depth--;
+                        }
+                        ParserStatus result = _childParser.ParseNextChar(c);
+                        return new ParseError(result);
+                    }
+                }
 
-                default:
-                    return new ParseError(ErrorType.UNKNOWN);
-            }
+            default:
+                return new ParseError(ErrorType.Unknown);
         }
     }
 }

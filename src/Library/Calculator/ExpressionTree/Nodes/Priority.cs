@@ -1,40 +1,39 @@
-﻿// Adam Dernis © 2021
+﻿// Adam Dernis 2024
 
-namespace Calculator.ExpressionTree.Nodes
+namespace Calculator.ExpressionTree.Nodes;
+
+/// <summary>
+/// The priority of the operation in order of operations.
+/// </summary>
+public enum Priority
 {
     /// <summary>
-    /// The priority of the operation in order of operations.
+    /// Overrides all priorties and things in it occur first.
     /// </summary>
-    public enum Priority
-    {
-        /// <summary>
-        /// Overrides all priorties and things in it occur first.
-        /// </summary>
-        OVERRIDE = -1,
+    Override = -1,
 
-        /// <summary>
-        /// A value (not an operation).
-        /// </summary>
-        VALUE,
+    /// <summary>
+    /// A value (not an operation).
+    /// </summary>
+    Value,
 
-        /// <summary>
-        /// Signs are handled first.
-        /// </summary>
-        SIGN,
+    /// <summary>
+    /// Signs are handled first.
+    /// </summary>
+    Sign,
 
-        /// <summary>
-        /// Power (exponent).
-        /// </summary>
-        POWER,
+    /// <summary>
+    /// Power (exponent).
+    /// </summary>
+    Power,
 
-        /// <summary>
-        /// Multiplication.
-        /// </summary>
-        MULTIPLICATION,
+    /// <summary>
+    /// Multiplication.
+    /// </summary>
+    Multiplication,
 
-        /// <summary>
-        /// Addition
-        /// </summary>
-        ADDITION,
-    }
+    /// <summary>
+    /// Addition
+    /// </summary>
+    Addition,
 }

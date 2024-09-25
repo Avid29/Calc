@@ -1,150 +1,149 @@
-﻿// Adam Dernis © 2021
+﻿// Adam Dernis 2024
 
 using Calculator.ExpressionTree;
 using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.Parser.Default.Status;
 using System;
 
-namespace Calculator.Parser.Default.Functions
+namespace Calculator.Parser.Default.Functions;
+
+/// <summary>
+/// A <see cref="FunctionParser"/> that parses a <see cref="TensorNode"/> for a matrix.
+/// </summary>
+/// <remarks>
+/// Matrix is represented in form \matrix[i,j]{x1,x2,x3,...,x(ij)}.
+/// </remarks>
+public class MatrixParser : FunctionParser
 {
+    private DefaultParser _childParser;
+    private TensorNode _matrix;
+    private State _state;
+    private string _cache;
+    private readonly int[] _sizes;
+
     /// <summary>
-    /// A <see cref="FunctionParser"/> that parses a <see cref="TensorNode"/> for a matrix.
+    /// Initializes a new instance of the <see cref="MatrixParser"/> class.
     /// </summary>
-    /// <remarks>
-    /// Matrix is represented in form \matrix[i,j]{x1,x2,x3,...,x(ij)}.
-    /// </remarks>
-    public class MatrixParser : FunctionParser
+    public MatrixParser()
     {
-        private DefaultParser _childParser;
-        private TensorNode _matrix;
-        private State _state;
-        private string _cache;
-        private int[] _sizes;
+        _childParser = new DefaultParser();
+        _state = State.OPEN_X;
+        _cache = string.Empty;
+        _sizes = new int[2];
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MatrixParser"/> class.
-        /// </summary>
-        public MatrixParser()
+    private enum State
+    {
+        OPEN_X,
+        ARGUMENT_X,
+        OPEN_Y,
+        ARGUMENT_Y,
+        OPEN_EXPRESSION,
+        EXPRESSION,
+        DONE,
+    }
+
+    /// <inheritdoc/>
+    public override ParseError ParseFirstChar(char c)
+    {
+        if (c == '[')
         {
-            _childParser = new DefaultParser();
-            _state = State.OPEN_X;
-            _cache = string.Empty;
-            _sizes = new int[2];
+            _state = State.ARGUMENT_X;
+            return new ParseError();
         }
 
-        private enum State
-        {
-            OPEN_X,
-            ARGUMENT_X,
-            OPEN_Y,
-            ARGUMENT_Y,
-            OPEN_EXPRESSION,
-            EXPRESSION,
-            DONE,
-        }
+        return new ParseError(ErrorType.MustBe, '[');
+    }
 
-        /// <inheritdoc/>
-        public override ParseError ParseFirstChar(char c)
+    /// <inheritdoc/>
+    public override ParseError ParseNextChar(char c)
+    {
+        switch (_state)
         {
-            if (c == '[')
-            {
-                _state = State.ARGUMENT_X;
-                return new ParseError();
-            }
-
-            return new ParseError(ErrorType.MUST_BE, '[');
-        }
-
-        /// <inheritdoc/>
-        public override ParseError ParseNextChar(char c)
-        {
-            switch (_state)
-            {
-                case State.ARGUMENT_X:
-                    return ParseUintArg(c);
-                case State.OPEN_Y:
-                case State.ARGUMENT_Y:
-                    return ParseUintArg(c);
-                case State.OPEN_EXPRESSION:
-                    if (c == '{')
+            case State.ARGUMENT_X:
+                return ParseUintArg(c);
+            case State.OPEN_Y:
+            case State.ARGUMENT_Y:
+                return ParseUintArg(c);
+            case State.OPEN_EXPRESSION:
+                if (c == '{')
+                {
+                    _state = State.EXPRESSION;
+                    _matrix = new TensorNode(_sizes);
+                    return new ParseError();
+                }
+                else return new ParseError(ErrorType.CannotProceed);
+            case State.EXPRESSION:
+                {
+                    if ((c == '}' || c == ',') && _depth == 0)
                     {
-                        _state = State.EXPRESSION;
-                        _matrix = new TensorNode(_sizes);
+                        ParserStatus status = _childParser.Finalize();
+                        if (status.Failed)
+                        {
+                            return new ParseError(status);
+                        }
+
+                        ExpTree tree = _childParser.Tree;
+                        _childParser = new DefaultParser();
+                        if (tree == null)
+                        {
+                            return new ParseError(ErrorType.Unknown);
+                        }
+
+                        _matrix.AddChild(tree.Root);
+
+                        if (c == '}')
+                        {
+                            _state = State.DONE;
+                            Output = _matrix;
+                        }
+
                         return new ParseError();
                     }
-                    else return new ParseError(ErrorType.CANNOT_PROCEED);
-                case State.EXPRESSION:
+                    else
                     {
-                        if ((c == '}' || c == ',') && _depth == 0)
+                        if (c == '{')
                         {
-                            ParserStatus status = _childParser.Finalize();
-                            if (status.Failed)
-                            {
-                                return new ParseError(status);
-                            }
-
-                            ExpTree tree = _childParser.Tree;
-                            _childParser = new DefaultParser();
-                            if (tree == null)
-                            {
-                                return new ParseError(ErrorType.UNKNOWN);
-                            }
-
-                            _matrix.AddChild(tree.Root);
-
-                            if (c == '}')
-                            {
-                                _state = State.DONE;
-                                Output = _matrix;
-                            }
-
-                            return new ParseError();
+                            _depth++;
                         }
-                        else
+                        else if (c == '}')
                         {
-                            if (c == '{')
-                            {
-                                _depth++;
-                            }
-                            else if (c == '}')
-                            {
-                                _depth--;
-                            }
-                            ParserStatus result = _childParser.ParseNextChar(c);
-                            return new ParseError(result);
+                            _depth--;
                         }
+                        ParserStatus result = _childParser.ParseNextChar(c);
+                        return new ParseError(result);
                     }
-                default:
-                    return new ParseError(ErrorType.UNKNOWN);
-            }
+                }
+            default:
+                return new ParseError(ErrorType.Unknown);
         }
+    }
 
-        private ParseError ParseUintArg(char c)
+    private ParseError ParseUintArg(char c)
+    {
+        if (char.IsDigit(c))
         {
-            if (char.IsDigit(c))
-            {
-                _cache += c;
-                if (_state == State.OPEN_Y) _state = State.ARGUMENT_Y;
+            _cache += c;
+            if (_state == State.OPEN_Y) _state = State.ARGUMENT_Y;
 
-                return new ParseError();
-            }
-
-            if (c == ',' && _state == State.ARGUMENT_X)
-            {
-                _state = State.OPEN_Y;
-                _sizes[0] = Convert.ToInt32(_cache);
-                _cache = string.Empty;
-                return new ParseError();
-            }
-            if (c == ']' && _state == State.ARGUMENT_Y)
-            {
-                _state = State.OPEN_EXPRESSION;
-                _sizes[1] = Convert.ToInt32(_cache);
-                _cache = string.Empty;
-                return new ParseError();
-            }
-
-            return new ParseError(ErrorType.CANNOT_PROCEED);
+            return new ParseError();
         }
+
+        if (c == ',' && _state == State.ARGUMENT_X)
+        {
+            _state = State.OPEN_Y;
+            _sizes[0] = Convert.ToInt32(_cache);
+            _cache = string.Empty;
+            return new ParseError();
+        }
+        if (c == ']' && _state == State.ARGUMENT_Y)
+        {
+            _state = State.OPEN_EXPRESSION;
+            _sizes[1] = Convert.ToInt32(_cache);
+            _cache = string.Empty;
+            return new ParseError();
+        }
+
+        return new ParseError(ErrorType.CannotProceed);
     }
 }

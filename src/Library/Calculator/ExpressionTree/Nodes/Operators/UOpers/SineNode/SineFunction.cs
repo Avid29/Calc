@@ -1,40 +1,39 @@
-﻿// Adam Dernis © 2021
+﻿// Adam Dernis 2024
 
-namespace Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode
+namespace Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
+
+/// <summary>
+/// The exact function for a <see cref="SineOperNode"/>.
+/// </summary>
+public enum SineFunction
 {
     /// <summary>
-    /// The exact function for a <see cref="SineOperNode"/>.
+    /// Sine.
     /// </summary>
-    public enum SineFunction
-    {
-        /// <summary>
-        /// Sine.
-        /// </summary>
-        SINE,
+    Sine,
 
-        /// <summary>
-        /// Cosine.
-        /// </summary>
-        COSINE,
+    /// <summary>
+    /// Cosine.
+    /// </summary>
+    Cosine,
 
-        /// <summary>
-        /// Tanget.
-        /// </summary>
-        TANGENT,
+    /// <summary>
+    /// Tanget.
+    /// </summary>
+    Tangent,
 
-        /// <summary>
-        /// Cosecent.
-        /// </summary>
-        COSECANT,
+    /// <summary>
+    /// Cosecent.
+    /// </summary>
+    Cosecent,
 
-        /// <summary>
-        /// Secant.
-        /// </summary>
-        SECANT,
+    /// <summary>
+    /// Secant.
+    /// </summary>
+    Secant,
 
-        /// <summary>
-        /// Cotangent.
-        /// </summary>
-        COTANGENT,
-    }
+    /// <summary>
+    /// Cotangent.
+    /// </summary>
+    Cotangent,
 }

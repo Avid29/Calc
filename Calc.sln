@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29613.14
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{D63D9218-6719-43EE-B952-5CC892A0A587}"
 EndProject
@@ -33,25 +33,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calculator (NetStandard2.1)", "src\Library\Platforms\NetStandard\Calculator\Calculator (NetStandard2.1).csproj", "{7A693F02-DFDB-424F-9639-CD09B7F23B4C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calculator (NET5)", "src\Library\Platforms\NET5\Calculator\Calculator (NET5).csproj", "{2FA06821-9729-4D12-8969-AA0253B7C462}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calculator (NET7)", "src\Library\Platforms\NET5\Calculator\Calculator (NET7).csproj", "{2FA06821-9729-4D12-8969-AA0253B7C462}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Console", "Console", "{7324FC19-D12E-4AB8-B451-CBED9D9259E2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B38CBCBD-ED9D-4F52-BB3B-17203EEEEC77}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		src\Library\Calculator\Calculator.projitems*{2daeb565-911a-4226-b0de-20f769416be2}*SharedItemsImports = 13
-		src\Library\Calculator\Calculator.projitems*{2fa06821-9729-4d12-8969-aa0253b7c462}*SharedItemsImports = 5
-		old\C++\src\Library\Calculator\Calculator.vcxitems*{322cd08f-a6be-472d-b32a-55d51d684bf8}*SharedItemsImports = 4
-		src\Library\Calculator\Calculator.projitems*{7a693f02-dfdb-424f-9639-cd09b7f23b4c}*SharedItemsImports = 5
-		old\C++\src\Library\Calculator\Calculator.vcxitems*{8040748e-1f86-4da6-8058-4ff02a92e0ae}*SharedItemsImports = 4
-		old\C++\src\Library\Calculator\Calculator.vcxitems*{fea44308-338d-4ff7-b3b7-efd2960278d2}*SharedItemsImports = 9
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
 		Ad-Hoc|ARM = Ad-Hoc|ARM
@@ -420,5 +411,13 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {97E5AD4A-5E89-4A1A-9A95-CFAC75CBB060}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\Library\Calculator\Calculator.projitems*{2daeb565-911a-4226-b0de-20f769416be2}*SharedItemsImports = 13
+		src\Library\Calculator\Calculator.projitems*{2fa06821-9729-4d12-8969-aa0253b7c462}*SharedItemsImports = 5
+		old\C++\src\Library\Calculator\Calculator.vcxitems*{322cd08f-a6be-472d-b32a-55d51d684bf8}*SharedItemsImports = 4
+		src\Library\Calculator\Calculator.projitems*{7a693f02-dfdb-424f-9639-cd09b7f23b4c}*SharedItemsImports = 5
+		old\C++\src\Library\Calculator\Calculator.vcxitems*{8040748e-1f86-4da6-8058-4ff02a92e0ae}*SharedItemsImports = 4
+		old\C++\src\Library\Calculator\Calculator.vcxitems*{fea44308-338d-4ff7-b3b7-efd2960278d2}*SharedItemsImports = 9
 	EndGlobalSection
 EndGlobal

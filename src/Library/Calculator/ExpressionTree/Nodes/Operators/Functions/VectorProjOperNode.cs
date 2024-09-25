@@ -1,39 +1,38 @@
-﻿// Adam Dernis © 2021
+﻿// Adam Dernis 2024
 
 using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.Operations.Abstract;
 using Calculator.Printers.Abstract;
 
-namespace Calculator.ExpressionTree.Nodes.Operators.Functions
+namespace Calculator.ExpressionTree.Nodes.Operators.Functions;
+
+/// <summary>
+/// An <see cref="ExpNode"/> that applies Vector projection on two (2) <see cref="TensorNode"/>.
+/// </summary>
+public class VectorProjOperNode : BOperNode
 {
     /// <summary>
-    /// An <see cref="ExpNode"/> that applies Vector projection on two (2) <see cref="TensorNode"/>.
+    /// Initializes a new instance of the <see cref="VectorProjOperNode"/> class.
     /// </summary>
-    public class VectorProjOperNode : BOperNode
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VectorProjOperNode"/> class.
-        /// </summary>
-        public VectorProjOperNode()
-        { }
+    public VectorProjOperNode()
+    { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VectorProjOperNode"/> class as a clone of <paramref name="node"/>.
-        /// </summary>
-        /// <param name="node">The <see cref="VectorProjOperNode"/> to clone.</param>
-        public VectorProjOperNode(VectorProjOperNode node)
-            : base(node) { }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="VectorProjOperNode"/> class as a clone of <paramref name="node"/>.
+    /// </summary>
+    /// <param name="node">The <see cref="VectorProjOperNode"/> to clone.</param>
+    public VectorProjOperNode(VectorProjOperNode node)
+        : base(node) { }
 
-        /// <inheritdoc/>
-        public override Priority Priority => Priority.OVERRIDE;
+    /// <inheritdoc/>
+    public override Priority Priority => Priority.Override;
 
-        /// <inheritdoc/>
-        public override ExpNode Clone() => new VectorProjOperNode(this);
+    /// <inheritdoc/>
+    public override ExpNode Clone() => new VectorProjOperNode(this);
 
-        /// <inheritdoc/>
-        public override ExpNode Execute(Operation operation) => operation.Execute(this);
+    /// <inheritdoc/>
+    public override ExpNode Execute(Operation operation) => operation.Execute(this);
 
-        /// <inheritdoc/>
-        public override string Print(Printer printer) => printer.Print(this);
-    }
+    /// <inheritdoc/>
+    public override string Print(Printer printer) => printer.Print(this);
 }

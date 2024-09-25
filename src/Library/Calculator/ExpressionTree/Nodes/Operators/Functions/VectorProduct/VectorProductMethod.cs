@@ -1,20 +1,19 @@
-﻿// Adam Dernis © 2021
+﻿// Adam Dernis 2024
 
-namespace Calculator.ExpressionTree.Nodes.Operators.Functions.VectorProduct
+namespace Calculator.ExpressionTree.Nodes.Operators.Functions.VectorProduct;
+
+/// <summary>
+/// The method used for vector products.
+/// </summary>
+public enum VectorProductMethod
 {
     /// <summary>
-    /// The method used for vector products.
+    /// Find the dot product.
     /// </summary>
-    public enum VectorProductMethod
-    {
-        /// <summary>
-        /// Find the dot product.
-        /// </summary>
-        DOT,
+    Dot,
 
-        /// <summary>
-        /// Find the cross product.
-        /// </summary>
-        CROSS,
-    }
+    /// <summary>
+    /// Find the cross product.
+    /// </summary>
+    Cross,
 }

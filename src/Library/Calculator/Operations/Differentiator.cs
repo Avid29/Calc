@@ -1,4 +1,4 @@
-﻿// Adam Dernis © 2021
+﻿// Adam Dernis 2024
 
 using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Collections;
@@ -10,125 +10,120 @@ using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Helpers;
 using Calculator.Operations.Abstract;
 
-namespace Calculator.Operations
+namespace Calculator.Operations;
+
+/// <summary>
+/// An <see cref="Operation"/> that takes the derivate of <see cref="ExpNode"/>s.
+/// </summary>
+/// <remarks>
+/// Currently only partial derivatives.
+/// </remarks>
+public class Differentiator : Operation
 {
+    private readonly VarValueNode _variable;
+
     /// <summary>
-    /// An <see cref="Operation"/> that takes the derivate of <see cref="ExpNode"/>s.
+    /// Initializes a new instance of the <see cref="Differentiator"/> class.
     /// </summary>
-    /// <remarks>
-    /// Currently only partial derivatives.
-    /// </remarks>
-    public class Differentiator : Operation
+    /// <param name="variable">The variable to take the derivative over.</param>
+    public Differentiator(VarValueNode variable)
     {
-        private readonly VarValueNode _variable;
+        _variable = variable;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Differentiator"/> class.
-        /// </summary>
-        /// <param name="variable">The variable to take the derivative over.</param>
-        public Differentiator(VarValueNode variable)
+    /// <inheritdoc/>
+    public override ExpNode Execute(AdditionOperNode node)
+    {
+        // Sum rule
+        for (int i = 0; i < node.ChildCount; i++)
         {
-            _variable = variable;
+            ExpNode diffChild = node.GetChild(i).Execute(this);
+            node.ReplaceChild(diffChild, i);
         }
 
-        /// <inheritdoc/>
-        public override ExpNode Execute(AdditionOperNode node)
+        return node;
+    }
+
+    /// <inheritdoc/>
+    public override ExpNode Execute(ExpNode node) => node;
+
+    /// <inheritdoc/>
+    public override ExpNode Execute(MultiplicationOperNode node)
+    {
+        // Product rule
+        AdditionOperNode aNode = new();
+        for (int i = 0; i < node.ChildCount; i++)
         {
-            // Sum rule
-            for (int i = 0; i < node.ChildCount; i++)
+            MultiplicationOperNode mNode = new();
+            mNode.AddChild(node.GetChild(i).Clone().Execute(this));
+            for (int j = 0; j < node.ChildCount; j++)
             {
-                ExpNode diffChild = node.GetChild(i).Execute(this);
-                node.ReplaceChild(diffChild, i);
+                if (j != i) mNode.AddChild(node.GetChild(j).Clone());
             }
 
-            return node;
+            aNode.AddChild(mNode);
         }
+        return aNode;
+    }
 
-        /// <inheritdoc/>
-        public override ExpNode Execute(ExpNode node) => node;
+    /// <inheritdoc/>
+    public override ExpNode Execute(NumericalValueNode node) => QuickOpers.MakeNumericalNode(0);
 
-        /// <inheritdoc/>
-        public override ExpNode Execute(MultiplicationOperNode node)
-        {
-            // Product rule
-            AdditionOperNode aNode = new();
-            for (int i = 0; i < node.ChildCount; i++)
-            {
-                MultiplicationOperNode mNode = new();
-                mNode.AddChild(node.GetChild(i).Clone().Execute(this));
-                for (int j = 0; j < node.ChildCount; j++)
-                {
-                    if (j != i) mNode.AddChild(node.GetChild(j).Clone());
-                }
-
-                aNode.AddChild(mNode);
-            }
-            return aNode;
-        }
-
-        /// <inheritdoc/>
-        public override ExpNode Execute(NumericalValueNode node)
-        {
+    /// <inheritdoc/>
+    public override ExpNode Execute(PowOperNode node)
+    {
+        // TODO: Handle variable in exponent
+        if (node.IsConstantBy(_variable))
             return QuickOpers.MakeNumericalNode(0);
-        }
 
-        /// <inheritdoc/>
-        public override ExpNode Execute(PowOperNode node)
+        var coefficient = node.RightChild;
+        var @base = node.LeftChild;
+        var exponent = QuickOpers.Add(-1, coefficient);
+        return QuickOpers.Multiply(coefficient, QuickOpers.Pow(@base, exponent));
+    }
+
+    /// <inheritdoc/>
+    public override ExpNode Execute(ParenthesisOperNode node)
+    {
+        node.Child = node.Child.Execute(this);
+        return node;
+    }
+
+    /// <inheritdoc/>
+    public override ExpNode Execute(SineOperNode node)
+    {
+        if (node.IsConstantBy(_variable))
+            return QuickOpers.MakeNumericalNode(0);
+
+        // Apply chain rule
+        var coefficient = node.Child.Clone().Execute(this);
+        // Apply table
+        var sinFunc = SineTable(node);
+        return QuickOpers.Multiply(coefficient, sinFunc);
+    }
+
+    /// <inheritdoc/>
+    public override ExpNode Execute(TensorNode node)
+    {
+        for (int i = 0; i < node.ChildCount; i++)
         {
-            // TODO: Handle variable in exponent
-            if (node.IsConstantBy(_variable)) return QuickOpers.MakeNumericalNode(0);
-
-            var coefficient = node.RightChild;
-            var @base = node.LeftChild;
-            var exponent = QuickOpers.Add(-1, coefficient);
-            return QuickOpers.Multiply(coefficient, QuickOpers.Pow(@base, exponent));
+            ExpNode diffChild = node.GetChild(i).Execute(this);
+            node.ReplaceChild(diffChild, i);
         }
 
-        /// <inheritdoc/>
-        public override ExpNode Execute(ParenthesisOperNode node)
+        return node;
+    }
+
+    /// <inheritdoc/>
+    public override ExpNode Execute(VarValueNode node) => QuickOpers.MakeNumericalNode(node.Character == _variable.Character ? 1 : 0);
+
+    private static ExpNode SineTable(SineOperNode node)
+    {
+        return node.SineFunction switch
         {
-            node.Child = node.Child.Execute(this);
-            return node;
-        }
-
-        /// <inheritdoc/>
-        public override ExpNode Execute(SineOperNode node)
-        {
-            if (node.IsConstantBy(_variable)) return QuickOpers.MakeNumericalNode(0);
-
-            // Apply chain rule
-            var coefficient = node.Child.Clone().Execute(this);
-            // Apply table
-            var sinFunc = SineTable(node);
-            return QuickOpers.Multiply(coefficient, sinFunc);
-        }
-
-        /// <inheritdoc/>
-        public override ExpNode Execute(TensorNode node)
-        {
-            for (int i = 0; i < node.ChildCount; i++)
-            {
-                ExpNode diffChild = node.GetChild(i).Execute(this);
-                node.ReplaceChild(diffChild, i);
-            }
-
-            return node;
-        }
-
-        /// <inheritdoc/>
-        public override ExpNode Execute(VarValueNode node)
-        {
-            return QuickOpers.MakeNumericalNode(node.Character == _variable.Character ? 1 : 0);
-        }
-
-        private static ExpNode SineTable(SineOperNode node)
-        {
-            return node.SineFunction switch
-            {
-                SineFunction.SINE => new SineOperNode(SineFunction.COSINE) { Child = node.Child },
-                SineFunction.COSINE => QuickOpers.Negative(new SineOperNode(SineFunction.SINE) { Child = node.Child }),
-                _ => node,
-            };
-        }
+            SineFunction.Sine => new SineOperNode(SineFunction.Cosine) { Child = node.Child },
+            SineFunction.Cosine => QuickOpers.Negative(new SineOperNode(SineFunction.Sine) { Child = node.Child }),
+            _ => node,
+        };
     }
 }

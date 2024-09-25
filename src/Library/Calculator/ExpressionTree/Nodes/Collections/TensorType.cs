@@ -1,25 +1,24 @@
-﻿// Adam Dernis © 2021
+﻿// Adam Dernis 2024
 
-namespace Calculator.ExpressionTree.Nodes.Collections
+namespace Calculator.ExpressionTree.Nodes.Collections;
+
+/// <summary>
+/// The type of <see cref="TensorNode"/>.
+/// </summary>
+public enum TensorType : int
 {
     /// <summary>
-    /// The type of <see cref="TensorNode"/>.
+    /// A vector.
     /// </summary>
-    public enum TensorType : int
-    {
-        /// <summary>
-        /// A vector.
-        /// </summary>
-        Vector = 1,
+    Vector = 1,
 
-        /// <summary>
-        /// A matrix.
-        /// </summary>
-        Matrix = 2,
+    /// <summary>
+    /// A matrix.
+    /// </summary>
+    Matrix = 2,
 
-        /// <summary>
-        /// A tensor.
-        /// </summary>
-        Tensor,
-    }
+    /// <summary>
+    /// A tensor.
+    /// </summary>
+    Tensor,
 }

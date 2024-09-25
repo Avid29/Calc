@@ -1,20 +1,19 @@
-﻿// Adam Dernis © 2021
+﻿// Adam Dernis 2024
 
-namespace Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode
+namespace Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
+
+/// <summary>
+/// The sign of a <see cref="SignOperNode"/>.
+/// </summary>
+public enum Sign
 {
     /// <summary>
-    /// The sign of a <see cref="SignOperNode"/>.
+    /// Positive.
     /// </summary>
-    public enum Sign
-    {
-        /// <summary>
-        /// Positive.
-        /// </summary>
-        POSITIVE,
+    Positive,
 
-        /// <summary>
-        /// Negative.
-        /// </summary>
-        NEGATIVE,
-    }
+    /// <summary>
+    /// Negative.
+    /// </summary>
+    Negative,
 }

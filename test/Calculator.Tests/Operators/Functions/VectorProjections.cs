@@ -1,14 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿// Adam Dernis 2024
 
-namespace Calculator.Tests.Operators.Functions
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Calculator.Tests.Operators.Functions;
+
+[TestClass]
+public class VectorProjections : TestingClass
 {
-    [TestClass]
-    public class VectorProjections : TestingClass
-    {
-        [TestMethod]
-        public void VectorProj()
-        {
-            Assert.IsTrue(Run(@"\proj{<4,2,2>, <2,6,4>}") == "<1,3,2>");
-        }
-    }
+    [TestMethod]
+    public void VectorProj() => Assert.IsTrue(Run(@"\proj{<4,2,2>, <2,6,4>}") == "<1,3,2>");
 }

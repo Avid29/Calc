@@ -1,4 +1,4 @@
-﻿// Adam Dernis © 2021
+﻿// Adam Dernis 2024
 
 using Calculator.Exceptions.Simplification;
 using Calculator.ExpressionTree.Nodes;
@@ -8,87 +8,91 @@ using Calculator.Operations;
 using Calculator.Operations.Groups.Terms;
 using System.Collections.Generic;
 
-namespace Calculator.Helpers.Simplification
+namespace Calculator.Helpers.Simplification;
+
+/// <summary>
+/// A class containing methods for helping with additon simplification.
+/// </summary>
+public static class AdditionHelpers
 {
     /// <summary>
-    /// A class containing methods for helping with additon simplification.
+    /// Splits an <see cref="AdditionOperNode"/> into terms and simplifies by common terms.
     /// </summary>
-    public static class AdditionHelpers
+    /// <param name="node">The <see cref="AdditionOperNode"/> to simplify.</param>
+    /// <returns>The resulting <see cref="ExpNode"/>.</returns>
+    public static AdditionOperNode SimplfiyATerms(AdditionOperNode node)
     {
-        /// <summary>
-        /// Splits an <see cref="AdditionOperNode"/> into terms and simplifies by common terms.
-        /// </summary>
-        /// <param name="node">The <see cref="AdditionOperNode"/> to simplify.</param>
-        /// <returns>The resulting <see cref="ExpNode"/>.</returns>
-        public static AdditionOperNode SimplfiyATerms(AdditionOperNode node)
+        SortedSet<AdditiveTerm> aTerms = [];
+
+        for (int i = 0; i < node.ChildCount; i++)
         {
-            SortedSet<AdditiveTerm> aTerms = new();
+            AdditiveTerm aTerm = new(node.GetChild(i));
 
-            for (int i = 0; i < node.ChildCount; i++)
+            if (aTerms.TryGetValue(aTerm, out AdditiveTerm existingATerm))
             {
-                AdditiveTerm aTerm = new(node.GetChild(i));
-
-                if (aTerms.TryGetValue(aTerm, out AdditiveTerm existingATerm))
-                {
-                    existingATerm.AddToCoefficient(aTerm);
-                }
-                else
-                {
-                    aTerms.Add(aTerm);
-                }
-            }
-
-            node.ClearChildren();
-            foreach (var term in aTerms)
-            {
-                node.AddChild(term.AsExpNode());
-            }
-
-            return node;
-        }
-
-        /// <summary>
-        /// Adds tensors.
-        /// </summary>
-        /// <param name="node">The <see cref="AdditionOperNode"/> containing tensors.</param>
-        /// <param name="simplifier">The <see cref="Simplifier"/> calling.</param>
-        /// <returns>The resuling <see cref="ExpNode"/>.</returns>
-        public static ExpNode SumTensors(AdditionOperNode node, Simplifier simplifier)
-        {
-            if (node.GetChild(0) is TensorNode tensorNode)
-            {
-                for (int i = 1; i < node.ChildCount; i++)
-                {
-                    if (node.GetChild(i) is TensorNode otherTensorNode)
-                    {
-                        if (otherTensorNode.SizeIdentity == tensorNode.SizeIdentity)
-                        {
-                            for (int j = 0; j < tensorNode.ChildCount; j++)
-                            {
-                                ExpNode addedNode = QuickOpers
-                                    .Sum(tensorNode.GetChild(j), otherTensorNode.GetChild(j))
-                                    .Execute(simplifier);
-                                tensorNode.ReplaceChild(addedNode, j);
-                            }
-                        }
-                        else return simplifier.HandleError(new CannotAddTensors(simplifier, node, $"Cannot add tensor of shape {otherTensorNode.SizeIdentity} and tensor of shape {tensorNode.SizeIdentity}."));
-                    }
-                    else return simplifier.HandleError(new CannotAddTensors(simplifier, node, "Cannot add scalar and tensor."));
-                }
-
-                return tensorNode;
+                existingATerm.AddToCoefficient(aTerm);
             }
             else
             {
-                // There is a scalar.
-                // There cannot be any tensors
-                for (int i = 1; i < node.ChildCount; i++)
+                aTerms.Add(aTerm);
+            }
+        }
+
+        node.ClearChildren();
+        foreach (var term in aTerms)
+        {
+            node.AddChild(term.AsExpNode());
+        }
+
+        return node;
+    }
+
+    /// <summary>
+    /// Adds tensors.
+    /// </summary>
+    /// <param name="node">The <see cref="AdditionOperNode"/> containing tensors.</param>
+    /// <param name="simplifier">The <see cref="Simplifier"/> calling.</param>
+    /// <returns>The resuling <see cref="ExpNode"/>.</returns>
+    public static ExpNode SumTensors(AdditionOperNode node, Simplifier simplifier)
+    {
+        if (node.GetChild(0) is TensorNode tensorNode)
+        {
+            for (int i = 1; i < node.ChildCount; i++)
+            {
+                if (node.GetChild(i) is not TensorNode otherTensorNode)
                 {
-                    if (node.GetChild(i) is TensorNode) return simplifier.HandleError(new CannotAddTensors(simplifier, node, "Cannot add tensor and scalar."));
+                    return simplifier.HandleError(new CannotAddTensors(simplifier, node, "Cannot add scalar and tensor."));
+                }
+
+                if (otherTensorNode.SizeIdentity != tensorNode.SizeIdentity)
+                {
+                    return simplifier.HandleError(new CannotAddTensors(simplifier, node, $"Cannot add tensor of shape {otherTensorNode.SizeIdentity} and tensor of shape {tensorNode.SizeIdentity}."));
+                }
+
+                for (int j = 0; j < tensorNode.ChildCount; j++)
+                {
+                    ExpNode addedNode = QuickOpers
+                        .Sum(tensorNode.GetChild(j), otherTensorNode.GetChild(j))
+                        .Execute(simplifier);
+                    tensorNode.ReplaceChild(addedNode, j);
                 }
             }
 
-            return node;
+            return tensorNode;
         }
+        else
+        {
+            // There is a scalar.
+            // There cannot be any tensors
+            for (int i = 1; i < node.ChildCount; i++)
+            {
+                if (node.GetChild(i) is TensorNode)
+                {
+                    return simplifier.HandleError(new CannotAddTensors(simplifier, node, "Cannot add tensor and scalar."));
+                }
+            }
+        }
+
+        return node;
     }
 }

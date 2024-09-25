@@ -1,20 +1,19 @@
-﻿// Adam Dernis © 2021
+﻿// Adam Dernis 2024
 
-namespace Calculator.ExpressionTree.Nodes.Operators.Functions.RowElim
+namespace Calculator.ExpressionTree.Nodes.Operators.Functions.RowElim;
+
+/// <summary>
+/// The method used for row elimination.
+/// </summary>
+public enum RowElimMethod
 {
     /// <summary>
-    /// The method used for row elimination.
+    /// Put the matrix in row-echelon form.
     /// </summary>
-    public enum RowElimMethod
-    {
-        /// <summary>
-        /// Put the matrix in row-echelon form.
-        /// </summary>
-        Gauss,
+    Gauss,
 
-        /// <summary>
-        /// Put the matrix in reduced row-echelon form.
-        /// </summary>
-        GaussJordan,
-    }
+    /// <summary>
+    /// Put the matrix in reduced row-echelon form.
+    /// </summary>
+    GaussJordan,
 }

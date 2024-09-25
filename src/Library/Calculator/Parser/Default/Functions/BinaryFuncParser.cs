@@ -1,135 +1,134 @@
-﻿// Adam Dernis © 2021
+﻿// Adam Dernis 2024
 
 using Calculator.ExpressionTree.Nodes.Operators;
 using Calculator.Parser.Default.Status;
 
-namespace Calculator.Parser.Default.Functions
+namespace Calculator.Parser.Default.Functions;
+
+/// <summary>
+/// A <see cref="FunctionParser"/> that for parsing <see cref="BOperNode"/>s.
+/// </summary>
+/// <remarks>
+/// Represented as \boper{x1,x2}.
+/// </remarks>
+public class BinaryFuncParser : FunctionParser
 {
+    private readonly BOperNode _node;
+    private DefaultParser _childParser;
+    private State _state;
+
     /// <summary>
-    /// A <see cref="FunctionParser"/> that for parsing <see cref="BOperNode"/>s.
+    /// Initializes a new instance of the <see cref="BinaryFuncParser"/> class.
     /// </summary>
-    /// <remarks>
-    /// Represented as \boper{x1,x2}.
-    /// </remarks>
-    public class BinaryFuncParser : FunctionParser
+    /// <param name="node">The node to create.</param>
+    public BinaryFuncParser(BOperNode node)
     {
-        private readonly BOperNode _node;
-        private DefaultParser _childParser;
-        private State _state;
+        _state = State.Opening;
+        _node = node;
+        _childParser = new DefaultParser();
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BinaryFuncParser"/> class.
-        /// </summary>
-        /// <param name="node">The node to create.</param>
-        public BinaryFuncParser(BOperNode node)
+    private enum State
+    {
+        Opening,
+        Expression1Opening,
+        Expession1,
+        Expression2Opening,
+        Expression2,
+        Done,
+    }
+
+    /// <inheritdoc/>
+    public override ParseError ParseFirstChar(char c)
+    {
+        if (c == '{')
         {
-            _state = State.OPENING;
-            _node = node;
-            _childParser = new DefaultParser();
+            _state = State.Expression1Opening;
+            return new ParseError();
         }
 
-        private enum State
+        return new ParseError(ErrorType.MustBe, '{');
+    }
+
+    /// <inheritdoc/>
+    public override ParseError ParseNextChar(char c)
+    {
+        switch (_state)
         {
-            OPENING,
-            EXPRESSION1_OPENING,
-            EXPRESSION1,
-            EXPRESSION2_OPENING,
-            EXPRESSION2,
-            DONE,
+            case State.Expression1Opening:
+                if (c == ',') return new ParseError(ErrorType.CannotProceed);
+                _state = State.Expession1;
+                goto case State.Expession1;
+            case State.Expession1: return ParseExpression1(c);
+            case State.Expression2Opening:
+                if (c == ',') return new ParseError(ErrorType.CannotProceed);
+                _state = State.Expression2;
+                goto case State.Expression2;
+            case State.Expression2: return ParseExpression2(c);
+            default: return new ParseError(ErrorType.Unknown);
         }
+    }
 
-        /// <inheritdoc/>
-        public override ParseError ParseFirstChar(char c)
+    private ParseError ParseExpression1(char c)
+    {
+        if (_depth == 0)
         {
-            if (c == '{')
-            {
-                _state = State.EXPRESSION1_OPENING;
-                return new ParseError();
-            }
+            if (c == '}') return new ParseError(ErrorType.InadequateArguments);
 
-            return new ParseError(ErrorType.MUST_BE, '{');
-        }
-
-        /// <inheritdoc/>
-        public override ParseError ParseNextChar(char c)
-        {
-            switch (_state)
+            if (c == ',')
             {
-                case State.EXPRESSION1_OPENING:
-                    if (c == ',') return new ParseError(ErrorType.CANNOT_PROCEED);
-                    _state = State.EXPRESSION1;
-                    goto case State.EXPRESSION1;
-                case State.EXPRESSION1: return ParseExpression1(c);
-                case State.EXPRESSION2_OPENING:
-                    if (c == ',') return new ParseError(ErrorType.CANNOT_PROCEED);
-                    _state = State.EXPRESSION2;
-                    goto case State.EXPRESSION2;
-                case State.EXPRESSION2: return ParseExpression2(c);
-                default: return new ParseError(ErrorType.UNKNOWN);
+                _state = State.Expression2Opening;
+                ParseError status = FinalizeChild();
+                if (!status.Failed) _childParser = new DefaultParser();
+                return status;
             }
         }
 
-        private ParseError ParseExpression1(char c)
+        return ParseAsChild(c);
+    }
+
+    private ParseError ParseExpression2(char c)
+    {
+        if (_depth == 0)
         {
-            if (_depth == 0)
+            if (c == ',') return new ParseError(ErrorType.TooManyArguments);
+
+            if (c == '}')
             {
-                if (c == '}') return new ParseError(ErrorType.INADEQUATE_ARGUMENTS);
-
-                if (c == ',')
-                {
-                    _state = State.EXPRESSION2_OPENING;
-                    ParseError status = FinalizeChild();
-                    if (!status.Failed) _childParser = new DefaultParser();
-                    return status;
-                }
+                _state = State.Done;
+                ParseError status = FinalizeChild();
+                if (!status.Failed) Output = _node;
+                return status;
             }
-
-            return ParseAsChild(c);
         }
 
-        private ParseError ParseExpression2(char c)
+        return ParseAsChild(c);
+    }
+
+    private ParseError ParseAsChild(char c)
+    {
+        if (c == '{' || c == '<')
         {
-            if (_depth == 0)
-            {
-                if (c == ',') return new ParseError(ErrorType.TOO_MANY_ARGUMENTS);
-
-                if (c == '}')
-                {
-                    _state = State.DONE;
-                    ParseError status = FinalizeChild();
-                    if (!status.Failed) Output = _node;
-                    return status;
-                }
-            }
-
-            return ParseAsChild(c);
+            _depth++;
+        }
+        else if (c == '}' || c == '>')
+        {
+            _depth--;
         }
 
-        private ParseError ParseAsChild(char c)
-        {
-            if (c == '{' || c == '<')
-            {
-                _depth++;
-            }
-            else if (c == '}' || c == '>')
-            {
-                _depth--;
-            }
+        ParserStatus status = _childParser.ParseNextChar(c);
+        return new ParseError(status);
+    }
 
-            ParserStatus status = _childParser.ParseNextChar(c);
+    private ParseError FinalizeChild()
+    {
+        ParserStatus status = _childParser.Finalize();
+        if (status.Failed)
+        {
             return new ParseError(status);
         }
 
-        private ParseError FinalizeChild()
-        {
-            ParserStatus status = _childParser.Finalize();
-            if (status.Failed)
-            {
-                return new ParseError(status);
-            }
-
-            _node.AddChild(_childParser.Tree.Root);
-            return new ParseError();
-        }
+        _node.AddChild(_childParser.Tree.Root);
+        return new ParseError();
     }
 }

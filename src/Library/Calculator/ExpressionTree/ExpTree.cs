@@ -1,4 +1,4 @@
-﻿// Adam Dernis © 2021
+﻿// Adam Dernis 2024
 
 using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Operators;
@@ -6,156 +6,156 @@ using Calculator.ExpressionTree.Nodes.Operators.UOpers;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SignNode;
 using Calculator.ExpressionTree.Nodes.Values;
 
-namespace Calculator.ExpressionTree
+namespace Calculator.ExpressionTree;
+
+/// <summary>
+/// An expression.
+/// </summary>
+public class ExpTree
 {
+    private BranchNode _activeNode;
+
     /// <summary>
-    /// An expression.
+    /// Gets the root node of the expression tree.
     /// </summary>
-    public class ExpTree
+    public ExpNode Root { get; private set; }
+
+    /// <summary>
+    /// Adds a <see cref="ValueNode"/> to the expression tree.
+    /// </summary>
+    /// <param name="node">The <see cref="ValueNode"/> to add to the expression tree.</param>
+    public void AddNode(ValueNode node)
     {
-        private BranchNode _activeNode;
-
-        /// <summary>
-        /// Gets the root node of the expression tree.
-        /// </summary>
-        public ExpNode Root { get; private set; }
-
-        /// <summary>
-        /// Adds a <see cref="ValueNode"/> to the expression tree.
-        /// </summary>
-        /// <param name="node">The <see cref="ValueNode"/> to add to the expression tree.</param>
-        public void AddNode(ValueNode node)
+        if (_activeNode == null)
         {
-            if (_activeNode == null)
+            // If first node
+            Root = node;
+        }
+        else
+        {
+            _activeNode.AddChild(node);
+        }
+    }
+
+    /// <summary>
+    /// Adds a <see cref="BranchNode"/> to the expression tree.
+    /// </summary>
+    /// <param name="node">The <see cref="BranchNode"/> to add to the expression tree.</param>
+    public void AddNode(BranchNode node)
+    {
+        if (node is OperNode oNode)
+        {
+            AddNode(oNode);
+        }
+        else if (_activeNode == null)
+        {
+            Root = node;
+        }
+        else
+        {
+            _activeNode.AddChild(node);
+        }
+    }
+
+    /// <summary>
+    /// Adds a <see cref="OperNode"/> to the expression tree.
+    /// </summary>
+    /// <param name="node">The <see cref="OperNode"/> to add to the expression tree.</param>
+    public void AddNode(OperNode node)
+    {
+        bool insert = node is not UOperNode;
+
+        if (_activeNode == null)
+        {
+            // This is the first Branch Node
+            if (Root != null)
             {
-                // If first node
-                Root = node;
+                // The first node is often a ValueNode
+                // That is the only time a ValueNode will be the active or root node
+
+                // Makes node the new active_node
+                node.AddChild(Root);
             }
-            else
-            {
-                _activeNode.AddChild(node);
-            }
+
+            Root = node;
+            _activeNode = node;
+            return;
         }
 
-        /// <summary>
-        /// Adds a <see cref="BranchNode"/> to the expression tree.
-        /// </summary>
-        /// <param name="node">The <see cref="BranchNode"/> to add to the expression tree.</param>
-        public void AddNode(BranchNode node)
+        FindInsertionNode(node);
+
+        if (node.Priority > _activeNode.Priority)
         {
-            if (node is OperNode oNode)
-            {
-                AddNode(oNode);
-            }
-            else if (_activeNode == null)
-            {
-                Root = node;
-            }
-            else
-            {
-                _activeNode.AddChild(node);
-            }
-        }
-
-        /// <summary>
-        /// Adds a <see cref="OperNode"/> to the expression tree.
-        /// </summary>
-        /// <param name="node">The <see cref="OperNode"/> to add to the expression tree.</param>
-        public void AddNode(OperNode node)
-        {
-            bool insert = !(node is UOperNode);
-
-            if (_activeNode == null)
-            {
-                // This is the first Branch Node
-                if (Root != null)
-                {
-                    // The first node is often a ValueNode
-                    // That is the only time a ValueNode will be the active or root node
-
-                    // Makes node the new active_node
-                    node.AddChild(Root);
-                }
-
-                Root = node;
-                _activeNode = node;
-                return;
-            }
-
-            FindInsertionNode(node);
-
-            if (node.Priority > _activeNode.Priority)
-            {
-                // The new node is a lower priority than any node so far
-                // or a parenthesis/function was hit
-                // Add new node to top
-                if (_activeNode.Priority == Priority.OVERRIDE)
-                {
-                    InsertOperNode(node, insert);
-                }
-                else if (Root == _activeNode)
-                {
-                    // node is new root
-                    node.AddChild(Root);
-                    Root = node;
-                }
-            }
-            else if (node.Priority == _activeNode.Priority && (node is NOperNode))
-            {
-                for (int i = 0; i < node.ChildCount; i++)
-                {
-                    _activeNode.AddChild(node);
-                }
-
-                return;
-            }
-            else
+            // The new node is a lower priority than any node so far
+            // or a parenthesis/function was hit
+            // Add new node to top
+            if (_activeNode.Priority == Priority.Override)
             {
                 InsertOperNode(node, insert);
             }
-
-            _activeNode = node;
-        }
-
-        /// <summary>
-        /// Closes the nearest parenthesis on the tree.
-        /// </summary>
-        public void CloseParenthesis()
-        {
-            while (!(_activeNode is ParenthesisOperNode) && !_activeNode.IsRoot)
+            else if (Root == _activeNode)
             {
-                _activeNode = _activeNode.Parent;
-            }
-
-            if (_activeNode is ParenthesisOperNode pNode)
-            {
-                pNode.IsClosed = true;
-            }
-            else
-            {
-                throw new System.Exception("No parenthesis to close in the Expression Tree");
+                // node is new root
+                node.AddChild(Root);
+                Root = node;
             }
         }
-
-        private void FindInsertionNode(ExpNode node)
+        else if (node.Priority == _activeNode.Priority && (node is NOperNode))
         {
-            while ((_activeNode.Priority != Priority.OVERRIDE) &&
-                node.Priority > _activeNode.Priority &&
-                !_activeNode.IsRoot)
-            {
-                _activeNode = _activeNode.Parent;
-            }
-        }
-
-        private void InsertOperNode(BranchNode node, bool insert)
-        {
-            if (insert)
-            {
-                _activeNode.InsertChild(node);
-            } else
+            for (int i = 0; i < node.ChildCount; i++)
             {
                 _activeNode.AddChild(node);
             }
+
+            return;
+        }
+        else
+        {
+            InsertOperNode(node, insert);
+        }
+
+        _activeNode = node;
+    }
+
+    /// <summary>
+    /// Closes the nearest parenthesis on the tree.
+    /// </summary>
+    public void CloseParenthesis()
+    {
+        while (_activeNode is not ParenthesisOperNode && !_activeNode.IsRoot)
+        {
+            _activeNode = _activeNode.Parent;
+        }
+
+        if (_activeNode is ParenthesisOperNode pNode)
+        {
+            pNode.IsClosed = true;
+        }
+        else
+        {
+            throw new System.Exception("No parenthesis to close in the Expression Tree");
+        }
+    }
+
+    private void FindInsertionNode(ExpNode node)
+    {
+        while ((_activeNode.Priority != Priority.Override) &&
+            node.Priority > _activeNode.Priority &&
+            !_activeNode.IsRoot)
+        {
+            _activeNode = _activeNode.Parent;
+        }
+    }
+
+    private void InsertOperNode(BranchNode node, bool insert)
+    {
+        if (insert)
+        {
+            _activeNode.InsertChild(node);
+        }
+        else
+        {
+            _activeNode.AddChild(node);
         }
     }
 }

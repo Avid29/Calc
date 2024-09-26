@@ -4,6 +4,7 @@ using Calculator.ExpressionTree;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
 using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Parser.Default.Status;
+using Calculator.Parser.Default.Tokenization;
 
 namespace Calculator.Parser.Default.Functions;
 
@@ -21,7 +22,7 @@ public class IntegralFuncParser : FunctionParser
     /// </summary>
     public IntegralFuncParser()
     {
-        _state = State.OPEN_VAR;
+        _state = State.PreVar;
         _depth = 0;
         _node = new IntegralOperNode { IsDeterminate = false };
         _childParser = new DefaultParser();
@@ -29,62 +30,59 @@ public class IntegralFuncParser : FunctionParser
 
     private enum State
     {
-        OPEN_VAR,
-        VAR,
-        CLOSING_VAR,
-        LOWER,
-        UPPER,
-        OPEN_EXPRESSION,
-        EXPRESSION,
-        DONE,
+        PreVar,
+        Var,
+        PostVar,
+        Lower,
+        Upper,
+        OpenExpression,
+        Expression,
+        Done,
     }
 
     /// <inheritdoc/>
-    public override ParseError ParseFirstChar(char c)
-    {
-        if (c == '[' && _state == State.OPEN_VAR)
-        {
-            _state = State.VAR;
-            return new ParseError();
-        }
-
-        return new ParseError(ErrorType.MustBe, '[');
-    }
-
-    /// <inheritdoc/>
-    public override ParseError ParseNextChar(char c)
+    public override ParseError ParseNextToken(Token token)
     {
         switch (_state)
         {
-            case State.VAR:
+            case State.PreVar:
+                if (token != '[')
                 {
-                    if (char.IsLetter(c))
+                    return new ParseError(ErrorType.MustBe, '[');
+                }
+
+                _state = State.Var;
+                return new ParseError();
+            case State.Var:
+                {
+                    if (token.TokenType is not TokenType.Variable)
                     {
-                        _node.Variable = new VarValueNode(c);
-                        _state = State.CLOSING_VAR;
-                        return new ParseError();
+                        return new ParseError(ErrorType.DerivativeMustBeVariable);
                     }
 
-                    return new ParseError(ErrorType.DerivativeMustBeVariable);
+                    _node.Variable = new VarValueNode(token);
+                    _state = State.PostVar;
+                    return new ParseError();
+
                 }
-            case State.CLOSING_VAR:
+            case State.PostVar:
                 {
-                    if (c == ']')
+                    if (token == ']')
                     {
-                        _state = State.OPEN_EXPRESSION;
+                        _state = State.OpenExpression;
                         return new ParseError();
                     }
-                    if (c == ',')
+                    if (token == ',')
                     {
-                        _state = State.LOWER;
+                        _state = State.Lower;
                         _node.IsDeterminate = true;
                         return new ParseError();
                     }
                     return new ParseError(ErrorType.MustBe, ']'); // TODO: Multiple MUST_BE characters.
                 }
-            case State.LOWER:
+            case State.Lower:
                 {
-                    if (c == ',' && _depth == 0)
+                    if (token == ',' && _depth == 0)
                     {
                         ParserStatus status = _childParser.Finalize();
                         if (status.Failed) return new ParseError(status);
@@ -93,21 +91,28 @@ public class IntegralFuncParser : FunctionParser
                         if (tree == null) return new ParseError(ErrorType.Unknown);
 
                         _node.LowerBound = tree.Root;
-                        _state = State.UPPER;
+                        _state = State.Upper;
                         _childParser = new DefaultParser();
                         return new ParseError();
                     }
                     else
                     {
-                        if (c == '{') _depth++;
-                        else if (c == '}') _depth--;
-                        ParserStatus result = _childParser.ParseNextChar(c);
+                        if (token == '{')
+                        {
+                             _depth++;
+                        }
+                        else if (token == '}')
+                        {
+                             _depth--;
+                        }
+
+                        ParserStatus result = _childParser.ParseNextToken(token);
                         return new ParseError(result);
                     }
                 }
-            case State.UPPER:
+            case State.Upper:
                 {
-                    if (c == ']' && _depth == 0)
+                    if (token == ']' && _depth == 0)
                     {
                         ParserStatus status = _childParser.Finalize();
                         if (status.Failed) return new ParseError(status);
@@ -116,44 +121,67 @@ public class IntegralFuncParser : FunctionParser
                         if (tree == null) return new ParseError(ErrorType.Unknown);
 
                         _node.UpperBound = tree.Root;
-                        _state = State.OPEN_EXPRESSION;
+                        _state = State.OpenExpression;
                         _childParser = new DefaultParser();
                         return new ParseError();
                     }
                     else
                     {
-                        if (c == '{') _depth++;
-                        else if (c == '}') _depth--;
-                        ParserStatus result = _childParser.ParseNextChar(c);
+                        if (token == '{')
+                        {
+                            _depth++;
+                        }
+                        else if (token == '}')
+                        {
+                            _depth--;
+                        }
+
+                        ParserStatus result = _childParser.ParseNextToken(token);
                         return new ParseError(result);
                     }
                 }
-            case State.OPEN_EXPRESSION:
+            case State.OpenExpression:
                 {
-                    if (c != '{') return new ParseError(ErrorType.MustBe, '{');
-                    _state = State.EXPRESSION;
+                    if (token != '{')
+                    {
+                        return new ParseError(ErrorType.MustBe, '{');
+                    }
+
+                    _state = State.Expression;
                     return new ParseError();
                 }
-            case State.EXPRESSION:
+            case State.Expression:
                 {
-                    if (c == '}' && _depth == 0)
+                    if (token == '}' && _depth == 0)
                     {
                         ParserStatus status = _childParser.Finalize();
-                        if (status.Failed) return new ParseError(status);
+                        if (status.Failed)
+                        {
+                            return new ParseError(status);
+                        }
 
                         ExpTree tree = _childParser.Tree;
-                        if (tree == null) return new ParseError(ErrorType.Unknown);
+                        if (tree is null)
+                        {
+                            return new ParseError(ErrorType.Unknown);
+                        }
 
                         _node.AddChild(tree.Root);
-                        _state = State.DONE;
+                        _state = State.Done;
                         Output = _node;
                         return new ParseError();
                     }
                     else
                     {
-                        if (c == '{') _depth++;
-                        else if (c == '}') _depth--;
-                        ParserStatus result = _childParser.ParseNextChar(c);
+                        if (token == '{')
+                        {
+                            _depth++;
+                        }
+                        else if (token == '}')
+                        {
+                            _depth--;
+                        }
+                        ParserStatus result = _childParser.ParseNextToken(token);
                         return new ParseError(result);
                     }
                 }

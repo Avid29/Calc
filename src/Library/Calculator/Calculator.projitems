@@ -76,6 +76,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Status\ErrorType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Status\ParseError.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Status\ParserStatus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Tokenization\Token.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Tokenization\Tokenizer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Tokenization\TokenizerState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\Default\Tokenization\TokenType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Printers\Abstract\Printer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Printers\Default\DefaultPrinter.cs" />
   </ItemGroup>

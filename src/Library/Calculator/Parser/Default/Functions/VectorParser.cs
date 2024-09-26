@@ -4,6 +4,7 @@ using Calculator.ExpressionTree;
 using Calculator.ExpressionTree.Nodes;
 using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.Parser.Default.Status;
+using Calculator.Parser.Default.Tokenization;
 using System.Collections.Generic;
 
 namespace Calculator.Parser.Default.Functions;
@@ -18,6 +19,7 @@ public class VectorParser : FunctionParser
 {
     private readonly List<ExpNode> _children;
     private DefaultParser _childParser;
+    private bool _begun;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="VectorParser"/> class.
@@ -26,26 +28,30 @@ public class VectorParser : FunctionParser
     {
         _childParser = new DefaultParser();
         _children = [];
+        _begun = false;
     }
 
     /// <inheritdoc/>
-    public override ParseError ParseFirstChar(char c)
+    public override ParseError ParseNextToken(Token token)
     {
-        if (c == '<')
+        if (!_begun)
         {
+            if (token != '<')
+            {
+                return new ParseError(ErrorType.MustBe, '<');
+            }
+
+            _begun = true;
             return new ParseError();
         }
 
-        return new ParseError(ErrorType.MustBe, '<');
-    }
-
-    /// <inheritdoc/>
-    public override ParseError ParseNextChar(char c)
-    {
-        if ((c == ',' || c == '>') && _depth == 0)
+        if ((token == ',' || token == '>') && _depth == 0)
         {
             ParserStatus error = _childParser.Finalize();
-            if (error.Failed) return new ParseError(error);
+            if (error.Failed)
+            {
+                return new ParseError(error);
+            }
 
             ExpTree tree = _childParser.Tree;
             _childParser = new DefaultParser();
@@ -55,7 +61,7 @@ public class VectorParser : FunctionParser
             }
 
             _children.Add(tree.Root);
-            if (c == '>')
+            if (token == '>')
             {
                 Output = new TensorNode([_children.Count], _children);
             }
@@ -64,16 +70,16 @@ public class VectorParser : FunctionParser
         }
         else
         {
-            if (c == '<')
+            if (token == '<')
             {
                 _depth++;
             }
-            else if (c == '>')
+            else if (token == '>')
             {
                 _depth--;
             }
 
-            ParserStatus result = _childParser.ParseNextChar(c);
+            ParserStatus result = _childParser.ParseNextToken(token);
             return new ParseError(result);
         }
     }

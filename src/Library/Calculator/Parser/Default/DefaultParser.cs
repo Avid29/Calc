@@ -10,6 +10,7 @@ using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Helpers;
 using Calculator.Parser.Default.Functions;
 using Calculator.Parser.Default.Status;
+using Calculator.Parser.Default.Tokenization;
 using System;
 
 namespace Calculator.Parser.Default;
@@ -19,27 +20,30 @@ namespace Calculator.Parser.Default;
 /// </summary>
 public class DefaultParser
 {
+    private Tokenizer? _tokenizer;
     private readonly ExpTree _tree;
     private ParserState _state;
-    private string _input;
     private FunctionParser _activeFunctionParser;
-    private string _cache;
     private int _parenthesisDepth;
-    private int _position;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DefaultParser"/> class.
     /// </summary>
-    public DefaultParser()
+    public DefaultParser(bool tokenize = true)
     {
+        if (tokenize)
+        {
+            _tokenizer = new();
+            _tokenizer.TokenCreatedEvent += OnTokenizerTokenCreatedEvent;
+        }
+
         _state = ParserState.Begin;
-        _input = string.Empty;
         _tree = new ExpTree();
         _activeFunctionParser = null;
-        _cache = string.Empty;
         _parenthesisDepth = 0;
-        _position = 0;
     }
+
+    private void OnTokenizerTokenCreatedEvent(object sender, Token e) => ParseNextToken(e);
 
     /// <summary>
     /// Gets the created tree if done.
@@ -69,19 +73,17 @@ public class DefaultParser
     /// <returns>The resulting parsing status.</returns>
     public ParserStatus ParseString(string expression)
     {
-        _input = expression;
-
         // Parse each character one at a time
         foreach (char c in expression)
         {
-            ParserStatus status = ParseNextChar(c, true);
+            ParserStatus status = ParseNextChar(c);
             if (status.Failed) return status;
         }
 
         // Finalize after all characters are parsed.
         Finalize();
 
-        return new ParserStatus(_input, _position);
+        return new ParserStatus(_tokenizer.Input, _tokenizer.Position);
     }
 
     /// <summary>
@@ -90,38 +92,29 @@ public class DefaultParser
     /// <param name="c">The <see cref="char"/> to parse.</param>
     /// <param name="hasFullString">True if the input is already full, not step by step.</param>
     /// <returns>The resulting parser state.</returns>
-    public ParserStatus ParseNextChar(char c, bool hasFullString = false)
+    public ParserStatus ParseNextChar(char c)
     {
-        // If input isn't known
-        if (!hasFullString) _input += c;
-        _position++;
+        // TODO: Specify error type
+        if (_tokenizer is null)
+            return EnterErrorState(ErrorType.Unknown);
 
-        // Ignore whitespace
-        if (char.IsWhiteSpace(c)) return GetSuccessState();
+        return _tokenizer.ParseNextChar(c);
+    }
 
-        // All cases return and cannot fall-through
-        if (_state == ParserState.Function)
-            return ParseFunction(c);
-        if (_state == ParserState.PartialFunction)
-            return ParsePartialFunction(c);
+    public ParserStatus ParseNextToken(Token token)
+    {
+        if (_state is ParserState.Function)
+            return ParseInFunction(token);
 
-        if (char.IsDigit(c))
-            return ParseDigit(c);
-
-        if (char.IsLetter(c))
-            return ParseLetter(c);
-
-        return c switch
+        return token.TokenType switch
         {
-            // Brackets
-            '[' or '{' or '(' or '<' or '>' or ')' or '}' or ']' => ParseBracket(c),
-            // Operators
-            '+' or '-' or '*' or '/' or '^' => ParseOper(c),
-            // Other
-            '.' => ParseDecimal(),
-            '\\' => ParseEscape(),
-            // Error by default
-            _ => EnterErrorState(ErrorType.CannotProceed),
+            TokenType.Operator => ParseOperator(token),
+            TokenType.Integer or
+            TokenType.Float => ParseNumber(token),
+            TokenType.Variable => ParseVariable(token),
+            TokenType.FunctionName => ParseFunction(token),
+            TokenType.Bracket => ParseBracket(token),
+            _ => EnterErrorState(ErrorType.Unknown), // TODO: Specify error type
         };
     }
 
@@ -131,18 +124,18 @@ public class DefaultParser
     /// <returns>The resulting status of finalizing.</returns>
     public ParserStatus Finalize()
     {
-        if (_state == ParserState.Done) return GetSuccessState();
-        if (_state == ParserState.Error) return EnterErrorState(ErrorType.Unknown);
+        if (_tokenizer is not null)
+        {
+            var status = ParseNextChar(' ');
+            _tokenizer.TokenCreatedEvent -= OnTokenizerTokenCreatedEvent;
+        }
 
-        CompleteValue();
-
-        if (_parenthesisDepth != 0) return EnterErrorState(ErrorType.UnpairedParenthesis);
+        if (_parenthesisDepth != 0)
+            return EnterErrorState(ErrorType.UnpairedParenthesis);
 
         switch (_state)
         {
             // Valid states
-            case ParserState.Integer:
-            case ParserState.Float:
             case ParserState.Variable:
             case ParserState.Value:
                 _state = ParserState.Done;
@@ -154,7 +147,7 @@ public class DefaultParser
         }
     }
 
-    private ParserStatus ParseDigit(char c)
+    private ParserStatus ParseNumber(Token token)
     {
         switch (_state)
         {
@@ -165,250 +158,178 @@ public class DefaultParser
             case ParserState.OpenParenthesis:
             case ParserState.UOper:
             case ParserState.NOper:
-            case ParserState.Integer:
-                _state = ParserState.Integer;
-                goto case ParserState.Float;
-            case ParserState.Float:
-                _cache += c;
-                return GetSuccessState();
-            case ParserState.Decimal:
-                _state = ParserState.Float;
-                goto case ParserState.Float;
+                double value = Convert.ToDouble(token.TokenString);
+                _tree.AddNode(QuickOpers.MakeNumericalNode(value));
+                _state = ParserState.Value;
+                return GetSuccessState(token);
             default:
-                return EnterErrorState(ErrorType.CannotProceed);
+                return EnterErrorState(ErrorType.CannotProceed, token);
         }
     }
 
-    private ParserStatus ParseLetter(char c)
+    private ParserStatus ParseVariable(Token token)
     {
+        char c = token.TokenString[0];
+
         switch (_state)
         {
+            case ParserState.Value:
+            case ParserState.Variable:
+                _tree.AddNode(new MultiplicationOperNode());
+                goto case ParserState.Begin;
             case ParserState.Begin:
             case ParserState.OpenParenthesis:
             case ParserState.UOper:
             case ParserState.NOper:
                 _tree.AddNode(new VarValueNode(c));
-                _state = ParserState.Variable;
-                return GetSuccessState();
-            case ParserState.Integer:
-            case ParserState.Float:
-                CompleteValue();
-                goto case ParserState.Variable;
-            case ParserState.Value:
-            case ParserState.Variable:
-                _tree.AddNode(new MultiplicationOperNode());
-                _tree.AddNode(new VarValueNode(c));
-                _state = ParserState.Variable;
-                return GetSuccessState();
+                _state = ParserState.Value;
+                return GetSuccessState(token);
             default:
-                return EnterErrorState(ErrorType.CannotProceed);
+                return EnterErrorState(ErrorType.CannotProceed, token);
         }
     }
 
-    private ParserStatus ParseOper(char c)
+    private ParserStatus ParseOperator(Token token)
     {
         switch (_state)
         {
             case ParserState.Begin:
             case ParserState.OpenParenthesis:
             case ParserState.NOper:
-                return ParseUOper(c);
-            case ParserState.Integer:
-            case ParserState.Float:
+                return ParseUOperator(token);
             case ParserState.Value:
-            case ParserState.Variable:
-                CompleteValue();
-                return ParseNOper(c);
+                return ParseNOperator(token);
             default:
-                return EnterErrorState(ErrorType.CannotProceed);
-        }
-    }
-
-    private ParserStatus ParseNOper(char c)
-    {
-        if (c == '^') _tree.AddNode(new PowOperNode());
-        else _tree.AddNode(NOperNode.MakeNOperNode(c));
-        _state = ParserState.NOper;
-
-        // '-' and '/' as NOPER nodes are parsed as '+' or '*', but need to be followed
-        // by the aligning UOPER node.
-        if (c == '-' || c == '/')
-        {
-            _tree.AddNode(UOperNode.MakeUOperNode(c));
-            _state = ParserState.UOper;
+                return EnterErrorState(ErrorType.CannotProceed, token);
         }
 
-        return GetSuccessState();
-    }
-
-    private ParserStatus ParseUOper(char c)
-    {
-        switch (c)
+        ParserStatus ParseUOperator(Token token)
         {
-            case '+':
-            case '-':
+            char c = token.TokenString[0];
+            if (c is '+' or '-')
+            {
                 _tree.AddNode(new SignOperNode(c));
                 _state = ParserState.UOper;
-                return GetSuccessState();
-            default:
-                return EnterErrorState(ErrorType.CannotProceed);
+                return GetSuccessState(token);
+            }
+
+            return EnterErrorState(ErrorType.CannotProceed, token);
+        }
+
+        ParserStatus ParseNOperator(Token token)
+        {
+            char c = token.TokenString[0];
+            if (c is '^')
+            {
+                _tree.AddNode(new PowOperNode());
+            }
+            else
+            {
+                _tree.AddNode(NOperNode.MakeNOperNode(c));
+            }
+
+            _state = ParserState.NOper;
+
+            // TODO: Move this to the MakeNOperNode method.
+            // '-' and '/' as NOPER nodes are parsed as '+' or '*', but need to be followed
+            // by the aligning UOPER node.
+            if (c == '-' || c == '/')
+            {
+                _tree.AddNode(UOperNode.MakeUOperNode(c));
+                _state = ParserState.UOper;
+            }
+
+            return GetSuccessState(token);
         }
     }
 
-    private ParserStatus ParseBracket(char c)
+    private ParserStatus ParseFunction(Token token)
     {
-        switch (_state)
+        _activeFunctionParser = FunctionParser.MakeFunctionParser(token.TokenString.TrimStart('\\'));
+        if (_activeFunctionParser is null)
         {
-            case ParserState.Integer:
-            case ParserState.Float:
-                CompleteValue();
-                goto case ParserState.Value;
-            case ParserState.Value:
-            case ParserState.Variable:
-                if (c == '(' || c == '<') _tree.AddNode(new MultiplicationOperNode());
-                goto case ParserState.UOper;
-            case ParserState.UOper:
-            case ParserState.NOper:
-            case ParserState.Begin:
-            case ParserState.OpenParenthesis:
-                {
-                    if (c == '(')
-                    {
-                        _tree.AddNode(new ParenthesisOperNode());
-                        _parenthesisDepth++;
-                        _state = ParserState.OpenParenthesis;
-                    }
-                    else if (c == ')')
-                    {
-                        if (_parenthesisDepth == 0)
-                        {
-                            return EnterErrorState(ErrorType.UnpairedParenthesis);
-                        }
-                        else if (_state == ParserState.OpenParenthesis)
-                        {
-                            return EnterErrorState(ErrorType.CannotProceed);
-                        }
-
-                        _parenthesisDepth--;
-                        _tree.CloseParenthesis();
-                        _state = ParserState.Value;
-                    }
-                    else if (c == '<')
-                    {
-                        _activeFunctionParser = FunctionParser.MakeFunctionParser(c);
-                        _activeFunctionParser.ParseFirstChar(c);
-                        _state = ParserState.Function;
-                    }
-                    else
-                    {
-                        return EnterErrorState(ErrorType.UnpairedParenthesis);
-                    }
-                    return GetSuccessState();
-                }
-            default:
-                return EnterErrorState(ErrorType.Unknown);
-        }
-    }
-
-    private ParserStatus ParseDecimal()
-    {
-        switch (_state)
-        {
-            case ParserState.Integer:
-                _cache += ".";
-                _state = ParserState.Decimal;
-                return GetSuccessState();
-            case ParserState.Decimal:
-            case ParserState.Float:
-                return EnterErrorState(ErrorType.AlreadyFloat);
-            case ParserState.Begin:
-                return EnterErrorState(ErrorType.CannotBegin);
-            default:
-                return EnterErrorState(ErrorType.CannotProceed);
-        }
-    }
-
-    private ParserStatus ParseEscape()
-    {
-        switch (_state)
-        {
-            case ParserState.Integer:
-            case ParserState.Float:
-                CompleteValue();
-                goto case ParserState.Value;
-            case ParserState.Value:
-            case ParserState.Variable:
-                _tree.AddNode(new MultiplicationOperNode());
-                goto case ParserState.NOper;
-            case ParserState.NOper:
-            case ParserState.UOper:
-            case ParserState.Begin:
-            case ParserState.OpenParenthesis:
-                _cache = string.Empty;
-                _state = ParserState.PartialFunction;
-                return GetSuccessState();
-            case ParserState.PartialFunction:
-                // TODO: handle new line
-                return EnterErrorState(ErrorType.CannotProceed);
-            default:
-                return EnterErrorState(ErrorType.CannotProceed);
-        }
-    }
-
-    private ParserStatus ParsePartialFunction(char c)
-    {
-        if (char.IsLetter(c))
-        {
-            _cache += c;
-            return GetSuccessState();
-        }
-
-        _activeFunctionParser = FunctionParser.MakeFunctionParser(_cache);
-        if (_activeFunctionParser == null)
-        {
-            return EnterErrorState(ErrorType.InvalidFunction);
+            return EnterErrorState(ErrorType.InvalidFunction, token);
         }
 
         _state = ParserState.Function;
-        _cache = string.Empty;
-        ParseError parseError = _activeFunctionParser.ParseFirstChar(c);
-        return GetSuccessState(parseError);
+        return GetSuccessState(token);
     }
 
-    private ParserStatus ParseFunction(char c)
+    private ParserStatus ParseBracket(Token token)
     {
-        ParseError status = _activeFunctionParser.ParseNextChar(c);
-        if (_activeFunctionParser.Output != null)
+        char c = token.TokenString[0];
+
+        switch (_state)
+        {
+            case ParserState.Value:
+            case ParserState.Variable:
+                if (c is'(' or '<')
+                {
+                    _tree.AddNode(new MultiplicationOperNode());
+                }
+                goto case ParserState.Begin;
+            case ParserState.Begin:
+            case ParserState.OpenParenthesis:
+            case ParserState.UOper:
+            case ParserState.NOper:
+                {
+                    switch (c)
+                    {
+                        case '(':
+                            _tree.AddNode(new ParenthesisOperNode());
+                            _parenthesisDepth++;
+                            _state = ParserState.OpenParenthesis;
+                            return GetSuccessState(token);
+                        case ')':
+                            if (_parenthesisDepth <= 0)
+                            {
+                                return EnterErrorState(ErrorType.UnpairedParenthesis, token);
+                            }
+
+                            if (_state is ParserState.OpenParenthesis)
+                            {
+                                return EnterErrorState(ErrorType.CannotProceed, token);
+                            }
+
+                            _parenthesisDepth--;
+                            _tree.CloseParenthesis();
+                            _state = ParserState.Value;
+                            return GetSuccessState(token);
+                        case '<':
+                            _activeFunctionParser = FunctionParser.MakeFunctionParser(c);
+                            _activeFunctionParser.ParseNextToken(token);
+                            _state = ParserState.Function;
+                            return GetSuccessState(token);
+                        default:
+                            return EnterErrorState(ErrorType.UnpairedParenthesis, token);
+                    }
+                }
+            default:
+                return EnterErrorState(ErrorType.Unknown, token);
+        }
+    }
+
+    private ParserStatus ParseInFunction(Token token)
+    {
+        ParseError error = _activeFunctionParser.ParseNextToken(token);
+        if (_activeFunctionParser.Output is not null)
         {
             _tree.AddNode(_activeFunctionParser.Output);
             _state = ParserState.Value;
         }
 
-        return GetSuccessState(status);
+        return GetStatus(token, error);
     }
 
-    private ParserStatus GetSuccessState(ParseError error = null)
-    {
-        if (error != null)
-        {
-            return new ParserStatus(error, _input, _position);
-        }
+    private ParserStatus GetStatus(Token token, ParseError? error) => error is null ? GetSuccessState(token) : GetErrorState(token, error);
 
-        return new ParserStatus(_input, _position);
-    }
+    private ParserStatus GetSuccessState(Token token = null) => new(_tokenizer?.Input ?? string.Empty, token?.Position ?? _tokenizer?.Position ?? 0);
 
-    private ParserStatus EnterErrorState(ErrorType errorType, char expectedChar = '\0')
+    private ParserStatus GetErrorState(Token token, ParseError error) => new(error, _tokenizer?.Input ?? string.Empty, token.Position);
+
+    private ParserStatus EnterErrorState(ErrorType errorType, Token? token = null, char expectedChar = '\0')
     {
         _state = ParserState.Error;
-        return new ParserStatus(errorType, _input, _position, expectedChar);
-    }
-
-    private void CompleteValue()
-    {
-        if (_state != ParserState.Integer && _state != ParserState.Float) return;
-
-        double value = Convert.ToDouble(_cache);
-        _tree.AddNode(QuickOpers.MakeNumericalNode(value));
-        _cache = string.Empty;
+        return new ParserStatus(errorType, _tokenizer?.Input ?? string.Empty, token?.Position ?? _tokenizer?.Position ?? 0, expectedChar);
     }
 }

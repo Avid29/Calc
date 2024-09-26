@@ -6,6 +6,7 @@ using Calculator.ExpressionTree.Nodes.Operators.Functions;
 using Calculator.ExpressionTree.Nodes.Operators.Functions.RowElim;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
 using Calculator.Parser.Default.Status;
+using Calculator.Parser.Default.Tokenization;
 
 namespace Calculator.Parser.Default.Functions;
 
@@ -60,16 +61,9 @@ public abstract class FunctionParser
     }
 
     /// <summary>
-    /// Parses the first character of the function.
-    /// </summary>
-    /// <param name="c">The first character of the function.</param>
-    /// <returns>The resulting parser status.</returns>
-    public abstract ParseError ParseFirstChar(char c);
-
-    /// <summary>
     /// Parses the a character in the function.
     /// </summary>
     /// <param name="c">The character to parse.</param>
     /// <returns>The resulting parser status.</returns>
-    public abstract ParseError ParseNextChar(char c);
+    public abstract ParseError ParseNextToken(Token token);
 }

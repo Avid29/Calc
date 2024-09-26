@@ -2,6 +2,7 @@
 
 using Calculator.ExpressionTree.Nodes.Operators;
 using Calculator.Parser.Default.Status;
+using Calculator.Parser.Default.Tokenization;
 
 namespace Calculator.Parser.Default.Functions;
 
@@ -25,7 +26,7 @@ public class BinaryFuncParser : FunctionParser
     {
         _state = State.Opening;
         _node = node;
-        _childParser = new DefaultParser();
+        _childParser = new DefaultParser(false);
     }
 
     private enum State
@@ -39,43 +40,43 @@ public class BinaryFuncParser : FunctionParser
     }
 
     /// <inheritdoc/>
-    public override ParseError ParseFirstChar(char c)
-    {
-        if (c == '{')
-        {
-            _state = State.Expression1Opening;
-            return new ParseError();
-        }
-
-        return new ParseError(ErrorType.MustBe, '{');
-    }
-
-    /// <inheritdoc/>
-    public override ParseError ParseNextChar(char c)
+    public override ParseError ParseNextToken(Token token)
     {
         switch (_state)
         {
+            case State.Opening:
+                if (token != '{')
+                {
+                    return new ParseError(ErrorType.MustBe, '{');
+                }
+
+                _state = State.Expression1Opening;
+                return new ParseError();
             case State.Expression1Opening:
-                if (c == ',') return new ParseError(ErrorType.CannotProceed);
+                if (token == ',')
+                {
+                    return new ParseError(ErrorType.CannotProceed);
+                }
                 _state = State.Expession1;
                 goto case State.Expession1;
-            case State.Expession1: return ParseExpression1(c);
+            case State.Expession1:
+                return ParseExpression1(token);
             case State.Expression2Opening:
-                if (c == ',') return new ParseError(ErrorType.CannotProceed);
+                if (token == ',') return new ParseError(ErrorType.CannotProceed);
                 _state = State.Expression2;
                 goto case State.Expression2;
-            case State.Expression2: return ParseExpression2(c);
+            case State.Expression2: return ParseExpression2(token);
             default: return new ParseError(ErrorType.Unknown);
         }
     }
 
-    private ParseError ParseExpression1(char c)
+    private ParseError ParseExpression1(Token token)
     {
         if (_depth == 0)
         {
-            if (c == '}') return new ParseError(ErrorType.InadequateArguments);
+            if (token == '}') return new ParseError(ErrorType.InadequateArguments);
 
-            if (c == ',')
+            if (token == ',')
             {
                 _state = State.Expression2Opening;
                 ParseError status = FinalizeChild();
@@ -84,16 +85,16 @@ public class BinaryFuncParser : FunctionParser
             }
         }
 
-        return ParseAsChild(c);
+        return ParseAsChild(token);
     }
 
-    private ParseError ParseExpression2(char c)
+    private ParseError ParseExpression2(Token token)
     {
         if (_depth == 0)
         {
-            if (c == ',') return new ParseError(ErrorType.TooManyArguments);
+            if (token == ',') return new ParseError(ErrorType.TooManyArguments);
 
-            if (c == '}')
+            if (token == '}')
             {
                 _state = State.Done;
                 ParseError status = FinalizeChild();
@@ -102,21 +103,21 @@ public class BinaryFuncParser : FunctionParser
             }
         }
 
-        return ParseAsChild(c);
+        return ParseAsChild(token);
     }
 
-    private ParseError ParseAsChild(char c)
+    private ParseError ParseAsChild(Token token)
     {
-        if (c == '{' || c == '<')
+        if (token == '{' || token == '<')
         {
             _depth++;
         }
-        else if (c == '}' || c == '>')
+        else if (token == '}' || token == '>')
         {
             _depth--;
         }
 
-        ParserStatus status = _childParser.ParseNextChar(c);
+        ParserStatus status = _childParser.ParseNextToken(token);
         return new ParseError(status);
     }
 

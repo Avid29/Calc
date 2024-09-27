@@ -28,21 +28,6 @@ public enum ParserState
     UOper,
 
     /// <summary>
-    /// Forming an integer.
-    /// </summary>
-    Integer,
-
-    /// <summary>
-    /// Last character was a decimal moving changing from int to float.
-    /// </summary>
-    Decimal,
-
-    /// <summary>
-    /// Forming a floating point value.
-    /// </summary>
-    Float,
-
-    /// <summary>
     /// Last added an effective value to the tree.
     /// </summary>
     Value,
@@ -53,15 +38,9 @@ public enum ParserState
     Variable,
 
     /// <summary>
-    /// Parsing a function's name.
-    /// </summary>
-    PartialFunction,
-
-    /// <summary>
     /// Parsing is being handled by a function parser
     /// </summary>
     Function,
-
 
     // Finished states
 

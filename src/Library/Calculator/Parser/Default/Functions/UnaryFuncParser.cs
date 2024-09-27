@@ -2,6 +2,7 @@
 
 using Calculator.ExpressionTree.Nodes.Operators;
 using Calculator.Parser.Default.Status;
+using Calculator.Parser.Default.Tokenization;
 
 namespace Calculator.Parser.Default.Functions;
 
@@ -15,6 +16,7 @@ public class UnaryFuncParser : FunctionParser
 {
     private readonly DefaultParser _childParser;
     private readonly UOperNode _node;
+    private bool _begun;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UnaryFuncParser"/> class.
@@ -23,23 +25,25 @@ public class UnaryFuncParser : FunctionParser
     public UnaryFuncParser(UOperNode node)
     {
         _node = node;
-        _childParser = new DefaultParser();
+        _childParser = new DefaultParser(false);
+        _begun = false;
     }
 
     /// <inheritdoc/>
-    public override ParseError ParseFirstChar(char c)
+    public override ParseError ParseNextToken(Token token)
     {
-        if (c != '{')
+        if (!_begun)
         {
-            return new ParseError(ErrorType.MustBe, '{');
+            if (token != '{')
+            {
+                return new ParseError(ErrorType.MustBe, '{');
+            }
+            
+            _begun = true;
+            return new ParseError();
         }
-        return new ParseError();
-    }
 
-    /// <inheritdoc/>
-    public override ParseError ParseNextChar(char c)
-    {
-        if (c == '}' && _depth == 0)
+        if (token == '}' && _depth == 0)
         {
             ParserStatus status = _childParser.Finalize();
             if (status.Failed)
@@ -53,16 +57,16 @@ public class UnaryFuncParser : FunctionParser
         }
         else
         {
-            if (c == '{')
+            if (token == '{')
             {
                 _depth++;
             }
-            else if (c == '}')
+            else if (token == '}')
             {
                 _depth--;
             }
 
-            ParserStatus status = _childParser.ParseNextChar(c);
+            ParserStatus status = _childParser.ParseNextToken(token);
             return new ParseError(status);
         }
     }

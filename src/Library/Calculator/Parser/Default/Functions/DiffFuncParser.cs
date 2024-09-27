@@ -4,6 +4,7 @@ using Calculator.ExpressionTree;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
 using Calculator.ExpressionTree.Nodes.Values;
 using Calculator.Parser.Default.Status;
+using Calculator.Parser.Default.Tokenization;
 
 namespace Calculator.Parser.Default.Functions;
 
@@ -21,58 +22,67 @@ public class DiffFuncParser : FunctionParser
     /// </summary>
     public DiffFuncParser()
     {
-        _state = State.OPEN_VAR;
+        _state = State.PreVar;
         _depth = 0;
         _node = new DiffOperNode();
-        _childParser = new DefaultParser();
+        _childParser = new DefaultParser(false);
     }
 
     private enum State
     {
-        OPEN_VAR,
-        VAR,
-        CLOSING_VAR,
-        OPEN_EXPRESSION,
-        EXPRESSION,
-        DONE,
+        PreVar,
+        Var,
+        PostVar,
+        OpenExpression,
+        Expression,
+        Done,
     }
 
     /// <inheritdoc/>
-    public override ParseError ParseFirstChar(char c)
-    {
-        if (c == '[' && _state == State.OPEN_VAR)
-        {
-            _state = State.VAR;
-            return new ParseError();
-        }
-
-        return new ParseError(ErrorType.MustBe, '[');
-    }
-
-    /// <inheritdoc/>
-    public override ParseError ParseNextChar(char c)
+    public override ParseError ParseNextToken(Token token)
     {
         switch (_state)
         {
-            case State.VAR:
-                if (!char.IsLetter(c)) return new ParseError(ErrorType.DerivativeMustBeVariable);
-                _node.Variable = new VarValueNode(c);
-                _state = State.CLOSING_VAR;
-                return new ParseError();
-
-            case State.CLOSING_VAR:
-                if (c != ']') return new ParseError(ErrorType.MustBe, ']');
-                _state = State.OPEN_EXPRESSION;
-                return new ParseError();
-
-            case State.OPEN_EXPRESSION:
-                if (c != '{') return new ParseError(ErrorType.MustBe, '{');
-                _state = State.EXPRESSION;
-                return new ParseError();
-
-            case State.EXPRESSION:
+            case State.PreVar:
+                if (token != '[')
                 {
-                    if (c == '}' && _depth == 0)
+                    return new ParseError(ErrorType.MustBe, '[');
+                }
+
+                _state = State.Var;
+                return new ParseError();
+
+            case State.Var:
+                if (token.TokenType != TokenType.Variable)
+                {
+                    return new ParseError(ErrorType.DerivativeMustBeVariable);
+                }
+
+                _node.Variable = new VarValueNode(token);
+                _state = State.PostVar;
+                return new ParseError();
+
+            case State.PostVar:
+                if (token != ']')
+                {
+                    return new ParseError(ErrorType.MustBe, ']');
+                }
+
+                _state = State.OpenExpression;
+                return new ParseError();
+
+            case State.OpenExpression:
+                if (token != '{')
+                {
+                    return new ParseError(ErrorType.MustBe, '{');
+                }
+
+                _state = State.Expression;
+                return new ParseError();
+
+            case State.Expression:
+                {
+                    if (token == '}' && _depth == 0)
                     {
                         ParserStatus status = _childParser.Finalize();
                         if (status.Failed)
@@ -87,21 +97,21 @@ public class DiffFuncParser : FunctionParser
                         }
 
                         _node.AddChild(tree.Root);
-                        _state = State.DONE;
+                        _state = State.Done;
                         Output = _node;
                         return new ParseError();
                     }
                     else
                     {
-                        if (c == '{')
+                        if (token == '{')
                         {
                             _depth++;
                         }
-                        else if (c == '}')
+                        else if (token == '}')
                         {
                             _depth--;
                         }
-                        ParserStatus result = _childParser.ParseNextChar(c);
+                        ParserStatus result = _childParser.ParseNextToken(token);
                         return new ParseError(result);
                     }
                 }

@@ -1,6 +1,7 @@
 ﻿// Adam Dernis 2024
 
 using Calculator.Operations.Abstract;
+using Calculator.Parser.Default.Tokenization;
 using Calculator.Printers.Abstract;
 
 namespace Calculator.ExpressionTree.Nodes.Values;
@@ -17,6 +18,13 @@ public class VarValueNode : ValueNode
     public VarValueNode(char c)
     {
         Character = c;
+    }
+    
+    /// <summary>
+    /// Initializes a new instance of the <see cref="VarValueNode"/> class.
+    /// </summary>
+    public VarValueNode(Token token) : this(token.TokenString[0])
+    {
     }
 
     /// <summary>

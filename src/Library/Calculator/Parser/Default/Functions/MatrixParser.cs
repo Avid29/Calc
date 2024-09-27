@@ -3,6 +3,7 @@
 using Calculator.ExpressionTree;
 using Calculator.ExpressionTree.Nodes.Collections;
 using Calculator.Parser.Default.Status;
+using Calculator.Parser.Default.Tokenization;
 using System;
 
 namespace Calculator.Parser.Default.Functions;
@@ -27,55 +28,48 @@ public class MatrixParser : FunctionParser
     public MatrixParser()
     {
         _childParser = new DefaultParser();
-        _state = State.OPEN_X;
+        _state = State.PreX;
         _cache = string.Empty;
         _sizes = new int[2];
     }
 
     private enum State
     {
-        OPEN_X,
-        ARGUMENT_X,
-        OPEN_Y,
-        ARGUMENT_Y,
-        OPEN_EXPRESSION,
-        EXPRESSION,
-        DONE,
+        PreX,
+        ArgX,
+        XYSeperator,
+        ArgY,
+        PostY,
+        OpenExpression,
+        Expression,
+        Done,
     }
 
     /// <inheritdoc/>
-    public override ParseError ParseFirstChar(char c)
-    {
-        if (c == '[')
-        {
-            _state = State.ARGUMENT_X;
-            return new ParseError();
-        }
-
-        return new ParseError(ErrorType.MustBe, '[');
-    }
-
-    /// <inheritdoc/>
-    public override ParseError ParseNextChar(char c)
+    public override ParseError ParseNextToken(Token token)
     {
         switch (_state)
         {
-            case State.ARGUMENT_X:
-                return ParseUintArg(c);
-            case State.OPEN_Y:
-            case State.ARGUMENT_Y:
-                return ParseUintArg(c);
-            case State.OPEN_EXPRESSION:
-                if (c == '{')
+            case State.PreX:
+            case State.ArgX:
+            case State.XYSeperator:
+            case State.ArgY:
+            case State.PostY:
+                return ParseSizeArgs(token);
+            case State.OpenExpression:
+                if (token == '{')
                 {
-                    _state = State.EXPRESSION;
+                    _state = State.Expression;
                     _matrix = new TensorNode(_sizes);
                     return new ParseError();
                 }
-                else return new ParseError(ErrorType.CannotProceed);
-            case State.EXPRESSION:
+                else
                 {
-                    if ((c == '}' || c == ',') && _depth == 0)
+                    return new ParseError(ErrorType.CannotProceed);
+                }
+            case State.Expression:
+                {
+                    if ((token == '}' || token == ',') && _depth == 0)
                     {
                         ParserStatus status = _childParser.Finalize();
                         if (status.Failed)
@@ -92,9 +86,9 @@ public class MatrixParser : FunctionParser
 
                         _matrix.AddChild(tree.Root);
 
-                        if (c == '}')
+                        if (token == '}')
                         {
-                            _state = State.DONE;
+                            _state = State.Done;
                             Output = _matrix;
                         }
 
@@ -102,15 +96,15 @@ public class MatrixParser : FunctionParser
                     }
                     else
                     {
-                        if (c == '{')
+                        if (token == '{')
                         {
                             _depth++;
                         }
-                        else if (c == '}')
+                        else if (token == '}')
                         {
                             _depth--;
                         }
-                        ParserStatus result = _childParser.ParseNextChar(c);
+                        ParserStatus result = _childParser.ParseNextToken(token);
                         return new ParseError(result);
                     }
                 }
@@ -119,29 +113,48 @@ public class MatrixParser : FunctionParser
         }
     }
 
-    private ParseError ParseUintArg(char c)
+    private ParseError ParseSizeArgs(Token token)
     {
-        if (char.IsDigit(c))
+        switch (_state)
         {
-            _cache += c;
-            if (_state == State.OPEN_Y) _state = State.ARGUMENT_Y;
+            case State.PreX:
+                if (token == '[')
+                {
+                    _state = State.ArgX;
+                    return new ParseError();
+                }
 
-            return new ParseError();
-        }
-
-        if (c == ',' && _state == State.ARGUMENT_X)
-        {
-            _state = State.OPEN_Y;
-            _sizes[0] = Convert.ToInt32(_cache);
-            _cache = string.Empty;
-            return new ParseError();
-        }
-        if (c == ']' && _state == State.ARGUMENT_Y)
-        {
-            _state = State.OPEN_EXPRESSION;
-            _sizes[1] = Convert.ToInt32(_cache);
-            _cache = string.Empty;
-            return new ParseError();
+                return new ParseError(ErrorType.MustBe, '[');
+            case State.ArgX:
+                if (token.TokenType is TokenType.Integer)
+                {
+                    _sizes[0] = Convert.ToInt32(token.TokenString);
+                    _state = State.XYSeperator;
+                    return new ParseError();
+                }
+                break;
+            case State.XYSeperator:
+                if (token.TokenType is TokenType.Seperator)
+                {
+                    _state = State.ArgY;
+                    return new ParseError();
+                }
+                break;
+            case State.ArgY:
+                if (token.TokenType is TokenType.Integer)
+                {
+                    _sizes[1] = Convert.ToInt32(token.TokenString);
+                    _state = State.PostY;
+                    return new ParseError();
+                }
+                break;
+            case State.PostY:
+                if (token == ']')
+                {
+                    _state = State.OpenExpression;
+                    return new ParseError();
+                }
+                break;
         }
 
         return new ParseError(ErrorType.CannotProceed);

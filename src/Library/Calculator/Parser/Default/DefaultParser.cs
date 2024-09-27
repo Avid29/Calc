@@ -90,7 +90,6 @@ public class DefaultParser
     /// Parses the next <see cref="char"/> in the parsing state-machine.
     /// </summary>
     /// <param name="c">The <see cref="char"/> to parse.</param>
-    /// <param name="hasFullString">True if the input is already full, not step by step.</param>
     /// <returns>The resulting parser state.</returns>
     public ParserStatus ParseNextChar(char c)
     {

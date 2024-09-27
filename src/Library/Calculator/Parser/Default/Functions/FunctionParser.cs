@@ -1,7 +1,6 @@
 ﻿// Adam Dernis 2024
 
 using Calculator.ExpressionTree.Nodes;
-using Calculator.ExpressionTree.Nodes.Operators;
 using Calculator.ExpressionTree.Nodes.Operators.Functions;
 using Calculator.ExpressionTree.Nodes.Operators.Functions.RowElim;
 using Calculator.ExpressionTree.Nodes.Operators.UOpers.SineNode;
